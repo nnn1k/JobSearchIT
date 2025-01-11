@@ -20,7 +20,7 @@ class AlchemyRepository:
             models = res.scalars().all()
             if models is None:
                 return None
-            return [await self.alchemy_to_pydantic(model) for model in models]
+            return [await self.model_to_schema(model) for model in models]
 
     async def get_one(self, **kwargs) -> Optional[BaseModel]:
         async with session_factory() as session:
@@ -34,7 +34,7 @@ class AlchemyRepository:
 
             if model is None:
                 return None
-            return await self.alchemy_to_pydantic(model)
+            return await self.model_to_schema(model)
 
     async def add_one(self, **kwargs) -> Optional[BaseModel]:
         async with session_factory() as session:
@@ -46,7 +46,7 @@ class AlchemyRepository:
             res = await session.execute(query)
 
             model = res.scalars().one_or_none()
-            new_model = await self.alchemy_to_pydantic(model)
+            new_model = await self.model_to_schema(model)
             await session.commit()
 
             return new_model
@@ -61,7 +61,7 @@ class AlchemyRepository:
             for key, value in kwargs.items():
                 setattr(model, key, value)
             print(model)
-            new_model = await self.alchemy_to_pydantic(model)
+            new_model = await self.model_to_schema(model)
             await session.commit()
             return new_model
 
@@ -80,9 +80,8 @@ class AlchemyRepository:
     async def get_model(self, session, **kwargs):
         model_id = kwargs.pop('id', None)
         if model_id is None:
-            print({'error': 'model_id is missing'})
             return None
         return await session.get(self.db_model, model_id)
 
-    async def alchemy_to_pydantic(self, model):
+    async def model_to_schema(self, model):
         return self.schema.model_validate(model, from_attributes=True)
