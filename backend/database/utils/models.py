@@ -8,3 +8,7 @@ class UsersAl(Base):
 
     nickname: Mapped[str]
 
+
+
+
+
