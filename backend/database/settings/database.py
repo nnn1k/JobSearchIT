@@ -9,7 +9,7 @@ from backend.database.settings.config import settings
 
 engine = create_async_engine(
     url=settings.ASYNC_DB_URL,
-    echo=False
+    echo=True
 )
 
 session_factory = async_sessionmaker(engine)
