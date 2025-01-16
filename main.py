@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.staticfiles import StaticFiles
 
 from backend.api import router as backend_router
 from frontend import router as frontend_router
 
 app = FastAPI()
+app.mount("/frontend", StaticFiles(directory="frontend"), name="static")
 app.include_router(backend_router)
 app.include_router(frontend_router)
 
