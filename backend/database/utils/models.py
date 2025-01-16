@@ -1,6 +1,5 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-import datetime
 from backend.database.settings.database import Base
 
 class WorkersOrm(Base):
