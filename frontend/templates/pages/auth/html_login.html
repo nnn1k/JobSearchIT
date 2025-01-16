@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css_login.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Вход в личный кабинет</title>
+</head>
+<body>
+    <div class="container_worker" id="container_worker">
+        <div class="login-box">
+            <h2>Поиск работы</h2>
+            <form>
+                <div class="textbox">
+                    <input type="text" placeholder="Электронная почта" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" placeholder="Пароль" required>
+                </div>
+                <button class="btn" type="submit">Войти в личный кабинет</button>
+                <a class="link_for_reg" href="{{ url_for('logout') }}">Нет аккаунта?</a>
+            </form>
+        </div>
+
+         <div class="login-box">
+            <h2>Поиск сотрудников</h2>
+            <p>
+                Размещение вакансий и доступ к базе резюме
+            </p>
+            <button class="btn" type="button" id="switchLoginForm_1">Я ищу сотрудников</button>
+        </div>
+    </div>
+
+    <div class="container_employer" id="container_employer" style="display: none;">
+        <div class="login-box">
+            <h2>Поиск сотрудников</h2>
+            <form>
+                <div class="textbox">
+                    <input type="text" placeholder="Электронная почта" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" placeholder="Пароль" required>
+                </div>
+                <button class="btn" type="submit">Войти в личный кабинет</button>
+                <a class="link_for_reg" href="{{ url_for('logout') }}">Нет аккаунта?</a>
+            </form>
+        </div>
+
+         <div class="login-box">
+            <h2>Поиск работы</h2>
+            <p>
+                Публикация резюме и поиск по вакансиям
+            </p>
+            <button class="btn" type="button" id="switchLoginForm_2">Я ищу работу</button>
+        </div>
+    </div>
+    <script src="js_login.js"></script>
+</body>
+</html>

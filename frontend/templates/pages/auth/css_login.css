@@ -1,0 +1,87 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+}
+
+.container_worker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    gap: 30px;
+}
+
+.container_employer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    gap: 30px;
+}
+
+.login-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-box h2 {
+    margin: 0 0 20px 0;
+}
+
+.textbox {
+    margin-bottom: 20px;
+}
+
+.textbox input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: red;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.btn:hover {
+    background-color: crimson;
+}
+
+.link_for_reg{
+    text-decoration: none;
+}
+
+a:link {
+    color: deepskyblue
+}
+
+a:visited {
+    color: deepskyblue
+}
+
+a:hover {
+    color: cornflowerblue;
+}
+
