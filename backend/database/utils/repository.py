@@ -85,3 +85,4 @@ class AlchemyRepository:
 
     async def model_to_schema(self, model):
         return self.schema.model_validate(model, from_attributes=True)
+
