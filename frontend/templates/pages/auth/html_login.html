@@ -19,7 +19,7 @@
                     <input type="password" placeholder="Пароль" required>
                 </div>
                 <button class="btn" type="submit">Войти в личный кабинет</button>
-                <a class="link_for_reg" href="">Нет аккаунта?</a>
+                <a class="link_for_reg" href="{{ url_for('reg_worker') }}">Нет аккаунта?</a>
             </form>
         </div>
 
@@ -43,7 +43,7 @@
                     <input type="password" placeholder="Пароль" required>
                 </div>
                 <button class="btn" type="submit">Войти в личный кабинет</button>
-                <a class="link_for_reg" href="">Нет аккаунта?</a>
+                <a class="link_for_reg" href="{{ url_for('reg_employer') }}">Нет аккаунта?</a>
             </form>
         </div>
 
