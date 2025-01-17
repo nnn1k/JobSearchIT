@@ -16,6 +16,7 @@ class WorkersOrm(Base):
     birthday: Mapped[date] = mapped_column(nullable=True)
     gender: Mapped[str] = mapped_column(nullable=True)
     city: Mapped[str] = mapped_column(nullable=True)
+    is_confirmed: Mapped[bool] = mapped_column(default=False)
 
 
 class ResumesOrm(Base):

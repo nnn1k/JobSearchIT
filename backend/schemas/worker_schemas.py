@@ -16,10 +16,13 @@ class WorkerSchema(GlobalSchema):
     birthday: Optional[date] = None
     gender: Optional[str]
     city: Optional[str] = None
+    is_confirmed: bool = False
+
 
 class WorkerAuthSchema(BaseModel):
     email: EmailStr
     password: str
+
 
 class WorkerRegisterSchema(BaseModel):
     email: EmailStr

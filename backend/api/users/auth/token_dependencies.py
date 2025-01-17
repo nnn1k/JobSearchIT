@@ -1,30 +1,27 @@
-from fastapi import Cookie, Request, HTTPException, status
+from fastapi import HTTPException, status, Cookie, Request
 from fastapi.responses import RedirectResponse
-from pydantic import BaseModel
 
 from backend.api.users.auth.AuthJWT import jwt_token
+from backend.api.users.workers.repository import get_worker_repo
+from backend.schemas.worker_schemas import WorkerSchema
+
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
-def get_user(id):
-    return ...
-
-class UserResponseModel(BaseModel):
-    pass
-
-def get_user_by_token(
+async def get_worker_by_token(
     access_token=Cookie(None),
     refresh_token=Cookie(None),
-    request: Request = None,
-) -> UserResponseModel:
+) -> WorkerSchema:
     if access_token is None:
         check_refresh_token(refresh_token)
     try:
-        user_id = jwt_token.decode_jwt(token=access_token).get("sub")
-        user = get_user(id=user_id)
-        if user:
-            return UserResponseModel.model_validate(user, from_attributes=True)
-    except Exception:
+        worker_id = jwt_token.decode_jwt(token=access_token).get("sub")
+        worker_repo = get_worker_repo()
+        worker = await worker_repo.get_one(id=int(worker_id))
+        if worker:
+            return WorkerSchema.model_validate(worker, from_attributes=True)
+    except Exception as e:
+        print(e)
         check_refresh_token(refresh_token)
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
