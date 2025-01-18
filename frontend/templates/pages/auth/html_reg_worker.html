@@ -11,16 +11,16 @@
         <div class="login-box">
             <h2>Регистрация соискателя</h2>
             <form id="registrationForm">
-                <div class="textbox" id="login">
-                    <input type="text" placeholder="Электронная почта" required>
+                <div class="textbox">
+                    <input type="text" id="login"placeholder="Электронная почта" required>
                 </div>
-                <div class="textbox" id="password">
-                    <input type="password" placeholder="Пароль" required>
+                <div class="textbox">
+                    <input type="password" id="password" placeholder="Пароль" required>
                 </div>
-                <div class="textbox" id="confirm_password">
-                    <input type="password" placeholder="Повторите пароль" required>
+                <div class="textbox" >
+                    <input type="password" id="confirm_password" placeholder="Повторите пароль" required>
                 </div>
-                <button class="btn" type="submit" onclick="auth()">Зарегистрироваться</button>
+                <input type="button" value="отправить" onclick="auth()">
                 <div class="link_for_login">
                     <p>Уже зарегистрированы?  </p>
                     <a class="link_for_reg" href="{{ url_for('login_page') }}">Войти</a>

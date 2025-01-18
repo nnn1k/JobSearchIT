@@ -1,17 +1,14 @@
 import {apiUrl, makeRequest} from '../../../js/utils.js';
 
 async function auth() {
-    const login = document.getElementById("login").value
+    const email = document.getElementById("login").value
     const password = document.getElementById("password").value
-    const  confirm_password = document.getElementById(" confirm_password").value
-    console.log(login)
-    console.log(password)
-    console.log(confirm_password)
+    const  confirm_password = document.getElementById("confirm_password").value
     const response = await makeRequest({
         method: 'POST',
         url: '/api/auth/workers/register',
         data: {
-            login,
+            email,
             password,
             confirm_password
         }
