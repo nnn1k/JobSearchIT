@@ -22,7 +22,7 @@ body {
     gap: 30px;
 }
 
-.container_employer {
+.container_check_code {
     display: flex;
     flex-direction: column;
     justify-content: center;

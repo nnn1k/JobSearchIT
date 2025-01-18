@@ -20,7 +20,7 @@
                 <div class="textbox" >
                     <input type="password" id="confirm_password" placeholder="Повторите пароль" required>
                 </div>
-                <input type="button" value="отправить" onclick="auth()">
+                <input class="btn" type="button" value="Отправить" onclick="auth()">
                 <div class="link_for_login">
                     <p>Уже зарегистрированы?  </p>
                     <a class="link_for_reg" href="{{ url_for('login_page') }}">Войти</a>
@@ -28,15 +28,18 @@
             </form>
         </div>
     </div>
-{#    <div class="container_check_code" id="container_check_code" style="display: none;">#}
-{#        <h2>Регистрация соискателя</h2>#}
-{#        <h3>Мы отправили код на вашу почту</h3>#}
-{#        <p>Напишите его, чтобы подтвердить, что это вы, а не кто-то другой входит в личный кабинет</p>#}
-{#        <div class="textbox">#}
-{#            <input type="password" placeholder="Повторите пароль" required>#}
-{#        </div>#}
-{#        <button class="btn" type="submit" id="checkcode">Подтвердить</button>#}
-{#    </div>#}
+    <div class="container_check_code" id="container_check_code" style="display: none;">
+        <div class="login-box">
+            <h2>Регистрация соискателя</h2>
+            <h3>Мы отправили код на вашу почту</h3>
+            <p>Напишите его, чтобы подтвердить, что это вы, а не кто-то другой входит в личный кабинет</p>
+            <div class="textbox">
+                <input type="text" placeholder="Введите код" id="code" required>
+            </div>
+            <input class="btn" type="button" value="Подтвердить" onclick="check_code()">
+        </div>
+    </div>
+
 <script type="module"  src="/frontend/templates/pages/auth/js_reg_worker.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@
         const data = await response.json()
         return data
     } else if (response.status == 401){
-        window.location.href = apiUrl + '/login'
+        console.log('ТЫ ПИДР')
     } else {
         console.error('error:', response.status)
     }
