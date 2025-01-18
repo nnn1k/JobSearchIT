@@ -1,11 +1,13 @@
 from fastapi import HTTPException, status, Depends
 
 from backend.api.users.workers.repository import get_worker_repo
+from backend.schemas.global_schema import CodeSchema
 from backend.schemas.worker_schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
 from backend.utils.email_func import send_code_to_email
 from backend.utils.hash_pwd import HashPwd
 from backend.utils.redis_func import get_code_from_redis
 from backend.api.users.auth.token_dependencies import get_worker_by_token
+
 
 
 async def login_worker(
@@ -47,11 +49,11 @@ async def get_code(
     return worker
 
 async def check_code(
-        code: str,
+        code: CodeSchema,
         worker: WorkerSchema = Depends(get_worker_by_token),
 ):
     new_code = get_code_from_redis('worker', worker.id)
-    if code == new_code:
+    if code.code == new_code:
         worker_repo = get_worker_repo()
         return await worker_repo.update_one(id=worker.id, is_confirmed=True)
     raise HTTPException(

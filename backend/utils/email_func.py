@@ -26,5 +26,6 @@ def send_code_to_email(user, user_type):
     message = f'Ваш код {code}'
     from backend.utils.redis_func import create_redis_client
     redis_client = create_redis_client()
-    redis_client.hset(f'{user_type}:{user.id}', 'code', code)
+    redis_client.hset(f'{user_type}:{user.id}', mapping={'code': code, 'email': user.email})
+    redis_client.expire(f'{user_type}:{user.id}', 300)
     SendEmail.post_mail(user.email, message)
