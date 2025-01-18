@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/frontend/templates/pages/auth/css_login.css">
+    <script type="module" src="/frontend/templates/pages/auth/js_login.js"></script>
     <title>Вход в личный кабинет</title>
 </head>
 <body>
@@ -13,12 +14,12 @@
             <h2>Поиск работы</h2>
             <form>
                 <div class="textbox">
-                    <input type="text" placeholder="Электронная почта" required>
+                    <input type="text" placeholder="Электронная почта" id="login" required>
                 </div>
                 <div class="textbox">
-                    <input type="password" placeholder="Пароль" required>
+                    <input type="password" placeholder="Пароль" id="password" required>
                 </div>
-                <button class="btn" type="submit">Войти в личный кабинет</button>
+                <input class="btn" type="button" value="Войти в личный кабинет" onclick="login_worker()">
                 <a class="link_for_reg" href="{{ url_for('reg_worker') }}">Нет аккаунта?</a>
             </form>
         </div>
@@ -55,6 +56,5 @@
             <button class="btn" type="button" id="switchLoginForm_2">Я ищу работу</button>
         </div>
     </div>
-    <script src="/frontend/templates/pages/auth/js_login.js"></script>
 </body>
 </html>
