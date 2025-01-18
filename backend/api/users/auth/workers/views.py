@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, Response
 from starlette.responses import RedirectResponse
 
 from backend.api.users.auth.AuthJWT import jwt_token, Token
-from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN, get_worker_by_token
-from backend.api.users.auth.workers.dependencies import register_worker, login_worker
+from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.api.users.auth.workers.dependencies import register_worker, login_worker, check_code, get_code
 from backend.schemas.worker_schemas import WorkerSchema
+
 
 router = APIRouter(prefix='/workers', tags=['auth_workers'])
 
@@ -34,8 +35,21 @@ async def register(
 ):
     return RedirectResponse(url='/api/auth/workers/login')
 
+
 @router.get('/code', summary='Отправить код на почту')
 async def get_code(
-        worker: WorkerSchema = Depends(get_worker_by_token)
+        worker: WorkerSchema = Depends(get_code)
 ):
-    return worker.model_dump(exclude='password')
+    return {
+        'message': 'Код отправлен на почту:',
+        'email': worker.email
+    }
+
+@router.post('/code', summary='Проверка кода')
+async def send_code(
+        worker: WorkerSchema = Depends(check_code)
+):
+    return {'message': 'Почта подтверждена'}
+
+
+

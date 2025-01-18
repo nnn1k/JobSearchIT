@@ -1,4 +1,4 @@
-from fastapi import HTTPException, status, Cookie, Request
+from fastapi import HTTPException, status, Cookie
 from fastapi.responses import RedirectResponse
 
 from backend.api.users.auth.AuthJWT import jwt_token

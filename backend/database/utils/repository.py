@@ -60,7 +60,6 @@ class AlchemyRepository:
 
             for key, value in kwargs.items():
                 setattr(model, key, value)
-            print(model)
             new_model = await self.model_to_schema(model)
             await session.commit()
             return new_model

@@ -20,3 +20,4 @@ class SendEmail:
         smt.login(mail_data['login'], mail_data['password'])
         smt.sendmail(mail_data['login'], user_to, message.encode('utf-8'))
         smt.quit()
+
