@@ -21,3 +21,10 @@ class SendEmail:
         smt.sendmail(mail_data['login'], user_to, message.encode('utf-8'))
         smt.quit()
 
+def send_code_to_email(user, user_type):
+    code = SendEmail.get_random_code()
+    message = f'Ваш код {code}'
+    from backend.utils.redis_func import create_redis_client
+    redis_client = create_redis_client()
+    redis_client.hset(f'{user_type}:{user.id}', 'code', code)
+    SendEmail.post_mail(user.email, message)
