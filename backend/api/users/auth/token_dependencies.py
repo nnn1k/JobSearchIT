@@ -29,3 +29,23 @@ async def get_worker_by_token(
             detail=f"invalid token (access)",
         )
 
+async def get_employer_by_token(
+    access_token=Cookie(None),
+) -> WorkerSchema:
+    if access_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"not access token",
+        )
+    try:
+        employer_id = jwt_token.decode_jwt(token=access_token).get("sub")
+        worker_repo = get_worker_repo()
+        worker = await worker_repo.get_one(id=int(employer_id))
+        if worker:
+            return WorkerSchema.model_validate(worker, from_attributes=True)
+    except Exception as e:
+        print(e)
+    raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"invalid token (access)",
+        )

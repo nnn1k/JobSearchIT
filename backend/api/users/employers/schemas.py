@@ -1,30 +1,27 @@
-from datetime import date
 from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
 from backend.schemas.global_schema import GlobalSchema
 
-
-class WorkerSchema(GlobalSchema):
+class EmployerSchema(GlobalSchema):
     name: Optional[str] = None
     surname: Optional[str] = None
     patronymic: Optional[str] = None
     email: EmailStr
     phone: Optional[str] = None
     password: bytes
-    birthday: Optional[date] = None
-    gender: Optional[str]
-    city: Optional[str] = None
+    company_id: Optional[int] = None
+    is_owner: bool = False
     is_confirmed: bool = False
 
 
-class WorkerAuthSchema(BaseModel):
+class EmployerAuthSchema(BaseModel):
     email: EmailStr
     password: str
 
 
-class WorkerRegisterSchema(BaseModel):
+class EmployerRegisterSchema(BaseModel):
     email: EmailStr
     password: str
     confirm_password: str
@@ -34,10 +31,3 @@ class WorkerProfileSchema(BaseModel):
     surname: Optional[str] = None
     patronymic: Optional[str] = None
     phone: Optional[str] = None
-    birthday: Optional[date] = None
-    gender: Optional[str] = None
-    city: Optional[str] = None
-
-class WorkerUpdateSchema(BaseModel):
-    key: str
-    value: str

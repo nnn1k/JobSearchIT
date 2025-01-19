@@ -12,8 +12,8 @@ class EmployersOrm(Base):
     patronymic: Mapped[str] = mapped_column(nullable=True)
     email: Mapped[str]
     phone: Mapped[str] = mapped_column(nullable=True)
-    password: Mapped[str]
-    company_id: Mapped[int] = mapped_column(ForeignKey('companies.id'))
+    password: Mapped[bytes]
+    company_id: Mapped[int] = mapped_column(ForeignKey('companies.id'), nullable=True)
     is_owner: Mapped[bool] = mapped_column(default=False)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 
