@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status, Depends, Cookie, Response
 
 from backend.api.users.auth.AuthJWT import jwt_token
+from backend.api.users.auth.auth_dependencies import register_user
 from backend.api.users.workers.repository import get_worker_repo
 from backend.schemas.global_schema import CodeSchema
 from backend.api.users.workers.schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
@@ -23,24 +24,10 @@ async def login_worker_dependencies(
     return worker
 
 async def register_worker_dependencies(
-        reg_worker: WorkerRegisterSchema,
+        reg_user: WorkerRegisterSchema,
 ) -> WorkerSchema:
     worker_repo = get_worker_repo()
-    if await worker_repo.get_one(email=reg_worker.email):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="user is exist",
-        )
-    if reg_worker.password != reg_worker.confirm_password:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="password mismatch",
-        )
-    worker = await worker_repo.add_one(
-        email=reg_worker.email,
-        password=HashPwd.hash_password(reg_worker.password),
-    )
-    return worker
+    return await register_user(reg_user, worker_repo)
 
 async def get_code_dependencies(
         worker: WorkerSchema = Depends(get_worker_by_token),

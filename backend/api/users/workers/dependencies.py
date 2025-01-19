@@ -23,7 +23,7 @@ async def new_update_worker_dependencies(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Key {new_worker.key} not found."
         )
-    if new_worker.key in ('password', 'created_at', 'updated_at', 'id'):
+    if new_worker.key in ('password', 'created_at', 'updated_at', 'id', 'email'):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Key {new_worker.key} is immutable"

@@ -6,10 +6,10 @@ from backend.database.models.other import SkillsOrm, WorkersSkillsOrm, Vacancies
 
 async def recreate():
     async with engine.begin() as conn:
-        engine.echo = True
+        Base.echo = True
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
-        engine.echo = False
+        Base.echo = False
 
 
 if __name__ == '__main__':

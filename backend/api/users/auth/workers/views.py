@@ -59,7 +59,7 @@ async def send_code(
         'email': worker.email
     }
 
-@router.post('/refresh_token')
+@router.post('/refresh_token', include_in_schema=False)
 async def refresh_token_views():
     Depends(refresh_token_dependencies)
     return {
