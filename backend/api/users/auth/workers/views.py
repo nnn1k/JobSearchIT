@@ -20,8 +20,8 @@ async def login(
         response: Response,
         worker: WorkerSchema = Depends(login_worker_dependencies),
 ):
-    access_token = jwt_token.create_access_token(id=worker.id)
-    refresh_token = jwt_token.create_refresh_token(id=worker.id)
+    access_token = jwt_token.create_access_token(id=worker.id, user_type='worker')
+    refresh_token = jwt_token.create_refresh_token(id=worker.id, user_type='worker')
 
     response.set_cookie(ACCESS_TOKEN, access_token)
     response.set_cookie(REFRESH_TOKEN, refresh_token)
@@ -60,9 +60,11 @@ async def send_code(
     }
 
 @router.post('/refresh_token')
-async def refresh_token():
+async def refresh_token_views():
     Depends(refresh_token_dependencies)
-    return {'refresh': True}
+    return {
+        'refreshed': True
+    }
 
 
 
