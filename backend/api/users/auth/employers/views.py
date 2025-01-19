@@ -2,7 +2,8 @@ from fastapi import APIRouter, Response, Depends
 from fastapi.responses import RedirectResponse
 
 from backend.api.users.auth.AuthJWT import jwt_token, Token
-from backend.api.users.auth.employers.dependencies import login_employer_dependencies, register_employer_dependencies
+from backend.api.users.auth.employers.dependencies import login_employer_dependencies, register_employer_dependencies, \
+    get_code_dependencies, check_code_dependencies
 from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.employers.schemas import EmployerSchema
 
@@ -32,3 +33,21 @@ async def register(
         worker: EmployerSchema = Depends(register_employer_dependencies)
 ):
     return RedirectResponse(url='/api/auth/employers/login')
+
+@router.get('/code', summary='Отправить код на почту')
+async def get_code(
+        employer: EmployerSchema = Depends(get_code_dependencies)
+):
+    return {
+        'message': 'Код отправлен на почту:',
+        'email': employer.email
+    }
+
+@router.post('/code', summary='Проверка кода')
+async def send_code(
+        employer: EmployerSchema = Depends(check_code_dependencies)
+):
+    return {
+        'message': 'Почта подтверждена',
+        'email': employer.email
+    }
