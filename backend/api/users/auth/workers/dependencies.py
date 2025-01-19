@@ -1,12 +1,11 @@
 from fastapi import HTTPException, status, Depends, Cookie, Response
 
 from backend.api.users.auth.AuthJWT import jwt_token
-from backend.api.users.auth.auth_dependencies import register_user
+from backend.api.users.auth.auth_dependencies import register_user, login_user
 from backend.api.users.workers.repository import get_worker_repo
 from backend.schemas.global_schema import CodeSchema
 from backend.api.users.workers.schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
 from backend.utils.email_func import send_code_to_email
-from backend.utils.hash_pwd import HashPwd
 from backend.utils.redis_func import get_code_from_redis
 from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.workers.dependencies import get_worker_by_token
@@ -16,13 +15,7 @@ async def login_worker_dependencies(
     log_user: WorkerAuthSchema
 ) -> WorkerSchema:
     worker_repo = get_worker_repo()
-    worker = await worker_repo.get_one(email=log_user.email)
-    if not worker or not HashPwd.validate_password(password=log_user.password, hashed_password=worker.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect login or password",
-        )
-    return worker
+    return await login_user(log_user, worker_repo)
 
 async def register_worker_dependencies(
         reg_user: WorkerRegisterSchema,
