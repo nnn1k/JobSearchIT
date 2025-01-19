@@ -2,10 +2,13 @@ from fastapi import HTTPException, status, Cookie
 
 
 from backend.api.users.auth.AuthJWT import jwt_token
-from backend.api.users.employers.repository import get_employer_repo
+
 from backend.api.users.employers.schemas import EmployerSchema
-from backend.api.users.workers.repository import get_worker_repo
 from backend.api.users.workers.schemas import WorkerSchema
+
+from backend.api.users.workers.repository import get_worker_repo
+from backend.api.users.employers.repository import get_employer_repo
+
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
