@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/frontend/templates/pages/profile/css_profile.css">
+    <title>Мой аккаунт</title>
+</head>
+<body>
+<h1>Личные данные</h1>
+<div class="container_user_data">
+    <div class="field" id="row_by_name">
+        <label class="field_name">Имя:</label>
+        <label class="field_data">{name: data}</label>
+        <a class="link_for_edit" id="link_for_edit_name" href="">Изменить</a>
+    </div>
+    <div class="hide_field" id="row_by_edit_name" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Имя:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новое имя:</label>
+            <input type="text" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn" class="btn" type="button" name="cancel_btn" value="Отменить">
+        </div>
+    </div>
+
+    <div class="field" id="row_by_surname">
+        <label class="field_name">Фамилия:</label>
+        <label class="field_data">{surname: data}</label>
+        <a class="link_for_edit" id="link_for_edit_surname" href="">Изменить</a>
+    </div>
+    <div class="hide_field" id="row_by_edit_surname" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Фамилия:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новая фамилия:</label>
+            <input type="text" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_surname" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+    </div>
+
+    <div class="field" id="row_by_patronymic">
+        <label class="field_name" for="name">Отчество:</label>
+        <label class="field_data">{patronymic: data}</label>
+        <a class="link_for_edit" id="link_for_edit_patronymic" href="">Изменить</a>
+    </div>
+
+    <div class="hide_field" id="row_by_edit_patronymic" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Отчество:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новое отчество:</label>
+            <input type="text" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_patronymic" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="field_name" for="name">Электронная почта:</label>
+        <label class="field_data">{email: data}</label>
+    </div>
+    <div class="field" id="row_by_phone">
+        <label class="field_name" for="name">Телефон:</label>
+        <label class="field_data">{phone: data}</label>
+        <a class="link_for_edit" id="link_for_edit_phone" href="">Изменить</a>
+    </div>
+
+    <div class="hide_field" id="row_by_edit_phone" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Телефон:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новый телефон:</label>
+            <input type="text" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_phone" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+    </div>
+
+    <div class="field" id="row_by_birthday">
+        <label class="field_name" for="name">Дата рождения:</label>
+        <label class="field_data">{birthday: data}</label>
+        <a class="link_for_edit" id="link_for_edit_birthday" href="">Изменить</a>
+    </div>
+
+    <div class="hide_field" id="row_by_edit_birthday" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Дата рождения:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новая дата рождения:</label>
+            <input type="date" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_birthday" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+    </div>
+
+    <div class="field" id="row_by_gender">
+        <label class="field_name" for="name">Пол:</label>
+        <label class="field_data">{gender: data}</label>
+        <a class="link_for_edit" id="link_for_edit_gender" href="">Изменить</a>
+    </div>
+
+    <div class="hide_field" id="row_by_edit_gender" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Пол:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новый пол:</label>
+            <select id="new_name" class="field_data">
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+            </select>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_gender" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+    </div>
+
+    <div class="field" id="row_by_city">
+        <label class="field_name" for="name">Город:</label>
+        <label class="field_data">{city: data}</label>
+        <a class="link_for_edit" id="link_for_edit_city" href="">Изменить</a>
+    </div>
+
+    <div class="hide_field" id="row_by_edit_city" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Город:</label>
+            <label class="field_data">{name: data}</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новый город:</label>
+            <input type="text" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_city" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+    </div>
+</div>
+<script type="module" src="/frontend/templates/pages/profile/js_profile.js"></script>
+</body>
+</html>

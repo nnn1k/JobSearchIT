@@ -1,6 +1,6 @@
 import {apiUrl, makeRequest} from '../../../js/utils.js';
 
-async function auth() {
+async function regisration() {
     const email = document.getElementById("login").value
     const password = document.getElementById("password").value
     const  confirm_password = document.getElementById("confirm_password").value
@@ -45,5 +45,5 @@ async function check_code(){
     console.log(postResponse)
 }
 window.check_code = check_code;
-window.auth = auth;
+window.regisration = regisration;
 

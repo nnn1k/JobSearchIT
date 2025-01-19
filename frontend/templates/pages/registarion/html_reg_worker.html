@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="/frontend/templates/pages/auth/css_reg_worker.css">
+    <link rel="stylesheet" href="/frontend/templates/pages/registarion/css_reg_worker.css">
     <title>Регистрация</title>
 </head>
 <body>
@@ -20,7 +20,7 @@
                 <div class="textbox" >
                     <input type="password" id="confirm_password" placeholder="Повторите пароль" required>
                 </div>
-
+                <input id="reg_btn" class="btn" type="button" value="Зарегистрироваться" onclick="regisration()">
                 <div class="link_for_login">
                     <p>Уже зарегистрированы?  </p>
                     <a class="link_for_reg" href="{{ url_for('login_page') }}">Войти</a>
@@ -40,6 +40,6 @@
         </div>
     </div>
 
-<script type="module"  src="/frontend/templates/pages/auth/js_reg_worker.js"></script>
+<script type="module"  src="/frontend/templates/pages/registarion/js_reg_worker.js"></script>
 </body>
 </html>
