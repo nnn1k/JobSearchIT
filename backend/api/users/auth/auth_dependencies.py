@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 
 from backend.utils.hash_pwd import HashPwd
 

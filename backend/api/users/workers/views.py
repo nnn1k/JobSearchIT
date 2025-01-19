@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.users.auth.token_dependencies import get_worker_by_token
-from backend.api.users.workers.dependencies import update_worker_dependencies, new_update_worker_dependencies
+from backend.api.users.workers.dependencies import update_worker_dependencies, new_update_worker_dependencies, \
+    get_worker_by_token
 from backend.api.users.workers.schemas import WorkerSchema
 
 router = APIRouter(prefix='/workers', tags=['workers'])

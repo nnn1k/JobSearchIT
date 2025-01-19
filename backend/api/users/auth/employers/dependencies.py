@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException, status
 
 from backend.api.users.auth.auth_dependencies import register_user, login_user
-from backend.api.users.auth.token_dependencies import get_employer_by_token
+from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerAuthSchema, EmployerSchema, EmployerRegisterSchema
 from backend.schemas.global_schema import CodeSchema

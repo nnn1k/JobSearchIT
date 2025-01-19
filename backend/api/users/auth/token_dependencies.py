@@ -1,29 +1,10 @@
-from fastapi import HTTPException, status, Cookie
-
+from fastapi import HTTPException, status
 
 from backend.api.users.auth.AuthJWT import jwt_token
-
-from backend.api.users.employers.schemas import EmployerSchema
-from backend.api.users.workers.schemas import WorkerSchema
-
-from backend.api.users.workers.repository import get_worker_repo
-from backend.api.users.employers.repository import get_employer_repo
-
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
-async def get_worker_by_token(
-    access_token=Cookie(None),
-) -> WorkerSchema:
-    worker_repo = get_worker_repo()
-    return await get_user_by_token(access_token, worker_repo, WorkerSchema)
-
-async def get_employer_by_token(
-    access_token=Cookie(None),
-) -> EmployerSchema:
-    employer_repo = get_employer_repo()
-    return await get_user_by_token(access_token, employer_repo, EmployerSchema)
 
 async def get_user_by_token(access_token, repository, schema):
     if access_token is None:

@@ -8,7 +8,8 @@ from backend.api.users.workers.schemas import WorkerRegisterSchema, WorkerAuthSc
 from backend.utils.email_func import send_code_to_email
 from backend.utils.hash_pwd import HashPwd
 from backend.utils.redis_func import get_code_from_redis
-from backend.api.users.auth.token_dependencies import get_worker_by_token, ACCESS_TOKEN, REFRESH_TOKEN
+from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.api.users.workers.dependencies import get_worker_by_token
 
 
 async def login_worker_dependencies(
