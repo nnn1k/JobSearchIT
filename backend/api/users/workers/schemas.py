@@ -28,3 +28,12 @@ class WorkerRegisterSchema(BaseModel):
     email: EmailStr
     password: str
     confirm_password: str
+
+class WorkerProfileSchema(BaseModel):
+    name: Optional[str] = None
+    surname: Optional[str] = None
+    patronymic: Optional[str] = None
+    phone: Optional[str] = None
+    birthday: Optional[date] = None
+    gender: Optional[str] = None
+    city: Optional[str] = None

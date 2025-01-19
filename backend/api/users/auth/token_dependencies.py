@@ -3,7 +3,7 @@ from fastapi.responses import RedirectResponse
 
 from backend.api.users.auth.AuthJWT import jwt_token
 from backend.api.users.workers.repository import get_worker_repo
-from backend.schemas.worker_schemas import WorkerSchema
+from backend.api.users.workers.schemas import WorkerSchema
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'

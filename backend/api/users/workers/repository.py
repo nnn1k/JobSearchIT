@@ -1,6 +1,6 @@
 from backend.database.utils.repository import AlchemyRepository
 from backend.database.models.worker import WorkersOrm
-from backend.schemas.worker_schemas import WorkerSchema
+from backend.api.users.workers.schemas import WorkerSchema
 
 
 class WorkerRepository(AlchemyRepository):
