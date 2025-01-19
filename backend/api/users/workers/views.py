@@ -18,7 +18,7 @@ def update_my_profile(
 ):
     return {'worker': worker.model_dump(exclude='password')}
 
-@router.put('/me_other', summary='Редактировать информацию о себе')
+@router.patch('/me', summary='Редактировать информацию о себе по одному атрибуту')
 def update_my_other(
         worker: WorkerSchema = Depends(new_update_worker_dependencies)
 ):
