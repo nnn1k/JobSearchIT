@@ -1,12 +1,13 @@
-from fastapi import HTTPException, status, Depends
+from fastapi import HTTPException, status, Depends, Cookie, Response
 
+from backend.api.users.auth.AuthJWT import jwt_token
 from backend.api.users.workers.repository import get_worker_repo
 from backend.schemas.global_schema import CodeSchema
 from backend.api.users.workers.schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
 from backend.utils.email_func import send_code_to_email
 from backend.utils.hash_pwd import HashPwd
 from backend.utils.redis_func import get_code_from_redis
-from backend.api.users.auth.token_dependencies import get_worker_by_token
+from backend.api.users.auth.token_dependencies import get_worker_by_token, ACCESS_TOKEN, REFRESH_TOKEN
 
 
 async def login_worker_dependencies(
@@ -59,3 +60,22 @@ async def check_code_dependencies(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Incorrect code",
     )
+
+def refresh_token_dependencies(
+        response: Response,
+        refresh_token=Cookie(None)
+):
+    if not refresh_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="no refresh token",
+        )
+    new_access_token, new_refresh_token = jwt_token.token_refresh(refresh_token)
+    if new_access_token is None or new_refresh_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="invalid token (refresh)",
+        )
+    response.set_cookie(key=ACCESS_TOKEN, value=new_access_token)
+    response.set_cookie(key=REFRESH_TOKEN, value=new_refresh_token)
+    return response

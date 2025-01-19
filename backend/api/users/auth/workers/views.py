@@ -7,7 +7,7 @@ from backend.api.users.auth.workers.dependencies import (
     register_worker_dependencies,
     login_worker_dependencies,
     check_code_dependencies,
-    get_code_dependencies
+    get_code_dependencies, refresh_token_dependencies
 )
 from backend.api.users.workers.schemas import WorkerSchema
 
@@ -58,6 +58,11 @@ async def send_code(
         'message': 'Почта подтверждена',
         'email': worker.email
     }
+
+@router.post('/refresh_token')
+async def refresh_token():
+    Depends(refresh_token_dependencies)
+    return {'refresh': True}
 
 
 
