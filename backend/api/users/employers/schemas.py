@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, EmailStr
 
@@ -26,8 +26,12 @@ class EmployerRegisterSchema(BaseModel):
     password: str
     confirm_password: str
 
-class WorkerProfileSchema(BaseModel):
+class EmployerProfileSchema(BaseModel):
     name: Optional[str] = None
     surname: Optional[str] = None
     patronymic: Optional[str] = None
     phone: Optional[str] = None
+
+class EmployerUpdateSchema(BaseModel):
+    key: str
+    value: Any

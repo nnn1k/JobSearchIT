@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional
+from typing import Optional, Any
 
 from pydantic import BaseModel, EmailStr
 
@@ -40,4 +40,4 @@ class WorkerProfileSchema(BaseModel):
 
 class WorkerUpdateSchema(BaseModel):
     key: str
-    value: str
+    value: Any

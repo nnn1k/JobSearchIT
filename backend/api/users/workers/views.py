@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.users.workers.dependencies import update_worker_dependencies, new_update_worker_dependencies, \
+from backend.api.users.workers.dependencies import put_worker_dependencies, patch_worker_dependencies, \
     get_worker_by_token
 from backend.api.users.workers.schemas import WorkerSchema
 
@@ -14,12 +14,12 @@ def get_my_profile(
 
 @router.put('/me', summary='Редактировать информацию о себе')
 def update_my_profile(
-        worker: WorkerSchema = Depends(update_worker_dependencies)
+        worker: WorkerSchema = Depends(put_worker_dependencies)
 ):
     return {'worker': worker.model_dump(exclude='password')}
 
 @router.patch('/me', summary='Редактировать информацию о себе по одному атрибуту')
 def update_my_other(
-        worker: WorkerSchema = Depends(new_update_worker_dependencies)
+        worker: WorkerSchema = Depends(patch_worker_dependencies)
 ):
     return {'worker': worker.model_dump(exclude='password')}
