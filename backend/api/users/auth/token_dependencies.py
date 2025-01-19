@@ -1,5 +1,5 @@
-from fastapi import HTTPException, status, Cookie, Response
-from fastapi.responses import RedirectResponse
+from fastapi import HTTPException, status, Cookie
+
 
 from backend.api.users.auth.AuthJWT import jwt_token
 from backend.api.users.workers.repository import get_worker_repo
