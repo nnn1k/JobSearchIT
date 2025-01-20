@@ -42,7 +42,9 @@ async function check_code(){
            code
         }
     })
-    console.log(postResponse)
+    if (postResponse){
+        window.location.href=apiUrl+"/signup/worker/profile"
+    }
 }
 window.check_code = check_code;
 window.regisration = regisration;

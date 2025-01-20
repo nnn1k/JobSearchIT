@@ -26,7 +26,7 @@
     <div class="step" id="step2">
         <h2>Введите номер телефона</h2>
         <input type="tel" id="phone" name="phone" placeholder="+7 (999) 999-99-99"
-       pattern="\+7 $$\d{3}$$ \d{3}-\d{2}-\d{2}" required>
+               pattern="\+7 $$\d{3}$$ \d{3}-\d{2}-\d{2}" required>
         <div class="navigation">
             <button id="prev1">Назад</button>
             <button id="next2">Далее</button>
@@ -47,12 +47,10 @@
         <input type="text" id="city" required>
         <div class="navigation">
             <button id="prev3" class="cancel"> Назад</button>
-            <input id="complete_reg" class="btn" type="button" value="Завершить">
+            <input id="complete_reg" class="btn" type="button" value="Завершить" onclick="insert_data_for_profile()">
         </div>
     </div>
 </div>
-
 <script type="module" src="/frontend/templates/pages/registarion/js_step-by-step_registration.js"></script>
-
 </body>
 </html>

@@ -1,3 +1,5 @@
+import {apiUrl, makeRequest} from "../../../js/utils.js";
+
 $(document).ready(function () {
         let currentStep = 0;
         const steps = $('.step');
@@ -45,3 +47,29 @@ $(document).ready(function () {
     });
 
 
+async function insert_data_for_profile() {
+    const surname = document.getElementById("surname").value
+    const name = document.getElementById("name").value
+    const patronymic = document.getElementById("patronymic").value
+    const phone = document.getElementById("phone").value
+    const birthday = document.getElementById("date_bithday").value
+    const city = document.getElementById("city").value
+
+    const putResponse = await makeRequest({
+        method: 'PUT',
+        url: '/api/workers/me',
+        data: {
+            surname,
+            name,
+            patronymic,
+            phone,
+            birthday,
+            city
+        }
+    })
+    if (putResponse){
+        window.location.href=apiUrl+"/worker/profile"
+    }
+}
+
+window.insert_data_for_profile = insert_data_for_profile

@@ -1,0 +1,29 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    background-color: red;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo img {
+    height: 70px; /* Высота логотипа */
+    width: 110px;
+
+}
+
+.logo_profile{
+    margin-right: 30px;
+    height: 50px;
+    width: 50px;
+}
+
+.account-button a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}

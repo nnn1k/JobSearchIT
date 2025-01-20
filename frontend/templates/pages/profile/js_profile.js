@@ -1,3 +1,5 @@
+import {apiUrl, makeRequest} from "../../../js/utils.js";
+
 document.getElementById('link_for_edit_name').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
@@ -233,3 +235,17 @@ $(document).ready(function () {
         $("#row_by_edit_city").toggle(1000);
     });
 });
+
+async function getMe(){
+    const getResponse = await makeRequest({
+            method: 'GET',
+            url: '/api/workers/me',
+            }
+        )
+    console.log(getResponse)
+    document.getElementById('data_name').innerHTML=getResponse.worker.name
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    getMe();
+})

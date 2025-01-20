@@ -3,23 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-    <meta http-equiv="Pragma" content="no-cache"/>
-    <meta http-equiv="Expires" content="0"/>
-    <title>{% block title %} JobSearchIT {% endblock %}</title>
-    <script type="module" src="/front/base/base.js" defer></script>
-    <link rel="stylesheet" href="/front/base/base.css">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Хедер</title>
 </head>
 <body>
-<header>
-    <p> header </p>
-</header>
-
-
-
-<footer>
-    <p> footer </p>
-</footer>
-
+    <header class="header">
+        <div class="logo">
+            <img src="main_logo.png" alt="Логотип" />
+        </div>
+        <div class="account-button">
+            <a href="login.html">
+                <img class="logo_profile" src="profile.png" />
+            </a>
+        </div>
+    </header>
 </body>
 </html>
