@@ -10,6 +10,5 @@ async def recreate():
         await conn.run_sync(Base.metadata.create_all)
 
 
-
 if __name__ == '__main__':
     asyncio.run(recreate())
