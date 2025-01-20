@@ -12,7 +12,7 @@ def login_page(request: Request):
 
 @router.get("/signup/worker")
 def reg_worker(request: Request):
-    return templates.TemplateResponse("/pages/auth/html_reg_worker.html", {"request": request})
+    return templates.TemplateResponse("/pages/registarion/html_reg_worker.html", {"request": request})
 
 
 @router.get("/signup/employer")

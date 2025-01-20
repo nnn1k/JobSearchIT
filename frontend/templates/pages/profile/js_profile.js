@@ -194,45 +194,6 @@ $(document).ready(function () {
     });
 });
 
-document.getElementById('link_for_edit_gender').addEventListener('click', function (event) {
-    event.preventDefault();
-    $(document).ready(function () {
-        if ($('#row_by_name').is(':hidden')) {
-            $("#row_by_name").toggle(1000);
-            $("#row_by_edit_name").toggle(1000);
-        }
-        if ($('#row_by_surname').is(':hidden')) {
-            $("#row_by_surname").toggle(1000);
-            $("#row_by_edit_surname").toggle(1000);
-        }
-        if ($('#row_by_patronymic').is(':hidden')) {
-            $("#row_by_patronymic").toggle(1000);
-            $("#row_by_edit_patronymic").toggle(1000);
-        }
-        if ($('#row_by_phone').is(':hidden')) {
-            $("#row_by_phone").toggle(1000);
-            $("#row_by_edit_phone").toggle(1000);
-        }
-        if ($('#row_by_birthday').is(':hidden')) {
-            $("#row_by_birthday").toggle(1000);
-            $("#row_by_edit_birthday").toggle(1000);
-        }
-        if ($('#row_by_city').is(':hidden')) {
-            $("#row_by_city").toggle(1000);
-            $("#row_by_edit_city").toggle(1000);
-        }
-        $("#row_by_gender").toggle(1000);
-        $("#row_by_edit_gender").toggle(1000);
-    });
-});
-
-$(document).ready(function () {
-    $("#cancel_btn_for_gender").click(function () {
-        $("#row_by_gender").toggle(1000);
-        $("#row_by_edit_gender").toggle(1000);
-    });
-});
-
 document.getElementById('link_for_edit_city').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
