@@ -12,13 +12,13 @@
 <div class="container_user_data">
     <div class="field" id="row_by_name">
         <label class="field_name">Имя:</label>
-        <label class="field_data" id="data_name">{name: data}</label>
+        <label class="field_data" id="data_name"></label>
         <a class="link_for_edit" id="link_for_edit_name" href="">Изменить</a>
     </div>
     <div class="hide_field" id="row_by_edit_name" style="display: none;">
         <div class="field">
             <label class="field_name" for="name">Имя:</label>
-            <label class="field_data" id="data_name_2">{name: data}</label>
+            <label class="field_data" id="data_name_2"></label>
         </div>
 
         <div class="field">
@@ -27,102 +27,102 @@
         </div>
 
         <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('name')">
             <input id="cancel_btn" class="btn" type="button" name="cancel_btn" value="Отменить">
         </div>
     </div>
 
     <div class="field" id="row_by_surname">
         <label class="field_name">Фамилия:</label>
-        <label class="field_data" id="data_surname">{surname: data}</label>
+        <label class="field_data" id="data_surname"></label>
         <a class="link_for_edit" id="link_for_edit_surname" href="">Изменить</a>
     </div>
     <div class="hide_field" id="row_by_edit_surname" style="display: none;">
         <div class="field">
             <label class="field_name" for="name">Фамилия:</label>
-            <label class="field_data" id="data_surname_2">{name: data}</label>
+            <label class="field_data" id="data_surname_2"></label>
         </div>
 
         <div class="field">
             <label class="field_name" for="name">Новая фамилия:</label>
-            <input type="text" id="new_name" class="field_data" required>
+            <input type="text" id="new_surname" class="field_data" required>
         </div>
 
         <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('surname')">
             <input id="cancel_btn_for_surname" class="btn" name="cancel_btn" type="button" value="Отменить">
         </div>
     </div>
 
     <div class="field" id="row_by_patronymic">
         <label class="field_name" for="name">Отчество:</label>
-        <label class="field_data" id="data_patronymic">{patronymic: data}</label>
+        <label class="field_data" id="data_patronymic"></label>
         <a class="link_for_edit" id="link_for_edit_patronymic" href="">Изменить</a>
     </div>
 
     <div class="hide_field" id="row_by_edit_patronymic" style="display: none;">
         <div class="field">
             <label class="field_name" for="name">Отчество:</label>
-            <label class="field_data" id="data_patronymic_2">{name: data}</label>
+            <label class="field_data" id="data_patronymic_2"></label>
         </div>
 
         <div class="field">
             <label class="field_name" for="name">Новое отчество:</label>
-            <input type="text" id="new_name" class="field_data" required>
+            <input type="text" id="new_patronymic" class="field_data" required>
         </div>
 
         <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('patronymic')">
             <input id="cancel_btn_for_patronymic" class="btn" name="cancel_btn" type="button" value="Отменить">
         </div>
     </div>
 
     <div class="field">
         <label class="field_name" for="name">Электронная почта:</label>
-        <label class="field_data" id="data_email">{email: data}</label>
+        <label class="field_data" id="data_email"></label>
     </div>
     <div class="field" id="row_by_phone">
         <label class="field_name" for="name">Телефон:</label>
-        <label class="field_data" id="data_phone">{phone: data}</label>
+        <label class="field_data" id="data_phone"></label>
         <a class="link_for_edit" id="link_for_edit_phone" href="">Изменить</a>
     </div>
 
     <div class="hide_field" id="row_by_edit_phone" style="display: none;">
         <div class="field">
             <label class="field_name" for="name">Телефон:</label>
-            <label class="field_data" id="data_phone_2">{name: data}</label>
+            <label class="field_data" id="data_phone_2"></label>
         </div>
 
         <div class="field">
             <label class="field_name" for="name">Новый телефон:</label>
-            <input type="tel" id="new_name" class="field_data" required pattern="\+7 $$\d{3}$$ \d{3}-\d{4}">
+            <input type="tel" id="new_phone" class="field_data" required pattern="\+7 $$\d{3}$$ \d{3}-\d{4}">
         </div>
 
         <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('phone')">
             <input id="cancel_btn_for_phone" class="btn" name="cancel_btn" type="button" value="Отменить">
         </div>
     </div>
 
     <div class="field" id="row_by_birthday">
         <label class="field_name" for="name">Дата рождения:</label>
-        <label class="field_data" id="data_birthday">{birthday: data}</label>
+        <label class="field_data" id="data_birthday"></label>
         <a class="link_for_edit" id="link_for_edit_birthday" href="">Изменить</a>
     </div>
 
     <div class="hide_field" id="row_by_edit_birthday" style="display: none;">
         <div class="field">
             <label class="field_name" for="name">Дата рождения:</label>
-            <label class="field_data" id="data_birthday_2">{name: data}</label>
+            <label class="field_data" id="data_birthday_2"></label>
         </div>
 
         <div class="field">
             <label class="field_name" for="name">Новая дата рождения:</label>
-            <input type="date" id="new_name" class="field_data" required>
+            <input type="date" id="new_birthday" class="field_data" required>
         </div>
 
         <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('birthday')">
             <input id="cancel_btn_for_birthday" class="btn" name="cancel_btn" type="button" value="Отменить">
         </div>
     </div>
@@ -130,23 +130,23 @@
 
     <div class="field" id="row_by_city">
         <label class="field_name" for="name">Город:</label>
-        <label class="field_data" id="data_city">{city: data}</label>
+        <label class="field_data" id="data_city"></label>
         <a class="link_for_edit" id="link_for_edit_city" href="">Изменить</a>
     </div>
 
     <div class="hide_field" id="row_by_edit_city" style="display: none;">
         <div class="field">
             <label class="field_name" for="name">Город:</label>
-            <label class="field_data" id="data_city_2">{name: data}</label>
+            <label class="field_data" id="data_city_2"></label>
         </div>
 
         <div class="field">
             <label class="field_name" for="name">Новый город:</label>
-            <input type="text" id="new_name" class="field_data" required>
+            <input type="text" id="new_city" class="field_data" required>
         </div>
 
         <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('city')">
             <input id="cancel_btn_for_city" class="btn" name="cancel_btn" type="button" value="Отменить">
         </div>
     </div>

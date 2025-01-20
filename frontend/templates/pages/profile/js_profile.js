@@ -261,3 +261,18 @@ async function getMe(){
 document.addEventListener("DOMContentLoaded", function () {
     getMe();
 })
+
+async function patch_field(field) {
+    const name = document.getElementById(`new_${field}`).value
+    const patchResponse = await makeRequest({
+        method: 'PATCH',
+        url: '/api/workers/me',
+        data: {
+            key: field,
+            value: name
+        }
+    })
+    location.reload(true);
+}
+
+window.patch_field = patch_field
