@@ -11,6 +11,9 @@ async function login_worker() {
             password
         }
     })
+    if (postResponse){
+        window.location.href=apiUrl+"/worker/profile"
+    }
 }
 
 window.login_worker = login_worker;
