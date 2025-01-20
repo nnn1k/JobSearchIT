@@ -14,7 +14,6 @@ class WorkersOrm(Base):
     phone: Mapped[str] = mapped_column(nullable=True)
     password: Mapped[bytes]
     birthday: Mapped[date] = mapped_column(nullable=True)
-    gender: Mapped[str] = mapped_column(nullable=True)
     city: Mapped[str] = mapped_column(nullable=True)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 

@@ -14,7 +14,6 @@ class WorkerSchema(GlobalSchema):
     phone: Optional[str] = None
     password: bytes
     birthday: Optional[date] = None
-    gender: Optional[str]
     city: Optional[str] = None
     is_confirmed: bool = False
 
@@ -35,7 +34,6 @@ class WorkerProfileSchema(BaseModel):
     patronymic: Optional[str] = None
     phone: Optional[str] = None
     birthday: Optional[date] = None
-    gender: Optional[str] = None
     city: Optional[str] = None
 
 class WorkerUpdateSchema(BaseModel):
