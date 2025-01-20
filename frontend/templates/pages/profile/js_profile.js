@@ -244,6 +244,18 @@ async function getMe(){
         )
     console.log(getResponse)
     document.getElementById('data_name').innerHTML=getResponse.worker.name
+    document.getElementById('data_name_2').innerHTML=getResponse.worker.name
+    document.getElementById('data_surname').innerHTML=getResponse.worker.surname
+    document.getElementById('data_surname_2').innerHTML=getResponse.worker.surname
+    document.getElementById('data_patronymic').innerHTML=getResponse.worker.patronymic
+    document.getElementById('data_patronymic_2').innerHTML=getResponse.worker.patronymic
+    document.getElementById('data_email').innerHTML=getResponse.worker.email
+    document.getElementById('data_phone').innerHTML=getResponse.worker.phone
+    document.getElementById('data_phone_2').innerHTML=getResponse.worker.phone
+    document.getElementById('data_birthday').innerHTML=getResponse.worker.birthday
+    document.getElementById('data_birthday_2').innerHTML=getResponse.worker.birthday
+    document.getElementById('data_city').innerHTML=getResponse.worker.city
+    document.getElementById('data_city_2').innerHTML=getResponse.worker.city
 }
 
 document.addEventListener("DOMContentLoaded", function () {
