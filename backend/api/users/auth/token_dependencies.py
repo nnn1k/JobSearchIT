@@ -14,12 +14,19 @@ async def get_user_by_token(access_token, repository, schema):
         )
     try:
         user_id = jwt_token.decode_jwt(token=access_token).get("sub")
+        user_type = jwt_token.decode_jwt(token=access_token).get("type")
+    except Exception as e:
+        print(e)
+    else:
+        if user_type != repository.user_type:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail='bad user type',
+            )
         user = await repository.get_one(id=int(user_id))
         if user:
             return schema.model_validate(user, from_attributes=True)
-    except Exception as e:
-        print(e)
     raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"invalid token (access)",
-        )
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail=f"invalid token (access)",
+    )

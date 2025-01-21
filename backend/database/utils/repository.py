@@ -12,11 +12,7 @@ class AlchemyRepository:
 
     async def get_all(self, **kwargs) -> Optional[List[BaseModel]]:
         async with session_factory() as session:
-            query = (
-                select(self.db_model)
-                .filter_by(**kwargs)
-            )
-            res = await session.execute(query)
+            res = await self.get_query(session, kwargs)
             models = res.scalars().all()
             if models is None:
                 return None
@@ -24,14 +20,8 @@ class AlchemyRepository:
 
     async def get_one(self, **kwargs) -> Optional[BaseModel]:
         async with session_factory() as session:
-            query = (
-                select(self.db_model)
-                .filter_by(**kwargs)
-            )
-            res = await session.execute(query)
-
+            res = await self.get_query(session, kwargs)
             model = res.scalars().one_or_none()
-
             if model is None:
                 return None
             return await self.model_to_schema(model)
@@ -85,3 +75,16 @@ class AlchemyRepository:
     async def model_to_schema(self, model):
         return self.schema.model_validate(model, from_attributes=True)
 
+    async def get_query(self, session, kwargs):
+        query = (
+            select(self.db_model)
+            .filter_by(**kwargs)
+        )
+        load_type = kwargs.get('load_type', None)
+        if load_type:
+            match load_type:
+                case 'joined':
+                    query = query.options(joinedload('*'))
+                case 'selectin':
+                    query = query.options(selectinload('*'))
+        return await session.execute(query)
