@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="/frontend/templates/pages/auth/css_login.css">
+    <link rel="stylesheet" href="/frontend/templates/pages/auth/login.css">
 
     <title>Вход в личный кабинет</title>
 </head>
@@ -20,7 +20,7 @@
                     <input type="password" placeholder="Пароль" id="password" required>
                 </div>
                 <input id="login_btn" class="btn" type="button" value="Войти в личный кабинет" onclick="login_worker()">
-                <a class="link_for_reg" href="{{ url_for('reg_worker') }}">Нет аккаунта?</a>
+                <a class="link_for_reg" href="{{ url_for('signup_worker') }}">Нет аккаунта?</a>
             </form>
         </div>
          <div class="login-box">
@@ -43,7 +43,7 @@
                     <input type="password" placeholder="Пароль"  id="password_employer" required>
                 </div>
                 <input id="login_btn_2" class="btn" type="button" value="Войти в личный кабинет" onclick="login_employer_form()">
-                <a class="link_for_reg" href="{{ url_for('reg_employer') }}">Нет аккаунта?</a>
+                <a class="link_for_reg" href="{{ url_for('signup_employer') }}">Нет аккаунта?</a>
             </form>
         </div>
 
@@ -55,6 +55,6 @@
             <button class="btn" type="button" id="switchLoginForm_2">Я ищу работу</button>
         </div>
     </div>
- <script type="module" src="/frontend/templates/pages/auth/js_login.js"></script>
+ <script type="module" src="/frontend/templates/pages/auth/login.js"></script>
 </body>
 </html>

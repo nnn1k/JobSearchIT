@@ -1,12 +1,12 @@
 import {apiUrl, makeRequest} from '../../../js/utils.js';
 
-async function regisration() {
+async function signup_employer() {
     const email = document.getElementById("login").value
     const password = document.getElementById("password").value
-    const  confirm_password = document.getElementById("confirm_password").value
+    const confirm_password = document.getElementById("confirm_password").value
     const postResponse = await makeRequest({
         method: 'POST',
-        url: '/api/auth/workers/register',
+        url: '/api/auth/employers/register',
         data: {
             email,
             password,
@@ -15,8 +15,8 @@ async function regisration() {
     })
     if (postResponse) {
         const getResponse = await makeRequest({
-            method: 'GET',
-            url: '/api/auth/workers/code',
+                method: 'GET',
+                url: '/api/auth/employers/code',
             }
         )
         console.log(getResponse)
@@ -32,20 +32,22 @@ async function regisration() {
     }
 }
 
-async function check_code(){
+
+async function check_code() {
     const code = document.getElementById("code").value
     console.log(code)
     const postResponse = await makeRequest({
         method: 'POST',
-        url: '/api/auth/workers/code',
+        url: '/api/auth/employers/code',
         data: {
-           code
+            code
         }
     })
-    if (postResponse){
-        window.location.href=apiUrl+"/signup/worker/profile"
+    if (postResponse) {
+        window.location.href = apiUrl + "/signup/employer/profile"
     }
 }
+
 window.check_code = check_code;
-window.regisration = regisration;
+window.signup_employer = signup_employer;
 

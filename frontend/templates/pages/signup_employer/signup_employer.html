@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="/frontend/templates/pages/registarion/css_reg_worker.css">
+    <link rel="stylesheet" href="/frontend/templates/pages/signup_employer/signup_employer.css">
     <title>Регистрация</title>
 </head>
 <body>
     <div class="container_worker" id="container_worker">
         <div class="login-box">
-            <h2>Регистрация соискателя</h2>
+            <h2>Регистрация работодателя</h2>
             <form id="registrationForm">
                 <div class="textbox">
                     <input type="text" id="login"placeholder="Электронная почта" required>
@@ -20,7 +20,7 @@
                 <div class="textbox" >
                     <input type="password" id="confirm_password" placeholder="Повторите пароль" required>
                 </div>
-                <input id="reg_btn" class="btn" type="button" value="Зарегистрироваться" onclick="regisration()">
+                <input id="reg_btn" class="btn" type="button" value="Зарегистрироваться" onclick="signup_employer()">
                 <div class="link_for_login">
                     <p>Уже зарегистрированы?  </p>
                     <a class="link_for_reg" href="{{ url_for('login_page') }}">Войти</a>
@@ -30,7 +30,7 @@
     </div>
     <div class="container_check_code" id="container_check_code" style="display: none;">
         <div class="login-box">
-            <h2>Регистрация соискателя</h2>
+            <h2>Регистрация работодателя</h2>
             <h3>Мы отправили код на вашу почту</h3>
             <p>Напишите его, чтобы подтвердить, что это вы, а не кто-то другой входит в личный кабинет</p>
             <div class="textbox">
@@ -40,6 +40,6 @@
         </div>
     </div>
 
-<script type="module"  src="/frontend/templates/pages/registarion/js_reg_worker.js"></script>
+<script type="module"  src="/frontend/templates/pages/signup_employer/signup_employer.js"></script>
 </body>
 </html>

@@ -6,15 +6,15 @@ templates = Jinja2Templates(directory='frontend')
 
 
 @router.get("/worker")
-def reg_worker(request: Request):
-    return templates.TemplateResponse("/templates/pages/registarion/html_reg_worker.html", {"request": request})
+def signup_worker(request: Request):
+    return templates.TemplateResponse("/templates/pages/signup_worker/signup_worker.html", {"request": request})
 
 
 @router.get("/employer")
-def reg_employer(request: Request):
-    return templates.TemplateResponse("/templates/pages/auth/html_reg_employer.html", {"request": request})
+def signup_employer(request: Request):
+    return templates.TemplateResponse("/templates/pages/signup_employer/signup_employer.html", {"request": request})
 
 
 @router.get("/worker/profile")
 def create_profile(request: Request):
-    return templates.TemplateResponse("/templates/pages/registarion/html_step-by-step_registration.html", {"request": request})
+    return templates.TemplateResponse("/templates/pages/signup_worker/step-by-step_signup_worker.html", {"request": request})

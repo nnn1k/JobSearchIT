@@ -68,7 +68,7 @@ async function insert_data_for_profile() {
         }
     })
     if (putResponse){
-        window.location.href=apiUrl+"/worker/profile"
+        window.location.href=apiUrl+"/worker/profile_worker"
     }
 }
 

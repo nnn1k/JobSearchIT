@@ -11,6 +11,6 @@ router.include_router(worker_router)
 
 @router.get("/")
 def login_page(request: Request):
-    return templates.TemplateResponse("/templates/pages/auth/html_login.html", {"request": request})
+    return templates.TemplateResponse("/templates/pages/auth/login.html", {"request": request})
 
 

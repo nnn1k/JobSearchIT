@@ -38,12 +38,12 @@ window.login_employer_form = login_employer_form;
 
 $(document).ready(function () {
     $("#switchLoginForm_1").click(function () {
-        $("#container_worker").toggle(1000);
-        $("#container_employer").toggle(1000);
+        $("#container_worker").toggle(500);
+        $("#container_employer").toggle(500);
     });
     $("#switchLoginForm_2").click(function () {
-        $("#container_worker").toggle(1000);
-        $("#container_employer").toggle(1000);
+        $("#container_worker").toggle(500);
+        $("#container_employer").toggle(500);
     });
 });
 
