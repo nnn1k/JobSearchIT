@@ -11,14 +11,14 @@ async function login_worker() {
             password
         }
     })
-    if (postResponse){
-        window.location.href=apiUrl+"/worker/profile"
+    if (postResponse) {
+        window.location.href = apiUrl + "/worker/profile"
     }
 }
 
-async function login_employer(){
-    const email = document.getElementById('login_employer')
-    const password = document.getElementById('password_employer')
+async function login_employer_form() {
+    const email = document.getElementById('login_employer').value
+    const password = document.getElementById('password_employer').value
     const postResponse = await makeRequest({
         method: 'POST',
         url: '/api/auth/employers/login',
@@ -27,21 +27,21 @@ async function login_employer(){
             password
         }
     })
-    if (postResponse){
-        window.location.href=apiUrl+"/employer/profile"
+    if (postResponse) {
+        window.location.href = apiUrl + "/employer/profile"
     }
 }
 
 window.login_worker = login_worker;
+window.login_employer_form = login_employer_form;
 
 
-
-$(document).ready(function() {
-    $("#switchLoginForm_1").click(function() {
+$(document).ready(function () {
+    $("#switchLoginForm_1").click(function () {
         $("#container_worker").toggle(1000);
         $("#container_employer").toggle(1000);
     });
-    $("#switchLoginForm_2").click(function() {
+    $("#switchLoginForm_2").click(function () {
         $("#container_worker").toggle(1000);
         $("#container_employer").toggle(1000);
     });
