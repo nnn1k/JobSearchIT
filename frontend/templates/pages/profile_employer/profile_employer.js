@@ -1,11 +1,11 @@
 import {apiUrl, makeRequest} from "../../../js/utils.js";
-import {hide_feild, cancel_btn} from "../../../js/functions_for_profile.js";
+import {hide_field, cancel_btn} from "../../../js/functions_for_profile.js";
 
 
 document.getElementById('link_for_edit_name').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
-        hide_feild('row_by_name', 'row_by_edit_name')
+        hide_field('row_by_name', 'row_by_edit_name')
     });
 });
 
@@ -17,7 +17,7 @@ $(document).ready(function () {
 document.getElementById('link_for_edit_surname').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
-        hide_feild('row_by_surname', 'row_by_edit_surname')
+        hide_field('row_by_surname', 'row_by_edit_surname')
     });
 });
 
@@ -28,7 +28,7 @@ $(document).ready(function () {
 document.getElementById('link_for_edit_patronymic').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
-        hide_feild('row_by_patronymic', 'row_by_edit_patronymic')
+        hide_field('row_by_patronymic', 'row_by_edit_patronymic')
     });
 });
 
@@ -40,7 +40,7 @@ $(document).ready(function () {
 document.getElementById('link_for_edit_phone').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
-        hide_feild('row_by_phone', 'row_by_edit_phone')
+        hide_field('row_by_phone', 'row_by_edit_phone')
     });
 });
 
@@ -51,7 +51,7 @@ $(document).ready(function () {
 document.getElementById('link_for_edit_company').addEventListener('click', function (event) {
     event.preventDefault();
     $(document).ready(function () {
-        hide_feild('row_by_сompany', 'row_by_edit_сompany')
+        hide_field('row_by_сompany', 'row_by_edit_сompany')
     });
 });
 
