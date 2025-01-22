@@ -1,0 +1,107 @@
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+.container_user_data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 650px;
+    gap: 15px;
+    background-color: white;
+    padding: 10px;
+    margin-left: 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title{
+    margin-left: 100px;
+}
+
+.field{
+    display: flex;
+    flex-direction: row;
+}
+.field_name{
+    width: 140px;
+}
+.field_data{
+    margin-left: 120px;
+}
+
+.link_for_edit{
+     margin-left: auto;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: red;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+
+.link_for_reg{
+    text-decoration: none;
+}
+
+a:link {
+    color: deepskyblue
+}
+
+a:visited {
+    color: deepskyblue
+}
+
+a:hover {
+    color: cornflowerblue;
+}
+
+a{
+    text-decoration: none;
+}
+.hide_field{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.btns{
+    display: flex;
+    flex-direction: column;
+}
+input[name="cancel_btn"]{
+    width: 100px;
+    color: red;
+    background-color: #f2f2f2;
+
+
+}
+#put_btn{
+    width: 100px;
+    margin-left: 260px;
+}
+
+hr {
+    border: 0.5px solid black;
+    width: 100%;
+    margin: 5px auto;
+    opacity: 8%;
+}
+
+

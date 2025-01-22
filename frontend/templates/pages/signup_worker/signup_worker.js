@@ -43,7 +43,7 @@ async function check_code(){
         }
     })
     if (postResponse){
-        window.location.href=apiUrl+"/signup/worker/profile_worker"
+        window.location.href=apiUrl+"/signup/worker/profile"
     }
 }
 window.check_code = check_code;

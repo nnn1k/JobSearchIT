@@ -1,10 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/frontend/templates/pages/profile_employer/profile_employer.css">
     <title>Личный кабинет</title>
 </head>
 <body>
+<h1 class="title">Личные данные</h1>
+<div class="container_user_data">
+    <div class="field" id="row_by_name">
+        <label class="field_name">Имя:</label>
+        <label class="field_data" id="data_name"></label>
+        <a class="link_for_edit" id="link_for_edit_name" href="">Изменить</a>
+    </div>
+    <hr>
+    <div class="hide_field" id="row_by_edit_name" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Имя:</label>
+            <label class="field_data" id="data_name_2"></label>
+        </div>
 
+        <div class="field">
+            <label class="field_name" for="name">Новое имя:</label>
+            <input type="text" id="new_name" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('name')">
+            <input id="cancel_btn" class="btn" type="button" name="cancel_btn" value="Отменить">
+        </div>
+        <hr>
+    </div>
+
+    <div class="field" id="row_by_surname">
+        <label class="field_name">Фамилия:</label>
+        <label class="field_data" id="data_surname"></label>
+        <a class="link_for_edit" id="link_for_edit_surname" href="">Изменить</a>
+    </div>
+    <hr>
+    <div class="hide_field" id="row_by_edit_surname" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Фамилия:</label>
+            <label class="field_data" id="data_surname_2"></label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новая фамилия:</label>
+            <input type="text" id="new_surname" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('surname')">
+            <input id="cancel_btn_for_surname" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+        <hr>
+    </div>
+
+    <div class="field" id="row_by_patronymic">
+        <label class="field_name" for="name">Отчество:</label>
+        <label class="field_data" id="data_patronymic"></label>
+        <a class="link_for_edit" id="link_for_edit_patronymic" href="">Изменить</a>
+    </div>
+    <hr>
+    <div class="hide_field" id="row_by_edit_patronymic" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Отчество:</label>
+            <label class="field_data" id="data_patronymic_2"></label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новое отчество:</label>
+            <input type="text" id="new_patronymic" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('patronymic')">
+            <input id="cancel_btn_for_patronymic" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+        <hr>
+    </div>
+
+    <div class="field">
+        <label class="field_name" for="name">Электронная почта:</label>
+        <label class="field_data" id="data_email"></label>
+    </div>
+    <hr>
+    <div class="field" id="row_by_phone">
+        <label class="field_name" for="name">Телефон:</label>
+        <label class="field_data" id="data_phone"></label>
+        <a class="link_for_edit" id="link_for_edit_phone" href="">Изменить</a>
+    </div>
+    <hr>
+    <div class="hide_field" id="row_by_edit_phone" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Телефон:</label>
+            <label class="field_data" id="data_phone_2"></label>
+        </div>
+        <hr>
+
+        <div class="field">
+            <label class="field_name" for="name">Новый телефон:</label>
+            <input type="tel" id="new_phone" class="field_data" required pattern="\+7 $$\d{3}$$ \d{3}-\d{4}">
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить" onclick="patch_field('phone')">
+            <input id="cancel_btn_for_phone" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+        <hr >
+    </div>
+
+    <div class="field" id="row_by_company">
+        <label class="field_name" for="name">Компания:</label>
+        <label class="field_data" id="data_company">Просто поле</label>
+        <a class="link_for_edit" id="link_for_edit_company" href="">Изменить</a>
+    </div>
+    <hr>
+    <div class="hide_field" id="row_by_edit_company" style="display: none;">
+        <div class="field">
+            <label class="field_name" for="name">Компания:</label>
+            <label class="field_data" id="data_company_2">Просто поле</label>
+        </div>
+
+        <div class="field">
+            <label class="field_name" for="name">Новая компания:</label>
+            <input type="date" id="new_company" class="field_data" required>
+        </div>
+
+        <div class="bnts">
+            <input id="put_btn" class="btn" type="button" value="Сохранить">
+            <input id="cancel_btn_for_сompany" class="btn" name="cancel_btn" type="button" value="Отменить">
+        </div>
+        <hr>
+    </div>
+</div>
+<script type="module" src="/frontend/templates/pages/profile_employer/profile_employer.js"></script>
 </body>
 </html>

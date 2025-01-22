@@ -5,5 +5,5 @@ router = APIRouter(prefix="/worker")
 templates = Jinja2Templates(directory='frontend')
 
 @router.get("/profile")
-def create_profile(request: Request):
+def my_account(request: Request):
     return templates.TemplateResponse("/templates/pages/profile_worker/profile.html", {"request": request})
