@@ -17,11 +17,16 @@ body {
     flex-direction: column;
     justify-content: center;
     width: 650px;
-    gap: 20px;
+    gap: 15px;
     background-color: white;
     padding: 10px;
+    margin-left: 50px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title{
+    margin-left: 100px;
 }
 
 .field{
@@ -90,6 +95,13 @@ input[name="cancel_btn"]{
 #put_btn{
     width: 100px;
     margin-left: 260px;
+}
+
+hr {
+    border: 0.5px solid black;
+    width: 100%;
+    margin: 5px auto;
+    opacity: 8%;
 }
 
 
