@@ -37,12 +37,12 @@
             <h2>Поиск сотрудников</h2>
             <form>
                 <div class="textbox">
-                    <input type="text" placeholder="Электронная почта" required>
+                    <input type="text" placeholder="Электронная почта" id="login_employer" required>
                 </div>
                 <div class="textbox">
-                    <input type="password" placeholder="Пароль" required>
+                    <input type="password" placeholder="Пароль"  id="password_employer" required>
                 </div>
-                <button class="btn" type="submit">Войти в личный кабинет</button>
+                <input id="login_btn" class="btn" type="button" value="Войти в личный кабинет" onclick="login_worker()">
                 <a class="link_for_reg" href="{{ url_for('reg_employer') }}">Нет аккаунта?</a>
             </form>
         </div>

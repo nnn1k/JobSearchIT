@@ -16,7 +16,25 @@ async function login_worker() {
     }
 }
 
+async function login_employer(){
+    const email = document.getElementById('login_employer')
+    const password = document.getElementById('password_employer')
+    const postResponse = await makeRequest({
+        method: 'POST',
+        url: '/api/auth/employers/login',
+        data: {
+            email,
+            password
+        }
+    })
+    if (postResponse){
+        window.location.href=apiUrl+"/employer/profile"
+    }
+}
+
 window.login_worker = login_worker;
+
+
 
 $(document).ready(function() {
     $("#switchLoginForm_1").click(function() {

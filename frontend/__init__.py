@@ -1,31 +1,16 @@
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
+from .routers import signup_router, employer_router, worker_router
 
-templates = Jinja2Templates(directory='frontend/templates')
+templates = Jinja2Templates(directory='frontend')
 
 router = APIRouter(include_in_schema=False)
-
+router.include_router(signup_router)
+router.include_router(employer_router)
+router.include_router(worker_router)
 
 @router.get("/")
 def login_page(request: Request):
-    return templates.TemplateResponse("/pages/auth/html_login.html", {"request": request})
+    return templates.TemplateResponse("/templates/pages/auth/html_login.html", {"request": request})
 
 
-@router.get("/signup/worker")
-def reg_worker(request: Request):
-    return templates.TemplateResponse("/pages/registarion/html_reg_worker.html", {"request": request})
-
-
-@router.get("/signup/employer")
-def reg_employer(request: Request):
-    return templates.TemplateResponse("/pages/auth/html_reg_employer.html", {"request": request})
-
-
-@router.get("/signup/worker/profile")
-def create_profile(request: Request):
-    return templates.TemplateResponse("/pages/registarion/html_step-by-step_registration.html", {"request": request})
-
-
-@router.get("/worker/profile")
-def create_profile(request: Request):
-    return templates.TemplateResponse("/pages/profile/html_profile.html", {"request": request})
