@@ -1,39 +1,6 @@
 import {apiUrl, makeRequest} from "../../../js/utils.js";
+import {hide_feild, cancel_btn} from "../../../js/functions_for_profile.js";
 
-function hide_feild(row, row_edit) {
-    const feild_array = [['row_by_name', 'row_by_edit_name'], ['row_by_surname', 'row_by_edit_surname'],['row_by_patronymic', 'row_by_edit_patronymic'],
-    ['row_by_phone', 'row_by_edit_phone'], ['row_by_сompany', 'row_by_edit_сompany']]
-    for (let i = 0; i < feild_array.length; i++) {
-        const index = feild_array[i].indexOf(row);
-        if (index !== -1) {
-            feild_array[i].splice(index, 1);
-        }
-    }
-    for (let i = 0; i < feild_array.length; i++) {
-        const index = feild_array[i].indexOf(row_edit);
-        if (index !== -1) {
-            feild_array[i].splice(index, 1);
-        }
-    }
-    const new_feild_array = feild_array.filter(row => row.length > 0);
-    for (let i = 0; i < new_feild_array.length; i++){
-        if ($(`#${new_feild_array[i][0]}`).is(':hidden')) {
-            $(`#${new_feild_array[i][0]}`).toggle(300);
-
-            $(`#${new_feild_array[i][1]}`).toggle(300);
-
-        }
-    }
-    $(`#${row}`).toggle(300);
-    $(`#${row_edit}`).toggle(300);
-}
-
-function cancel_btn(row, row_edit, btn){
-    $(`#${btn}`).click(function () {
-        $(`#${row}`).toggle(300);
-        $(`#${row_edit}`).toggle(300);
-    });
-}
 
 document.getElementById('link_for_edit_name').addEventListener('click', function (event) {
     event.preventDefault();
@@ -128,5 +95,3 @@ async function patch_field(field) {
 }
 
 window.patch_field = patch_field
-window.hide_field = hide_feild
-window.cancel_btn = cancel_btn
