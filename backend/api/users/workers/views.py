@@ -10,16 +10,25 @@ router = APIRouter(prefix='/workers', tags=['workers'])
 def get_my_profile(
         worker: WorkerSchema = Depends(get_worker_by_token)
 ):
-    return {'worker': worker.model_dump(exclude='password')}
+    return {
+        'worker': worker.model_dump(exclude='password'),
+        'status': 'ok'
+    }
 
 @router.put('/me', summary='Редактировать информацию о себе')
 def update_my_profile(
         worker: WorkerSchema = Depends(put_worker_dependencies)
 ):
-    return {'worker': worker.model_dump(exclude='password')}
+    return {
+        'worker': worker.model_dump(exclude='password'),
+        'status': 'ok'
+    }
 
 @router.patch('/me', summary='Редактировать информацию о себе по одному атрибуту')
 def update_my_other(
         worker: WorkerSchema = Depends(patch_worker_dependencies)
 ):
-    return {'worker': worker.model_dump(exclude='password')}
+    return {
+        'worker': worker.model_dump(exclude='password'),
+        'status': 'ok'
+    }

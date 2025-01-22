@@ -25,7 +25,8 @@ async def login(
     )
     return {
         'employer': employer.model_dump(exclude='password'),
-        'token': token
+        'token': token,
+        'status': 'ok'
     }
 
 @router.post('/register', summary='Регистрация работника')
@@ -40,7 +41,8 @@ async def get_code(
 ):
     return {
         'message': 'Код отправлен на почту:',
-        'email': employer.email
+        'email': employer.email,
+        'status': 'ok'
     }
 
 @router.post('/code', summary='Проверка кода')
@@ -49,5 +51,6 @@ async def send_code(
 ):
     return {
         'message': 'Почта подтверждена',
-        'email': employer.email
+        'email': employer.email,
+        'status': 'ok'
     }

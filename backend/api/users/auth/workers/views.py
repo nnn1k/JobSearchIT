@@ -47,7 +47,8 @@ async def get_code(
 ):
     return {
         'message': 'Код отправлен на почту:',
-        'email': worker.email
+        'email': worker.email,
+        'status': 'ok'
     }
 
 @router.post('/code', summary='Проверка кода')
@@ -56,15 +57,18 @@ async def send_code(
 ):
     return {
         'message': 'Почта подтверждена',
-        'email': worker.email
+        'email': worker.email,
+        'status': 'ok'
     }
 
 @router.post('/refresh_token', include_in_schema=False)
 async def refresh_token_views():
     Depends(refresh_token_dependencies)
     return {
-        'refreshed': True
+        'refreshed': True,
+        'status': 'ok'
     }
+
 
 
 
