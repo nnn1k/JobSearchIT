@@ -32,7 +32,7 @@ def get_info_on_company(
         'can_update': can_update
     }
 
-@router.put('/<company_id>', summary='Изменить описание компании')
+@router.put('/{company_id}', summary='Изменить описание компании')
 def update_company(
         company_and_user: CompanySchema = Depends(update_company_dependencies),
 

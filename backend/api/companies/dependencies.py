@@ -42,15 +42,17 @@ async def create_company_dependencies(
 
 async def update_company_dependencies(
         new_company: CompanyUpdateSchema,
-        company: CompanySchema = Depends(get_company_by_id),
-        user: Annotated['EmployerSchema', 'WorkerSchema'] = Depends(get_user_by_token)
+        company_and_user: CompanySchema = Depends(get_company_by_id),
+
 ):
+    company, user, can_update = company_and_user
     try:
         if user.is_owner and user.company_id == company.id:
             company_repo = get_company_repo()
             company = await company_repo.update_one(id=company.id, description=new_company.description)
             return company, user
-    except Exception:
+    except Exception as e:
+        print(e)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="no rights"

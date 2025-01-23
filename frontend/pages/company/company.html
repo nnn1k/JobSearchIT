@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/frontend/pages/company/company.css">
     <script type="module" src="/frontend/pages/company/company.js"></script>
 </head>
@@ -13,12 +14,12 @@
         <div class="title_company_container">
             <div class="company_name">
                 <p> Компания </p>
-                <h2 id="company_name"></h2>
+                <h1 id="company_name"></h1>
             </div>
             <div class="container_buttons">
-                <input type="button" value="О компании" class="btn">
-                <input type="button" value="Вакансии" class="btn">
-                <input type="button" value="Изменить описание" class="btn" id="can_update">
+                <input type="button" value="О компании" class="btn" id="switch_description" disabled="true">
+                <input type="button" value="Вакансии" class="btn" id="switch_vacancy">
+                <input type="button" value="Изменить описание" class="btn" id="can_update" onclick="update_company()">
             </div>
         </div>
         <div class="company_description">
