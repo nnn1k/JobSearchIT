@@ -3,12 +3,12 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-left: 30px;
-    background-color: red;
+    background-color: crimson;
     border-bottom: 1px solid #ccc;
 }
 
@@ -26,4 +26,9 @@ body {
 
 .account-button a:hover {
     text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+.content {
+    min-width: 100vh;
+    min-height: 100vh;
 }
