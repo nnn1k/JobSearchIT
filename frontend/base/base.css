@@ -24,11 +24,9 @@ header {
     width: 50px;
 }
 
-.account-button a:hover {
-    text-decoration: underline; /* Подчеркивание при наведении */
-}
 
 .content {
     min-width: 100vh;
     min-height: 100vh;
 }
+
