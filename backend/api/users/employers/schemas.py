@@ -15,7 +15,6 @@ class EmployerSchema(GlobalSchema):
     is_owner: bool = False
     is_confirmed: bool = False
 
-
 class EmployerAuthSchema(BaseModel):
     email: EmailStr
     password: str

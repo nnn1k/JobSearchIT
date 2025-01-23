@@ -24,7 +24,7 @@ class SendEmail:
 def send_code_to_email(user, user_type):
     code = SendEmail.get_random_code()
     message = f'Ваш код {code}'
-    from backend.utils.redis_func import create_redis_client
+    from backend.utils.other.redis_func import create_redis_client
     redis_client = create_redis_client()
     redis_client.hset(f'{user_type}:{user.id}', mapping={'code': code, 'email': user.email})
     redis_client.expire(f'{user_type}:{user.id}', 3000)

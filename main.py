@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.api import router as backend_router
-from frontend import router as frontend_router
+from frontend.routers import router as frontend_router
 
 app = FastAPI()
 app.mount("/frontend", StaticFiles(directory="frontend"), name="static")

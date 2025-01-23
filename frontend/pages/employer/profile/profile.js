@@ -1,5 +1,5 @@
-import {apiUrl, makeRequest} from "../../../js/utils.js";
-import {hide_field, cancel_btn} from "../../../js/functions_for_profile.js";
+import {apiUrl, makeRequest} from "/frontend/js/utils.js";
+import {hide_field, cancel_btn} from "/frontend/js/functions_for_profile.js";
 
 
 document.getElementById('link_for_edit_name').addEventListener('click', function (event) {

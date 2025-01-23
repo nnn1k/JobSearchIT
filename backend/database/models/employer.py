@@ -1,4 +1,5 @@
 from datetime import date
+from typing import List
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -17,13 +18,11 @@ class EmployersOrm(Base):
     is_owner: Mapped[bool] = mapped_column(default=False)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 
-
 class CompaniesOrm(Base):
     __tablename__ = 'companies'
 
     name: Mapped[str]
     description: Mapped[str]
-
 
 class VacanciesOrm(Base):
     __tablename__ = 'vacancies'
@@ -33,9 +32,4 @@ class VacanciesOrm(Base):
     salary: Mapped[str] = mapped_column(nullable=True)
     city: Mapped[str] = mapped_column(nullable=True)
     company_id: Mapped[int] = mapped_column(ForeignKey('companies.id'))
-
-
-
-
-
 

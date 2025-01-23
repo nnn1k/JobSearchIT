@@ -1,4 +1,4 @@
-import {apiUrl, makeRequest} from '../../../js/utils.js';
+import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 
 async function signup_employer() {
     const email = document.getElementById("login").value

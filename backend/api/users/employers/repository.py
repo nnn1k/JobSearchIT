@@ -10,3 +10,7 @@ class EmployerRepository(AlchemyRepository):
 
 def get_employer_repo():
     return EmployerRepository()
+
+async def get_employer_by_id(id: int):
+    repo = get_employer_repo()
+    return await repo.get_one(id=id)

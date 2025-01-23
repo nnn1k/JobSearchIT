@@ -11,3 +11,6 @@ class WorkerRepository(AlchemyRepository):
 def get_worker_repo():
     return WorkerRepository()
 
+async def get_worker_by_id(id: int):
+    repo = get_worker_repo()
+    return await repo.get_one(id=id)

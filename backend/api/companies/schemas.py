@@ -10,3 +10,6 @@ class CompanySchema(GlobalSchema):
 class CompanyAddSchema(BaseModel):
     name: str
     description: str
+
+class CompanyUpdateSchema(BaseModel):
+    description: str

@@ -5,8 +5,8 @@ from backend.api.users.auth.auth_dependencies import register_user, login_user
 from backend.api.users.workers.repository import get_worker_repo
 from backend.schemas.global_schema import CodeSchema
 from backend.api.users.workers.schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
-from backend.utils.email_func import send_code_to_email
-from backend.utils.redis_func import get_code_from_redis
+from backend.utils.other.email_func import send_code_to_email
+from backend.utils.other.redis_func import get_code_from_redis
 from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.workers.dependencies import get_worker_by_token
 

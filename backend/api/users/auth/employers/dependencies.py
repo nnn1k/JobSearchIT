@@ -5,8 +5,8 @@ from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerAuthSchema, EmployerSchema, EmployerRegisterSchema
 from backend.schemas.global_schema import CodeSchema
-from backend.utils.email_func import send_code_to_email
-from backend.utils.redis_func import get_code_from_redis
+from backend.utils.other.email_func import send_code_to_email
+from backend.utils.other.redis_func import get_code_from_redis
 
 
 async def login_employer_dependencies(

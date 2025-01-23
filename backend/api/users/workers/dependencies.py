@@ -1,6 +1,6 @@
 from fastapi import Depends, Cookie
 
-from backend.api.users.auth.token_dependencies import get_user_by_token
+from backend.api.users.auth.token_dependencies import get_user_by_token_and_role
 from backend.api.users.profile_dependencies import patch_dependencies
 from backend.api.users.workers.repository import get_worker_repo
 from backend.api.users.workers.schemas import WorkerSchema, WorkerProfileSchema, WorkerUpdateSchema
@@ -10,7 +10,7 @@ async def get_worker_by_token(
     access_token=Cookie(None),
 ) -> WorkerSchema:
     worker_repo = get_worker_repo()
-    return await get_user_by_token(access_token, worker_repo, WorkerSchema)
+    return await get_user_by_token_and_role(access_token, worker_repo, WorkerSchema)
 
 
 async def put_worker_dependencies(

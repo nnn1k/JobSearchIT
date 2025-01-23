@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-from backend.utils.hash_pwd import HashPwd
+from backend.utils.other.hash_pwd import HashPwd
 
 
 async def register_user(user, repository):

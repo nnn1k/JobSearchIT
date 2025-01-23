@@ -9,3 +9,7 @@ class GlobalSchema(BaseModel):
 
 class CodeSchema(BaseModel):
     code: str
+
+class UserSchema(BaseModel):
+    id: int
+    type: str

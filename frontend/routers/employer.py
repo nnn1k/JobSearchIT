@@ -7,4 +7,4 @@ templates = Jinja2Templates(directory='frontend')
 
 @router.get("/profile")
 def my_account(request: Request):
-    return templates.TemplateResponse("/templates/pages/profile_employer/profile_employer.html", {"request": request})
+    return templates.TemplateResponse("/pages/employer/profile/profile.html", {"request": request})

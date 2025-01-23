@@ -1,4 +1,4 @@
-import {apiUrl, makeRequest} from "../../../js/utils.js";
+import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 
 $(document).ready(function () {
         let currentStep = 0;
@@ -52,19 +52,23 @@ async function insert_data_for_profile() {
     const name = document.getElementById("name").value
     const patronymic = document.getElementById("patronymic").value
     const phone = document.getElementById("phone").value
+    const birthday = document.getElementById("date_bithday").value
+    const city = document.getElementById("city").value
 
     const putResponse = await makeRequest({
         method: 'PUT',
-        url: '/api/employers/me',
+        url: '/api/workers/me',
         data: {
             surname,
             name,
             patronymic,
-            phone
+            phone,
+            birthday,
+            city
         }
     })
     if (putResponse){
-        window.location.href=apiUrl+"/employer/profile"
+        window.location.href=apiUrl+"/worker/profile"
     }
 }
 

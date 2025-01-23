@@ -2,10 +2,29 @@ from typing import List, Dict, Optional
 
 from pydantic import BaseModel
 from sqlalchemy import insert, select
+from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.settings.database import session_factory, Base
 
-class AlchemyRepository:
+class RepositoryHelper:
+
+    async def get_model(self, session, **kwargs):
+        model_id = kwargs.pop('id', None)
+        if model_id is None:
+            return None
+        return await session.get(self.db_model, model_id)
+
+    async def model_to_schema(self, model):
+        return self.schema.model_validate(model, from_attributes=True)
+
+    async def get_query(self, session, kwargs):
+        query = (
+            select(self.db_model)
+            .filter_by(**kwargs)
+        )
+        return await session.execute(query)
+
+class AlchemyRepository(RepositoryHelper):
 
     db_model: Base = None
     schema: BaseModel = None
@@ -46,7 +65,7 @@ class AlchemyRepository:
             model = await self.get_model(session, **kwargs)
             if model is None:
                 print({'error': 'model is missing'})
-                return None
+                return Noneс
 
             for key, value in kwargs.items():
                 setattr(model, key, value)
@@ -65,26 +84,3 @@ class AlchemyRepository:
             await session.commit()
 
             return {'deleted': True}
-
-    async def get_model(self, session, **kwargs):
-        model_id = kwargs.pop('id', None)
-        if model_id is None:
-            return None
-        return await session.get(self.db_model, model_id)
-
-    async def model_to_schema(self, model):
-        return self.schema.model_validate(model, from_attributes=True)
-
-    async def get_query(self, session, kwargs):
-        query = (
-            select(self.db_model)
-            .filter_by(**kwargs)
-        )
-        load_type = kwargs.get('load_type', None)
-        if load_type:
-            match load_type:
-                case 'joined':
-                    query = query.options(joinedload('*'))
-                case 'selectin':
-                    query = query.options(selectinload('*'))
-        return await session.execute(query)
