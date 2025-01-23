@@ -1,3 +1,6 @@
+from fastapi import Depends
+
+from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.database.utils.repository import AlchemyRepository
 from backend.database.models.employer import CompaniesOrm
 from backend.api.companies.schemas import CompanySchema
@@ -12,7 +15,3 @@ def get_company_repo():
     return CompanyRepository()
 
 
-async def get_company_by_id(company_id: int):
-    company_repo = get_company_repo()
-    company = await company_repo.get_one(id=company_id)
-    return company

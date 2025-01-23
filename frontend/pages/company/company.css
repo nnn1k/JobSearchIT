@@ -1,0 +1,60 @@
+.container_all{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin: 30px;
+}
+.title_company_container{
+    flex-direction: column;
+    display: flex;
+    border: 1px solid black;
+    width: 1000px;
+    background: whitesmoke;
+}
+
+.company_description{
+    flex-direction: column;
+    display: flex;
+    border: 1px solid black;
+    width: 1000px;
+    background: whitesmoke;
+    line-height: 5;
+}
+
+.company_vacancy{
+    flex-direction: column;
+    display: flex;
+    border: 1px solid black;
+    width: 1000px;
+    background: whitesmoke;
+    line-height: 5;
+}
+.company_name{
+    line-height: 0.5;
+    margin-left: 50px;
+    width: 100%;
+    height: 50px;
+}
+
+.container_buttons{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+}
+.btn {
+    background: white;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-color: black;
+    width: 200px;
+    height: 35px;
+    margin-left: 50px;
+}
+#can_update{
+    display: none;
+}
