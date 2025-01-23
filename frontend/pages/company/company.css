@@ -57,6 +57,26 @@
     display: none;
 }
 
-.company_vacancy {
+.form_container {
     display: none;
+}
+
+.btn.active {
+    background-color: black; /* Цвет активной кнопки */
+    color: white; /* Цвет текста активной кнопки */
+}
+#desc_form{
+    width: 1000px;
+    line-height: 1.5;
+}
+#company_description{
+    white-space: pre-wrap;
+}
+#company_description_update{
+    width: 1000px;
+    height: 500px;
+}
+.update_container{
+    display: flex;
+    flex-direction: column;
 }

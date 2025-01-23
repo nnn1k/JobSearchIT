@@ -2,6 +2,8 @@ import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
+    const first_button = document.getElementById('switch_description')
+    showForm('desc_form', first_button)
 })
 
 async function get_company() {
@@ -17,11 +19,12 @@ async function get_company() {
     if (getResponse.can_update) {
         document.getElementById('can_update').style.display = 'block';
     }
+    document.getElementById('company_description_update').value = getResponse.company.description;
 }
 
 async function update_company(){
     const company_id = location.pathname.split('/')[2]
-    const description = document.getElementById('')
+    const description = document.getElementById('company_description_update').value
     const putResponse = await makeRequest({
         method: 'PUT',
         url: `/api/companies/${company_id}`,
@@ -29,26 +32,26 @@ async function update_company(){
             description
         }
     })
+
+    console.log(putResponse)
     location.reload(true)
 }
 
 window.update_company = update_company
-$(document).ready(function () {
-    const button_desc = document.getElementById('switch_description')
-    const button_vac = document.getElementById('switch_vacancy')
-    $("#switch_description").click(function () {
-        $(".company_description").toggle();
-        $(".company_vacancy").toggle();
-        swap(button_desc, button_vac)
-    });
-    $("#switch_vacancy").click(function () {
-        $(".company_description").toggle();
-        $(".company_vacancy").toggle();
-        swap(button_vac, button_desc)
-    });
-});
 
-function swap(button1, button2) {
-    button1.disabled = true;
-    button2.disabled = false;
+
+function showForm(formId, button){
+    const forms = document.querySelectorAll('.form_container')
+    forms.forEach(form =>{
+        form.style.display = 'none';
+    })
+    const selectedForm = document.getElementById(formId)
+    selectedForm.style.display = 'block';
+
+    const buttons = document.querySelectorAll('.btn')
+    buttons.forEach(btn => {
+        btn.classList.remove('active')
+    })
+    button.classList.add('active');
 }
+window.showForm = showForm

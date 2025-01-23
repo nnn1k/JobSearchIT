@@ -16,20 +16,29 @@
                 <h1 id="company_name"></h1>
             </div>
             <div class="container_buttons">
-                <input type="button" value="О компании" class="btn" id="switch_description" disabled="true">
-                <input type="button" value="Вакансии" class="btn" id="switch_vacancy">
-                <input type="button" value="Изменить описание" class="btn" id="can_update" onclick="update_company()">
+                <input type="button" value="О компании" class="btn" id="switch_description"
+                       onclick="showForm('desc_form', this)">
+                <input type="button" value="Вакансии" class="btn" id="switch_vacancy"
+                       onclick="showForm('vac_form', this)">
+                <input type="button" value="Изменить описание" class="btn" id="can_update"
+                       onclick="showForm('upd_form', this)">
             </div>
         </div>
-        <div class="company_description">
+        <div class="form_container" id="desc_form">
             <p id="company_description"></p>
             <br>
             <br>
         </div>
-        <div class="company_vacancy">
+        <div class="form_container" id="vac_form">
             <p> тут вакансии</p>
             <br>
             <br>
+        </div>
+        <div class="form_container" id="upd_form">
+            <div class="update_container">
+                <textarea id="company_description_update"></textarea>
+                <input type="button" value="Отправить" onclick="update_company()" class="btn">
+            </div>
         </div>
     </div>
     <script type="module" src="/frontend/pages/company/company.js"></script>
