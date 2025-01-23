@@ -1,10 +1,10 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-    getCompany()
+    get_company()
 })
 
-async function getCompany() {
+async function get_company() {
     const company_id = location.pathname.split('/')[2]
     const getResponse = await makeRequest({
         method: 'GET',

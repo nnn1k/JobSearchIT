@@ -14,7 +14,7 @@
         const data = await response.json()
         return data
     } else if (response.status == 401){
-        console.log('ТЫ ПИДР')
+        console.log('unauthorized')
     } else {
         console.error('error:', response.status)
     }
