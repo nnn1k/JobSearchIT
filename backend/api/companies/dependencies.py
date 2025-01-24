@@ -9,14 +9,17 @@ from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerSchema
 
+async def get_company_by_id(company_id: int):
+    company_repo = get_company_repo()
+    company = await company_repo.get_one(id=company_id)
+    return company
 
-async def get_company_by_id(
+async def get_company_by_id_dependencies(
         company_id: int,
         user=Depends(get_user_by_token)
 ):
     can_update = True
-    company_repo = get_company_repo()
-    company = await company_repo.get_one(id=company_id)
+    company = await get_company_by_id(company_id)
     if not (hasattr(user, 'company_id') and hasattr(user, 'is_owner')):
         can_update = False
     elif user.company_id != company.id:
@@ -42,7 +45,7 @@ async def create_company_dependencies(
 
 async def update_company_dependencies(
         new_company: CompanyUpdateSchema,
-        company_and_user: CompanySchema = Depends(get_company_by_id),
+        company_and_user: CompanySchema = Depends(get_company_by_id_dependencies),
 
 ):
     company, user, can_update = company_and_user

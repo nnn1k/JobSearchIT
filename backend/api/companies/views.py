@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter
 
-from backend.api.companies.dependencies import create_company_dependencies, update_company_dependencies, get_company_by_id
+from backend.api.companies.dependencies import create_company_dependencies, update_company_dependencies, get_company_by_id_dependencies
 from backend.api.companies.schemas import CompanySchema
 from backend.api.users.employers.schemas import EmployerSchema
 
@@ -22,7 +22,7 @@ def create_new_company(
 
 @router.get('/{company_id}', summary='Посмотреть информацию о компании')
 def get_info_on_company(
-        company_and_user: CompanySchema = Depends(get_company_by_id),
+        company_and_user: CompanySchema = Depends(get_company_by_id_dependencies),
 ):
     company, user, can_update = company_and_user
     if user:
