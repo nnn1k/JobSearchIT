@@ -13,9 +13,6 @@ async def recreate():
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
-        user = await register_user(WorkerAuthSchema(email='user@gmail.com', password='user'), get_worker_repo())
-        get_worker_repo().update_one(id=user.id, name='user', surname='user', patronymic='user', phone='12311111')
-
 
 if __name__ == '__main__':
     asyncio.run(recreate())
