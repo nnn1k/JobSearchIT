@@ -2,17 +2,12 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
 
-from backend.api.companies.repository import get_company_repo
+from backend.api.companies.repository import get_company_repo, get_company_by_id
 from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema, CompanySchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerSchema
-
-async def get_company_by_id(company_id: int):
-    company_repo = get_company_repo()
-    company = await company_repo.get_one(id=company_id)
-    return company
 
 async def get_company_by_id_dependencies(
         company_id: int,
