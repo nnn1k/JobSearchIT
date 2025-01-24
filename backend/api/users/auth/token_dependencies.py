@@ -11,7 +11,11 @@ REFRESH_TOKEN = 'refresh_token'
 
 async def get_user_by_token_and_role(access_token, repository, schema):
     user = await check_user_role(access_token)
-
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"not access token",
+        )
     if user.type != repository.user_type:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -24,10 +28,7 @@ async def get_user_by_token_and_role(access_token, repository, schema):
 
 async def check_user_role(access_token=Cookie(None)) -> UserSchema:
     if access_token is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"not access token",
-        )
+        return None
     try:
         user_id = jwt_token.decode_jwt(token=access_token).get("sub")
         user_type = jwt_token.decode_jwt(token=access_token).get("type")
@@ -40,6 +41,8 @@ async def check_user_role(access_token=Cookie(None)) -> UserSchema:
 
 async def get_user_by_token(access_token=Cookie(None)):
     user = await check_user_role(access_token)
+    if not user:
+        return None
     match user.type:
         case 'worker':
             return await get_worker_by_id(user.id)

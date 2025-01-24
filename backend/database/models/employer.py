@@ -29,7 +29,8 @@ class VacanciesOrm(Base):
 
     title: Mapped[str]
     description: Mapped[str]
-    salary: Mapped[str] = mapped_column(nullable=True)
+    salary_first: Mapped[int] = mapped_column(nullable=True)
+    salart_second: Mapped[int] = mapped_column(nullable=True)
     city: Mapped[str] = mapped_column(nullable=True)
     company_id: Mapped[int] = mapped_column(ForeignKey('companies.id'))
 
