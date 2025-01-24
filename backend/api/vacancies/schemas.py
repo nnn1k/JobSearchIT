@@ -12,3 +12,12 @@ class VacancySchema(GlobalSchema):
     salary_second: Optional[int]
     city: str
     company_id: int
+
+
+class VacancyAddSchema(BaseModel):
+    title: str
+    description: str
+    salary_first: Optional[int]
+    salary_second: Optional[int]
+    city: str
+

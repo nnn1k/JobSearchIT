@@ -9,6 +9,7 @@ from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerSchema
 
+
 async def get_company_by_id_dependencies(
         company_id: int,
         user=Depends(get_user_by_token)

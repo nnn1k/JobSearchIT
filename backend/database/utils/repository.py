@@ -65,7 +65,7 @@ class AlchemyRepository(RepositoryHelper):
             model = await self.get_model(session, **kwargs)
             if model is None:
                 print({'error': 'model is missing'})
-                return Noneс
+                return None
 
             for key, value in kwargs.items():
                 setattr(model, key, value)
