@@ -15,9 +15,14 @@ async def get_vacancy_by_id_dependencies(
 ):
     can_update = True
     vacancy = await get_vacancy_by_id(vacancy_id)
+    if not vacancy:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='vacancy is not exist'
+        )
     if not (hasattr(user, 'company_id') and hasattr(user, 'is_owner')):
         can_update = False
-    elif user.company_id != vacancy.id:
+    elif user.company_id != vacancy.company_id:
         can_update = False
     return vacancy, user, can_update
 

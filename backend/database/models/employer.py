@@ -18,11 +18,13 @@ class EmployersOrm(Base):
     is_owner: Mapped[bool] = mapped_column(default=False)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 
+
 class CompaniesOrm(Base):
     __tablename__ = 'companies'
 
     name: Mapped[str]
     description: Mapped[str]
+
 
 class VacanciesOrm(Base):
     __tablename__ = 'vacancies'
