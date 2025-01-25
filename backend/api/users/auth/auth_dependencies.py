@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 
 from backend.utils.other.hash_pwd import HashPwd
+from backend.utils.other.redis_func import get_code_from_redis
 
 
 async def register_user(user, repository):
@@ -28,3 +29,12 @@ async def login_user(user, repository):
             detail="Incorrect login or password",
         )
     return new_user
+
+async def check_user_code_dependencies(user, repository, code):
+    new_code = get_code_from_redis(repository.user_type, user.id)
+    if code.code == new_code:
+        return await repository.update_one(id=user.id, is_confirmed=True)
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect code",
+    )

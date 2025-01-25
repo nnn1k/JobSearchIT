@@ -7,12 +7,12 @@ from backend.api.users.auth.workers.dependencies import (
     register_worker_dependencies,
     login_worker_dependencies,
     check_code_dependencies,
-    get_code_dependencies, refresh_token_dependencies
+    get_code_dependencies,
 )
 from backend.api.users.workers.schemas import WorkerSchema
 
 
-router = APIRouter(prefix='/workers', tags=['auth_workers'])
+router = APIRouter(prefix='/workers', tags=['workers_auth'])
 
 
 @router.post('/login', summary='Вход работника')
@@ -61,13 +61,6 @@ async def send_code(
         'status': 'ok'
     }
 
-@router.post('/refresh_token', include_in_schema=False)
-async def refresh_token_views():
-    Depends(refresh_token_dependencies)
-    return {
-        'refreshed': True,
-        'status': 'ok'
-    }
 
 
 

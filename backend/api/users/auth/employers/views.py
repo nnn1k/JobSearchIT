@@ -7,7 +7,7 @@ from backend.api.users.auth.employers.dependencies import login_employer_depende
 from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.employers.schemas import EmployerSchema
 
-router = APIRouter(prefix="/employers", tags=["auth_employers"])
+router = APIRouter(prefix="/employers", tags=["employers_auth"])
 
 @router.post('/login', summary='Вход работодателя')
 async def login(

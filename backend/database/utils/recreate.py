@@ -1,8 +1,5 @@
 import asyncio
 
-from backend.api.users.auth.auth_dependencies import register_user
-from backend.api.users.workers.repository import get_worker_repo
-from backend.api.users.workers.schemas import WorkerAuthSchema
 from backend.database.settings.database import engine, Base
 from backend.database.models.worker import WorkersOrm, ResumesOrm, EducationsOrm
 from backend.database.models.employer import EmployersOrm, CompaniesOrm, VacanciesOrm
