@@ -1,29 +1,25 @@
 from fastapi import Depends, HTTPException, status
 
-
 from backend.api.vacancies.repository import get_vacancy_repo, get_vacancy_by_id
 from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerSchema
+from backend.utils.other.check_func import check_can_update
 
 
 async def get_vacancy_by_id_dependencies(
         vacancy_id: int,
         user=Depends(get_user_by_token)
 ):
-    can_update = True
     vacancy = await get_vacancy_by_id(vacancy_id)
+    can_update = check_can_update(user, vacancy)
     if not vacancy:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='vacancy is not exist'
         )
-    if not (hasattr(user, 'company_id') and hasattr(user, 'is_owner')):
-        can_update = False
-    elif user.company_id != vacancy.company_id:
-        can_update = False
     return vacancy, user, can_update
 
 
@@ -37,8 +33,7 @@ async def create_vacancy_dependencies(
             detail='user dont have company'
         )
     vacancy_repo = get_vacancy_repo()
-    vacancy = await vacancy_repo.add_one(title=vacancy.title, description=vacancy.description, salary_first=vacancy.salary_first,
-                                         salary_second=vacancy.salary_second, city=vacancy.city, company_id=owner.company_id)
+    vacancy = await vacancy_repo.add_one(company_id=owner.company_id, **vacancy.model_dump())
     return vacancy, owner
 
 

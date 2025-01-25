@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 
 
-async def patch_dependencies(user, new_user, repository):
+async def user_patch_dependencies(user, new_user, repository):
     keys = user.__fields__.keys()
     if new_user.key not in keys:
         raise HTTPException(

@@ -34,7 +34,7 @@ def get_info_on_vacancy(
         'status': 'ok',
         'vacancy': vacancy,
         'user': user,
-        'can_change': can_update
+        'can_update': can_update
     }
 
 

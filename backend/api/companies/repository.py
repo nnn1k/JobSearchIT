@@ -16,5 +16,3 @@ async def get_company_by_id(company_id: int):
     company_repo = get_company_repo()
     company = await company_repo.get_one(id=company_id)
     return company
-
-
