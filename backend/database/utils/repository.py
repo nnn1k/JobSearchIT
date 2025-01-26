@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Literal
 
 from pydantic import BaseModel
 from sqlalchemy import insert, select
@@ -86,27 +86,18 @@ class AlchemyRepository(RepositoryHelper):
 
             return {'deleted': True}
 
-    async def soft_delete(self, id: int) -> Optional[BaseModel]:
+    async def soft_delete(self, id: int, type_action: Literal['delete', 'restore']) -> Optional[BaseModel]:
         async with session_factory() as session:
             model = await self.get_model(session, id=id)
             if model is None:
                 print({'error': 'model is missing'})
                 return None
+            match type_action:
+                case 'delete':
+                    model.deleted_at = datetime.utcnow() + timedelta(hours=3)
+                case 'restore':
+                    model.deleted_at = None
 
-            model.deleted_at = datetime.utcnow() + timedelta(hours=3)
             new_model = await self.model_to_schema(model)
             await session.commit()
             return new_model
-
-    async def soft_restore(self, id) -> Optional[BaseModel]:
-        async with session_factory() as session:
-            model = await self.get_model(session, id=id)
-            if model is None:
-                print({'error': 'model is missing'})
-                return None
-
-            model.deleted_at = None
-            new_model = await self.model_to_schema(model)
-            await session.commit()
-            return new_model
-
