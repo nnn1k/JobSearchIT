@@ -5,6 +5,7 @@ from sqlalchemy import insert, select
 from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.settings.database import session_factory, Base
+from datetime import datetime, timedelta
 
 class RepositoryHelper:
 
@@ -84,3 +85,28 @@ class AlchemyRepository(RepositoryHelper):
             await session.commit()
 
             return {'deleted': True}
+
+    async def soft_delete(self, id: int) -> Optional[BaseModel]:
+        async with session_factory() as session:
+            model = await self.get_model(session, id=id)
+            if model is None:
+                print({'error': 'model is missing'})
+                return None
+
+            model.deleted_at = datetime.utcnow() + timedelta(hours=3)
+            new_model = await self.model_to_schema(model)
+            await session.commit()
+            return new_model
+
+    async def soft_restore(self, id) -> Optional[BaseModel]:
+        async with session_factory() as session:
+            model = await self.get_model(session, id=id)
+            if model is None:
+                print({'error': 'model is missing'})
+                return None
+
+            model.deleted_at = None
+            new_model = await self.model_to_schema(model)
+            await session.commit()
+            return new_model
+

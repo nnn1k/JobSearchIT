@@ -42,7 +42,7 @@ def get_info_on_vacancy(
 def delete_info_on_company(
         vacancy_and_user=Depends(delete_vacancy_by_id_dependencies),
 ):
-    user = vacancy_and_user
+    vacancy, user = vacancy_and_user
     if user:
         user = user.model_dump(exclude='password')
     return {

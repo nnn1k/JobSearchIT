@@ -34,6 +34,7 @@ class Base(DeclarativeBase):
             onupdate=lambda: datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         )
     ]]
+    deleted_at: Mapped[datetime.datetime] = mapped_column(default=None, nullable=True)
 
     def __repr__(self):
         cols = []
