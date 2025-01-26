@@ -24,7 +24,7 @@ def update_my_profile(
         'status': 'ok'
     }
 
-@router.patch('/me', summary='Редактировать информацию о себе по одному атрибуту')
+@router.patch('/me', summary='Редактировать информацию о себе')
 def update_my_other(
         worker: WorkerSchema = Depends(patch_worker_dependencies)
 ):

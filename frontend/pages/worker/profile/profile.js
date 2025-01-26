@@ -98,13 +98,12 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 async function patch_field(field) {
-    const name = document.getElementById(`new_${field}`).value
+    const value = document.getElementById(`new_${field}`).value
     const patchResponse = await makeRequest({
         method: 'PATCH',
         url: '/api/workers/me',
         data: {
-            key: field,
-            value: name
+            [field]: value
         }
     })
     location.reload(true);

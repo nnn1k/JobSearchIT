@@ -9,9 +9,18 @@ class GlobalSchema(BaseModel):
     updated_at: datetime.datetime
     deleted_at: Optional[datetime.datetime]
 
+
 class CodeSchema(BaseModel):
     code: str
+
 
 class UserSchema(BaseModel):
     id: int
     type: str
+
+
+class DynamicSchema(BaseModel):
+    class Config:
+        extra = 'allow'
+
+

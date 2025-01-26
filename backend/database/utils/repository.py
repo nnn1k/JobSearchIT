@@ -69,7 +69,11 @@ class AlchemyRepository(RepositoryHelper):
                 return None
 
             for key, value in kwargs.items():
-                setattr(model, key, value)
+                if hasattr(model, key):
+                    setattr(model, key, value)
+                else:
+                    print({'error': 'unknown attribute'})
+                    return None
             new_model = await self.model_to_schema(model)
             await session.commit()
             return new_model
