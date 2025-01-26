@@ -1,7 +1,10 @@
 from fastapi import HTTPException, status
 
+from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.workers.schemas import WorkerSchema
 
-async def user_patch_dependencies(user, new_user, repository):
+
+async def user_patch_dependencies(user, new_user, repository) -> WorkerSchema or EmployerSchema:
     keys = user.__fields__.keys()
     if new_user.key not in keys:
         raise HTTPException(

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from backend.database.models.employer import VacanciesOrm
 from backend.api.vacancies.schemas import VacancySchema
 from backend.database.utils.repository import AlchemyRepository
@@ -8,11 +10,11 @@ class VacancyRepository(AlchemyRepository):
     schema = VacancySchema
 
 
-def get_vacancy_repo():
+def get_vacancy_repo() -> VacancyRepository:
     return VacancyRepository()
 
 
-async def get_vacancy_by_id(vacancy_id: int):
+async def get_vacancy_by_id(vacancy_id: int) -> Optional[VacancySchema]:
     vacancy_repo = get_vacancy_repo()
     vacancy = await vacancy_repo.get_one(id=vacancy_id)
     return vacancy

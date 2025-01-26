@@ -97,6 +97,9 @@ class AlchemyRepository(RepositoryHelper):
                     model.deleted_at = datetime.utcnow() + timedelta(hours=3)
                 case 'restore':
                     model.deleted_at = None
+                case _:
+                    print('soft_delete unknown action')
+                    return None
 
             new_model = await self.model_to_schema(model)
             await session.commit()

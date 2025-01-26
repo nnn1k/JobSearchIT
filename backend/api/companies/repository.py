@@ -8,11 +8,11 @@ class CompanyRepository(AlchemyRepository):
     schema = CompanySchema
 
 
-def get_company_repo():
+def get_company_repo() -> CompanyRepository:
     return CompanyRepository()
 
 
-async def get_company_by_id(company_id: int):
+async def get_company_by_id(company_id: int) -> CompanySchema:
     company_repo = get_company_repo()
     company = await company_repo.get_one(id=company_id)
     return company

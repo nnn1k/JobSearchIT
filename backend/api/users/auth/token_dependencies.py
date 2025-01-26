@@ -2,14 +2,16 @@ from fastapi import HTTPException, status, Cookie
 
 from backend.api.users.auth.AuthJWT import jwt_token
 from backend.api.users.employers.repository import get_employer_by_id
+from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.repository import get_worker_by_id
+from backend.api.users.workers.schemas import WorkerSchema
 from backend.schemas.global_schema import UserSchema
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
 
-async def get_user_by_token_and_role(access_token, repository, schema):
+async def get_user_by_token_and_role(access_token, repository, schema) -> WorkerSchema or EmployerSchema:
     user = await check_user_role(access_token)
     if not user:
         raise HTTPException(
@@ -26,7 +28,7 @@ async def get_user_by_token_and_role(access_token, repository, schema):
         return schema.model_validate(user, from_attributes=True)
 
 
-async def check_user_role(access_token=Cookie(None)) -> UserSchema:
+async def check_user_role(access_token=Cookie(None)) -> WorkerSchema or EmployerSchema:
     if access_token is None:
         return None
     try:
@@ -39,7 +41,7 @@ async def check_user_role(access_token=Cookie(None)) -> UserSchema:
             detail=f"invalid token (access)",
         )
 
-async def get_user_by_token(access_token=Cookie(None)):
+async def get_user_by_token(access_token=Cookie(None)) -> UserSchema:
     user = await check_user_role(access_token)
     if not user:
         return None

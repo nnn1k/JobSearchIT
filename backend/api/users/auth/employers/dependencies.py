@@ -23,13 +23,13 @@ async def register_employer_dependencies(
 
 async def get_code_dependencies(
         employer: EmployerSchema = Depends(get_employer_by_token),
-):
+) -> EmployerSchema:
     SendEmail.send_code_to_email(employer, 'employer')
     return employer
 
 async def check_code_dependencies(
         code: CodeSchema,
         employer: EmployerSchema = Depends(get_employer_by_token),
-):
+) -> EmployerSchema:
     employer_repo = get_employer_repo()
     return await check_user_code_dependencies(employer, employer_repo, code)

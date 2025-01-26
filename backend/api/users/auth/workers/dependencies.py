@@ -22,13 +22,13 @@ async def register_worker_dependencies(
 
 async def get_code_dependencies(
         worker: WorkerSchema = Depends(get_worker_by_token),
-):
+) -> WorkerSchema:
     SendEmail.send_code_to_email(worker, 'worker')
     return worker
 
 async def check_code_dependencies(
         code: CodeSchema,
         worker: WorkerSchema = Depends(get_worker_by_token),
-):
+) -> WorkerSchema:
     worker_repo = get_worker_repo()
     return await check_user_code_dependencies(worker, worker_repo, code)

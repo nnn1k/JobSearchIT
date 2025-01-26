@@ -1,7 +1,10 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.vacancies.dependencies import (create_vacancy_dependencies, get_vacancy_by_id_dependencies,
-                                                delete_vacancy_by_id_dependencies)
+from backend.api.vacancies.dependencies import (
+    create_vacancy_dependencies,
+    get_vacancy_by_id_dependencies,
+    delete_vacancy_by_id_dependencies
+)
 from backend.api.vacancies.schemas import VacancySchema
 from backend.api.users.employers.schemas import EmployerSchema
 

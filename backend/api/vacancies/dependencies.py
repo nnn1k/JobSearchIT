@@ -1,10 +1,11 @@
+from typing import Tuple
+
 from fastapi import Depends, HTTPException, status
 
 from backend.api.vacancies.repository import get_vacancy_repo, get_vacancy_by_id
 from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.employers.dependencies import get_employer_by_token
-from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerSchema
 from backend.utils.other.check_func import check_can_update
 
@@ -12,7 +13,7 @@ from backend.utils.other.check_func import check_can_update
 async def get_vacancy_by_id_dependencies(
         vacancy_id: int,
         user=Depends(get_user_by_token)
-):
+) -> Tuple[VacancySchema, EmployerSchema, bool]:
     vacancy = await get_vacancy_by_id(vacancy_id)
     can_update = check_can_update(user, vacancy)
     if not vacancy:
@@ -26,7 +27,7 @@ async def get_vacancy_by_id_dependencies(
 async def create_vacancy_dependencies(
         vacancy: VacancyAddSchema,
         owner: EmployerSchema = Depends(get_employer_by_token)
-):
+) -> Tuple[VacancySchema, EmployerSchema]:
     if not owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -40,7 +41,7 @@ async def create_vacancy_dependencies(
 async def delete_vacancy_by_id_dependencies(
         vacancy_id: int,
         owner: EmployerSchema = Depends(get_employer_by_token)
-):
+) -> Tuple[VacancySchema, EmployerSchema]:
     if not owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
