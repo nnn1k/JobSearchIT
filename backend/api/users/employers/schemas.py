@@ -31,6 +31,3 @@ class EmployerProfileSchema(BaseModel):
     patronymic: Optional[str] = None
     phone: Optional[str] = None
 
-class EmployerUpdateSchema(BaseModel):
-    key: str
-    value: Any

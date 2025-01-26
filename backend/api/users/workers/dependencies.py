@@ -5,7 +5,7 @@ from fastapi import Depends, Cookie
 from backend.api.users.auth.token_dependencies import get_user_by_token_and_role
 from backend.api.users.profile_dependencies import user_patch_dependencies
 from backend.api.users.workers.repository import get_worker_repo
-from backend.api.users.workers.schemas import WorkerSchema, WorkerProfileSchema, WorkerUpdateSchema
+from backend.api.users.workers.schemas import WorkerSchema, WorkerProfileSchema
 from backend.schemas.global_schema import DynamicSchema
 
 

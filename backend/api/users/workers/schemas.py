@@ -35,7 +35,3 @@ class WorkerProfileSchema(BaseModel):
     phone: Optional[str] = None
     birthday: Optional[date] = None
     city: Optional[str] = None
-
-class WorkerUpdateSchema(BaseModel):
-    key: str
-    value: Any
