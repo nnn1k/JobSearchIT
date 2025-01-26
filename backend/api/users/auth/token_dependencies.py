@@ -41,7 +41,7 @@ async def check_user_role(access_token=Cookie(None)) -> WorkerSchema or Employer
             detail=f"invalid token (access)",
         )
 
-async def get_user_by_token(access_token=Cookie(None)) -> UserSchema:
+async def get_user_by_token(access_token=Cookie(None)) -> WorkerSchema or EmployerSchema or None:
     user = await check_user_role(access_token)
     if not user:
         return None
