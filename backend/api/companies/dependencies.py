@@ -12,7 +12,7 @@ from backend.api.users.workers.schemas import WorkerSchema
 from backend.api.vacancies.repository import get_vacancy_by_company_id
 from backend.api.vacancies.schemas import VacancySchema
 from backend.schemas.global_schema import UserTypeSchema
-from backend.utils.other.check_func import check_can_update
+from backend.utils.other.check_func import check_employer_can_update
 
 
 async def get_company_by_id_dependencies(
@@ -20,7 +20,7 @@ async def get_company_by_id_dependencies(
         user=Depends(get_user_by_token)
 ) -> Tuple[CompanySchema, WorkerSchema or EmployerSchema, bool, VacancySchema | None]:
     company = await get_company_by_id(company_id)
-    can_update = check_can_update(user, company)
+    can_update = check_employer_can_update(user, company)
     if not company:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Any
 
 from fastapi import HTTPException, status
 
@@ -42,3 +42,17 @@ async def check_user_code_dependencies(user, repository, code) -> WorkerSchema o
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Incorrect code",
     )
+
+async def send_code_response(email: str) -> dict[str, Any]:
+    return {
+        'message': 'Код отправлен на почту:',
+        'email': email,
+        'status': 'ok'
+    }
+
+async def confirm_email_response(email: str) -> dict[str, Any]:
+    return {
+        'message': 'Почта подтверждена',
+        'email': email,
+        'status': 'ok'
+    }

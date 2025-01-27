@@ -7,7 +7,7 @@ from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.schemas import EmployerSchema
-from backend.utils.other.check_func import check_can_update
+from backend.utils.other.check_func import check_employer_can_update
 
 
 async def get_vacancy_by_id_dependencies(
@@ -15,7 +15,7 @@ async def get_vacancy_by_id_dependencies(
         user=Depends(get_user_by_token)
 ) -> Tuple[VacancySchema, EmployerSchema, bool]:
     vacancy = await get_vacancy_by_id(vacancy_id)
-    can_update = check_can_update(user, vacancy)
+    can_update = check_employer_can_update(user, vacancy)
     if not vacancy:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
