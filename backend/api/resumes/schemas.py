@@ -2,6 +2,7 @@ from typing import Optional
 
 from backend.schemas.global_schema import GlobalSchema
 
+
 class ResumeSchema(GlobalSchema):
     title: str
     description: Optional[str] = None
