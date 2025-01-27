@@ -5,7 +5,7 @@ from backend.api.users.employers.repository import get_employer_by_id
 from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.repository import get_worker_by_id
 from backend.api.users.workers.schemas import WorkerSchema
-from backend.schemas.global_schema import UserSchema
+from backend.schemas.global_schema import UserTypeSchema
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
@@ -16,7 +16,7 @@ async def get_user_by_token_and_role(access_token, repository, schema) -> Worker
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"not access token",
+            detail=f"invalid token (access)",
         )
     if user.type != repository.user_type:
         raise HTTPException(
@@ -34,12 +34,10 @@ async def check_user_role(access_token=Cookie(None)) -> WorkerSchema or Employer
     try:
         user_id = jwt_token.decode_jwt(token=access_token).get("sub")
         user_type = jwt_token.decode_jwt(token=access_token).get("type")
-        return UserSchema(id=user_id, type=user_type)
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"invalid token (access)",
-        )
+        return UserTypeSchema(id=user_id, type=user_type)
+    except Exception:
+        return None
+
 
 async def get_user_by_token(access_token=Cookie(None)) -> WorkerSchema or EmployerSchema or None:
     user = await check_user_role(access_token)

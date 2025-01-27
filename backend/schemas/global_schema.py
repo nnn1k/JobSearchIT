@@ -14,7 +14,7 @@ class CodeSchema(BaseModel):
     code: str
 
 
-class UserSchema(BaseModel):
+class UserTypeSchema(BaseModel):
     id: int
     type: str
 
@@ -22,5 +22,3 @@ class UserSchema(BaseModel):
 class DynamicSchema(BaseModel):
     class Config:
         extra = 'allow'
-
-

@@ -9,14 +9,16 @@ from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.schemas import WorkerSchema
-from backend.schemas.global_schema import UserSchema
+from backend.api.vacancies.repository import get_vacancy_by_company_id
+from backend.api.vacancies.schemas import VacancySchema
+from backend.schemas.global_schema import UserTypeSchema
 from backend.utils.other.check_func import check_can_update
 
 
 async def get_company_by_id_dependencies(
         company_id: int,
         user=Depends(get_user_by_token)
-) -> Tuple[CompanySchema, WorkerSchema or EmployerSchema, bool]:
+) -> Tuple[CompanySchema, WorkerSchema or EmployerSchema, bool, VacancySchema | None]:
     company = await get_company_by_id(company_id)
     can_update = check_can_update(user, company)
     if not company:
@@ -24,13 +26,14 @@ async def get_company_by_id_dependencies(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='company is not exist'
         )
-    return company, user, can_update
+    vacancies = await get_vacancy_by_company_id(company_id)
+    return company, user, can_update, vacancies
 
 
 async def create_company_dependencies(
         company: CompanyAddSchema,
         owner: EmployerSchema = Depends(get_employer_by_token)
-) -> Tuple[CompanySchema, Optional[UserSchema]]:
+) -> Tuple[Optional[CompanySchema], Optional[UserTypeSchema]]:
     if owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -47,12 +50,12 @@ async def update_company_dependencies(
         new_company: CompanyUpdateSchema,
         company_and_user: CompanySchema = Depends(get_company_by_id_dependencies),
 
-) -> Tuple[CompanySchema, EmployerSchema]:
+) -> Tuple[CompanySchema | None, EmployerSchema]:
     company, user, can_update = company_and_user
     try:
         if user.is_owner and user.company_id == company.id:
             company_repo = get_company_repo()
-            company = await company_repo.update_one(id=company.id, description=new_company.description)
+            company = await company_repo.update_one(id=company.id, **new_company.model_dump())
             return company, user
     except Exception as e:
         print(e)
@@ -60,4 +63,3 @@ async def update_company_dependencies(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="no rights"
         )
-

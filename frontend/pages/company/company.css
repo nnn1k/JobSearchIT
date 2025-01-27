@@ -47,10 +47,42 @@
     border-radius: 30px;
     cursor: pointer;
     transition: background 0.3s;
-    border-color: black;
-    width: 200px;
+    border: 0px solid gray;
+    width: 150px;
     height: 60px;
     margin-left: 50px;
+}
+
+.btn_upd_form {
+    color: black;
+    padding: 10px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s;
+    border: 0px solid gray;
+    width: 150px;
+    height: 60px;
+}
+
+.vacancy {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.vacancy h2 {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.vacancy p {
+    margin: 5px 0;
+    color: #555;
 }
 
 #can_update {
@@ -65,18 +97,22 @@
     background-color: black; /* Цвет активной кнопки */
     color: white; /* Цвет текста активной кнопки */
 }
-#desc_form{
+
+#desc_form {
     width: 1000px;
     line-height: 1.5;
 }
-#company_description{
+
+#company_description {
     white-space: pre-wrap;
 }
-#company_description_update{
+
+#company_description_update {
     width: 1000px;
     height: 500px;
 }
-.update_container{
+
+.update_container {
     display: flex;
     flex-direction: column;
 }

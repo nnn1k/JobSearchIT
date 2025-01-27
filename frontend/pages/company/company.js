@@ -20,9 +20,10 @@ async function get_company() {
         document.getElementById('can_update').style.display = 'block';
     }
     document.getElementById('company_description_update').value = getResponse.company.description;
+    renderVacancies(getResponse.vacancies)
 }
 
-async function update_company(){
+async function update_company() {
     const company_id = location.pathname.split('/')[2]
     const description = document.getElementById('company_description_update').value
     const putResponse = await makeRequest({
@@ -37,12 +38,10 @@ async function update_company(){
     location.reload(true)
 }
 
-window.update_company = update_company
 
-
-function showForm(formId, button){
+function showForm(formId, button) {
     const forms = document.querySelectorAll('.form_container')
-    forms.forEach(form =>{
+    forms.forEach(form => {
         form.style.display = 'none';
     })
     const selectedForm = document.getElementById(formId)
@@ -54,4 +53,26 @@ function showForm(formId, button){
     })
     button.classList.add('active');
 }
+
+
+function renderVacancies(vacancies) {
+    const container = document.getElementById('vacancies-container');
+    container.innerHTML = '';
+
+    vacancies.forEach(vacancy => {
+        const vacancyElement = document.createElement('div');
+        vacancyElement.classList.add('vacancy');
+
+        vacancyElement.innerHTML = `
+                    <h2>${vacancy.title}</h2>
+                    <p><strong>Описание:</strong> ${vacancy.description}</p>
+                    <p><strong>Зарплата:</strong> ${vacancy.salary_first} - ${vacancy.salary_second} руб.</p>
+                    <p><strong>Город:</strong> ${vacancy.city}</p>
+                `;
+
+        container.appendChild(vacancyElement);
+    });
+}
+
+window.update_company = update_company
 window.showForm = showForm

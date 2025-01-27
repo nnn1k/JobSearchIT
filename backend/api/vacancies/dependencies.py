@@ -27,7 +27,7 @@ async def get_vacancy_by_id_dependencies(
 async def create_vacancy_dependencies(
         vacancy: VacancyAddSchema,
         owner: EmployerSchema = Depends(get_employer_by_token)
-) -> Tuple[VacancySchema, EmployerSchema]:
+) -> Tuple[VacancySchema | None, EmployerSchema]:
     if not owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -41,7 +41,7 @@ async def create_vacancy_dependencies(
 async def delete_vacancy_by_id_dependencies(
         vacancy_id: int,
         owner: EmployerSchema = Depends(get_employer_by_token)
-) -> Tuple[VacancySchema, EmployerSchema]:
+) -> Tuple[VacancySchema | None, EmployerSchema]:
     if not owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

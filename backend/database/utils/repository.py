@@ -108,3 +108,43 @@ class AlchemyRepository(RepositoryHelper):
             new_model = await self.model_to_schema(model)
             await session.commit()
             return new_model
+
+
+class AlchemyRepositoryWithRel(AlchemyRepository):
+    db_model: Base = None
+    schema: BaseModel = None
+
+    async def get_query_rel(self, session, kwargs):
+        load_type = kwargs.pop('load', None)
+        key, value = next(iter(load_type.items()))
+        load_option = None
+        match key:
+            case 'joined':
+                load_option = joinedload(getattr(self.db_model, value))
+            case 'select':
+                load_option = selectinload(getattr(self.db_model, value))
+            case _:
+                print(f'bad load {key}')
+        query = (
+            select(self.db_model)
+            .filter_by(**kwargs)
+            .options(load_option)
+        )
+        return await session.execute(query)
+
+    async def get_all_rel(self, **kwargs) -> Optional[List[BaseModel]]:
+        async with session_factory() as session:
+            res = await self.get_query_rel(session, kwargs)
+            models = res.scalars().unique().all()
+            if models is None:
+                return None
+            return [await self.model_to_schema(model) for model in models]
+
+    async def get_one_rel(self, **kwargs) -> Optional[BaseModel]:
+        async with session_factory() as session:
+            res = await self.get_query_rel(session, kwargs)
+            models = res.scalars().unique().one()
+            if models is None:
+                return None
+            return await self.model_to_schema(model)
+
