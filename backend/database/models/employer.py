@@ -5,6 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.database.settings.database import Base
 
+
 class EmployersOrm(Base):
     __tablename__ = 'employers'
 

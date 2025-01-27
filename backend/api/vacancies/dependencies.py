@@ -3,7 +3,7 @@ from typing import Tuple
 from fastapi import Depends, HTTPException, status
 
 from backend.api.vacancies.repository import get_vacancy_repo, get_vacancy_by_id
-from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema
+from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema, VacancyUpdateSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.schemas import EmployerSchema
@@ -42,6 +42,7 @@ async def delete_vacancy_by_id_dependencies(
         vacancy_id: int,
         owner: EmployerSchema = Depends(get_employer_by_token)
 ) -> Tuple[VacancySchema | None, EmployerSchema]:
+
     if not owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -54,5 +55,27 @@ async def delete_vacancy_by_id_dependencies(
             detail='user is not owner this company'
         )
     vacancy_repo = get_vacancy_repo()
-    vacancy = await vacancy_repo.soft_delete(vacancy_id, 'delete')
+    vacancy = await vacancy_repo.soft_delete(vacancy_id)
+    return vacancy, owner
+
+
+async def update_vacancy_by_id_dependencies(
+        vacancy_id: int,
+        new_vacancy: VacancyUpdateSchema,
+        owner: EmployerSchema = Depends(get_employer_by_token),
+)   -> Tuple[VacancySchema | None, EmployerSchema]:
+
+    if not owner.company_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user dont have company'
+        )
+    vacancy_for_update = await get_vacancy_by_id(vacancy_id)
+    if owner.company_id != vacancy_for_update.company_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user is not owner this company'
+        )
+    vacancy_repo = get_vacancy_repo()
+    vacancy = await vacancy_repo.update_one(id=vacancy_id, **new_vacancy.model_dump())
     return vacancy, owner

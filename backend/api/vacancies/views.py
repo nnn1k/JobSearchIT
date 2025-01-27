@@ -3,7 +3,8 @@ from fastapi import APIRouter, Depends
 from backend.api.vacancies.dependencies import (
     create_vacancy_dependencies,
     get_vacancy_by_id_dependencies,
-    delete_vacancy_by_id_dependencies
+    delete_vacancy_by_id_dependencies,
+    update_vacancy_by_id_dependencies,
 )
 
 router = APIRouter(prefix="/vacancies", tags=["vacancies"])
@@ -47,7 +48,22 @@ def delete_info_on_company(
     if user:
         user = user.model_dump(exclude='password')
     return {
-        'user_who_deleted': user,
+        'user': user,
         'status': 'ok',
         'message': 'Vacancy was remove'
+    }
+
+
+@router.put('/{vacancy_id}', summary='Изменить вакансию')
+def update_info_on_company(
+        vacancy_and_owner=Depends(update_vacancy_by_id_dependencies),
+):
+    vacancy, owner = vacancy_and_owner
+    if owner:
+        owner = owner.model_dump(exclude='password')
+    return {
+        'owner': owner,
+        'vacancy': vacancy,
+        'status': 'ok',
+        'message': 'Vacancy was update'
     }

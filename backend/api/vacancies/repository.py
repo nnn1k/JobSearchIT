@@ -19,6 +19,7 @@ async def get_vacancy_by_id(vacancy_id: int) -> Optional[VacancySchema]:
     vacancy = await vacancy_repo.get_one(id=vacancy_id)
     return vacancy
 
+
 async def get_vacancy_by_company_id(company_id: int) -> Optional[List[VacancySchema]]:
     vacancy_repo = get_vacancy_repo()
     vacancies = await vacancy_repo.get_all(company_id=company_id)
