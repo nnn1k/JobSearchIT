@@ -1,21 +1,14 @@
 from datetime import date
-from typing import Optional, Any
+from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
-from backend.schemas.global_schema import GlobalSchema
+from backend.schemas.global_schema import UserSchema
 
 
-class WorkerSchema(GlobalSchema):
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    patronymic: Optional[str] = None
-    email: EmailStr
-    phone: Optional[str] = None
-    password: bytes
+class WorkerSchema(UserSchema):
     birthday: Optional[date] = None
     city: Optional[str] = None
-    is_confirmed: bool = False
 
 
 class WorkerAuthSchema(BaseModel):
@@ -27,6 +20,7 @@ class WorkerRegisterSchema(BaseModel):
     email: EmailStr
     password: str
     confirm_password: str
+
 
 class WorkerProfileSchema(BaseModel):
     name: Optional[str] = None

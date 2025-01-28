@@ -63,7 +63,7 @@ async def update_vacancy_by_id_dependencies(
         vacancy_id: int,
         new_vacancy: VacancyUpdateSchema,
         owner: EmployerSchema = Depends(get_employer_by_token),
-)   -> Tuple[VacancySchema | None, EmployerSchema]:
+) -> Tuple[VacancySchema | None, EmployerSchema]:
 
     if not owner.company_id:
         raise HTTPException(

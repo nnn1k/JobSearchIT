@@ -2,18 +2,13 @@ from typing import Optional, Any
 
 from pydantic import BaseModel, EmailStr
 
-from backend.schemas.global_schema import GlobalSchema
+from backend.schemas.global_schema import UserSchema
 
-class EmployerSchema(GlobalSchema):
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    patronymic: Optional[str] = None
-    email: EmailStr
-    phone: Optional[str] = None
-    password: bytes
+
+class EmployerSchema(UserSchema):
     company_id: Optional[int] = None
     is_owner: bool = False
-    is_confirmed: bool = False
+
 
 class EmployerAuthSchema(BaseModel):
     email: EmailStr
