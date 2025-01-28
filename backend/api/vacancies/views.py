@@ -67,3 +67,5 @@ def update_info_on_company(
         'status': 'ok',
         'message': 'Vacancy was update'
     }
+
+

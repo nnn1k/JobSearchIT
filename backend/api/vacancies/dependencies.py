@@ -55,7 +55,7 @@ async def delete_vacancy_by_id_dependencies(
             detail='user is not owner this company'
         )
     vacancy_repo = get_vacancy_repo()
-    vacancy = await vacancy_repo.soft_delete(vacancy_id)
+    vacancy = await vacancy_repo.soft_delete(vacancy_id, 'delete')
     return vacancy, owner
 
 
