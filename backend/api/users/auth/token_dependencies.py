@@ -5,13 +5,13 @@ from backend.api.users.employers.repository import get_employer_by_id
 from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.repository import get_worker_by_id
 from backend.api.users.workers.schemas import WorkerSchema
-from backend.schemas.global_schema import UserTypeSchema
+from backend.schemas.global_schema import UserTypeSchema, UserSchema
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
 
-async def get_user_by_token_and_role(access_token, repository, schema) -> WorkerSchema or EmployerSchema:
+async def get_user_by_token_and_role(access_token, repository, schema, response_schema) -> UserSchema:
     user = await check_user_role(access_token)
     if not user:
         raise HTTPException(
@@ -25,10 +25,12 @@ async def get_user_by_token_and_role(access_token, repository, schema) -> Worker
         )
     user = await repository.get_one(id=int(user.id))
     if user:
-        return schema.model_validate(user, from_attributes=True)
+        new_schema = schema.model_validate(user, from_attributes=True)
+        new_user = new_schema.model_dump(exclude='password')
+        return response_schema.model_validate(new_user, from_attributes=True)
 
 
-async def check_user_role(access_token=Cookie(None)) -> WorkerSchema or EmployerSchema:
+async def check_user_role(access_token=Cookie(None)) -> UserTypeSchema | None:
     if access_token is None:
         return None
     try:

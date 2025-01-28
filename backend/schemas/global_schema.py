@@ -28,6 +28,14 @@ class UserSchema(GlobalSchema):
     password: bytes
     is_confirmed: bool = False
 
+class UserResponseSchema(GlobalSchema):
+    name: Optional[str] = None
+    surname: Optional[str] = None
+    patronymic: Optional[str] = None
+    email: EmailStr
+    phone: Optional[str] = None
+    is_confirmed: bool = False
+
 class DynamicSchema(BaseModel):
     class Config:
         extra = 'allow'

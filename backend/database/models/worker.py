@@ -26,6 +26,7 @@ class ResumesOrm(Base):
     salary_first: Mapped[int] = mapped_column(nullable=True)
     salary_second: Mapped[int] = mapped_column(nullable=True)
     city: Mapped[str] = mapped_column(nullable=True)
+    is_hidden: Mapped[bool] = mapped_column(default=False)
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id'))
 
 

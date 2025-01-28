@@ -67,3 +67,4 @@ def delete_resume_views(
         'user': user,
         'message': 'resume deleted'
     }
+

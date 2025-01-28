@@ -3,10 +3,15 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
-from backend.schemas.global_schema import UserSchema
+from backend.schemas.global_schema import UserSchema, UserResponseSchema
 
 
 class WorkerSchema(UserSchema):
+    birthday: Optional[date] = None
+    city: Optional[str] = None
+
+
+class WorkerResponseSchema(UserResponseSchema):
     birthday: Optional[date] = None
     city: Optional[str] = None
 
