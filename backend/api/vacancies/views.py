@@ -7,7 +7,7 @@ from backend.api.vacancies.dependencies import (
     update_vacancy_by_id_dependencies,
 )
 
-router = APIRouter(prefix="/vacancies", tags=["vacancies"])
+router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 
 @router.post('/', summary='Создать вакансию')

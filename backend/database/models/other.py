@@ -12,7 +12,7 @@ class VacanciesSkillsOrm(Base):
     __tablename__ = 'vacancies_skills'
 
     skill_id: Mapped[int] = mapped_column(ForeignKey('skills.id'))
-    vacancy_id: Mapped[int] = mapped_column(ForeignKey('vacancies.id'))
+    vacancy_id: Mapped[int] = mapped_column(ForeignKey('vacancy.id'))
 
 
 class WorkersSkillsOrm(Base):
@@ -25,5 +25,5 @@ class WorkersSkillsOrm(Base):
 class ResponsesOrm(Base):
     __tablename__ = 'responses'
 
-    vacancy_id: Mapped[int] = mapped_column(ForeignKey('vacancies.id'))
+    vacancy_id: Mapped[int] = mapped_column(ForeignKey('vacancy.id'))
     resume_id: Mapped[int] = mapped_column(ForeignKey('resumes.id'))

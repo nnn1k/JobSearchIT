@@ -35,7 +35,7 @@ def get_info_on_company(
     return {
         'status': 'ok',
         'company': company,
-        'vacancies': vacancies,
+        'vacancy': vacancies,
         'user': user,
         'can_update': can_update
     }

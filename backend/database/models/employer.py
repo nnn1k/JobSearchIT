@@ -28,7 +28,7 @@ class CompaniesOrm(Base):
 
 
 class VacanciesOrm(Base):
-    __tablename__ = 'vacancies'
+    __tablename__ = 'vacancy'
 
     title: Mapped[str]
     description: Mapped[str]

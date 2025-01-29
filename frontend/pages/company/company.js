@@ -56,7 +56,7 @@ function showForm(formId, button) {
 
 
 function renderVacancies(vacancies) {
-    const container = document.getElementById('vacancies-container');
+    const container = document.getElementById('vacancy-container');
     container.innerHTML = '';
 
     vacancies.forEach(vacancy => {
