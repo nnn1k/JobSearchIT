@@ -27,7 +27,7 @@ class ResumesOrm(Base):
     salary_second: Mapped[int] = mapped_column(nullable=True)
     city: Mapped[str] = mapped_column(nullable=True)
     is_hidden: Mapped[bool] = mapped_column(default=False)
-    worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id'))
+    worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
 
 
 class EducationsOrm(Base):
@@ -37,4 +37,4 @@ class EducationsOrm(Base):
     end_date: Mapped[str]
     institution: Mapped[str]
     specialization: Mapped[str]
-    worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id'))
+    worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
