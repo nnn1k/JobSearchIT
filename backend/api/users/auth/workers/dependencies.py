@@ -9,10 +9,11 @@ from backend.api.users.workers.dependencies import get_worker_by_token
 
 
 async def login_worker_dependencies(
-    log_user: WorkerAuthSchema
+        log_user: WorkerAuthSchema
 ) -> WorkerSchema:
     worker_repo = get_worker_repo()
     return await login_user(log_user, worker_repo)
+
 
 async def register_worker_dependencies(
         reg_user: WorkerRegisterSchema,
@@ -20,15 +21,17 @@ async def register_worker_dependencies(
     worker_repo = get_worker_repo()
     return await register_user(reg_user, worker_repo)
 
+
 async def get_code_dependencies(
-        worker: WorkerSchema = Depends(get_worker_by_token),
+        user: WorkerSchema = Depends(get_worker_by_token),
 ) -> WorkerSchema:
-    SendEmail.send_code_to_email(worker, 'worker')
-    return worker
+    SendEmail.send_code_to_email(user, 'worker')
+    return user
+
 
 async def check_code_dependencies(
         code: CodeSchema,
-        worker: WorkerSchema = Depends(get_worker_by_token),
+        user: WorkerSchema = Depends(get_worker_by_token),
 ) -> WorkerSchema:
     worker_repo = get_worker_repo()
-    return await check_user_code_dependencies(worker, worker_repo, code)
+    return await check_user_code_dependencies(user, worker_repo, code)

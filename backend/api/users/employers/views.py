@@ -10,7 +10,7 @@ def get_my_profile(
         employer: EmployerSchema = Depends(get_employer_by_token)
 ):
     return {
-        'employer': employer,
+        'user': employer,
         'status': 'ok'
         }
 
@@ -20,7 +20,7 @@ def update_my_profile(
         employer: EmployerSchema = Depends(put_employer_dependencies)
 ):
     return {
-        'worker': employer,
+        'user': employer,
         'status': 'ok'
     }
 
@@ -29,6 +29,6 @@ def update_my_other(
         employer: EmployerSchema = Depends(patch_employer_dependencies)
 ):
     return {
-        'worker': employer,
+        'user': employer,
         'status': 'ok'
     }

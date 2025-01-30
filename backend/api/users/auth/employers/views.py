@@ -10,14 +10,15 @@ from backend.api.users.auth.employers.dependencies import (
     check_code_dependencies
 )
 from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
-from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.employers.schemas import EmployerResponseSchema
 
 router = APIRouter(prefix="/employers", tags=["employers_auth"])
+
 
 @router.post('/login', summary='Вход работодателя')
 async def login(
         response: Response,
-        employer: EmployerSchema = Depends(login_employer_dependencies),
+        employer: EmployerResponseSchema = Depends(login_employer_dependencies),
 ):
     access_token = jwt_token.create_access_token(id=employer.id, user_type='employer')
     refresh_token = jwt_token.create_refresh_token(id=employer.id, user_type='employer')
@@ -29,25 +30,28 @@ async def login(
         refresh_token=refresh_token,
     )
     return {
-        'employer': employer.model_dump(exclude='password'),
+        'user': employer.model_dump(exclude='password'),
         'token': token,
         'status': 'ok'
     }
 
+
 @router.post('/register', summary='Регистрация работника')
 async def register(
-        worker: EmployerSchema = Depends(register_employer_dependencies)
+        worker: EmployerResponseSchema = Depends(register_employer_dependencies)
 ):
     return RedirectResponse(url='/api/auth/employers/login')
 
+
 @router.get('/code', summary='Отправить код на почту')
 async def get_code(
-        employer: EmployerSchema = Depends(get_code_dependencies)
+        employer: EmployerResponseSchema = Depends(get_code_dependencies)
 ):
     return send_code_response(employer.email)
 
+
 @router.post('/code', summary='Проверка кода')
 async def send_code(
-        employer: EmployerSchema = Depends(check_code_dependencies)
+        employer: EmployerResponseSchema = Depends(check_code_dependencies)
 ):
     return confirm_email_response(employer.email)

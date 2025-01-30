@@ -30,10 +30,11 @@ async def login(
         refresh_token=refresh_token,
     )
     return {
-        'worker': worker,
+        'user': worker,
         'token': token,
         'status': 'ok'
     }
+
 
 @router.post('/register', summary='Регистрация работника')
 async def register(
@@ -48,13 +49,9 @@ async def get_code(
 ):
     return send_code_response(worker.email)
 
+
 @router.post('/code', summary='Проверка кода')
 async def send_code(
         worker: WorkerResponseSchema = Depends(check_code_dependencies)
 ):
     return confirm_email_response(worker.email)
-
-
-
-
-
