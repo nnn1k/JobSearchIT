@@ -5,9 +5,11 @@ from backend.api.users.workers.schemas import WorkerSchema, WorkerResponseSchema
 from backend.schemas.global_schema import GlobalSchema
 
 
-def check_employer_can_update(user: WorkerSchema | EmployerSchema, obj: GlobalSchema) -> bool:
+def check_employer_can_update(user, obj: GlobalSchema) -> bool:
     from backend.api.companies.schemas import CompanySchema
     if not isinstance(user, EmployerResponseSchema):
+        return False
+    if not user.is_owner:
         return False
     if isinstance(obj, CompanySchema):
         return user.company_id == obj.id

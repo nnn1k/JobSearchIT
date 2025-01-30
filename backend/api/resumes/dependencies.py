@@ -58,7 +58,7 @@ async def get_all_resumes_dependencies(
             detail="Not authenticated",
         )
     resume_repo = get_resume_repo()
-    resumes = await resume_repo.get_all()
+    resumes = await resume_repo.get_all(worker_id=user.id)
 
     can_update = check_worker_can_update(user, resumes[0])
     return resumes, user, can_update
