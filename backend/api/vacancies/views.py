@@ -12,16 +12,16 @@ router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 @router.post('/', summary='Создать вакансию')
 def create_new_vacancy(
-    owner_and_vacancy=Depends(create_vacancy_dependencies)
+        vacancy_and_user=Depends(create_vacancy_dependencies)
 ):
-    vacancy, owner = owner_and_vacancy
+    vacancy, user = vacancy_and_user
 
-    if owner:
-        owner = owner.model_dump(exclude='password')
+    if user:
+        user = user.model_dump(exclude='password')
     return {
         'status': 'ok',
         'vacancy': vacancy,
-        'owner': owner
+        'user': user
     }
 
 
@@ -56,16 +56,14 @@ def delete_info_on_company(
 
 @router.put('/{vacancy_id}', summary='Изменить вакансию')
 def update_info_on_company(
-        vacancy_and_owner=Depends(update_vacancy_by_id_dependencies),
+        vacancy_and_user=Depends(update_vacancy_by_id_dependencies),
 ):
-    vacancy, owner = vacancy_and_owner
-    if owner:
-        owner = owner.model_dump(exclude='password')
+    vacancy, user = vacancy_and_user
+    if user:
+        user = user.model_dump(exclude='password')
     return {
-        'owner': owner,
+        'user': user,
         'vacancy': vacancy,
         'status': 'ok',
         'message': 'Vacancy was update'
     }
-
-
