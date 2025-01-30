@@ -1,0 +1,92 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+}
+
+.choose{
+    display: flex;
+    flex-direction: row;
+    padding-left: 100px;
+    gap: 25px;
+}
+
+.panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 30px;
+    background-color: crimson;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo img {
+    height: 70px; /* Высота логотипа */
+    width: 110px;
+
+}
+
+.right_side_header{
+    display: flex;
+    gap: 30px;
+    flex-direction: row;
+}
+
+.logo_profile{
+    display: flex;
+    margin-right: 30px;
+    height: 50px;
+    width: 50px;
+}
+
+.btn_create_resume{
+    display: flex;
+    margin-top: 5px;
+    height: 80%;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: white;
+    border-radius: 15px;
+    color: crimson;
+    font-size: 16px;
+}
+
+.content {
+    min-width: 100vh;
+    min-height: 100vh;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:link {
+    color: deepskyblue
+}
+
+a:visited {
+    color: deepskyblue
+}
+
+a:hover {
+    color: orange;
+}
+
+.disabled_link{
+    cursor: not-allowed;
+    pointer-events: none;
+    color: gray;
+}
+
+.disabled_link:visited{
+    color: gray;
+}
+
+
+
+

@@ -1,5 +1,6 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 
+
 $(document).ready(function () {
         let currentStep = 0;
         const steps = $('.step');
