@@ -1,10 +1,12 @@
-from backend.api.companies.schemas import CompanySchema
+from pydantic import BaseModel
+
 from backend.api.users.employers.schemas import EmployerSchema, EmployerResponseSchema
 from backend.api.users.workers.schemas import WorkerSchema, WorkerResponseSchema
 from backend.schemas.global_schema import GlobalSchema
 
 
 def check_employer_can_update(user: WorkerSchema | EmployerSchema, obj: GlobalSchema) -> bool:
+    from backend.api.companies.schemas import CompanySchema
     if not isinstance(user, EmployerResponseSchema):
         return False
     if isinstance(obj, CompanySchema):
@@ -19,3 +21,7 @@ def check_worker_can_update(user: WorkerSchema | EmployerSchema, obj: GlobalSche
     if hasattr(obj, 'worker_id'):
         return user.id == obj.worker_id
     return False
+
+def exclude_password(user: BaseModel, response_schema: BaseModel):
+    user_response = user.model_dump(exclude='password')
+    return response_schema.model_validate(user_response, from_attributes=True)

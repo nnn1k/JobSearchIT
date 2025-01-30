@@ -6,6 +6,7 @@ from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.repository import get_worker_by_id
 from backend.api.users.workers.schemas import WorkerSchema
 from backend.schemas.global_schema import UserTypeSchema, UserSchema
+from backend.utils.other.check_func import exclude_password
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
@@ -25,9 +26,7 @@ async def get_user_by_token_and_role(access_token, repository, schema, response_
         )
     user = await repository.get_one(id=int(user.id))
     if user:
-        new_schema = schema.model_validate(user, from_attributes=True)
-        new_user = new_schema.model_dump(exclude='password')
-        return response_schema.model_validate(new_user, from_attributes=True)
+        return exclude_password(user, response_schema)
 
 
 async def check_user_role(access_token=Cookie(None)) -> UserTypeSchema | None:

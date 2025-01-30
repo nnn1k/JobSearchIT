@@ -14,6 +14,7 @@ class WorkerSchema(UserSchema):
 class WorkerResponseSchema(UserResponseSchema):
     birthday: Optional[date] = None
     city: Optional[str] = None
+    type: str = 'worker'
 
 
 class WorkerAuthSchema(BaseModel):

@@ -13,6 +13,7 @@ class EmployerSchema(UserSchema):
 class EmployerResponseSchema(UserResponseSchema):
     company_id: Optional[int] = None
     is_owner: bool = False
+    type: str = 'employer'
 
 
 class EmployerAuthSchema(BaseModel):
