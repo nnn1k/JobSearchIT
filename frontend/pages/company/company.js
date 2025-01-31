@@ -56,22 +56,37 @@ function showForm(formId, button) {
 
 
 function renderVacancies(vacancies) {
-    const container = document.getElementById('vacancy-container');
+    const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
 
     vacancies.forEach(vacancy => {
-        const vacancyElement = document.createElement('div');
-        vacancyElement.classList.add('vacancy');
+    const vacancyElement = document.createElement('div');
+    vacancyElement.classList.add('vacancy');
 
-        vacancyElement.innerHTML = `
-                    <h2>${vacancy.title}</h2>
-                    <p><strong>Описание:</strong> ${vacancy.description}</p>
-                    <p><strong>Зарплата:</strong> ${vacancy.salary_first} - ${vacancy.salary_second} руб.</p>
-                    <p><strong>Город:</strong> ${vacancy.city}</p>
-                `;
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = vacancy.title;
 
-        container.appendChild(vacancyElement);
-    });
+    const salaryElement = document.createElement('p');
+    const salary_first = vacancy.salary_first;
+    const salary_second = vacancy.salary_second;
+    if (!salary_first && !salary_second)
+        salaryElement.innerHTML = ''
+    else
+        salaryElement.innerHTML += `<strong>Зарплата (руб.):</strong>`
+    if (salary_first)
+        salaryElement.innerHTML += ` от ${salary_first}`
+    if (salary_second)
+        salaryElement.innerHTML += ` до ${salary_second}`
+
+    const cityElement = document.createElement('p');
+    cityElement.innerHTML = `<strong>Город:</strong> ${vacancy.city}`;
+
+    vacancyElement.appendChild(titleElement);
+    vacancyElement.appendChild(salaryElement);
+    vacancyElement.appendChild(cityElement);
+
+    container.appendChild(vacancyElement);
+});
 }
 
 window.update_company = update_company

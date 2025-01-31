@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+h1 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #C70000; /* Красный фон для кнопки */
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #A60000; /* Темно-красный при наведении */
+}
+
+.skill-button {
+    background-color: #fff; /* Белый фон для кнопок навыков */
+    color: #C70000; /* Красный текст */
+    padding: 10px;
+    border: 1px solid #C70000;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.skill-button.selected {
+    background-color: #C70000; /* Красный фон для выбранных кнопок */
+    color: white; /* Белый текст для выбранных кнопок */
+}
+
+.step {
+    display: none; /* Скрываем все этапы по умолчанию */
+}
+
+.active {
+    display: block; /* Показываем активный этап */
+}
+
+.experienceEntry {
+    margin-bottom: 20px; /* Отступ между блоками опыта */
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Цвет фона блоков опыта */
+}

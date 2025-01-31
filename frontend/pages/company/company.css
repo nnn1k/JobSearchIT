@@ -94,8 +94,8 @@
 }
 
 .btn.active {
-    background-color: black; /* Цвет активной кнопки */
-    color: white; /* Цвет текста активной кнопки */
+    background-color: black;
+    color: white;
 }
 
 #desc_form {
@@ -115,4 +115,7 @@
 .update_container {
     display: flex;
     flex-direction: column;
+}
+textarea{
+    resize: none;
 }

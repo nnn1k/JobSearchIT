@@ -3,8 +3,7 @@ from .employer import router as employer_router
 from .worker import router as worker_router
 from .companies import router as company_router
 from .vacancies import router as vacancy_router
-
-
+from .resume import router as resume_router
 
 from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
@@ -17,6 +16,7 @@ router.include_router(employer_router)
 router.include_router(worker_router)
 router.include_router(company_router)
 router.include_router(vacancy_router)
+router.include_router(resume_router)
 
 
 @router.get("/")

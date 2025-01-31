@@ -13,15 +13,15 @@ router = APIRouter(prefix='/companies', tags=['companies'])
 
 @router.post('/', summary='Создать компанию')
 def create_new_company(
-        owner_and_company: EmployerSchema = Depends(create_company_dependencies)
+        company_and_user: EmployerSchema = Depends(create_company_dependencies)
 ):
-    company, owner = owner_and_company
-    if owner:
-        owner = owner.model_dump(exclude='password')
+    company, user = company_and_user
+    if user:
+        user = user.model_dump(exclude='password')
     return {
         'status': 'ok',
         'company': company,
-        'owner': owner
+        'user': user
     }
 
 
@@ -35,7 +35,7 @@ def get_info_on_company(
     return {
         'status': 'ok',
         'company': company,
-        'vacancy': vacancies,
+        'vacancies': vacancies,
         'user': user,
         'can_update': can_update
     }

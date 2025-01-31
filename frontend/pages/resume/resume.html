@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма заполнения резюме</title>
+    <link rel="stylesheet" href="/frontend/pages/resume/resume.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Заполнение резюме</h1>
+    <form id="resumeForm">
+        <!-- Этап 1: Выбор профессии -->
+        <div class="step active" id="step1">
+            <label for="profession">Выберите профессию:</label>
+            <select id="profession" name="profession" required>
+                <option value="">--Выберите профессию--</option>
+                <option value="developer">Разработчик</option>
+                <option value="designer">Дизайнер</option>
+                <option value="manager">Менеджер</option>
+                <option value="analyst">Аналитик</option>
+            </select>
+            <button type="button" onclick="nextStep(1)">Далее</button>
+        </div>
+
+        <!-- Этап 2: Проверка ФИО, города, даты рождения, телефона -->
+        <div class="step" id="step2">
+            <label for="firstName">Имя:</label>
+            <input type="text" id="firstName" name="firstName" required>
+
+            <label for="middleName">Отчество:</label>
+            <input type="text" id="middleName" name="middleName" required>
+
+            <label for="lastName">Фамилия:</label>
+            <input type="text" id="lastName" name="lastName" required>
+
+            <label for="city">Город:</label>
+            <input type="text" id="city" name="city" required>
+
+            <label for="dob">Дата рождения:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <button type="button" onclick="nextStep(2)">Далее</button>
+            <button type="button" onclick="prevStep(2)">Назад</button>
+        </div>
+
+        <!-- Этап 3: Выбор типа образования -->
+        <div class="step" id="step3">
+            <label for="educationType">Тип образования:</label>
+            <select id="educationType" name="educationType" required>
+                <option value="">--Выберите тип образования--</option>
+                <option value="secondary">Среднее</option>
+                <option value="secondary_special">Среднее специальное</option>
+                <option value="higher">Высшее</option>
+                <option value="additional">Дополнительное</option>
+            </select>
+            <button type="button" onclick="nextStep(3)">Далее</button>
+            <button type="button" onclick="prevStep(3)">Назад</button>
+        </div>
+
+        <!-- Этап 4: Ввод образования -->
+        <div class="step" id="step4">
+            <label for="institution">Название учебного заведения:</label>
+            <input type="text" id="institution" name="institution" required>
+
+            <label for="faculty">Факультет:</label>
+            <input type="text" id="faculty" name="faculty" required>
+
+            <label for="specialization">Специализация:</label>
+            <input type="text" id="specialization" name="specialization" required>
+
+            <label for="graduationYear">Год окончания:</label>
+            <input type="number" id="graduationYear" name="graduationYear" required>
+
+            <button type="button" onclick="nextStep(4)">Далее</button>
+            <button type="button" onclick="prevStep(4)">Назад</button>
+        </div>
+
+        <!-- Этап 5: Выбор ключевых навыков -->
+        <div class="step" id="step5">
+            <label>Ключевые навыки:</label>
+            <div id="skillsContainer">
+                <button type="button" class="skill-button" onclick="toggleSkill(this)">HTML</button>
+                <button type="button" class="skill-button" onclick="toggleSkill(this)">CSS</button>
+                <button type="button" class="skill-button" onclick="toggleSkill(this)">JavaScript</button>
+                <button type="button" class="skill-button" onclick="toggleSkill(this)">Дизайн</button>
+                <button type="button" class="skill-button" onclick="toggleSkill(this)">Управление</button>
+                <button type="button" class="skill-button" onclick="toggleSkill(this)">Аналитика</button>
+            </div>
+            <button type="button" onclick="nextStep(5)">Далее</button>
+            <button type="button" onclick="prevStep(5)">Назад</button>
+        </div>
+
+        <!-- Этап 6: Опыт работы -->
+        <div class="step" id="step6">
+            <h2>Опыт работы</h2>
+            <div id="experienceContainer">
+                <div class="experienceEntry">
+                    <label for="company">Компания:</label>
+                    <input type="text" class="company" required placeholder="Введите название компании">
+
+                    <label for="position">Должность:</label>
+                    <input type="text" class="position" required placeholder="Введите вашу должность">
+
+                    <label for="responsibilities">Обязанности:</label>
+                    <textarea class="responsibilities" rows="4" required placeholder="Опишите ваши обязанности..."></textarea>
+
+                    <label for="startDate">Начало работы:</label>
+                    <input type="date" class="startDate" required>
+
+                    <label for="endDate">Конец работы:</label>
+                    <input type="date" class="endDate" required>
+                </div>
+            </div>
+            <button type="button" onclick="addExperience()">Добавить ещё опыт работы</button>
+            <button type="button" onclick="noExperience()">У меня нет опыта работы</button>
+            <button type="submit">Отправить резюме</button>
+            <button type="button" onclick="prevStep(6)">Назад</button>
+        </div>
+    </form>
+</div>
+
+<script src="/frontend/pages/resume/resume.js"></script>
+</body>
+</html>
