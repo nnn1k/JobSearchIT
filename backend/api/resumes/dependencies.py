@@ -23,6 +23,7 @@ def validate_resume_update_permissions(worker, resume):
             detail="no rights",
         )
 
+
 async def create_resume_dependencies(
         add_resume: VacancyAddSchema,
         worker: WorkerSchema = Depends(get_worker_by_token)

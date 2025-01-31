@@ -30,7 +30,7 @@ def home_page_employer(request: Request):
 
 
 @router.get("/login")
-def home_page_employer(request: Request):
+def login_page(request: Request):
     return templates.TemplateResponse("/pages/auth/login/login.html", {"request": request})
 
 

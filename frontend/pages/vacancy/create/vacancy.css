@@ -1,0 +1,110 @@
+.body_container{
+
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.new_vacancy{
+    display: flex;
+    color:gray;
+    padding-top: 30px;
+    padding-left: 230px;
+}
+
+.main_info{
+    color: gray;
+    padding-left: 150px;
+}
+
+.fields_for_data{
+    color:gray;
+    display: flex;
+    flex-direction: column;
+    margin-left: 150px;
+    margin-top: 35px;
+    gap: 30px;
+}
+
+.field_title{
+    display: flex;
+    flex-direction: row;
+}
+
+.input_for_title_vacancy{
+    margin-left: 150px;
+    width: 400px;
+    height: 28px;
+
+}
+
+.field_description{
+    display: flex;
+    flex-direction: row;
+    gap: 213px
+}
+
+.field_salary{
+    display: flex;
+    flex-direction: row;
+    gap: 116px
+}
+
+
+.inputs_for_salary {
+    display: flex;
+    flex-direction: row;
+    gap: -10px;
+    box-sizing: border-box;
+}
+
+.input_for_first_salary {
+    box-sizing: border-box;
+    width: 150px;
+    height: 30px;
+}
+
+.input_for_second_salary {
+    box-sizing: border-box;
+    width: 150px;
+    height: 30px;
+}
+
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Chrome, Safari, Opera */
+
+}
+
+.input_for_city_vacancy{
+    margin-left: 235px;
+    width: 400px;
+    height: 28px;
+}
+
+#add_vacancy_btn{
+    display: flex;
+    margin-left: 650px;
+    width: 200px;
+    padding: 10px;
+    background-color: red;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 50px;
+}
+
+#add_vacancy_btn:hover {
+    background-color: crimson;
+}

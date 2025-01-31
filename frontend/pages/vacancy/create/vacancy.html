@@ -2,9 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Создание вакансии</title>
+    <link rel="stylesheet" href="/frontend/pages/vacancy/create/vacancy.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
+    <style>
+        .mce-content-body {
+            white-space: pre-wrap; /* Применяем стиль white-space: pre-wrap */
+        }
+    </style>
 </head>
-<body>
-<h1>хуйхуй</h1>
-</body>
+{% extends 'base_employer/base_employer.html' %}
+{% block content %}
+    <body>
+    <div class="body_container">
+
+        <h1 class="new_vacancy">Новая вакансия</h1>
+        <h3 class="main_info">Основная информация</h3>
+        <div class="fields_for_data">
+            <div class="field_title">
+                <label class="title_vacancy">Название вакансии</label>
+                <input type="text" class="input_for_title_vacancy" id="input_for_title_vacancy" required="">
+            </div>
+            <div class="field_description">
+                <label class="description_vacancy">Описание</label>
+                <textarea id="input_for_description_vacancy" class="input_for_description_vacancy" required="">
+                    <pre id="text_description_vacancy">
+Обязанности:
+ —
+ —
+Требования:
+ —
+ —
+Условия:
+ —
+                    </pre>
+                </textarea>
+            </div>
+            <div class="field_salary">
+                <label class="salary_vacancy">Предпологаемый доход</label>
+                <div class="inputs_for_salary">
+                    <input type="number" class="input_for_first_salary" id="input_for_first_salary" placeholder="От">
+                    <input type="number" class="input_for_second_salary" id="input_for_second_salary" placeholder="До">
+                </div>
+            </div>
+            <div class="field_city">
+                <label class="city_vacancy">Город</label>
+                <input type="text" class="input_for_city_vacancy" id="input_for_city_vacancy" required="">
+            </div>
+            <div>
+                 <input id="add_vacancy_btn" class="btn" type="button" value="Опубликовать" onclick="post_vacancy()">
+            </div>
+        </div>
+        <p id="need_delete"></p>
+    </div>
+    <script type="module" src="/frontend/pages/vacancy/create/vacancy.js"></script>
+    </body>
+{% endblock %}
 </html>
