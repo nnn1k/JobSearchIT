@@ -18,6 +18,11 @@ async function post_vacancy() {
     const salary_first = Number(document.getElementById('input_for_first_salary').value)
     const salary_second = Number(document.getElementById('input_for_second_salary').value)
     const city = document.getElementById('input_for_city_vacancy').value
+    if (!title){
+        alert('Не все данные заполнены')
+        return
+    }
+
     const postResponse = await makeRequest({
         method: 'POST',
         url: '/api/vacancy',
@@ -33,6 +38,8 @@ async function post_vacancy() {
         window.location.href = apiUrl + "/vacancies/add"
         alert('Вакансия опубликована');
     }
+
+
 }
 
 window.post_vacancy = post_vacancy

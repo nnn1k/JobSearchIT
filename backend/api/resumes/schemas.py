@@ -17,8 +17,9 @@ class ResumeSchema(GlobalSchema):
 class ResumeAddSchema(BaseModel):
     title: str
     description: str
-    salary_first: Optional[str] = None
-    salary_second: Optional[str] = None
+    salary_first: Optional[int] = None
+    salary_second: Optional[int] = None
+    city: Optional[str] = None
 
 class ResumeUpdateSchema(BaseModel):
     title: Optional[str] = None

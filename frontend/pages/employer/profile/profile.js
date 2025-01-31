@@ -66,15 +66,16 @@ async function getMe() {
         }
     )
     console.log(getResponse)
-    document.getElementById('data_name').innerHTML = getResponse.employer.name
-    document.getElementById('data_name_2').innerHTML = getResponse.employer.name
-    document.getElementById('data_surname').innerHTML = getResponse.employer.surname
-    document.getElementById('data_surname_2').innerHTML = getResponse.employer.surname
-    document.getElementById('data_patronymic').innerHTML = getResponse.employer.patronymic
-    document.getElementById('data_patronymic_2').innerHTML = getResponse.employer.patronymic
-    document.getElementById('data_email').innerHTML = getResponse.employer.email
-    document.getElementById('data_phone').innerHTML = getResponse.employer.phone
-    document.getElementById('data_phone_2').innerHTML = getResponse.employer.phone
+    const user = getResponse.user
+    document.getElementById('data_name').innerHTML = user.name
+    document.getElementById('data_name_2').innerHTML = user.name
+    document.getElementById('data_surname').innerHTML = user.surname
+    document.getElementById('data_surname_2').innerHTML = user.surname
+    document.getElementById('data_patronymic').innerHTML = user.patronymic
+    document.getElementById('data_patronymic_2').innerHTML = user.patronymic
+    document.getElementById('data_email').innerHTML = user.email
+    document.getElementById('data_phone').innerHTML = user.phone
+    document.getElementById('data_phone_2').innerHTML = user.phone
 }
 
 document.addEventListener("DOMContentLoaded", function () {

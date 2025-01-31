@@ -3,11 +3,10 @@ from typing import Tuple
 from fastapi import Depends, HTTPException, status
 
 from backend.api.resumes.repository import get_resume_repo
-from backend.api.resumes.schemas import ResumeSchema, ResumeUpdateSchema
+from backend.api.resumes.schemas import ResumeSchema, ResumeUpdateSchema, ResumeAddSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.workers.dependencies import get_worker_by_token
 from backend.api.users.workers.schemas import WorkerSchema
-from backend.api.vacancies.schemas import VacancyAddSchema
 from backend.utils.other.check_func import check_worker_can_update
 
 
@@ -25,7 +24,7 @@ def validate_resume_update_permissions(worker, resume):
 
 
 async def create_resume_dependencies(
-        add_resume: VacancyAddSchema,
+        add_resume: ResumeAddSchema,
         worker: WorkerSchema = Depends(get_worker_by_token)
 ) -> Tuple[ResumeSchema, WorkerSchema]:
     if not worker:

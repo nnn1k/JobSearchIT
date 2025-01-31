@@ -78,19 +78,21 @@ async function getMe() {
         }
     )
     console.log(getResponse)
-    document.getElementById('data_name').innerHTML = getResponse.worker.name
-    document.getElementById('data_name_2').innerHTML = getResponse.worker.name
-    document.getElementById('data_surname').innerHTML = getResponse.worker.surname
-    document.getElementById('data_surname_2').innerHTML = getResponse.worker.surname
-    document.getElementById('data_patronymic').innerHTML = getResponse.worker.patronymic
-    document.getElementById('data_patronymic_2').innerHTML = getResponse.worker.patronymic
-    document.getElementById('data_email').innerHTML = getResponse.worker.email
-    document.getElementById('data_phone').innerHTML = getResponse.worker.phone
-    document.getElementById('data_phone_2').innerHTML = getResponse.worker.phone
-    document.getElementById('data_birthday').innerHTML = getResponse.worker.birthday
-    document.getElementById('data_birthday_2').innerHTML = getResponse.worker.birthday
-    document.getElementById('data_city').innerHTML = getResponse.worker.city
-    document.getElementById('data_city_2').innerHTML = getResponse.worker.city
+
+    const user = getResponse.user
+    document.getElementById('data_name').innerHTML = user.name
+    document.getElementById('data_name_2').innerHTML = user.name
+    document.getElementById('data_surname').innerHTML = user.surname
+    document.getElementById('data_surname_2').innerHTML = user.surname
+    document.getElementById('data_patronymic').innerHTML = user.patronymic
+    document.getElementById('data_patronymic_2').innerHTML = user.patronymic
+    document.getElementById('data_email').innerHTML = user.email
+    document.getElementById('data_phone').innerHTML = user.phone
+    document.getElementById('data_phone_2').innerHTML = user.phone
+    document.getElementById('data_birthday').innerHTML = user.birthday
+    document.getElementById('data_birthday_2').innerHTML = user.birthday
+    document.getElementById('data_city').innerHTML = user.city
+    document.getElementById('data_city_2').innerHTML = user.city
 }
 
 document.addEventListener("DOMContentLoaded", function () {

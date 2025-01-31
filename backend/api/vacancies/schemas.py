@@ -19,7 +19,7 @@ class VacancyAddSchema(BaseModel):
     description: str
     salary_first: Optional[int]
     salary_second: Optional[int]
-    city: str
+    city: Optional[str]
 
 
 class VacancyUpdateSchema(BaseModel):

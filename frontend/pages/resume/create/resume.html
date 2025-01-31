@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма заполнения резюме</title>
+    <link rel="stylesheet" href="/frontend/pages/resume/create/resume.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Заполнение резюме</h1>
+    <form id="resumeForm">
+        <!-- Этап 1: Выбор профессии -->
+        <div class="step active" id="step1">
+            <label for="title">Введите профессию:</label>
+            <input type="text" id="title">
+            <button type="button" onclick="nextStep(1)">Далее</button>
+        </div>
+
+        <!-- Этап 2: Ввод данных о зарплате и городе -->
+        <div class="step" id="step2">
+            <label for="description">Описание:</label>
+            <textarea id="description" rows="8" placeholder="Введите описание..."></textarea>
+
+            <label for="salary_first">Минимальная зарплата:</label>
+            <input type="number" id="salary_first" placeholder="Введите минимальную зарплату"/>
+
+            <label for="salary_second">Максимальная зарплата:</label>
+            <input type="number" id="salary_second" placeholder="Введите максимальную зарплату"/>
+
+            <label for="city">Город:</label>
+            <input type="text" id="city" placeholder="Введите город"/>
+
+            <button type="button" onclick="nextStep(2)">Далее</button>
+            <button type="button" onclick="prevStep(2)">Назад</button>
+        </div>
+        <!-- Этап 3: Выбор ключевых навыков -->
+        <div class="step" id="step3">
+
+            <div id="selectedSkillsContainer">
+                <h3>Выбранные навыки:</h3>
+                <div id="selectedSkills" class="selected-skills-container"></div>
+            </div>
+            <div id="skillsContainer">
+
+            </div>
+            <button type="button" onclick="nextStep(3)">Далее</button>
+            <button type="button" onclick="prevStep(3)">Назад</button>
+        </div>
+        <!-- Этап 4: Опыт работы -->
+        <div class="step" id="step4">
+            <h2>Опыт работы</h2>
+            <div id="experienceContainer">
+                <div class="experienceEntry">
+                    <label for="company">Компания:</label>
+                    <input type="text" class="company" required placeholder="Введите название компании">
+
+                    <label for="position">Должность:</label>
+                    <input type="text" class="position" required placeholder="Введите вашу должность">
+
+                    <label for="responsibilities">Обязанности:</label>
+                    <textarea class="responsibilities" rows="8" required
+                              placeholder="Опишите ваши обязанности..."></textarea>
+
+                    <label for="startDate">Начало работы:</label>
+                    <input type="date" class="startDate" required>
+
+                    <label for="endDate">Конец работы:</label>
+                    <input type="date" class="endDate" required>
+                </div>
+            </div>
+            <button type="button" onclick="addExperience()">Добавить место работы</button>
+            <button type="button" onclick="noExperience()">У меня нет опыта работы</button>
+            <button type="submit" onclick="submitResume(event)">Отправить резюме </button>
+            <button type="button" onclick="prevStep(4)">Назад</button>
+        </div>
+    </form>
+</div>
+
+<script type='module' src="/frontend/pages/resume/create/resume.js"></script>
+</body>
+</html>
