@@ -27,13 +27,15 @@ async def create_resume_dependencies(
         add_resume: ResumeAddSchema,
         worker: WorkerSchema = Depends(get_worker_by_token)
 ) -> Tuple[ResumeSchema, WorkerSchema]:
+    skills = add_resume.skills
+    print(skills)
     if not worker:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
         )
     resume_repo = get_resume_repo()
-    resume = await resume_repo.add_one(**add_resume.model_dump(), worker_id=worker.id)
+    resume = await resume_repo.add_one(**add_resume.model_dump(exclude='skills'), worker_id=worker.id)
     return resume, worker
 
 

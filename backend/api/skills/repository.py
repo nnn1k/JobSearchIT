@@ -1,5 +1,6 @@
 from backend.api.skills.schemas import SkillSchema
-from backend.database.models.other import SkillsOrm
+from backend.database.models.other import SkillsOrm, VacanciesSkillsOrm, WorkersSkillsOrm
+from backend.database.settings.database import session_factory
 from backend.database.utils.repository import AlchemyRepository
 
 
@@ -14,3 +15,4 @@ async def get_all_skills():
     skills_repo = get_skills_repo()
     skills = await skills_repo.get_all()
     return skills
+

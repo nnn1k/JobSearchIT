@@ -19,6 +19,7 @@ async function postResume(){
     const salary_first = Number(document.getElementById('salary_first').value)
     const salary_second = Number(document.getElementById('salary_second').value)
     const city = document.getElementById('city').value
+    const skills = getSelectedSkills()
     const postResponse = await makeRequest({
         method: 'POST',
         url: '/api/resumes/',
@@ -27,11 +28,12 @@ async function postResume(){
             description,
             salary_first,
             salary_second,
-            city
+            city,
+            skills
         }
     })
     if (postResponse.status) {
-        alert('Вакансия добавлена')
+        alert('Резюме добавлена')
         window.location.href = apiUrl + '/worker/profile'
     }
 }

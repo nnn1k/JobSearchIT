@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List, Any
 
 from pydantic import BaseModel
 
@@ -20,6 +20,7 @@ class ResumeAddSchema(BaseModel):
     salary_first: Optional[int] = None
     salary_second: Optional[int] = None
     city: Optional[str] = None
+    skills: List[Any]
 
 class ResumeUpdateSchema(BaseModel):
     title: Optional[str] = None
