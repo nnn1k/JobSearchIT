@@ -11,7 +11,6 @@
     flex-direction: column;
     display: flex;
     width: 1000px;
-
 }
 
 .company_description {
@@ -103,6 +102,11 @@
     line-height: 1.5;
 }
 
+#vac_form {
+    margin-left: 300px;
+    align-self: flex-start;
+}
+
 #company_description {
     white-space: pre-wrap;
 }
@@ -116,6 +120,11 @@
     display: flex;
     flex-direction: column;
 }
-textarea{
+
+textarea {
     resize: none;
+}
+
+.mce-content-body {
+    white-space: pre-wrap; /* Применяем стиль white-space: pre-wrap */
 }

@@ -19,6 +19,7 @@ class RepositoryHelper:
         return self.schema.model_validate(model, from_attributes=True)
 
     async def get_query(self, session, kwargs):
+        kwargs['deleted_at'] = None
         query = (
             select(self.db_model)
             .filter_by(**kwargs)

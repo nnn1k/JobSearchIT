@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/frontend/pages/company/company.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
 </head>
 {% if user_type == 'worker' %}
     {% extends 'base_worker/base_worker.html' %}
@@ -38,7 +38,8 @@
         </div>
         <div class="form_container" id="upd_form">
             <div class="update_container">
-                <textarea id="company_description_update"></textarea>
+                <textarea id="company_description_update">
+                </textarea>
                 <input type="button" value="Отправить" onclick="update_company()" class="btn_upd_form">
             </div>
         </div>

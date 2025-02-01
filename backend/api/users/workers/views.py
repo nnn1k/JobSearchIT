@@ -14,7 +14,7 @@ def get_my_profile(
         worker: WorkerSchema = Depends(get_worker_by_token)
 ):
     return {
-        'user': worker.model_dump(exclude='password'),
+        'user': worker,
         'status': 'ok'
     }
 
@@ -23,7 +23,7 @@ def update_my_profile(
         worker: WorkerSchema = Depends(put_worker_dependencies)
 ):
     return {
-        'user': worker.model_dump(exclude='password'),
+        'user': worker,
         'status': 'ok'
     }
 
@@ -32,6 +32,6 @@ def update_my_other(
         worker: WorkerSchema = Depends(patch_worker_dependencies)
 ):
     return {
-        'user': worker.model_dump(exclude='password'),
+        'user': worker,
         'status': 'ok'
     }

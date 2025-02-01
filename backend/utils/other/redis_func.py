@@ -11,7 +11,8 @@ def get_code_from_redis(user_type, user_id):
     redis_client = create_redis_client()
     try:
         new_code = redis_client.hget(f'{user_type}:{user_id}', 'code').decode('utf-8')
-    except Exception as e:
-        return HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Вышло время кода')
-    return new_code
+        return new_code
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Вышло время кода')
+
 
