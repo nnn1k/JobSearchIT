@@ -2,6 +2,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
+from backend.api.skills.dependencies import get_all_skills
 from backend.api.skills.schemas import SkillSchema
 
 router = APIRouter(prefix="/skills", tags=["skills"])
