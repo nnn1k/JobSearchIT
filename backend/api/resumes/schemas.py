@@ -2,6 +2,7 @@ from typing import Optional, List, Any
 
 from pydantic import BaseModel
 
+from backend.api.skills.schemas import SkillsResponseSchema
 from backend.schemas.global_schema import GlobalSchema
 
 
@@ -20,7 +21,7 @@ class ResumeAddSchema(BaseModel):
     salary_first: Optional[int] = None
     salary_second: Optional[int] = None
     city: Optional[str] = None
-    skills: List[Any]
+    skills: List[SkillsResponseSchema]
 
 class ResumeUpdateSchema(BaseModel):
     title: Optional[str] = None
