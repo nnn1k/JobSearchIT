@@ -6,8 +6,9 @@
     <title>Форма заполнения резюме</title>
     <link rel="stylesheet" href="/frontend/pages/resume/create/resume.css">
 </head>
+{% extends 'base_worker/base_worker.html' %}
+{% block content %}
 <body>
-
 <div class="container">
     <h1>Заполнение резюме</h1>
     <form id="resumeForm">
@@ -80,4 +81,5 @@
 <script src="/frontend/pages/resume/create/swap_form.js"></script>
 <script type='module' src="/frontend/pages/resume/create/resume.js"></script>
 </body>
+{% endblock %}
 </html>

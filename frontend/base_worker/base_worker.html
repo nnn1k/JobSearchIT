@@ -8,7 +8,7 @@
 </head>
 <body>
 <header class="header">
-    <div class="choose">
+    <div class="choose" id="choose_role" style="display: none">
         <a class="disabled_link" href="">
             Соискателям
         </a>
@@ -22,7 +22,7 @@
         </div>
         <div class="right_side_header">
             <div>
-                <button class="btn_create_resume" onclick="">
+                <button class="btn_create_resume" onclick="clickAddResume()">
                     Создать резюме
                 </button>
             </div>
@@ -33,7 +33,6 @@
             </div>
         </div>
     </div>
-
 </header>
 <div class="content">
     {% block content %} {% endblock %}

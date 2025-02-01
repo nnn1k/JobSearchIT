@@ -12,6 +12,7 @@ async function login_worker() {
         }
     })
     if (postResponse) {
+        localStorage.setItem('user_type', 'worker');
         window.location.href = apiUrl + "/worker/profile"
     }
 }
@@ -28,6 +29,7 @@ async function login_employer_form() {
         }
     })
     if (postResponse) {
+        localStorage.setItem('user_type', 'employer');
         window.location.href = apiUrl + "/employer/profile"
     }
 }

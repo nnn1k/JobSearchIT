@@ -6,7 +6,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/frontend/pages/company/company.css">
 </head>
-{% extends 'base_employer/base_employer.html' %}
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
 {% block content %}
     <body>
     <div class="container_all">

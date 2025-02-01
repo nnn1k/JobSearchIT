@@ -1,7 +1,15 @@
 import {apiUrl} from "/frontend/js/utils.js";
 
 async function clickAddVacancy(){
-    window.location.href=apiUrl+"/vacancies/add"
+
+    const jwtTokenName = 'access_token';
+        const token = getCookie(jwtTokenName);
+        console.log(token)
+        if(token){
+            window.location.href=apiUrl+"/vacancies/add"
+        } else {
+            window.location.href=apiUrl+'/login';
+        }
 }
 
 function getCookie(name) {

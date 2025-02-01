@@ -7,8 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
+{% block content %}
 <body>
-<p>                    <pre id="text_description_vacancy" style="font-size: 30px">
+<p>
+<pre id="text_description_vacancy" style="font-size: 30px">
 Обязанности:
  —
  —
@@ -17,6 +26,10 @@
  —
 Условия:
  —
-                    </pre></p>
+</pre>
+</p>
+
+<script type="module" src="/frontend/pages/vacancy/vacancy.js"></script>
 </body>
+{% endblock %}
 </html>

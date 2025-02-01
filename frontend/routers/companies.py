@@ -13,6 +13,7 @@ def add_company(request: Request):
 
 @router.get('/{company_id}')
 def get_company(request: Request):
+    user_type = request.cookies.get("user_type")
     return templates.TemplateResponse('/pages/company/company.html', {"request": request})
 
 
