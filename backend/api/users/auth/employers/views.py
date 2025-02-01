@@ -20,11 +20,12 @@ async def login(
         response: Response,
         employer: EmployerResponseSchema = Depends(login_employer_dependencies),
 ):
-    access_token = jwt_token.create_access_token(id=employer.id, user_type='employer')
-    refresh_token = jwt_token.create_refresh_token(id=employer.id, user_type='employer')
+    access_token = jwt_token.create_access_token(id=employer.id, user_type=employer.type)
+    refresh_token = jwt_token.create_refresh_token(id=employer.id, user_type=employer.type)
 
     response.set_cookie(ACCESS_TOKEN, access_token)
     response.set_cookie(REFRESH_TOKEN, refresh_token)
+    response.set_cookie('user_type', employer.type)
     token = Token(
         access_token=access_token,
         refresh_token=refresh_token,
