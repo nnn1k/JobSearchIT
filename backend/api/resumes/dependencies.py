@@ -5,6 +5,7 @@ from fastapi import Depends, HTTPException, status
 from backend.api.resumes.repository import get_resume_repo
 from backend.api.resumes.schemas import ResumeSchema, ResumeUpdateSchema, ResumeAddSchema
 from backend.api.skills.repository import update_worker_skills
+from backend.api.skills.schemas import SkillsResponseSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
 from backend.api.users.workers.dependencies import get_worker_by_token
 from backend.api.users.workers.schemas import WorkerSchema
@@ -28,7 +29,7 @@ async def create_resume_dependencies(
         add_resume: ResumeAddSchema,
         worker: WorkerSchema = Depends(get_worker_by_token)
 ) -> Tuple[ResumeSchema, WorkerSchema]:
-    skills = add_resume.skills
+    skills: SkillsResponseSchema = add_resume.skills
     if not worker:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
