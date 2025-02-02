@@ -14,7 +14,7 @@ from backend.utils.auth_utils.check_func import check_employer_can_update
 async def get_vacancy_by_id_dependencies(
         vacancy_id: int,
         user=Depends(get_user_by_token)
-) -> Tuple[VacancySchema, EmployerSchema, bool]:
+) -> Tuple[VacancySchema, EmployerSchema, bool, str]:
     vacancy = await get_vacancy_by_id(vacancy_id)
     can_update = check_employer_can_update(user, vacancy)
     if not vacancy:
