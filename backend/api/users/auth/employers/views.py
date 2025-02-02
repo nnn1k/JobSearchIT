@@ -6,8 +6,8 @@ from backend.utils.auth_utils.auth_dependencies import confirm_email_response, s
 from backend.api.users.auth.employers.dependencies import (
     login_employer_dependencies,
     register_employer_dependencies,
-    get_code_dependencies,
-    check_code_dependencies
+    get_employer_code_dependencies,
+    check_employer_code_dependencies
 )
 from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.employers.schemas import EmployerResponseSchema
@@ -46,13 +46,13 @@ async def register(
 
 @router.get('/code', summary='Отправить код на почту')
 async def get_code(
-        employer: EmployerResponseSchema = Depends(get_code_dependencies)
+        employer: EmployerResponseSchema = Depends(get_employer_code_dependencies)
 ):
     return send_code_response(employer.email)
 
 
 @router.post('/code', summary='Проверка кода')
 async def send_code(
-        employer: EmployerResponseSchema = Depends(check_code_dependencies)
+        employer: EmployerResponseSchema = Depends(check_employer_code_dependencies)
 ):
     return confirm_email_response(employer.email)

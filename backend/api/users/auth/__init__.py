@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Response
 
 from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
-from .workers import worker_auth_router
-from .employers import employers_auth_router
+from backend.api.users.auth.workers.views import router as worker_auth_router
+from backend.api.users.auth.employers.views import router as employer_auth_router
 
 
 router = APIRouter(prefix="/auth")
@@ -18,4 +18,4 @@ def logout_user(response: Response):
 
 
 router.include_router(worker_auth_router)
-router.include_router(employers_auth_router)
+router.include_router(employer_auth_router)

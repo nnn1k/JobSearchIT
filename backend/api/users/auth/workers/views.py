@@ -7,8 +7,8 @@ from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TO
 from backend.api.users.auth.workers.dependencies import (
     register_worker_dependencies,
     login_worker_dependencies,
-    check_code_dependencies,
-    get_code_dependencies,
+    check_worker_code_dependencies,
+    get_worker_code_dependencies,
 )
 from backend.api.users.workers.profile.schemas import WorkerResponseSchema
 
@@ -46,13 +46,13 @@ async def register(
 
 @router.get('/code', summary='Отправить код на почту')
 async def get_code(
-        worker: WorkerResponseSchema = Depends(get_code_dependencies)
+        worker: WorkerResponseSchema = Depends(get_worker_code_dependencies)
 ):
     return send_code_response(worker.email)
 
 
 @router.post('/code', summary='Проверка кода')
 async def send_code(
-        worker: WorkerResponseSchema = Depends(check_code_dependencies)
+        worker: WorkerResponseSchema = Depends(check_worker_code_dependencies)
 ):
     return confirm_email_response(worker.email)
