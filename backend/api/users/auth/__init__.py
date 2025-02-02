@@ -13,7 +13,8 @@ def logout_user(response: Response):
     response.delete_cookie(REFRESH_TOKEN)
     response.delete_cookie('user_type')
     return {
-        'status': 'ok'
+        'status': 'ok',
+        'message': 'user logged out'
     }
 
 
