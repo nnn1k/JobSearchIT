@@ -47,7 +47,7 @@ async def check_user_code_dependencies(user, repository, code) -> WorkerSchema o
     )
 
 
-async def send_code_response(email: str) -> dict[str, Any]:
+def send_code_response(email: str) -> dict[str, Any]:
     return {
         'message': 'Код отправлен на почту:',
         'email': email,
@@ -55,7 +55,7 @@ async def send_code_response(email: str) -> dict[str, Any]:
     }
 
 
-async def confirm_email_response(email: str) -> dict[str, Any]:
+def confirm_email_response(email: str) -> dict[str, Any]:
     return {
         'message': 'Почта подтверждена',
         'email': email,
