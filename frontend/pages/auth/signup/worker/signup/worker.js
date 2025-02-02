@@ -1,9 +1,14 @@
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
+
 
 async function regisration() {
     const email = document.getElementById("login").value
     const password = document.getElementById("password").value
     const  confirm_password = document.getElementById("confirm_password").value
+    const regBtn = document.getElementById('reg_btn')
+    regBtn.disabled = true
+    const loadingIndicator = showLoadingIndicator();
     const postResponse = await makeRequest({
         method: 'POST',
         url: '/api/auth/workers/register',
@@ -19,7 +24,9 @@ async function regisration() {
             url: '/api/auth/workers/code',
             }
         )
-        console.log(getResponse)
+        hideLoadingIndicator(loadingIndicator);
+        regBtn.disabled = false
+
         const container1 = document.getElementById('container_worker');
         const container2 = document.getElementById('container_check_code');
         container1.style.display = 'none';
@@ -34,7 +41,9 @@ async function regisration() {
 
 async function check_code(){
     const code = document.getElementById("code").value
-    console.log(code)
+    const checkBtn = document.getElementById('check_btn')
+    checkBtn.disabled = true
+    const loadingIndicator = showLoadingIndicator();
     const postResponse = await makeRequest({
         method: 'POST',
         url: '/api/auth/workers/code',
@@ -43,6 +52,8 @@ async function check_code(){
         }
     })
     if (postResponse){
+        hideLoadingIndicator(loadingIndicator);
+        checkBtn.disabled = false
         window.location.href=apiUrl+"/signup/worker/profile"
     }
 }

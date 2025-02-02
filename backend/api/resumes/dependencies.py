@@ -63,7 +63,6 @@ async def get_all_my_resumes_dependencies(
         )
     resume_repo = get_resume_repo()
     resumes = await resume_repo.get_all(worker_id=user.id)
-
     can_update = check_worker_can_update(user, resumes[0])
     return resumes, user, can_update
 

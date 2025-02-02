@@ -79,6 +79,10 @@ body {
     text-decoration: none;
 }
 
+.btn_create_vacancy{
+    visibility: hidden;
+}
+
 a:link {
     color: deepskyblue
 }

@@ -1,4 +1,5 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 $(document).ready(function () {
         let currentStep = 0;
@@ -52,7 +53,9 @@ async function insert_data_for_profile() {
     const name = document.getElementById("name").value
     const patronymic = document.getElementById("patronymic").value
     const phone = document.getElementById("phone").value
-
+    const completeBtn = document.getElementById('complete_reg')
+    completeBtn.disabled = true
+    const loadingIndicator = showLoadingIndicator();
     const putResponse = await makeRequest({
         method: 'PUT',
         url: '/api/employers/me',
@@ -64,6 +67,8 @@ async function insert_data_for_profile() {
         }
     })
     if (putResponse){
+        hideLoadingIndicator(loadingIndicator);
+        completeBtn.disabled = false
         window.location.href=apiUrl+"/employer/profile"
     }
 }

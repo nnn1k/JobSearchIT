@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/frontend/pages/worker/profile/profile.css">
     <title>Личный кабинет</title>
 </head>
+{% extends 'base_worker/base_worker.html' %}
+{% block content %}
 <body>
 <h1 class="title">Личные данные</h1>
 <div class="container_user_data">
@@ -163,4 +165,5 @@
 </div>
     <script type="module" src="/frontend/pages/worker/profile/profile.js"></script>
 </body>
+{% endblock %}
 </html>

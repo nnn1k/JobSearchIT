@@ -1,3 +1,5 @@
+from fastapi.responses import RedirectResponse
+
 from .signup import router as signup_router
 from .employer import router as employer_router
 from .worker import router as worker_router
@@ -21,6 +23,9 @@ router.include_router(resume_router)
 
 @router.get("/")
 def home_page_worker(request: Request):
+    user_type = request.cookies.get("user_type")
+    if user_type == "employer":
+        return RedirectResponse(url="/employer")
     return templates.TemplateResponse("/base_worker/base_worker.html", {"request": request})
 
 

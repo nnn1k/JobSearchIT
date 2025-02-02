@@ -15,6 +15,7 @@ class ResumeSchema(GlobalSchema):
     is_hidden: bool = False
     worker_id: int
 
+
 class ResumeAddSchema(BaseModel):
     title: str
     description: str
@@ -22,6 +23,7 @@ class ResumeAddSchema(BaseModel):
     salary_second: Optional[int] = None
     city: Optional[str] = None
     skills: List[SkillsResponseSchema]
+
 
 class ResumeUpdateSchema(BaseModel):
     title: Optional[str] = None

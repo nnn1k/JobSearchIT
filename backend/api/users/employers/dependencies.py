@@ -23,6 +23,7 @@ async def put_employer_dependencies(
     employer_repo = get_employer_repo()
     return await employer_repo.update_one(id=employer.id, **new_employer.model_dump())
 
+
 async def patch_employer_dependencies(
         new_employer: DynamicSchema,
         employer: EmployerSchema = Depends(get_employer_by_token)
