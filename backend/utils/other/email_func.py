@@ -1,6 +1,6 @@
 import string
 import random
-import smtplib
+
 from aiosmtplib import SMTP
 from backend.utils.other.redis_func import create_async_redis_client
 
