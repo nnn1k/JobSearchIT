@@ -11,6 +11,7 @@ router = APIRouter(prefix="/auth")
 def logout_user(response: Response):
     response.delete_cookie(ACCESS_TOKEN)
     response.delete_cookie(REFRESH_TOKEN)
+    response.delete_cookie('user_type')
     return {
         'status': 'ok'
     }
