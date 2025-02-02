@@ -25,7 +25,7 @@ async def register_employer_dependencies(
 async def get_employer_code_dependencies(
         user: EmployerSchema = Depends(get_employer_by_token),
 ) -> EmployerSchema:
-    SendEmail.send_code_to_email(user, 'employer')
+    await SendEmail.send_code_to_email(user, 'employer')
     return user
 
 

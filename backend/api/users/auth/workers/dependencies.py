@@ -25,7 +25,7 @@ async def register_worker_dependencies(
 async def get_worker_code_dependencies(
         user: WorkerSchema = Depends(get_worker_by_token),
 ) -> WorkerSchema:
-    SendEmail.send_code_to_email(user, 'worker')
+    await SendEmail.send_code_to_email(user, 'worker')
     return user
 
 

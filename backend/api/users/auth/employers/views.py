@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, Depends
 from fastapi.responses import RedirectResponse
 
-from backend.utils.auth_utils.AuthJWT import jwt_token, Token
+from backend.api.users.auth.AuthJWT import jwt_token, Token
 from backend.utils.auth_utils.auth_dependencies import confirm_email_response, send_code_response
 from backend.api.users.auth.employers.dependencies import (
     login_employer_dependencies,

@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status, Cookie
 
-from backend.utils.auth_utils.AuthJWT import jwt_token
+from backend.api.users.auth.AuthJWT import jwt_token
 from backend.api.users.employers.repository import get_employer_by_id
 from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.profile.repository import get_worker_by_id

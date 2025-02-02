@@ -38,7 +38,7 @@ async def login_user(user, repository) -> WorkerSchema or EmployerSchema:
 
 
 async def check_user_code_dependencies(user, repository, code) -> WorkerSchema or EmployerSchema:
-    new_code = get_code_from_redis(repository.user_type, user.id)
+    new_code = await get_code_from_redis(repository.user_type, user.id)
     if code.code == new_code:
         return await repository.update_one(id=user.id, is_confirmed=True)
     raise HTTPException(

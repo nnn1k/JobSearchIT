@@ -1,6 +1,8 @@
 import string
 import random
 import smtplib
+from aiosmtplib import SMTP
+from backend.utils.other.redis_func import create_async_redis_client
 
 class SendEmail:
     
@@ -10,23 +12,22 @@ class SendEmail:
         return res
 
     @staticmethod
-    def post_mail(user_to, message) -> None:
+    async def post_mail(user_to, message) -> None:
         mail_data = {
             'login': 'testemailsendnnn1k@gmail.com',
             'password': 'znwt bffc blls fpqp',
         }
-        smt = smtplib.SMTP('smtp.gmail.com', 587)
-        smt.starttls()
-        smt.login(mail_data['login'], mail_data['password'])
-        smt.sendmail(mail_data['login'], user_to, message.encode('utf-8'))
-        smt.quit()
+        smt = SMTP(hostname='smtp.gmail.com', port=587, start_tls=True)
+        await smt.connect()
+        await smt.login(mail_data['login'], mail_data['password'])
+        await smt.sendmail(mail_data['login'], user_to, message.encode('utf-8'))
+        await smt.quit()
 
     @staticmethod
-    def send_code_to_email(user, user_type) -> None:
+    async def send_code_to_email(user, user_type) -> None:
         code = SendEmail.get_random_code()
         message = f'Ваш код {code}'
-        from backend.utils.other.redis_func import create_redis_client
-        redis_client = create_redis_client()
-        redis_client.hset(f'{user_type}:{user.id}', mapping={'code': code, 'email': user.email})
-        redis_client.expire(f'{user_type}:{user.id}', 3000)
-        SendEmail.post_mail(user.email, message)
+        redis_client = await create_async_redis_client()
+        await redis_client.hset(f'{user_type}:{user.id}', mapping={'code': code, 'email': user.email})
+        await redis_client.expire(f'{user_type}:{user.id}', 3000)
+        await SendEmail.post_mail(user.email, message)

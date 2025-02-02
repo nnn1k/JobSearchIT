@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from starlette.responses import RedirectResponse
 
-from backend.utils.auth_utils.AuthJWT import jwt_token, Token
+from backend.api.users.auth.AuthJWT import jwt_token, Token
 from backend.utils.auth_utils.auth_dependencies import confirm_email_response, send_code_response
 from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.auth.workers.dependencies import (
