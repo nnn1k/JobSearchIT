@@ -72,36 +72,42 @@ function renderVacancies(vacancies) {
     container.innerHTML = '';
 
     vacancies.forEach(vacancy => {
+        const vacancyLink = document.createElement('a');
+        vacancyLink.href = `/vacancies/${vacancy.id}`;
+        vacancyLink.setAttribute('target', '_blank');
+
         const vacancyElement = document.createElement('div');
         vacancyElement.classList.add('vacancy');
 
         const titleElement = document.createElement('h2');
+        titleElement.textContent = vacancy.title;
 
-        const titleLink = document.createElement('a');
-        titleLink.href = `/vacancies/${vacancy.id}`;
-        titleLink.textContent = vacancy.title;
-        titleLink.setAttribute('target', '_blank')
-        titleElement.appendChild(titleLink);
+        vacancyElement.appendChild(titleElement);
+
         const salaryElement = document.createElement('p');
         const salary_first = vacancy.salary_first;
         const salary_second = vacancy.salary_second;
         if (!salary_first && !salary_second)
-            salaryElement.innerHTML = ''
-        else
-            salaryElement.innerHTML += `<strong>Зарплата (руб.):</strong>`
-        if (salary_first)
-            salaryElement.innerHTML += ` от ${salary_first}`
-        if (salary_second)
-            salaryElement.innerHTML += ` до ${salary_second}`
+            salaryElement.innerHTML = '';
+        else {
+            salaryElement.innerHTML += `<strong>Зарплата:</strong>`;
+            if (salary_first)
+                salaryElement.innerHTML += ` от ${salary_first}`;
+            if (salary_second)
+                salaryElement.innerHTML += ` до ${salary_second}`;
+            salaryElement.innerHTML += ' руб.'
+        }
 
-        const cityElement = document.createElement('p');
-        cityElement.innerHTML = `<strong>Город:</strong> ${vacancy.city}`;
+        if (vacancy.city) {
+            const cityElement = document.createElement('p');
+            cityElement.innerHTML = `<strong>Город:</strong> ${vacancy.city}`;
+            vacancyElement.appendChild(cityElement);
+        }
 
-        vacancyElement.appendChild(titleElement);
         vacancyElement.appendChild(salaryElement);
-        vacancyElement.appendChild(cityElement);
+        vacancyLink.appendChild(vacancyElement);
 
-        container.appendChild(vacancyElement);
+        container.appendChild(vacancyLink);
     });
 }
 

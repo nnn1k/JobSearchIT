@@ -6,9 +6,16 @@ router = APIRouter(prefix="/resumes")
 templates = Jinja2Templates(directory='frontend')
 
 
-@router.get("/add")
+@router.get('/add')
 def resume_add(request: Request):
     user_type = request.cookies.get("user_type")
     if user_type != "worker":
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/resume/create/resume.html", {"request": request})
+
+@router.get('/')
+def resume_get(request: Request):
+    user_type = request.cookies.get("user_type")
+    if user_type != "worker":
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse("/pages/resume/resume.html", {"request": request})
