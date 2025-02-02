@@ -2,61 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/frontend/pages/vacancy/vacancy.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вакансия</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f9f9f9;
-        }
-        .job-posting {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        .requirements, .description {
-            margin-top: 15px;
-        }
-        .apply-button {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .apply-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
+{% block content %}
 <body>
+<div id="vacancy-container" class="vacancy-container">
+    <div class="main_info">
+        <h1 id="title_vacancy">Вакансия: Менеджер по продажам</h1>
 
-<div class="job-posting">
-    <h1>Вакансия: Веб-разработчик</h1>
-    <h2>Компания: ПримерТех</h2>
-    <div class="description">
-        <h3>Описание:</h3>
-        <p>Мы ищем опытного веб-разработчика для работы над интересными проектами. Ваша работа будет заключаться в разработке и поддержке веб-приложений.</p>
+        <div class="company-info">
+            <h2 id="name_company">Компания: ООО "Пример"</h2>
+            <p id="city_vacancy">Местоположение: Москва</p>
+            <p id="salary_vacancy">Зарплата: от 60 000 до 100 000 руб.</p>
+        </div>
+        <a class="apply-button">Откликнуться на вакансию</a>
     </div>
-    <div class="requirements">
-        <h3>Требования:</h3>
-        <ul>
-            <li>Опыт работы с HTML, CSS, JavaScript</li>
-            <li>Знание одного из популярных фреймворков (React, Vue, Angular)</li>
-            <li>Опыт работы с RESTful API</li>
-            <li>Командный игрок с хорошими коммуникативными навыками</li>
-        </ul>
+
+    <div class="vacancy-details">
+        <p id="description_vacancy" class="description_vacancy">хуй</p>
     </div>
-    <a href="mailto:hr@example.com" class="apply-button">Откликнуться на вакансию</a>
+
 </div>
-
+<script type="module" src="/frontend/pages/vacancy/vacancy.js"></script>
 </body>
+{% endblock %}
 </html>

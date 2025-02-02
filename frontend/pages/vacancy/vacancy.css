@@ -1,0 +1,47 @@
+.vacancy-container {
+    display: block;
+    font-family: Arial, sans-serif;
+    margin-left: 13%;
+    margin-top: 5%;
+    margin-right: 30%;
+}
+
+.main_info {
+    background: #fff;
+    border-radius: 38px;
+    font-size: 18px;
+    width: 70%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    font-size: 30px;
+    color: #333;
+}
+
+h2 {
+    font-size: 20px;
+    color: #555;
+}
+
+.company-info, .vacancy-details {
+    margin-bottom: 20px;
+}
+
+.apply-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: crimson;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 2px solid white;
+}
+
+.apply-button:hover {
+    background-color: white;
+    color: crimson;
+    border: 2px solid crimson;
+}
+

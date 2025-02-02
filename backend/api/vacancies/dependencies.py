@@ -2,6 +2,7 @@ from typing import Tuple
 
 from fastapi import Depends, HTTPException, status
 
+from backend.api.companies.repository import get_company_by_id
 from backend.api.vacancies.repository import get_vacancy_repo, get_vacancy_by_id
 from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema, VacancyUpdateSchema
 from backend.api.users.auth.token_dependencies import get_user_by_token
@@ -21,7 +22,8 @@ async def get_vacancy_by_id_dependencies(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='vacancy is not exist'
         )
-    return vacancy, user, can_update
+    company = await get_company_by_id(vacancy.company_id)
+    return vacancy, user, can_update, company.name
 
 
 async def create_vacancy_dependencies(

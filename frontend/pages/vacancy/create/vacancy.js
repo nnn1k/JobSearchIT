@@ -14,7 +14,7 @@ tinymce.init({
 
 async function post_vacancy() {
     const title = document.getElementById('input_for_title_vacancy').value
-    const description = document.getElementById('input_for_description_vacancy').value
+    const description = tinymce.get('input_for_description_vacancy').getContent()
     const salary_first = Number(document.getElementById('input_for_first_salary').value)
     const salary_second = Number(document.getElementById('input_for_second_salary').value)
     const city = document.getElementById('input_for_city_vacancy').value
