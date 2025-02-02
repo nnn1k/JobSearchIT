@@ -1,7 +1,7 @@
 from backend.database.utils.repository import AlchemyRepository
 from backend.api.users.employers.schemas import EmployerSchema, EmployerResponseSchema
 from backend.database.models.employer import EmployersOrm
-from backend.utils.other.check_func import exclude_password
+from backend.utils.auth_utils.check_func import exclude_password
 
 
 class EmployerRepository(AlchemyRepository):

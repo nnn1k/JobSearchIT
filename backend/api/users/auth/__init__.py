@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response
 
-from .token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from .workers import worker_auth_router
 from .employers import employers_auth_router
 

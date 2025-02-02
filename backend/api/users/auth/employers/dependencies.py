@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from backend.api.users.auth.auth_dependencies import register_user, login_user, check_user_code_dependencies
+from backend.utils.auth_utils.auth_dependencies import register_user, login_user, check_user_code_dependencies
 from backend.api.users.employers.dependencies import get_employer_by_token
 from backend.api.users.employers.repository import get_employer_repo
 from backend.api.users.employers.schemas import EmployerAuthSchema, EmployerSchema, EmployerRegisterSchema

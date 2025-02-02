@@ -1,11 +1,11 @@
 from fastapi import Depends
 
-from backend.api.users.auth.auth_dependencies import register_user, login_user, check_user_code_dependencies
-from backend.api.users.workers.repository import get_worker_repo
+from backend.utils.auth_utils.auth_dependencies import register_user, login_user, check_user_code_dependencies
+from backend.api.users.workers.profile.repository import get_worker_repo
 from backend.schemas.global_schema import CodeSchema
-from backend.api.users.workers.schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
+from backend.api.users.workers.profile.schemas import WorkerRegisterSchema, WorkerAuthSchema, WorkerSchema
 from backend.utils.other.email_func import SendEmail
-from backend.api.users.workers.dependencies import get_worker_by_token
+from backend.api.users.workers.profile.dependencies import get_worker_by_token
 
 
 async def login_worker_dependencies(

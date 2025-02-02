@@ -1,11 +1,11 @@
-from typing import Literal, Any
+from typing import Any
 
 from fastapi import HTTPException, status
 
 from backend.api.users.employers.schemas import EmployerSchema
-from backend.api.users.workers.schemas import WorkerSchema
-from backend.utils.other.check_func import exclude_password
-from backend.utils.other.hash_pwd import HashPwd
+from backend.api.users.workers.profile.schemas import WorkerSchema
+from backend.utils.auth_utils.check_func import exclude_password
+from backend.utils.auth_utils.hash_pwd import HashPwd
 from backend.utils.other.redis_func import get_code_from_redis
 
 

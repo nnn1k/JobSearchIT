@@ -1,7 +1,7 @@
 from backend.database.utils.repository import AlchemyRepository
 from backend.database.models.worker import WorkersOrm
-from backend.api.users.workers.schemas import WorkerSchema, WorkerResponseSchema
-from backend.utils.other.check_func import exclude_password
+from backend.api.users.workers.profile.schemas import WorkerSchema, WorkerResponseSchema
+from backend.utils.auth_utils.check_func import exclude_password
 
 
 class WorkerRepository(AlchemyRepository):

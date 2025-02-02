@@ -2,14 +2,14 @@ from typing import Tuple
 
 from fastapi import Depends, HTTPException, status
 
-from backend.api.resumes.repository import get_resume_repo
-from backend.api.resumes.schemas import ResumeSchema, ResumeUpdateSchema, ResumeAddSchema
+from backend.api.users.workers.resumes.repository import get_resume_repo
+from backend.api.users.workers.resumes.schemas import ResumeSchema, ResumeUpdateSchema, ResumeAddSchema
 from backend.api.skills.repository import update_worker_skills
 from backend.api.skills.schemas import SkillsResponseSchema
-from backend.api.users.auth.token_dependencies import get_user_by_token
-from backend.api.users.workers.dependencies import get_worker_by_token
-from backend.api.users.workers.schemas import WorkerSchema
-from backend.utils.other.check_func import check_worker_can_update
+from backend.utils.auth_utils.token_dependencies import get_user_by_token
+from backend.api.users.workers.profile.dependencies import get_worker_by_token
+from backend.api.users.workers.profile.schemas import WorkerSchema
+from backend.utils.auth_utils.check_func import check_worker_can_update
 
 
 def validate_resume_update_permissions(worker, resume):

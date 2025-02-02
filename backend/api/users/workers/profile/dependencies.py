@@ -2,10 +2,10 @@ from typing import Optional
 
 from fastapi import Depends, Cookie
 
-from backend.api.users.auth.token_dependencies import get_user_by_token_and_role
+from backend.utils.auth_utils.token_dependencies import get_user_by_token_and_role
 from backend.api.users.profile_dependencies import user_patch_dependencies
-from backend.api.users.workers.repository import get_worker_repo
-from backend.api.users.workers.schemas import WorkerSchema, WorkerProfileSchema, WorkerResponseSchema
+from backend.api.users.workers.profile.repository import get_worker_repo
+from backend.api.users.workers.profile.schemas import WorkerSchema, WorkerProfileSchema, WorkerResponseSchema
 from backend.schemas.global_schema import DynamicSchema, UserSchema
 
 

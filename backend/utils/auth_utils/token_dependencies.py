@@ -1,12 +1,12 @@
 from fastapi import HTTPException, status, Cookie
 
-from backend.api.users.auth.AuthJWT import jwt_token
+from backend.utils.auth_utils.AuthJWT import jwt_token
 from backend.api.users.employers.repository import get_employer_by_id
 from backend.api.users.employers.schemas import EmployerSchema
-from backend.api.users.workers.repository import get_worker_by_id
-from backend.api.users.workers.schemas import WorkerSchema
+from backend.api.users.workers.profile.repository import get_worker_by_id
+from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.schemas.global_schema import UserTypeSchema, UserSchema
-from backend.utils.other.check_func import exclude_password
+from backend.utils.auth_utils.check_func import exclude_password
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'

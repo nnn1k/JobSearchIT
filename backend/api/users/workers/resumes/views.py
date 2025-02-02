@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.resumes.dependencies import (
+from backend.api.users.workers.resumes.dependencies import (
     create_resume_dependencies,
     get_resume_dependencies,
     get_all_my_resumes_dependencies,

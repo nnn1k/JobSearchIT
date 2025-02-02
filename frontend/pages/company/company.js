@@ -1,4 +1,5 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
+import {print_salary} from "/frontend/js/print_salary.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
@@ -87,16 +88,7 @@ function renderVacancies(vacancies) {
         const salaryElement = document.createElement('p');
         const salary_first = vacancy.salary_first;
         const salary_second = vacancy.salary_second;
-        if (!salary_first && !salary_second)
-            salaryElement.innerHTML = '';
-        else {
-            salaryElement.innerHTML += `<strong>Зарплата:</strong>`;
-            if (salary_first)
-                salaryElement.innerHTML += ` от ${salary_first}`;
-            if (salary_second)
-                salaryElement.innerHTML += ` до ${salary_second}`;
-            salaryElement.innerHTML += ' руб.'
-        }
+        print_salary(salaryElement, salary_first, salary_second)
 
         if (vacancy.city) {
             const cityElement = document.createElement('p');

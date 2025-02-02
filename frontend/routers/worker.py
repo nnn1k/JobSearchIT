@@ -12,3 +12,10 @@ def my_account_worker(request: Request):
     if user_type != "worker":
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/worker/profile/profile.html", {"request": request})
+
+@router.get('/resumes')
+def resume_get(request: Request):
+    user_type = request.cookies.get("user_type")
+    if user_type != "worker":
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse("/pages/worker/resume/resume.html", {"request": request})

@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, Response
 from starlette.responses import RedirectResponse
 
-from backend.api.users.auth.AuthJWT import jwt_token, Token
-from backend.api.users.auth.auth_dependencies import confirm_email_response, send_code_response
-from backend.api.users.auth.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.utils.auth_utils.AuthJWT import jwt_token, Token
+from backend.utils.auth_utils.auth_dependencies import confirm_email_response, send_code_response
+from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.api.users.auth.workers.dependencies import (
     register_worker_dependencies,
     login_worker_dependencies,
     check_code_dependencies,
     get_code_dependencies,
 )
-from backend.api.users.workers.schemas import WorkerResponseSchema
+from backend.api.users.workers.profile.schemas import WorkerResponseSchema
 
 router = APIRouter(prefix='/workers', tags=['workers_auth'])
 

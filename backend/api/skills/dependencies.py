@@ -6,8 +6,8 @@ from backend.api.skills.repository import (
     get_skills_by_worker_id,
     get_available_skills_on_vacancy, get_skills_by_vacancy_id
 )
-from backend.api.users.auth.token_dependencies import get_user_by_token
-from backend.api.users.workers.dependencies import get_worker_by_token
+from backend.utils.auth_utils.token_dependencies import get_user_by_token
+from backend.api.users.workers.profile.dependencies import get_worker_by_token
 
 
 async def get_all_skills_dependencies(

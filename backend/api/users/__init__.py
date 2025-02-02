@@ -1,8 +1,16 @@
 from fastapi import APIRouter
 
 from .auth import router as auth_router
-from .workers.views import router as worker_router
 from .employers.views import router as employer_router
+
+from backend.api.users.workers.profile.views import router as profile_router
+from backend.api.users.workers.resumes.views import router as resumes_router
+
+worker_router = APIRouter(prefix="/workers")
+
+worker_router.include_router(profile_router)
+worker_router.include_router(resumes_router)
+
 
 router = APIRouter()
 router.include_router(auth_router)
