@@ -53,7 +53,7 @@ async def get_resume_dependencies(
     return resume, user, can_update
 
 
-async def get_all_resumes_dependencies(
+async def get_all_my_resumes_dependencies(
         user: WorkerSchema = Depends(get_worker_by_token)
 ):
     if not user:

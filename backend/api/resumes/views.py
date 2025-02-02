@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from backend.api.resumes.dependencies import (
     create_resume_dependencies,
     get_resume_dependencies,
-    get_all_resumes_dependencies,
+    get_all_my_resumes_dependencies,
     update_resume_dependencies,
     delete_resume_dependencies
 )
@@ -33,9 +33,9 @@ def get_one_resume_views(
         'can_update': can_update,
     }
 
-@router.get('/', summary='Посмотреть все резюме')
-def get_all_resumes_views(
-        resume_and_user=Depends(get_all_resumes_dependencies)
+@router.get('/', summary='Посмотреть все свои резюме')
+def get_all_my_resumes_views(
+        resume_and_user=Depends(get_all_my_resumes_dependencies)
 ):
     resumes, user, can_update = resume_and_user
     return {
