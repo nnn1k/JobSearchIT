@@ -88,6 +88,12 @@ function renderVacancies(vacancies, can_update) {
 
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
+
+        vacancyElement.appendChild(titleElement);
+        vacancyElement.appendChild(updatedAtElement)
+        vacancyElement.appendChild(salaryElement);
+        vacancyElement.appendChild(cityElement);
+
         if (can_update) {
             const editButton = document.createElement('button');
             editButton.classList.add('edit-button');
@@ -99,10 +105,7 @@ function renderVacancies(vacancies, can_update) {
         }
 
 
-        vacancyElement.appendChild(titleElement);
-        vacancyElement.appendChild(updatedAtElement)
-        vacancyElement.appendChild(salaryElement);
-        vacancyElement.appendChild(cityElement);
+
 
 
         container.appendChild(vacancyElement);
