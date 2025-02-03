@@ -28,5 +28,5 @@ class ResumeAddSchema(BaseModel):
 class ResumeUpdateSchema(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
-    salary_first: Optional[str] = None
-    salary_second: Optional[str] = None
+    salary_first: Optional[int] = None
+    salary_second: Optional[int] = None

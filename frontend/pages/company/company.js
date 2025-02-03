@@ -109,8 +109,6 @@ function renderVacancies(vacancies, can_update) {
             };
             vacancyElement.appendChild(editButton);
         }
-
-
         container.appendChild(vacancyElement);
     });
 }

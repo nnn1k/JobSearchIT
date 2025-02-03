@@ -1,0 +1,28 @@
+
+body {
+    font-family: Arial, sans-serif;
+    margin-left: 10%;
+}
+
+#edit_btn {
+    width: 20%;
+    margin-left: 5%;
+}
+
+.title_container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    width: 30%;
+    margin: 20px 60% 0 5%;
+}
+
+.description_container{
+    margin-left: 5%;
+    margin-right: 60%;
+    line-height: 1.8;
+}
+
+p {
+    margin: 5px 0;
+}

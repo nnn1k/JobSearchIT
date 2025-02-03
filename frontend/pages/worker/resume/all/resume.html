@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мои Резюме</title>
-    <link rel="stylesheet" href="/frontend/pages/worker/resume/resume.css">
+    <link rel="stylesheet" href="/frontend/pages/worker/resume/all/resume.css">
 </head>
 {% if user_type == 'worker' %}
     {% extends 'base_worker/base_worker.html' %}
@@ -18,7 +18,7 @@
     <main>
         <div id="resume-container"></div>
     </main>
-    <script type='module' src="/frontend/pages/worker/resume/resume.js"></script>
+    <script type='module' src="/frontend/pages/worker/resume/all/resume.js"></script>
 </body>
 {% endblock %}
 </html>
