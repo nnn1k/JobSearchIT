@@ -18,15 +18,16 @@
 
 .main_info{
     color: gray;
-    padding-left: 150px;
+    padding-left: 10%;
 }
 
 .fields_for_data{
     color:gray;
     display: flex;
     flex-direction: column;
-    margin-left: 150px;
-    margin-top: 35px;
+    margin-left: 8%;
+    margin-top: 4%;
+    margin-right: 35%;
     gap: 30px;
 }
 
@@ -36,9 +37,10 @@
 }
 
 .input_for_title_vacancy{
-    margin-left: 150px;
+    margin-left: 17%;
     width: 400px;
     height: 28px;
+    font-size: 16px;
 
 }
 
@@ -64,14 +66,16 @@
 
 .input_for_first_salary {
     box-sizing: border-box;
-    width: 150px;
+    width: 200px;
     height: 30px;
+    font-size: 16px;
 }
 
 .input_for_second_salary {
     box-sizing: border-box;
-    width: 150px;
+    width: 200px;
     height: 30px;
+    font-size: 16px;
 }
 
 
@@ -89,22 +93,15 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-left: 235px;
     width: 400px;
     height: 28px;
+    font-size: 16px;
+}
+
+.red_button{
+    display: flex;
+    margin-left: auto;
+    margin-bottom: 2%;
 }
 
 #add_vacancy_btn{
-    display: flex;
-    margin-left: 650px;
-    width: 200px;
-    padding: 10px;
-    background-color: red;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 50px;
-}
-
-#add_vacancy_btn:hover {
-    background-color: crimson;
+    width: 30%;
 }

@@ -95,6 +95,15 @@ input[name="cancel_btn"]{
 #put_btn{
     width: 100px;
     margin-left: 260px;
+    border: none;
+}
+
+#put_btn:hover{
+    background-color: #f2f2f2;
+}
+
+#cancel_btn{
+    border: none;
 }
 
 hr {
