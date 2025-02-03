@@ -1,6 +1,5 @@
 from datetime import timedelta, datetime
 from pathlib import Path
-from typing import Optional, Tuple
 
 import jwt
 from pydantic import BaseModel
@@ -16,7 +15,7 @@ class AuthJWT:
     private_key_path: Path = BASE_DIR / "auth" / "certs" / "jwt-private.pem"
     public_key_path: Path = BASE_DIR / "auth" / "certs" / "jwt-public.pem"
     algorithm: str = "RS256"
-    access_token_expire_minutes: int = 60_000
+    access_token_expire_minutes: int = 60 * 24 * 7
     refresh_token_expire_days: int = 7
     TOKEN_TYPE_FIELD = 'type'
     ACCESS_TOKEN_TYPE = 'access'

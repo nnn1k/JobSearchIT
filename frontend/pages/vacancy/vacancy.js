@@ -2,9 +2,9 @@ import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
-import {showTrashBtn} from "/frontend/js/create_trash_can.js";
+import {createTrashBtnVacancy} from "/frontend/js/create_trash_can.js";
 
-async function get_vacancy(){
+async function get_vacancy() {
     const vacancyId = location.pathname.split('/')[2]
     const vacancyContainer = document.getElementById('vacancy-container')
     vacancyContainer.style.display = 'none'
@@ -16,11 +16,10 @@ async function get_vacancy(){
     if (getResponse) {
         const vacancy = getResponse.vacancy;
         const companyName = getResponse.company_name;
-        console.log(getResponse);
         const deleteElement = document.getElementById('btn_delete')
         if (getResponse.can_update) {
             deleteElement.style.display = 'flex';
-            const trashBtn = showTrashBtn(vacancy.id);
+            const trashBtn = createTrashBtnVacancy(vacancy);
             deleteElement.appendChild(trashBtn);
         }
         document.getElementById('title_vacancy').innerHTML = vacancy.title;

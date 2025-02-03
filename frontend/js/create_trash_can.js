@@ -1,7 +1,7 @@
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 
 
-export function showTrashBtn(vacancy_id) {
+function createTrashBtn(func, obj) {
     const trashBtn = document.createElement('button');
     const img = document.createElement("img");
     img.src = "/frontend/pictures/trash_can.webp";
@@ -11,15 +11,31 @@ export function showTrashBtn(vacancy_id) {
     trashBtn.style.backgroundColor = 'white'
     trashBtn.appendChild(img);
 
-    trashBtn.onclick = async function () {
-        const deleteResponse = await makeRequest({
-            method: 'DELETE',
-            url: `/api/vacancy/${vacancy_id}`
-        })
-        alert("хуй соси дура ебанная пидр чмо залупа дота кал эщкере эщкерембус тварь скуф")
-        console.log(deleteResponse)
-        location.reload(true);
-    };
+    trashBtn.onclick = async () => await func(obj)
     return trashBtn
 }
 
+async function deleteVacancy(vacancy) {
+    const deleteResponse = await makeRequest({
+        method: 'DELETE',
+        url: `/api/vacancy/${vacancy.id}`
+    })
+    console.log(deleteResponse)
+    window.location.href = apiUrl + `/companies/${vacancy.company_id}`
+}
+
+async function deleteResume(resume) {
+    const deleteResponse = await makeRequest({
+        method: 'DELETE',
+        url: `/api/workers/resumes/${resume.id}`
+    })
+    console.log(deleteResponse)
+    window.location.href = apiUrl + `/worker/resumes`
+}
+
+export function createTrashBtnResumes(resume){
+    return createTrashBtn(deleteResume, resume)
+}
+export function createTrashBtnVacancy(vacancy){
+    return createTrashBtn(deleteVacancy, vacancy)
+}

@@ -1,4 +1,4 @@
-import {apiUrl} from "/frontend/js/utils.js";
+import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 
 async function clickAddVacancy(){
 
@@ -10,6 +10,12 @@ async function clickAddVacancy(){
         } else {
             window.location.href=apiUrl+'/login';
         }
+}
+async function logout(){
+    const logoutResponse = await makeRequest({
+        method: 'POST',
+        url: '/api/auth/logout/'
+    })
 }
 
 function getCookie(name) {
@@ -39,3 +45,4 @@ window.onload = function() {
 
 window.clickAddVacancy = clickAddVacancy
 window.clickProfile = clickProfile
+window.logout = logout

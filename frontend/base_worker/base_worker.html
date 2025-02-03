@@ -13,7 +13,7 @@
             Соискателям
         </a>
         <a href={{ url_for('home_page_employer') }}>
-           Работадателям
+            Работадателям
         </a>
     </div>
     <div class="panel">
@@ -21,11 +21,12 @@
             <img src="/frontend/pictures/main_logo.png" alt="Логотип"/>
         </div>
         <div class="right_side_header">
-            <div>
-                <button class="btn_create_resume" onclick="clickAddResume()">
-                    Создать резюме
-                </button>
-            </div>
+                <div>
+                    <button class="btn_create_resume" onclick="logout()">Выйти</button>
+                </div>
+                <div>
+                    <button class="btn_create_resume" onclick="clickAddResume()">Создать резюме</button>
+                </div>
             <div class="account-button">
                 <a id="pic_profile" onclick="clickProfile()">
                     <img class="logo_profile" src="/frontend/pictures/profile.png"/>

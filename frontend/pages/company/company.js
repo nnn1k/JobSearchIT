@@ -1,7 +1,7 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
-import {showTrashBtn} from "/frontend/js/create_trash_can.js";
+
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
     const first_button = document.getElementById('switch_description')
@@ -88,20 +88,22 @@ function renderVacancies(vacancies, can_update) {
 
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
+        if (can_update) {
+            const editButton = document.createElement('button');
+            editButton.classList.add('edit-button');
+            editButton.textContent = "Редактировать";
+            editButton.onclick = () => {
+                window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
+            };
+            vacancyElement.appendChild(editButton);
+        }
 
-        const editButton = document.createElement('button');
-        editButton.classList.add('edit-button');
-        editButton.textContent = "Редактировать";
-
-        editButton.onclick = () => {
-            window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
-        };
 
         vacancyElement.appendChild(titleElement);
         vacancyElement.appendChild(updatedAtElement)
         vacancyElement.appendChild(salaryElement);
         vacancyElement.appendChild(cityElement);
-        vacancyElement.appendChild(editButton);
+
 
         container.appendChild(vacancyElement);
     });
