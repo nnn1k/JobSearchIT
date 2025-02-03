@@ -1,6 +1,7 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {print_salary} from "/frontend/js/print_salary.js";
-
+import {formatDateTime} from "/frontend/js/timefunc.js";
+import {showTrashBtn} from "/frontend/js/create_trash_can.js";
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
     const first_button = document.getElementById('switch_description')
@@ -33,7 +34,7 @@ async function get_company() {
 
     tinymce.get('company_description_update').setContent(getResponse.company.description)
     document.getElementById('company_description_update').value = getResponse.company.description;
-    renderVacancies(getResponse.vacancies)
+    renderVacancies(getResponse.vacancies, getResponse.can_update)
 }
 
 async function update_company() {
@@ -68,38 +69,41 @@ function showForm(formId, button) {
 }
 
 
-function renderVacancies(vacancies) {
+function renderVacancies(vacancies, can_update) {
     const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
 
     vacancies.forEach(vacancy => {
-        const vacancyLink = document.createElement('a');
-        vacancyLink.href = `/vacancies/${vacancy.id}`;
-        vacancyLink.setAttribute('target', '_blank');
-
         const vacancyElement = document.createElement('div');
         vacancyElement.classList.add('vacancy');
 
         const titleElement = document.createElement('h2');
         titleElement.textContent = vacancy.title;
 
-        vacancyElement.appendChild(titleElement);
-
         const salaryElement = document.createElement('p');
-        const salary_first = vacancy.salary_first;
-        const salary_second = vacancy.salary_second;
-        print_salary(salaryElement, salary_first, salary_second)
+        print_salary(salaryElement, vacancy.salary_first, vacancy.salary_second)
 
-        if (vacancy.city) {
-            const cityElement = document.createElement('p');
-            cityElement.innerHTML = `<strong>Город:</strong> ${vacancy.city}`;
-            vacancyElement.appendChild(cityElement);
-        }
+        const cityElement = document.createElement('p');
+        cityElement.innerHTML = `<strong>Город:</strong> ${vacancy.city}`;
 
+        const updatedAtElement = document.createElement('p')
+        updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
+
+        const editButton = document.createElement('button');
+        editButton.classList.add('edit-button');
+        editButton.textContent = "Редактировать";
+
+        editButton.onclick = () => {
+            window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
+        };
+
+        vacancyElement.appendChild(titleElement);
+        vacancyElement.appendChild(updatedAtElement)
         vacancyElement.appendChild(salaryElement);
-        vacancyLink.appendChild(vacancyElement);
+        vacancyElement.appendChild(cityElement);
+        vacancyElement.appendChild(editButton);
 
-        container.appendChild(vacancyLink);
+        container.appendChild(vacancyElement);
     });
 }
 

@@ -7,7 +7,7 @@ body {
 
 main {
     display: flex;
-    justify-content: center; /* Выравнивание по центру */
+    margin-left: 20%; /* Выравнивание по центру */
     padding: 20px;
 }
 
@@ -24,33 +24,24 @@ main {
     border-radius: 5px;
     padding: 15px;
     transition: box-shadow 0.3s;
-    width: 100%; /* Ширина блока резюме 100% от контейнера */
+    width: 100%;
 }
 
 .resume:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.resume h2 {
-    margin: 0;
-    color: #c8102e; /* Красный цвет заголовка */
-}
+
 
 .resume p {
     margin: 5px 0;
     color: #333; /* Цвет текста */
 }
 
-/* Новый стиль для описания */
-.resume .description {
-    font-style: italic; /* Курсив для описания */
-    color: #555; /* Более светлый цвет текста */
-    font-size: 1.1em; /* Увеличение размера шрифта для описания */
-}
 
 /* Стиль для кнопки */
 .edit-button {
-    background-color: #c8102e;
+    background-color: crimson;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -63,5 +54,6 @@ main {
 }
 
 .edit-button:hover {
-    background-color: #a60f2e; /* Темнее при наведении */
+    background-color: white;
+    color: crimson;
 }

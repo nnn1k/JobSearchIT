@@ -17,21 +17,24 @@
 <body>
 <div id="vacancy-container" class="vacancy-container">
     <div class="main_info">
-        <h1 id="title_vacancy">Вакансия: Менеджер по продажам</h1>
+        <div class="first_str">
+            <h1 id="title_vacancy"></h1>
+            <div id="btn_delete" style="display: none"></div>
+        </div>
 
         <div class="company-info">
-            <h2 id="name_company">Компания: ООО "Пример"</h2>
-            <p id="city_vacancy">Местоположение: Москва</p>
-            <p id="salary_vacancy">Зарплата: от 60 000 до 100 000 руб.</p>
+            <a id="link_company" class="link_company" ><h2 id="name_company"></h2></a>
+            <p id="city_vacancy"></p>
+            <p id="salary_vacancy"></p>
         </div>
         <a class="apply-button">Откликнуться на вакансию</a>
-    </div>
 
+    </div>
     <div class="vacancy-details">
         <p id="description_vacancy" class="description_vacancy">хуй</p>
     </div>
 
-</div>
+</d>
 <script type="module" src="/frontend/pages/vacancy/vacancy.js"></script>
 </body>
 {% endblock %}

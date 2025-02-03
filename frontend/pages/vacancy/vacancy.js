@@ -1,5 +1,8 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
+import {print_salary} from "/frontend/js/print_salary.js";
+import {formatDateTime} from "/frontend/js/timefunc.js";
+import {showTrashBtn} from "/frontend/js/create_trash_can.js";
 
 async function get_vacancy(){
     const vacancyId = location.pathname.split('/')[2]
@@ -12,30 +15,27 @@ async function get_vacancy(){
     })
     if (getResponse) {
         const vacancy = getResponse.vacancy;
-        const companyName = getResponse.company_name
-        console.log(getResponse)
+        const companyName = getResponse.company_name;
+        console.log(getResponse);
+        const deleteElement = document.getElementById('btn_delete')
+        if (getResponse.can_update) {
+            deleteElement.style.display = 'flex';
+            const trashBtn = showTrashBtn(vacancy.id);
+            deleteElement.appendChild(trashBtn);
+        }
         document.getElementById('title_vacancy').innerHTML = vacancy.title;
         document.getElementById('name_company').innerHTML = companyName;
         document.getElementById('city_vacancy').innerHTML = vacancy.city;
         const salaryElement = document.getElementById('salary_vacancy')
-        salaryElement.innerHTML = `<strong>Зарплата:</strong>`;
-        if (!vacancy.salary_first && !vacancy.salary_second)
-            salaryElement.innerHTML += ' Не указана';
-        else {
-            if (vacancy.salary_first)
-                salaryElement.innerHTML += ` от ${vacancy.salary_first}`;
-            if (vacancy.salary_second)
-                salaryElement.innerHTML += ` до ${vacancy.salary_second}`;
-            salaryElement.innerHTML += ' руб.'
-        }
+        print_salary(salaryElement, vacancy.salary_first, vacancy.salary_second)
         document.getElementById('description_vacancy').innerHTML = vacancy.description;
+        const link_company = document.getElementById("link_company");
+        link_company.href = `/companies/${vacancy.company_id}`;
         hideLoadingIndicator(loadingIndicator);
         vacancyContainer.style.display = 'block'
+
     }
-
-
 }
-
 
 document.addEventListener('DOMContentLoaded', function () {
     get_vacancy()

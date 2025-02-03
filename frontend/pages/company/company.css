@@ -65,10 +65,13 @@
 
 .vacancy {
     background-color: #ffffff;
-    border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 20px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 140%;
     margin: 15px 0;
+    border: 2px solid crimson;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 }
@@ -127,4 +130,25 @@ textarea {
 
 .mce-content-body {
     white-space: pre-wrap; /* Применяем стиль white-space: pre-wrap */
+}
+
+
+/* Стиль для кнопки */
+.edit-button {
+    background-color: crimson;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    height: 50px;
+}
+
+.edit-button:hover {
+    background-color: white;
+    color: crimson;
+    border: 1px solid crimson;
 }
