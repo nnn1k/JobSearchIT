@@ -96,7 +96,8 @@ function renderVacancies(vacancies, can_update) {
 
         if (can_update) {
             const editButton = document.createElement('button');
-            editButton.classList.add('edit-button');
+            editButton.classList.add('red_button');
+            editButton.style.width = '30%';
             editButton.textContent = "Редактировать";
             editButton.onclick = () => {
                 window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
