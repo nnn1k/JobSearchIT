@@ -16,6 +16,9 @@ async function logout(){
         method: 'POST',
         url: '/api/auth/logout/'
     })
+    if (logoutResponse){
+        location.reload(true)
+    }
 }
 
 function getCookie(name) {
