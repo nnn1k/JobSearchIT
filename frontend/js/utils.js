@@ -17,7 +17,6 @@ export async function makeRequest(request) {
         const errorData = await response.json()
         console.log(errorData)
         alert(errorData.detail)
-        window.location.href = apiUrl + '/login'
     } else if (response.status === 500) {
         console.error('Ошибка 500: Внутренняя ошибка сервера.');
         alert('Произошла ошибка на сервере. Попробуйте позже.');

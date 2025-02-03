@@ -77,6 +77,10 @@ function renderVacancies(vacancies, can_update) {
         const vacancyElement = document.createElement('div');
         vacancyElement.classList.add('vacancy');
 
+        const linkElement = document.createElement('a');
+        linkElement.href = `/employer/vacancies/${vacancy.id}`; // Ссылка на вакансию
+        linkElement.style.textDecoration = 'none'; // Убираем подчеркивание
+
         const titleElement = document.createElement('h2');
         titleElement.textContent = vacancy.title;
 
@@ -89,10 +93,11 @@ function renderVacancies(vacancies, can_update) {
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
 
-        vacancyElement.appendChild(titleElement);
-        vacancyElement.appendChild(updatedAtElement)
-        vacancyElement.appendChild(salaryElement);
-        vacancyElement.appendChild(cityElement);
+        linkElement.appendChild(titleElement);
+        linkElement.appendChild(updatedAtElement);
+        linkElement.appendChild(salaryElement);
+        linkElement.appendChild(cityElement);
+        vacancyElement.appendChild(linkElement); // Оборачиваем весь контент в ссылку
 
         if (can_update) {
             const editButton = document.createElement('button');
@@ -104,9 +109,6 @@ function renderVacancies(vacancies, can_update) {
             };
             vacancyElement.appendChild(editButton);
         }
-
-
-
 
 
         container.appendChild(vacancyElement);
