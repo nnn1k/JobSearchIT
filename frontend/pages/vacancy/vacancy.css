@@ -29,20 +29,9 @@ h2 {
     margin-bottom: 10px;
 }
 
-.apply-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: crimson;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    border: 2px solid white;
-}
-
-.apply-button:hover {
-    background-color: white;
-    color: crimson;
-    border: 2px solid crimson;
+.red_button{
+    margin-left: 5%;
+    margin-bottom: 3%;
 }
 
 #name_company{
