@@ -6,17 +6,24 @@ document.addEventListener('DOMContentLoaded', function (){
 })
 
 async function get_resume(){
-    const resume_id = location.pathname.split('/')[3]
+    const resume_id = location.pathname.split('/')[2]
     const getResponse = await makeRequest({
         method: 'GET',
         url: `/api/workers/resumes/${resume_id}`
     })
-    console.log(getResponse.resume)
+    console.log(getResponse)
     const resume= getResponse.resume
-    document.getElementById('resume_title').innerHTML = resume.title
+    document.getElementById('title').innerHTML += resume.title
+    document.title = resume.title
     const salaryElement = document.getElementById('salary')
     print_salary(salaryElement, resume.salary_first, resume.salary_second)
-    document.getElementById('city').innerHTML = resume.city
+    document.getElementById('city').innerHTML += resume.city
     document.getElementById('description').innerHTML = resume.description
-
+    if (getResponse.can_update){
+        const editBtn = document.getElementById('edit_btn')
+        editBtn.style.display = 'inline-block'
+        editBtn.onclick = () => {
+            window.location.href = `/worker/resumes/${resume.id}/edit`
+        }
+    }
 }

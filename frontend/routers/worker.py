@@ -20,10 +20,9 @@ def resume_get(request: Request):
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/worker/resume/all/resume.html", {"request": request})
 
-@router.get('/resumes/{resume_id}')
-def resume_get(request: Request):
+@router.get('/resumes/{resume_id}/edit')
+def resume_edit(request: Request):
     user_type = request.cookies.get("user_type")
     if user_type != "worker":
         return RedirectResponse(url="/login")
-    return templates.TemplateResponse("/pages/worker/resume/one/resume.html", {"request": request})
-
+    return templates.TemplateResponse("/pages/worker/resume/edit/resume.html", {"request": request})
