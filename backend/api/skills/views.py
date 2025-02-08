@@ -30,8 +30,8 @@ def get_worker_skills_views(
     available_skills, worker_skills, user = skills_and_user
     return {
         'status': 'ok',
-        'available_skills': available_skills,
         'worker_skills': worker_skills,
+        'available_skills': available_skills,
         'user': user
     }
 
@@ -42,7 +42,7 @@ def get_vacancy_skills_views(
     available_skills, vacancy_skills, user = skills_and_user
     return {
         'status': 'ok',
-        'available_skills': available_skills,
         'vacancy_skills': vacancy_skills,
+        'available_skills': available_skills,
         'user': user
     }

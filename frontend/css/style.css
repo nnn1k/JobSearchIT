@@ -36,4 +36,44 @@
     border: 2px solid crimson;
 }
 
+.skill-button {
+    background-color: #fff; /* Белый фон для кнопок навыков */
+    color: #C70000; /* Красный текст */
+    padding: 10px;
+    border: 1px solid #C70000;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.skill-button.selected {
+    background-color: #C70000; /* Красный фон для выбранных кнопок */
+    color: white; /* Белый текст для выбранных кнопок */
+}
+
+.selected-skills-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Цвет фона для контейнера выбранных навыков */
+    display: flex; /* Используем flexbox для выравнивания кнопок */
+    flex-wrap: wrap; /* Позволяем кнопкам переноситься на новую строку */
+}
+
+.selected-skill-button {
+    margin: 5px; /* Отступы между кнопками */
+    padding: 5px 10px;
+    background-color: #007BFF; /* Цвет фона для кнопок выбранных навыков */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.selected-skill-button:hover {
+    background-color: #0056b3; /* Темно-синий при наведении */
+}
 
