@@ -24,7 +24,7 @@ async def get_all_skills(**kwargs):
 
 
 async def update_worker_skills(skills_list: List[SkillsResponseSchema], worker_id: int):
-    skills_list = [skill.get('id') for skill in skills_list]
+    skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
 
         result = await session.execute(select(WorkersSkillsOrm).filter_by(worker_id=worker_id))
@@ -49,11 +49,12 @@ async def update_worker_skills(skills_list: List[SkillsResponseSchema], worker_i
 
         await session.commit()
 
+
 async def update_vacancy_skills(skills_list, vacancy_id):
-    skills_list = [skill.get('id') for skill in skills_list]
+    skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
 
-        result = await session.execute(select(VacanciesSkillsOrm).filter_by(worker_id=vacancy_id))
+        result = await session.execute(select(VacanciesSkillsOrm).filter_by(vacancy_id=vacancy_id))
         current_skills = result.scalars().all()
 
         current_skill_ids = {vs.skill_id for vs in current_skills}
@@ -75,6 +76,7 @@ async def update_vacancy_skills(skills_list, vacancy_id):
 
         await session.commit()
 
+
 async def get_available_skills_on_worker(worker_id: int):
     async with session_factory() as session:
         stmt = (
@@ -87,6 +89,7 @@ async def get_available_skills_on_worker(worker_id: int):
         result = await session.execute(stmt)
         available_skills = result.scalars().all()
         return available_skills
+
 
 async def get_available_skills_on_vacancy(vacancy_id: int):
     async with session_factory() as session:
@@ -115,6 +118,7 @@ async def get_skills_by_worker_id(worker_id: int):
         skills_result = await session.execute(skills_stmt)
         skills = skills_result.scalars().all()
         return skills
+
 
 async def get_skills_by_vacancy_id(vacancy_id: int):
     async with session_factory() as session:

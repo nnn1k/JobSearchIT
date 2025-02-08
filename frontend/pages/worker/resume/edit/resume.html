@@ -1,10 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование атрибутов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: crimson; /* Красный фон */
+            color: white; /* Белый текст */
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: white; /* Белый заголовок */
+        }
+
+        form {
+            background-color: white; /* Белый фон формы */
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            color: crimson; /* Красный цвет для меток */
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid crimson; /* Красная рамка */
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .salary-container {
+            display: flex;
+            gap: 10px; /* Расстояние между полями */
+        }
+
+        .salary-container input {
+            flex: 1; /* Одинаковая ширина для обоих полей */
+        }
+
+        .salary-container input:first-child {
+            margin-right: 10px; /* Отступ справа для первого поля */
+        }
+
+        button {
+            background-color: crimson; /* Красный фон кнопки */
+            color: white; /* Белый текст кнопки */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #a3122a; /* Темно-красный при наведении */
+        }
+    </style>
 </head>
 <body>
+    <h1>Редактирование атрибутов</h1>
+    <form id="editForm" action="#" method="POST">
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title"><br><br>
 
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description"></textarea><br><br>
+
+        <label for="salary">Зарплата:</label>
+        <div class="salary-container">
+            <input type="number" id="salary_first" name="salary_first" placeholder="От">
+            <input type="number" id="salary_second" name="salary_second" placeholder="До">
+        </div><br>
+
+        <label for="skills">Навыки (через запятую):</label>
+        <input type="text" id="skills" name="skills"><br><br>
+
+        <button type="submit">Сохранить изменения</button>
+    </form>
 </body>
 </html>

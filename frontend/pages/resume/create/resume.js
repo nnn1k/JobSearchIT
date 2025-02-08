@@ -25,7 +25,7 @@ async function postResume(){
     const skills = getSelectedSkills()
     const postResponse = await makeRequest({
         method: 'POST',
-        url: '/api/resumes/',
+        url: '/api/workers/resumes/',
         data: {
             title,
             description,

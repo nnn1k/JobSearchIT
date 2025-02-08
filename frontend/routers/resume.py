@@ -11,11 +11,9 @@ def resume_add(request: Request):
     user_type = request.cookies.get("user_type")
     if user_type != "worker":
         return RedirectResponse(url="/login")
-    return templates.TemplateResponse("/pages/resume/create/resume.html", {"request": request})
+    return templates.TemplateResponse("/pages/resume/create/resume.html", {"request": request, 'user_type': user_type})
 
 @router.get('/{resume_id}')
 def resume_get(request: Request):
     user_type = request.cookies.get("user_type")
-    if user_type != "worker":
-        return RedirectResponse(url="/login")
-    return templates.TemplateResponse("/pages/resume/one/resume.html", {"request": request})
+    return templates.TemplateResponse("/pages/resume/one/resume.html", {"request": request, 'user_type': user_type})

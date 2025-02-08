@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, List
 
 from fastapi import Depends, HTTPException, status
 
@@ -29,14 +29,14 @@ async def create_resume_dependencies(
         add_resume: ResumeAddSchema,
         worker: WorkerSchema = Depends(get_worker_by_token)
 ) -> Tuple[ResumeSchema, WorkerSchema]:
-    skills: SkillsResponseSchema = add_resume.skills
+    skills: List[SkillsResponseSchema] = add_resume.skills
     if not worker:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated",
         )
     resume_repo = get_resume_repo()
-    resume = await resume_repo.add_one(**add_resume.model_dump(exclude='skills'), worker_id=worker.id)
+    resume = await resume_repo.add_one(**add_resume.model_dump(exclude={'skills'}), worker_id=worker.id)
     await update_worker_skills(skills, worker.id)
     return resume, worker
 
