@@ -20,6 +20,7 @@ async function get_vacancy() {
         if (getResponse.can_update) {
             deleteElement.style.display = 'flex';
             const trashBtn = createTrashBtnVacancy(vacancy);
+
             deleteElement.appendChild(trashBtn);
         }
         document.getElementById('title_vacancy').innerHTML = vacancy.title;

@@ -78,7 +78,7 @@ function renderVacancies(vacancies, can_update) {
         vacancyElement.classList.add('vacancy');
 
         const linkElement = document.createElement('a');
-        linkElement.href = `/employer/vacancies/${vacancy.id}`; // Ссылка на вакансию
+        linkElement.href = `/vacancies/${vacancy.id}`; // Ссылка на вакансию
         linkElement.style.textDecoration = 'none'; // Убираем подчеркивание
 
         const titleElement = document.createElement('h2');
