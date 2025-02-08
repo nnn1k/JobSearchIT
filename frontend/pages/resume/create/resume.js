@@ -2,7 +2,18 @@ import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {displaySelectedSkills, createSkillButtons, getSelectedSkills} from '/frontend/js/skills.js'
 
 document.addEventListener('DOMContentLoaded', function (){
+    tinymce.init({
+        menubar: false,
+        statusbar: false,
+        display: "flex",
+        selector: '#description',
+        width: 600,
+        height: 400,
+        fontsize: 50,
+        whiteSpace: "pre-wrap"
+    });
     getSkills()
+
 })
 
 async function getSkills(){
@@ -18,7 +29,7 @@ async function getSkills(){
 
 async function postResume(){
     const title = document.getElementById('title').value
-    const description = document.getElementById('description').value
+    const description = tinymce.get('description').getContent()
     const salary_first = Number(document.getElementById('salary_first').value)
     const salary_second = Number(document.getElementById('salary_second').value)
     const city = document.getElementById('city').value

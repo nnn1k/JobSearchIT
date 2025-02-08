@@ -30,8 +30,7 @@ def get_info_on_vacancy(
         vacancy_and_user=Depends(get_vacancy_by_id_dependencies),
 ):
     vacancy, user, can_update, company_name = vacancy_and_user
-    if user:
-        user = user.model_dump(exclude='password')
+
     return {
         'status': 'ok',
         'vacancy': vacancy,
@@ -46,8 +45,6 @@ def delete_info_on_company(
         vacancy_and_user=Depends(delete_vacancy_by_id_dependencies),
 ):
     vacancy, user = vacancy_and_user
-    if user:
-        user = user.model_dump(exclude='password')
     return {
         'user': user,
         'status': 'ok',
@@ -60,8 +57,6 @@ def update_info_on_company(
         vacancy_and_user=Depends(update_vacancy_by_id_dependencies),
 ):
     vacancy, user = vacancy_and_user
-    if user:
-        user = user.model_dump(exclude='password')
     return {
         'user': user,
         'vacancy': vacancy,
