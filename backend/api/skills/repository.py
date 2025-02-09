@@ -83,7 +83,7 @@ async def get_available_skills_on_worker(worker_id: int):
             select(SkillsOrm)
             .outerjoin(WorkersSkillsOrm, WorkersSkillsOrm.skill_id == SkillsOrm.id)
             .filter(
-                (WorkersSkillsOrm.worker_id != worker_id) |
+                (worker_id != WorkersSkillsOrm.worker_id) |
                 (WorkersSkillsOrm.worker_id.is_(None))
             )
             .order_by(SkillsOrm.id)
@@ -99,7 +99,7 @@ async def get_available_skills_on_vacancy(vacancy_id: int):
         stmt = (
             select(SkillsOrm)
             .outerjoin(VacanciesSkillsOrm, VacanciesSkillsOrm.skill_id == SkillsOrm.id)
-            .filter((VacanciesSkillsOrm.vacancy_id != vacancy_id) | (VacanciesSkillsOrm.vacancy_id == None))
+            .filter((vacancy_id != VacanciesSkillsOrm.vacancy_id) | (VacanciesSkillsOrm.vacancy_id.is_(None)))
             .order_by(SkillsOrm.id)
         )
 
