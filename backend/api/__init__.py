@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from .users import router as users_router
+from backend.api.users import router as users_router
 from backend.api.companies.views import router as company_router
-from .vacancies import vacancies_router
+from backend.api.vacancies.views import router as vacancies_router
 
-from .skills import skills_router
+from backend.api.skills.views import router as skills_router
 
 router = APIRouter(prefix="/api")
 
