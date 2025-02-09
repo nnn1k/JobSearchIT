@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.employers.profile.schemas import EmployerSchema
 from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.schemas.global_schema import DynamicSchema
 

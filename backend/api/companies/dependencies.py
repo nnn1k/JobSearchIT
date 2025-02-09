@@ -5,9 +5,9 @@ from fastapi import Depends, HTTPException, status
 from backend.api.companies.repository import get_company_repo, get_company_by_id
 from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema, CompanySchema
 from backend.utils.auth_utils.token_dependencies import get_user_by_token
-from backend.api.users.employers.dependencies import get_employer_by_token
-from backend.api.users.employers.repository import get_employer_repo
-from backend.api.users.employers.schemas import EmployerSchema, EmployerResponseSchema
+from backend.api.users.employers.profile.dependencies import get_employer_by_token
+from backend.api.users.employers.profile.repository import get_employer_repo
+from backend.api.users.employers.profile.schemas import EmployerSchema, EmployerResponseSchema
 from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.api.vacancies.repository import get_vacancy_by_company_id
 from backend.api.vacancies.schemas import VacancySchema

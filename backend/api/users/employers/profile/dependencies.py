@@ -3,8 +3,8 @@ from typing import Optional
 from fastapi import Cookie, Depends
 
 from backend.utils.auth_utils.token_dependencies import get_user_by_token_and_role
-from backend.api.users.employers.repository import get_employer_repo
-from backend.api.users.employers.schemas import EmployerSchema, EmployerProfileSchema, EmployerResponseSchema
+from backend.api.users.employers.profile.repository import get_employer_repo
+from backend.api.users.employers.profile.schemas import EmployerSchema, EmployerProfileSchema, EmployerResponseSchema
 from backend.api.users.profile_dependencies import user_patch_dependencies
 from backend.schemas.global_schema import DynamicSchema, UserSchema
 

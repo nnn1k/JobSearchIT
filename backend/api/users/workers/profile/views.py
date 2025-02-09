@@ -18,6 +18,7 @@ def get_my_profile(
         'status': 'ok'
     }
 
+
 @router.put('/', summary='Редактировать информацию о себе')
 def update_my_profile(
         worker: WorkerSchema = Depends(put_worker_dependencies)
@@ -26,6 +27,7 @@ def update_my_profile(
         'user': worker,
         'status': 'ok'
     }
+
 
 @router.patch('/', summary='Редактировать информацию о себе по одному атрибуту')
 def update_my_other(

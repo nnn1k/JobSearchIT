@@ -1,8 +1,6 @@
 from typing import Any
 
-from pydantic import BaseModel
-
-from backend.api.users.employers.schemas import EmployerSchema, EmployerResponseSchema
+from backend.api.users.employers.profile.schemas import EmployerSchema, EmployerResponseSchema
 from backend.api.users.workers.profile.schemas import WorkerSchema, WorkerResponseSchema
 from backend.schemas.global_schema import GlobalSchema
 

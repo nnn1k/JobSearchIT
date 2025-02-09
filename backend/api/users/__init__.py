@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from backend.api.users.auth.views import router as auth_router
-from .employers.views import router as employer_router
+from backend.api.users.employers.profile.views import router as employer_router
 
 from backend.api.users.workers.profile.views import router as profile_router
 from backend.api.users.workers.resumes.views import router as resumes_router

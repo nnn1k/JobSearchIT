@@ -1,18 +1,17 @@
-from backend.api.users.employers.dependencies import get_employer_by_token
+from backend.api.users.employers.profile.dependencies import get_employer_by_token
 from backend.api.users.workers.profile.dependencies import get_worker_by_token
 from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
-from fastapi import APIRouter, Cookie, Depends, Response, HTTPException, status
+from fastapi import APIRouter, Cookie, Response, HTTPException, status
 
 from backend.api.users.auth.schemas import LoginSchema, RegisterSchema, UserType
-from backend.api.users.employers.repository import get_employer_repo
+from backend.api.users.employers.profile.repository import get_employer_repo
 from backend.api.users.workers.profile.repository import get_worker_repo
 from backend.schemas.global_schema import CodeSchema
-from backend.utils.auth_utils.auth_dependencies import (
+from backend.api.users.auth.dependencies import (
     check_user_code_dependencies,
     create_token, login_user, register_user,
 )
 
-from backend.utils.auth_utils.token_dependencies import get_user_by_token
 from backend.utils.other.email_func import SendEmail
 
 router = APIRouter(prefix="/auth", tags=["auth"])

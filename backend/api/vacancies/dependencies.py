@@ -7,8 +7,8 @@ from backend.api.companies.repository import get_company_by_id
 from backend.api.vacancies.repository import get_vacancy_repo, get_vacancy_by_id
 from backend.api.vacancies.schemas import VacancySchema, VacancyAddSchema, VacancyUpdateSchema
 from backend.utils.auth_utils.token_dependencies import get_user_by_token
-from backend.api.users.employers.dependencies import get_employer_by_token
-from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.employers.profile.dependencies import get_employer_by_token
+from backend.api.users.employers.profile.schemas import EmployerSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
 from backend.api.skills.repository import update_vacancy_skills
 

@@ -6,7 +6,7 @@ from backend.api.companies.dependencies import (
     get_company_by_id_dependencies
 )
 from backend.api.companies.schemas import CompanySchema
-from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.employers.profile.schemas import EmployerSchema
 
 router = APIRouter(prefix='/companies', tags=['companies'])
 

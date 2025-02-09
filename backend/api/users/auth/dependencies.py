@@ -1,9 +1,8 @@
-from typing import Any
 
 from fastapi import HTTPException, status, Response
 
 from backend.api.users.auth.AuthJWT import Token, jwt_token
-from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.employers.profile.schemas import EmployerSchema
 from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.utils.auth_utils.check_func import exclude_password
 from backend.utils.auth_utils.hash_pwd import HashPwd
