@@ -10,7 +10,6 @@ app.mount("/frontend", StaticFiles(directory="frontend"), name="static")
 app.include_router(backend_router)
 app.include_router(frontend_router)
 
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

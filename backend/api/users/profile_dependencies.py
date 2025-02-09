@@ -10,7 +10,7 @@ async def user_patch_dependencies(
         new_user: DynamicSchema,
         repository) -> WorkerSchema or EmployerSchema:
     user_keys = user.__fields__.keys()
-    new_user_items = new_user.dict().items()
+    new_user_items = new_user.model_dump().items()
     for key, value in new_user_items:
 
         if key not in user_keys:
