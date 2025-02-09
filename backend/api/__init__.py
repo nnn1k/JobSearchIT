@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from .users import router as users_router
-from .companies import company_router
+from backend.api.companies.views import router as company_router
 from .vacancies import vacancies_router
 
 from .skills import skills_router

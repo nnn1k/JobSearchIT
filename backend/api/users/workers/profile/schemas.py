@@ -1,9 +1,9 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
-from backend.schemas.global_schema import UserSchema, UserResponseSchema
+from backend.schemas.user_schema import UserResponseSchema, UserSchema
 
 
 class WorkerSchema(UserSchema):

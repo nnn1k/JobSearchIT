@@ -8,17 +8,16 @@ from backend.utils.auth_utils.token_dependencies import get_user_by_token
 from backend.api.users.employers.profile.dependencies import get_employer_by_token
 from backend.api.users.employers.profile.repository import get_employer_repo
 from backend.api.users.employers.profile.schemas import EmployerSchema, EmployerResponseSchema
-from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.api.vacancies.repository import get_vacancy_by_company_id
 from backend.api.vacancies.schemas import VacancySchema
-from backend.schemas.global_schema import UserTypeSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
+from backend.utils.other.type_utils import UserVar
 
 
 async def get_company_by_id_dependencies(
         company_id: int,
         user=Depends(get_user_by_token)
-) -> Tuple[CompanySchema, WorkerSchema or EmployerSchema, bool, VacancySchema | None]:
+) -> Tuple[CompanySchema, UserVar, bool, VacancySchema | None]:
     company = await get_company_by_id(company_id)
     can_update = check_employer_can_update(user, company)
     if not company:
@@ -33,7 +32,7 @@ async def get_company_by_id_dependencies(
 async def create_company_dependencies(
         company: CompanyAddSchema,
         owner: EmployerSchema = Depends(get_employer_by_token)
-) -> Tuple[Optional[CompanySchema], Optional[UserTypeSchema]]:
+) -> Tuple[Optional[CompanySchema], UserVar]:
     if owner.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

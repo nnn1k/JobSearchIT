@@ -6,6 +6,7 @@ from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.settings.database import session_factory, Base
 from datetime import datetime, timedelta
+from backend.utils.other.type_utils import BaseVar
 
 class RepositoryHelper:
 
@@ -28,10 +29,10 @@ class RepositoryHelper:
 
 class AlchemyRepository(RepositoryHelper):
 
-    db_model: Base = None
-    schema: BaseModel = None
+    db_model = None
+    schema = None
 
-    async def get_all(self, **kwargs) -> Optional[List[BaseModel]]:
+    async def get_all(self, **kwargs) -> Optional[List[BaseVar]]:
         async with session_factory() as session:
             res = await self.get_query(session, kwargs)
             models = res.scalars().all()
@@ -39,7 +40,7 @@ class AlchemyRepository(RepositoryHelper):
                 return None
             return [await self.model_to_schema(model) for model in models]
 
-    async def get_one(self, **kwargs) -> Optional[BaseModel]:
+    async def get_one(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
             res = await self.get_query(session, kwargs)
             model = res.scalars().one_or_none()
@@ -47,7 +48,7 @@ class AlchemyRepository(RepositoryHelper):
                 return None
             return await self.model_to_schema(model)
 
-    async def add_one(self, **kwargs) -> Optional[BaseModel]:
+    async def add_one(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
             query = (
                 insert(self.db_model)
@@ -62,7 +63,7 @@ class AlchemyRepository(RepositoryHelper):
 
             return new_model
 
-    async def update_one(self, **kwargs) -> Optional[BaseModel]:
+    async def update_one(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
             model = await self.get_model(session, **kwargs)
             if model is None:
@@ -91,7 +92,7 @@ class AlchemyRepository(RepositoryHelper):
 
             return {'deleted': True}
 
-    async def soft_delete(self, id: int, type_action: Literal['delete', 'restore']) -> Optional[BaseModel]:
+    async def soft_delete(self, id: int, type_action: Literal['delete', 'restore']) -> Optional[BaseVar]:
         async with session_factory() as session:
             model = await self.get_model(session, id=id)
             if model is None:
@@ -148,4 +149,3 @@ class AlchemyRepositoryWithRel(AlchemyRepository):
             if models is None:
                 return None
             return await self.model_to_schema(model)
-

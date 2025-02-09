@@ -2,7 +2,7 @@ from typing import Optional, Any
 
 from pydantic import BaseModel, EmailStr
 
-from backend.schemas.global_schema import UserSchema, UserResponseSchema
+from backend.schemas.user_schema import UserResponseSchema, UserSchema
 
 
 class EmployerSchema(UserSchema):

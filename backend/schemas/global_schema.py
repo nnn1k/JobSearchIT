@@ -1,7 +1,7 @@
 import datetime
-from typing import Optional, Literal
+from typing import Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 
 class GlobalSchema(BaseModel):
@@ -14,30 +14,6 @@ class GlobalSchema(BaseModel):
 class CodeSchema(BaseModel):
     code: str
 
-
-class UserTypeSchema(BaseModel):
-    id: int
-    type: str
-
-
-class UserSchema(GlobalSchema):
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    patronymic: Optional[str] = None
-    email: EmailStr
-    phone: Optional[str] = None
-    password: bytes
-    is_confirmed: bool = False
-
-
-class UserResponseSchema(GlobalSchema):
-    name: Optional[str] = None
-    surname: Optional[str] = None
-    patronymic: Optional[str] = None
-    email: EmailStr
-    phone: Optional[str] = None
-    is_confirmed: bool = False
-    type: Literal['worker', 'employer']
 
 class DynamicSchema(BaseModel):
     class Config:

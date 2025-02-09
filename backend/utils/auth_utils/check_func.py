@@ -1,9 +1,7 @@
 from typing import Any
-
 from backend.api.users.employers.profile.schemas import EmployerSchema, EmployerResponseSchema
 from backend.api.users.workers.profile.schemas import WorkerSchema, WorkerResponseSchema
 from backend.schemas.global_schema import GlobalSchema
-
 
 def check_employer_can_update(user, obj: GlobalSchema) -> bool:
     from backend.api.companies.schemas import CompanySchema
