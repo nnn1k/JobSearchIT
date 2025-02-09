@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import BaseModel
 
 from backend.api.users.employers.schemas import EmployerSchema, EmployerResponseSchema
@@ -24,6 +26,6 @@ def check_worker_can_update(user: WorkerSchema | EmployerSchema, obj: GlobalSche
         return user.id == obj.worker_id
     return False
 
-def exclude_password(user: BaseModel, response_schema: BaseModel):
-    user_response = user.model_dump(exclude='password')
+def exclude_password(user: Any, response_schema: Any):
+    user_response = user.model_dump(exclude={'password'})
     return response_schema.model_validate(user_response, from_attributes=True)

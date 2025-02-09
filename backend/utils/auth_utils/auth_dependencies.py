@@ -1,11 +1,13 @@
 from typing import Any
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Response
 
+from backend.api.users.auth.AuthJWT import Token, jwt_token
 from backend.api.users.employers.schemas import EmployerSchema
 from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.utils.auth_utils.check_func import exclude_password
 from backend.utils.auth_utils.hash_pwd import HashPwd
+from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
 from backend.utils.other.redis_func import get_code_from_redis
 
 
@@ -24,7 +26,7 @@ async def register_user(user, repository) -> WorkerSchema or EmployerSchema:
         email=user.email,
         password=HashPwd.hash_password(user.password),
     )
-    return new_user
+    return exclude_password(new_user, repository.response_schema)
 
 
 async def login_user(user, repository) -> WorkerSchema or EmployerSchema:
@@ -40,24 +42,26 @@ async def login_user(user, repository) -> WorkerSchema or EmployerSchema:
 async def check_user_code_dependencies(user, repository, code) -> WorkerSchema or EmployerSchema:
     new_code = await get_code_from_redis(repository.user_type, user.id)
     if code.code == new_code:
-        return await repository.update_one(id=user.id, is_confirmed=True)
+        user = await repository.update_one(id=user.id, is_confirmed=True)
+        return exclude_password(user, repository.response_schema)
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Incorrect code",
     )
 
+def create_token(response: Response, user):
+    access_token = jwt_token.create_access_token(id=user.id, user_type=user.type)
+    refresh_token = jwt_token.create_refresh_token(id=user.id, user_type=user.type)
 
-def send_code_response(email: str) -> dict[str, Any]:
+    response.set_cookie(ACCESS_TOKEN, access_token)
+    response.set_cookie(REFRESH_TOKEN, refresh_token)
+    response.set_cookie('user_type', user.type)
+    token = Token(
+        access_token=access_token,
+        refresh_token=refresh_token,
+    )
     return {
-        'message': 'Код отправлен на почту:',
-        'email': email,
-        'status': 'ok'
-    }
-
-
-def confirm_email_response(email: str) -> dict[str, Any]:
-    return {
-        'message': 'Почта подтверждена',
-        'email': email,
+        'user': user,
+        'token': token,
         'status': 'ok'
     }

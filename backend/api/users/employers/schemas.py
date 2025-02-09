@@ -16,17 +16,6 @@ class EmployerResponseSchema(UserResponseSchema):
     type: str = 'employer'
 
 
-class EmployerAuthSchema(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class EmployerRegisterSchema(BaseModel):
-    email: EmailStr
-    password: str
-    confirm_password: str
-
-
 class EmployerProfileSchema(BaseModel):
     name: Optional[str] = None
     surname: Optional[str] = None

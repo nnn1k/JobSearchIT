@@ -2,9 +2,9 @@ from fastapi import HTTPException, status, Cookie
 
 from backend.api.users.auth.AuthJWT import jwt_token
 from backend.api.users.employers.repository import get_employer_by_id
-from backend.api.users.employers.schemas import EmployerSchema
+from backend.api.users.employers.schemas import EmployerResponseSchema, EmployerSchema
 from backend.api.users.workers.profile.repository import get_worker_by_id
-from backend.api.users.workers.profile.schemas import WorkerSchema
+from backend.api.users.workers.profile.schemas import WorkerResponseSchema, WorkerSchema
 from backend.schemas.global_schema import UserTypeSchema, UserSchema
 from backend.utils.auth_utils.check_func import exclude_password
 
@@ -40,7 +40,7 @@ async def check_user_role(access_token=Cookie(None)) -> UserTypeSchema | None:
         return None
 
 
-async def get_user_by_token(access_token=Cookie(None)) -> WorkerSchema or EmployerSchema or None:
+async def get_user_by_token(access_token=Cookie(None)) -> None | WorkerResponseSchema | EmployerResponseSchema:
     user = await check_user_role(access_token)
     if not user:
         return None

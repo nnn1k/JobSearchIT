@@ -17,17 +17,6 @@ class WorkerResponseSchema(UserResponseSchema):
     type: str = 'worker'
 
 
-class WorkerAuthSchema(BaseModel):
-    email: EmailStr
-    password: str
-
-
-class WorkerRegisterSchema(BaseModel):
-    email: EmailStr
-    password: str
-    confirm_password: str
-
-
 class WorkerProfileSchema(BaseModel):
     name: Optional[str] = None
     surname: Optional[str] = None
