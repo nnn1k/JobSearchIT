@@ -5,16 +5,18 @@ from sqlalchemy import pool
 
 from alembic import context
 
-config = context.config
-
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
-
 from backend.database.models.employer import EmployersOrm, CompaniesOrm, VacanciesOrm
 from backend.database.models.worker import WorkersOrm, ResumesOrm, EducationsOrm
 from backend.database.models.other import SkillsOrm, ResponsesOrm, WorkersSkillsOrm, VacanciesSkillsOrm
 
 from backend.database.settings.database import Base, settings as database_settings
+
+config = context.config
+
+if config.config_file_name is not None:
+    fileConfig(config.config_file_name)
+
+
 
 config.set_main_option('sqlalchemy.url', database_settings.ASYNC_DB_URL + "?async_fallback=True")
 

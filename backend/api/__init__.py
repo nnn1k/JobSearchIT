@@ -11,4 +11,3 @@ router.include_router(users_router)
 router.include_router(company_router)
 router.include_router(vacancies_router)
 router.include_router(skills_router)
-
