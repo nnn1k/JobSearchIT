@@ -1,6 +1,6 @@
 from typing import Optional, List
 
-from backend.database.models.employer import VacanciesOrm
+from backend.database.models.employer.Vacancy import VacanciesOrm
 from backend.api.vacancies.schemas import VacancySchema
 from backend.database.utils.repository import AlchemyRepository
 

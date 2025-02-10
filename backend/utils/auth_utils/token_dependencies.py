@@ -5,14 +5,15 @@ from backend.api.users.employers.profile.repository import get_employer_by_id
 from backend.api.users.employers.profile.schemas import EmployerResponseSchema
 from backend.api.users.workers.profile.repository import get_worker_by_id
 from backend.api.users.workers.profile.schemas import WorkerResponseSchema
-from backend.schemas.user_schema import UserSchema, UserTypeSchema
+from backend.schemas.user_schema import UserTypeSchema
 from backend.utils.auth_utils.check_func import exclude_password
+from backend.utils.other.type_utils import UserVar
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
 
-async def get_user_by_token_and_role(access_token, repository) -> UserSchema:
+async def get_user_by_token_and_role(access_token, repository) -> UserVar:
     user = await check_user_role(access_token)
     if not user:
         raise HTTPException(

@@ -1,9 +1,16 @@
 import asyncio
 
 from backend.database.settings.database import engine, Base, session_factory
-from backend.database.models.worker import WorkersOrm, ResumesOrm, EducationsOrm
-from backend.database.models.employer import EmployersOrm, CompaniesOrm, VacanciesOrm
-from backend.database.models.other import SkillsOrm, WorkersSkillsOrm, VacanciesSkillsOrm, ResponsesOrm
+from backend.database.models.worker.Worker import WorkersOrm
+from backend.database.models.worker.Resume import ResumesOrm
+from backend.database.models.worker.Education import EducationsOrm
+from backend.database.models.employer.Employer import EmployersOrm
+from backend.database.models.employer.Company import CompaniesOrm
+from backend.database.models.employer.Vacancy import VacanciesOrm
+from backend.database.models.other.Skill import SkillsOrm
+from backend.database.models.other.WorkerSkills import WorkersSkillsOrm
+from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
+from backend.database.models.other.Response import ResponsesOrm
 
 
 async def recreate():

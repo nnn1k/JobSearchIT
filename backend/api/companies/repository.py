@@ -1,5 +1,5 @@
 from backend.database.utils.repository import AlchemyRepository
-from backend.database.models.employer import CompaniesOrm
+from backend.database.models.employer.Company import CompaniesOrm
 from backend.api.companies.schemas import CompanySchema
 
 

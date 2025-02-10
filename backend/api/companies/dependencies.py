@@ -7,7 +7,7 @@ from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema,
 from backend.utils.auth_utils.token_dependencies import get_user_by_token
 from backend.api.users.employers.profile.dependencies import get_employer_by_token
 from backend.api.users.employers.profile.repository import get_employer_repo
-from backend.api.users.employers.profile.schemas import EmployerSchema, EmployerResponseSchema
+from backend.api.users.employers.profile.schemas import EmployerResponseSchema
 from backend.api.vacancies.repository import get_vacancy_by_company_id
 from backend.api.vacancies.schemas import VacancySchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
@@ -31,7 +31,7 @@ async def get_company_by_id_dependencies(
 
 async def create_company_dependencies(
         company: CompanyAddSchema,
-        owner: EmployerSchema = Depends(get_employer_by_token)
+        owner: EmployerResponseSchema = Depends(get_employer_by_token)
 ) -> Tuple[Optional[CompanySchema], UserVar]:
     if owner.company_id:
         raise HTTPException(

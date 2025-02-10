@@ -1,6 +1,6 @@
-from typing import Optional, Any
+from typing import Optional
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from backend.schemas.user_schema import UserResponseSchema, UserSchema
 

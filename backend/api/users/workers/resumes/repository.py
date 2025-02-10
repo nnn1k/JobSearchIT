@@ -1,5 +1,5 @@
 from backend.api.users.workers.resumes.schemas import ResumeSchema
-from backend.database.models.worker import ResumesOrm
+from backend.database.models.worker.Resume import ResumesOrm
 from backend.database.utils.repository import AlchemyRepository
 
 

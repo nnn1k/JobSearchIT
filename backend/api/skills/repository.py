@@ -3,7 +3,9 @@ from typing import List
 from sqlalchemy import select
 
 from backend.api.skills.schemas import SkillSchema, SkillsResponseSchema
-from backend.database.models.other import SkillsOrm, VacanciesSkillsOrm, WorkersSkillsOrm
+from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
+from backend.database.models.other.Skill import SkillsOrm
+from backend.database.models.other.WorkerSkills import WorkersSkillsOrm
 from backend.database.settings.database import session_factory
 from backend.database.utils.repository import AlchemyRepository
 

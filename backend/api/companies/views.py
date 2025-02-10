@@ -6,16 +6,14 @@ from backend.api.companies.dependencies import (
     get_company_by_id_dependencies
 )
 from backend.api.companies.schemas import CompanySchema
-from backend.api.users.employers.profile.schemas import EmployerSchema
-
-
+from backend.api.users.employers.profile.schemas import EmployerResponseSchema
 
 router = APIRouter(prefix='/companies', tags=['companies'])
 
 
 @router.post('/', summary='Создать компанию')
 def create_new_company(
-        company_and_user: EmployerSchema = Depends(create_company_dependencies)
+        company_and_user: EmployerResponseSchema = Depends(create_company_dependencies)
 ):
     company, user = company_and_user
     if user:

@@ -5,13 +5,14 @@ from backend.api.users.workers.profile.dependencies import (
     patch_worker_dependencies,
     get_worker_by_token
 )
-from backend.api.users.workers.profile.schemas import WorkerSchema
+from backend.api.users.workers.profile.repository import get_worker_by_id_rel
+from backend.api.users.workers.profile.schemas import WorkerResponseSchema
 
 router = APIRouter(prefix='/me', tags=['workers_profile'])
 
 @router.get('/', summary='Узнать информацию о себе')
 def get_my_profile(
-        worker: WorkerSchema = Depends(get_worker_by_token)
+        worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
     return {
         'user': worker,
@@ -21,7 +22,7 @@ def get_my_profile(
 
 @router.put('/', summary='Редактировать информацию о себе')
 def update_my_profile(
-        worker: WorkerSchema = Depends(put_worker_dependencies)
+        worker: WorkerResponseSchema = Depends(put_worker_dependencies)
 ):
     return {
         'user': worker,
@@ -31,9 +32,14 @@ def update_my_profile(
 
 @router.patch('/', summary='Редактировать информацию о себе по одному атрибуту')
 def update_my_other(
-        worker: WorkerSchema = Depends(patch_worker_dependencies)
+        worker: WorkerResponseSchema = Depends(patch_worker_dependencies)
 ):
     return {
         'user': worker,
         'status': 'ok'
     }
+
+@router.get('/test')
+async def test():
+    worker = await get_worker_by_id_rel(id=1)
+    return worker

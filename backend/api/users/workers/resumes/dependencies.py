@@ -8,7 +8,7 @@ from backend.api.skills.repository import get_skills_by_worker_id, update_worker
 from backend.api.skills.schemas import SkillsResponseSchema
 from backend.utils.auth_utils.token_dependencies import get_user_by_token
 from backend.api.users.workers.profile.dependencies import get_worker_by_token
-from backend.api.users.workers.profile.schemas import WorkerSchema
+from backend.api.users.workers.profile.schemas import WorkerResponseSchema
 from backend.utils.auth_utils.check_func import check_worker_can_update
 
 
@@ -27,8 +27,8 @@ def validate_resume_update_permissions(worker, resume):
 
 async def create_resume_dependencies(
         add_resume: ResumeAddSchema,
-        worker: WorkerSchema = Depends(get_worker_by_token)
-) -> Tuple[ResumeSchema, WorkerSchema]:
+        worker: WorkerResponseSchema = Depends(get_worker_by_token)
+) -> Tuple['ResumeSchema', WorkerResponseSchema]:
     skills: List[SkillsResponseSchema] = add_resume.skills
     if not worker:
         raise HTTPException(
@@ -43,7 +43,7 @@ async def create_resume_dependencies(
 
 async def get_resume_dependencies(
         resume_id: int,
-        user: WorkerSchema = Depends(get_user_by_token)
+        user: WorkerResponseSchema = Depends(get_user_by_token)
 ):
     resume_repo = get_resume_repo()
     resume = await resume_repo.get_one(id=resume_id)
@@ -53,7 +53,7 @@ async def get_resume_dependencies(
 
 
 async def get_all_my_resumes_dependencies(
-        user: WorkerSchema = Depends(get_worker_by_token)
+        user: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
     if not user:
         raise HTTPException(
@@ -69,7 +69,7 @@ async def get_all_my_resumes_dependencies(
 async def update_resume_dependencies(
         resume_id: int,
         update_resume: ResumeUpdateSchema,
-        worker: WorkerSchema = Depends(get_worker_by_token)
+        worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
     resume_repo = get_resume_repo()
     resume = await resume_repo.get_one(id=resume_id)
@@ -82,7 +82,7 @@ async def update_resume_dependencies(
 
 async def delete_resume_dependencies(
         resume_id: int,
-        worker: WorkerSchema = Depends(get_worker_by_token)
+        worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
     resume_repo = get_resume_repo()
     resume = await resume_repo.get_one(id=resume_id)

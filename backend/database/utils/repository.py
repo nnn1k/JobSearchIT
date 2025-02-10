@@ -111,9 +111,6 @@ class AlchemyRepository(RepositoryHelper):
             await session.commit()
             return new_model
 
-
-class AlchemyRelationshipRepository(AlchemyRepository):
-
     async def get_all_rel(self, **kwargs) -> Optional[List[BaseVar]]:
         async with session_factory() as session:
             query = select(self.db_model)
@@ -127,10 +124,14 @@ class AlchemyRelationshipRepository(AlchemyRepository):
             if 'load' in kwargs:
                 load_options = kwargs['load']
                 for option in load_options:
+                    relationship = getattr(self.db_model, option['relationship'], None)
+                    if relationship is None:
+                        raise ValueError(
+                            f"Relationship '{option['relationship']}' not found in {self.db_model.__name__}")
                     if option.get('type') == 'selectin':
-                        query = query.options(selectinload(option['relationship']))
+                        query = query.options(selectinload(relationship))
                     elif option.get('type') == 'joined':
-                        query = query.options(joinedload(option['relationship']))
+                        query = query.options(joinedload(relationship))
 
             res = await session.execute(query)
             models = res.scalars().all()
@@ -151,13 +152,20 @@ class AlchemyRelationshipRepository(AlchemyRepository):
             if 'load' in kwargs:
                 load_options = kwargs['load']
                 for option in load_options:
+                    relationship = getattr(self.db_model, option['relationship'], None)
+                    if relationship is None:
+                        raise ValueError(
+                            f"Relationship '{option['relationship']}' not found in {self.db_model.__name__}")
                     if option.get('type') == 'selectin':
-                        query = query.options(selectinload(option['relationship']))
+                        query = query.options(selectinload(relationship))
                     elif option.get('type') == 'joined':
-                        query = query.options(joinedload(option['relationship']))
+                        query = query.options(joinedload(relationship))
 
             res = await session.execute(query)
-            model = res.scalars().one_or_none()
+            model = res.scalars().unique().one_or_none()
             if model is None:
                 return None
+
             return await self.model_to_schema(model)
+
+
