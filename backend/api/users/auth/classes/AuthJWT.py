@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime, UTC
+from datetime import timedelta, datetime
 from pathlib import Path
 
 import jwt
