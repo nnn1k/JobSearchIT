@@ -5,7 +5,7 @@ from sqlalchemy import insert, select
 from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.settings.database import session_factory, Base
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, timedelta
 from backend.utils.other.type_utils import BaseVar
 
 class RepositoryHelper:
@@ -100,7 +100,7 @@ class AlchemyRepository(RepositoryHelper):
                 return None
             match type_action:
                 case 'delete':
-                    model.deleted_at = datetime.now(UTC) + timedelta(hours=3)
+                    model.deleted_at = datetime.utcnow() + timedelta(hours=3)
                 case 'restore':
                     model.deleted_at = None
                 case _:
@@ -145,7 +145,7 @@ class AlchemyRepositoryWithRel(AlchemyRepository):
     async def get_one_rel(self, **kwargs) -> Optional[BaseModel]:
         async with session_factory() as session:
             res = await self.get_query_rel(session, kwargs)
-            models = res.scalars().unique().one()
-            if models is None:
+            model = res.scalars().unique().one()
+            if model is None:
                 return None
             return await self.model_to_schema(model)
