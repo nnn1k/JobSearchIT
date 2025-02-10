@@ -13,6 +13,7 @@ def resume_add(request: Request):
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/resume/create/resume.html", {"request": request, 'user_type': user_type})
 
+
 @router.get('/{resume_id}')
 def resume_get(request: Request):
     user_type = request.cookies.get("user_type")

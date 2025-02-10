@@ -1,6 +1,7 @@
 import {makeRequest} from "/frontend/js/utils.js";
 import {print_salary} from "/frontend/js/print_salary.js";
 
+
 document.addEventListener('DOMContentLoaded', function (){
     get_resume()
 })
@@ -20,9 +21,9 @@ async function get_resume(){
     document.getElementById('city').innerHTML += resume.city
     document.getElementById('description').innerHTML = resume.description
     if (getResponse.can_update){
-        const editBtn = document.getElementById('edit_btn')
-        editBtn.style.display = 'inline-block'
-        editBtn.onclick = () => {
+        const deleteBtn = document.getElementById('btn_delete')
+        deleteBtn.style.display = 'flex'
+        deleteBtn.onclick = () => {
             window.location.href = `/worker/resumes/${resume.id}/edit`
         }
     }

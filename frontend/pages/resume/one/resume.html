@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <link rel="stylesheet" href="/frontend/pages/resume/one/resume.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резюме</title>
 </head>
 {% if user_type == 'worker' %}
     {% extends 'base_worker/base_worker.html' %}
@@ -13,30 +14,26 @@
     {% extends 'base_worker/base_worker.html' %}
 {% endif %}
 {% block content %}
-    <body>
-    <div class="resume-container">
-        <div class="title_container">
-            <h2>Основная информация</h2>
-            <ul>
-                <p id="title"><strong>Название:  </strong></p>
-                <p id="salary"></p>
-                <p id="city"><strong>Город:  </strong></p>
-            </ul>
-            <button class="red_button" id="edit_btn" style="display: none">Редактировать</button>
+<body>
+<div id="vacancy-container" class="vacancy-container">
+    <div class="main_info">
+        <div class="first_str">
+            <h1 id="title"></h1>
+            <div id="btn_delete" style="display: none"></div>
         </div>
-        <div class="section">
-            <h2>Описание</h2>
-            <div class="description_container">
-                <p id="description">
-                    Опытный фронтенд-разработчик с 5-летним стажем. Специализируюсь на создании современных и отзывчивых
-                    пользовательских интерфейсов. Работал с такими технологиями, как HTML5, CSS3, JavaScript, React и
-                    Redux. Участвовал в разработке крупных проектов для клиентов из сферы электронной коммерции и
-                    финансов. Постоянно совершенствую свои навыки и слежу за трендами в веб-разработке.
-                </p>
-            </div>
+
+        <div class="company-info">
+            <p id="city"></p>
+            <p id="salary"></p>
         </div>
+        <a class="red_button" id="otklik_btn">Написать</a>
     </div>
-    <script type="module" src="/frontend/pages/resume/one/resume.js"></script>
-    </body>
+    <div class="vacancy-details">
+        <p id="description" class="description_"></p>
+    </div>
+
+</div>
+<script type="module" src="/frontend/pages/resume/one/resume.js"></script>
+</body>
 {% endblock %}
 </html>

@@ -15,9 +15,9 @@
     <form id="resumeForm">
         <!-- Этап 1: Выбор профессии -->
         <div class="step active" id="step1">
-            <label for="title">Введите профессию:</label>
+            <label for="title">Желаяемая должность:</label>
             <input type="text" id="title">
-            <button type="button" onclick="nextStep(1)">Далее</button>
+            <button id="btns_resumes" class="red_button" type="button" onclick="nextStep(1)">Далее</button>
         </div>
 
         <!-- Этап 2: Ввод данных о зарплате и городе -->
@@ -34,10 +34,10 @@
             <label for="city">Город:</label>
             <input type="text" id="city" placeholder="Введите город"/>
 
-            <button type="button" onclick="nextStep(2)">Далее</button>
-            <button type="button" onclick="prevStep(2)">Назад</button>
+            <button id="btns_resumes" class="white_button" type="button" onclick="prevStep(2)">Назад</button>
+            <button id="btns_resumes"  class="red_button" type="button" onclick="nextStep(2)">Далее</button>
         </div>
-        <!-- Этап 3: Выбор ключевых навыков -->
+
         <div class="step" id="step3">
 
             <div id="selectedSkillsContainer">
@@ -47,10 +47,10 @@
             <div id="skillsContainer">
 
             </div>
-            <button type="button" onclick="nextStep(3)">Далее</button>
-            <button type="button" onclick="prevStep(3)">Назад</button>
+            <button id="btns_resumes" class="white_button" type="button" onclick="prevStep(3)">Назад</button>
+            <button id="btns_resumes" class="red_button" type="button" onclick="nextStep(3)">Далее</button>
         </div>
-        <!-- Этап 4: Опыт работы -->
+
         <div class="step" id="step4">
             <h2>Опыт работы</h2>
             <div id="experienceContainer">
@@ -72,10 +72,10 @@
                     <input type="date" class="endDate" required>
                 </div>
             </div>
-            <button type="button" onclick="addExperience()">Добавить место работы</button>
-            <button type="button" onclick="noExperience()">У меня нет опыта работы</button>
-            <button type="submit" onclick="submitResume(event)">Отправить резюме </button>
-            <button type="button" onclick="prevStep(4)">Назад</button>
+            <button id="btns_resumes" class="white_button" type="button" onclick="prevStep(4)">Назад</button>
+            <button id="btns_resumes" class="red_button" type="button" onclick="addExperience()">Добавить место работы</button>
+            <button id="btns_resumes" class="red_button" type="button" onclick="noExperience()">У меня нет опыта работы</button>
+            <button id="btns_resumes" class="red_button" type="submit" onclick="submitResume(event)">Отправить резюме </button>
         </div>
     </form>
 </div>

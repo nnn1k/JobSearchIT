@@ -5,11 +5,6 @@
     <title>Создание вакансии</title>
     <link rel="stylesheet" href="/frontend/pages/vacancy/create/vacancy.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
-    <style>
-        .mce-content-body {
-            white-space: pre-wrap; /* Применяем стиль white-space: pre-wrap */
-        }
-    </style>
 </head>
 {% extends 'base_employer/base_employer.html' %}
 {% block content %}
@@ -50,16 +45,18 @@
                 <input type="text" class="input_for_city_vacancy" id="input_for_city_vacancy" required="">
             </div>
             <div id="selectedSkillsContainer">
-                <h3>Выбранные навыки:</h3>
+                <h3>Ключевые навыки:</h3>
                 <div id="selectedSkills" class="selected-skills-container"></div>
             </div>
             <div id="skillsContainer"></div>
-            <div>
-                 <input id="add_vacancy_btn" class="red_button" type="button" value="Опубликовать" onclick="post_vacancy()">
+                <div>
+                    <input id="add_vacancy_btn" class="red_button" type="button" value="Опубликовать"
+                           onclick="post_vacancy()">
+                </div>
             </div>
         </div>
+        <script type="module" src="/frontend/pages/vacancy/create/vacancy.js"></script>
     </div>
-    <script type="module" src="/frontend/pages/vacancy/create/vacancy.js"></script>
     </body>
 {% endblock %}
 </html>
