@@ -1,12 +1,12 @@
 from typing import List, Dict, Optional, Literal
 
-from pydantic import BaseModel
 from sqlalchemy import insert, select
 from sqlalchemy.orm import joinedload, selectinload
 
-from backend.database.settings.database import session_factory, Base
+from backend.database.settings.database import session_factory
 from datetime import datetime, timedelta
 from backend.utils.other.type_utils import BaseVar
+
 
 class RepositoryHelper:
 
@@ -27,8 +27,8 @@ class RepositoryHelper:
         )
         return await session.execute(query)
 
-class AlchemyRepository(RepositoryHelper):
 
+class AlchemyRepository(RepositoryHelper):
     db_model = None
     schema = None
 
@@ -112,40 +112,52 @@ class AlchemyRepository(RepositoryHelper):
             return new_model
 
 
-class AlchemyRepositoryWithRel(AlchemyRepository):
-    db_model: Base = None
-    schema: BaseModel = None
+class AlchemyRelationshipRepository(AlchemyRepository):
 
-    async def get_query_rel(self, session, kwargs):
-        load_type = kwargs.pop('load', None)
-        key, value = next(iter(load_type.items()))
-        load_option = None
-        match key:
-            case 'joined':
-                load_option = joinedload(getattr(self.db_model, value))
-            case 'select':
-                load_option = selectinload(getattr(self.db_model, value))
-            case _:
-                print(f'bad load {key}')
-        query = (
-            select(self.db_model)
-            .filter_by(**kwargs)
-            .options(load_option)
-        )
-        return await session.execute(query)
-
-    async def get_all_rel(self, **kwargs) -> Optional[List[BaseModel]]:
+    async def get_all_rel(self, **kwargs) -> Optional[List[BaseVar]]:
         async with session_factory() as session:
-            res = await self.get_query_rel(session, kwargs)
-            models = res.scalars().unique().all()
+            query = select(self.db_model)
+
+            # Обработка kwargs для фильтрации
+            for key, value in kwargs.items():
+                if hasattr(self.db_model, key):
+                    query = query.where(getattr(self.db_model, key) == value)
+
+            # Добавление загрузки связанных объектов
+            if 'load' in kwargs:
+                load_options = kwargs['load']
+                for option in load_options:
+                    if option.get('type') == 'selectin':
+                        query = query.options(selectinload(option['relationship']))
+                    elif option.get('type') == 'joined':
+                        query = query.options(joinedload(option['relationship']))
+
+            res = await session.execute(query)
+            models = res.scalars().all()
             if models is None:
                 return None
             return [await self.model_to_schema(model) for model in models]
 
-    async def get_one_rel(self, **kwargs) -> Optional[BaseModel]:
+    async def get_one_rel(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
-            res = await self.get_query_rel(session, kwargs)
-            model = res.scalars().unique().one()
+            query = select(self.db_model)
+
+            # Обработка kwargs для фильтрации
+            for key, value in kwargs.items():
+                if hasattr(self.db_model, key):
+                    query = query.where(getattr(self.db_model, key) == value)
+
+            # Добавление загрузки связанных объектов
+            if 'load' in kwargs:
+                load_options = kwargs['load']
+                for option in load_options:
+                    if option.get('type') == 'selectin':
+                        query = query.options(selectinload(option['relationship']))
+                    elif option.get('type') == 'joined':
+                        query = query.options(joinedload(option['relationship']))
+
+            res = await session.execute(query)
+            model = res.scalars().one_or_none()
             if model is None:
                 return None
             return await self.model_to_schema(model)

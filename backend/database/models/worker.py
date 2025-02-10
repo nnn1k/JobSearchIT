@@ -1,7 +1,7 @@
 from datetime import date
 
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.database.settings.database import Base
 
 
@@ -18,6 +18,13 @@ class WorkersOrm(Base):
     city: Mapped[str] = mapped_column(nullable=True)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 
+    resumes: Mapped[list['ResumesOrm']] = relationship('ResumesOrm', back_populates='worker')
+    educations: Mapped[list['EducationsOrm']] = relationship('EducationsOrm', back_populates='worker')
+    workers_skills: Mapped[list['WorkersSkillsOrm']] = relationship('WorkersSkillsOrm', back_populates='worker')
+    skills: Mapped[list['SkillsOrm']] = relationship('SkillsOrm',
+                                                     secondary='workers_skills',
+                                                     back_populates='workers',
+                                                     overlaps='workers_skills')
 
 class ResumesOrm(Base):
     __tablename__ = 'resumes'
@@ -30,6 +37,7 @@ class ResumesOrm(Base):
     is_hidden: Mapped[bool] = mapped_column(default=False)
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
 
+    worker: Mapped[WorkersOrm] = relationship('WorkersOrm', back_populates='resumes')
 
 class EducationsOrm(Base):
     __tablename__ = 'educations'
@@ -39,3 +47,5 @@ class EducationsOrm(Base):
     institution: Mapped[str]
     specialization: Mapped[str]
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
+
+    worker: Mapped[WorkersOrm] = relationship('WorkersOrm', back_populates='educations')
