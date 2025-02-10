@@ -28,7 +28,7 @@ class AuthJWT:
     ) -> str:
         private_key = self.private_key_path.read_text()
         to_encode = payload.copy()
-        now = datetime.now(UTC)
+        now = datetime.utcnow()
         if expire_timedelta:
             expire = now + expire_timedelta
         else:
