@@ -8,6 +8,8 @@ from backend.api.companies.dependencies import (
 from backend.api.companies.schemas import CompanySchema
 from backend.api.users.employers.profile.schemas import EmployerSchema
 
+
+
 router = APIRouter(prefix='/companies', tags=['companies'])
 
 

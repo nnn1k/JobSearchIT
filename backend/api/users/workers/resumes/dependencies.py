@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException, status
 
 from backend.api.users.workers.resumes.repository import get_resume_repo
 from backend.api.users.workers.resumes.schemas import ResumeSchema, ResumeUpdateSchema, ResumeAddSchema
-from backend.api.skills.repository import update_worker_skills
+from backend.api.skills.repository import get_skills_by_worker_id, update_worker_skills
 from backend.api.skills.schemas import SkillsResponseSchema
 from backend.utils.auth_utils.token_dependencies import get_user_by_token
 from backend.api.users.workers.profile.dependencies import get_worker_by_token
@@ -45,12 +45,11 @@ async def get_resume_dependencies(
         resume_id: int,
         user: WorkerSchema = Depends(get_user_by_token)
 ):
-
     resume_repo = get_resume_repo()
     resume = await resume_repo.get_one(id=resume_id)
-
+    worker_skills = await get_skills_by_worker_id(resume.worker_id)
     can_update = check_worker_can_update(user, resume)
-    return resume, user, can_update
+    return resume, user, can_update, worker_skills
 
 
 async def get_all_my_resumes_dependencies(
@@ -92,5 +91,3 @@ async def delete_resume_dependencies(
 
     delete_resume = await resume_repo.soft_delete(id=resume_id, type_action='delete')
     return delete_resume, worker
-
-

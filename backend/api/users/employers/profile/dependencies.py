@@ -14,7 +14,7 @@ async def get_employer_by_token(
     access_token=Cookie(None),
 ) -> UserSchema:
     employer_repo = get_employer_repo()
-    return await get_user_by_token_and_role(access_token, employer_repo, EmployerResponseSchema)
+    return await get_user_by_token_and_role(access_token, employer_repo)
 
 
 async def put_employer_dependencies(

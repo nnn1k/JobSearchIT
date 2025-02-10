@@ -12,7 +12,7 @@ ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
 
-async def get_user_by_token_and_role(access_token, repository, response_schema) -> UserSchema:
+async def get_user_by_token_and_role(access_token, repository) -> UserSchema:
     user = await check_user_role(access_token)
     if not user:
         raise HTTPException(
@@ -26,7 +26,7 @@ async def get_user_by_token_and_role(access_token, repository, response_schema) 
         )
     user = await repository.get_one(id=int(user.id))
     if user:
-        return exclude_password(user, response_schema)
+        return exclude_password(user, repository.response_schema)
 
 
 async def check_user_role(access_token=Cookie(None)) -> UserTypeSchema | None:

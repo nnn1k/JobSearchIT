@@ -1,15 +1,15 @@
 from fastapi import HTTPException, status
 
-from backend.api.users.employers.profile.schemas import EmployerSchema
-from backend.api.users.workers.profile.schemas import WorkerSchema
 from backend.schemas.global_schema import DynamicSchema
+from backend.utils.auth_utils.check_func import exclude_password
+from backend.utils.other.type_utils import UserVar
 
 
 async def user_patch_dependencies(
-        user: WorkerSchema or EmployerSchema,
+        user: UserVar,
         new_user: DynamicSchema,
-        repository) -> WorkerSchema or EmployerSchema:
-    user_keys = user.__fields__.keys()
+        repository) -> UserVar:
+    user_keys = user.model_dump().keys()
     new_user_items = new_user.model_dump().items()
     for key, value in new_user_items:
 
@@ -29,5 +29,5 @@ async def user_patch_dependencies(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Value {value} is not a string"
             )
-
-    return await repository.update_one(id=user.id, **new_user.model_dump())
+    user = await repository.update_one(id=user.id, **new_user.model_dump())
+    return exclude_password(user, repository.response_schema)

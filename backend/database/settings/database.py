@@ -31,7 +31,7 @@ class Base(DeclarativeBase):
         datetime.datetime,
         mapped_column(
             server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
-            onupdate=lambda: datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=3)
+            onupdate=lambda: datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         )
     ]]
     deleted_at: Mapped[datetime.datetime] = mapped_column(default=None, nullable=True)
@@ -42,5 +42,3 @@ class Base(DeclarativeBase):
             if col in self.repr_cols or idx < self.repr_cols_num:
                 cols.append(f'{col}={getattr(self, col)}')
         return f'<{self.__class__.__name__} {", ".join(cols)}>'
-
-

@@ -8,7 +8,9 @@ from backend.api.users.workers.resumes.dependencies import (
     delete_resume_dependencies
 )
 
+
 router = APIRouter(prefix="/resumes", tags=["resumes"])
+
 
 @router.post('/', summary='Создать резюме')
 def add_resumes_views(
@@ -25,12 +27,13 @@ def add_resumes_views(
 def get_one_resume_views(
         resume_and_user=Depends(get_resume_dependencies)
 ):
-    resume, user, can_update = resume_and_user
+    resume, user, can_update, worker_skills = resume_and_user
     return {
         'status': 'ok',
         'user': user,
         'resume': resume,
         'can_update': can_update,
+        'skills': worker_skills,
     }
 
 @router.get('/', summary='Посмотреть все свои резюме')
