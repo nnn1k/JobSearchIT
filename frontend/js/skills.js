@@ -11,10 +11,13 @@ export function createSkillButtons(skillList) {
         button.className = 'skill-button';
         button.textContent = skill.name; // Используем name для текста кнопки
         button.setAttribute('data-id', skill.id); // Сохраняем id в атрибуте data-id
-        button.onclick = function() { selectSkill(this); }; // Привязываем событие onclick
+        button.onclick = function () {
+            selectSkill(this);
+        }; // Привязываем событие onclick
         skillsContainer.appendChild(button); // Добавляем кнопку в контейнер
     });
 }
+
 export function getSelectedSkills() {
     const selectedSkillsContainer = document.getElementById('selectedSkills');
     const selectedSkills = [...selectedSkillsContainer.children].map(skillButton => {
@@ -38,7 +41,7 @@ export function selectSkill(button) {
         skillButton.setAttribute('data-id', button.getAttribute('data-id')); // Сохраняем id
 
         // Добавляем обработчик события для удаления навыка
-        skillButton.onclick = function() {
+        skillButton.onclick = function () {
             selectedSkillsContainer.removeChild(skillButton);
             button.classList.remove('selected'); // Убираем выделение с кнопки
             button.style.display = 'inline-block'; // Показываем кнопку навыка снова
@@ -52,7 +55,8 @@ export function selectSkill(button) {
     }
 
 }
-export function displaySelectedSkills(skills) {
+
+export function displaySelectedSkills(skills, disabled = false) {
     const selectedSkillsContainer = document.getElementById('selectedSkills');
 
     // Очищаем контейнер перед добавлением новых выбранных навыков
@@ -66,17 +70,18 @@ export function displaySelectedSkills(skills) {
         skillButton.setAttribute('data-id', skill.id); // Сохраняем id в атрибуте data-id
 
         // Добавляем обработчик события для удаления навыка
-        skillButton.onclick = function() {
-            selectedSkillsContainer.removeChild(skillButton);
-            // Возвращаем кнопку навыка обратно в доступные навыки
-            const allSkillButtons = document.querySelectorAll('.skill-button');
-            const skillButtonToShow = Array.from(allSkillButtons).find(btn => btn.getAttribute('data-id') === skill.id.toString());
-            if (skillButtonToShow) {
-                skillButtonToShow.classList.remove('selected'); // Убираем выделение с кнопки
-                skillButtonToShow.style.display = 'inline-block'; // Показываем кнопку навыка снова
-            }
-        };
-
+        if (!disabled) {
+            skillButton.onclick = function () {
+                selectedSkillsContainer.removeChild(skillButton);
+                // Возвращаем кнопку навыка обратно в доступные навыки
+                const allSkillButtons = document.querySelectorAll('.skill-button');
+                const skillButtonToShow = Array.from(allSkillButtons).find(btn => btn.getAttribute('data-id') === skill.id.toString());
+                if (skillButtonToShow) {
+                    skillButtonToShow.classList.remove('selected'); // Убираем выделение с кнопки
+                    skillButtonToShow.style.display = 'inline-block'; // Показываем кнопку навыка снова
+                }
+            };
+        }
         selectedSkillsContainer.appendChild(skillButton);
     });
 }
