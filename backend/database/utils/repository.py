@@ -16,7 +16,7 @@ class RepositoryHelper:
             return None
         return await session.get(self.db_model, model_id)
 
-    async def model_to_schema(self, model):
+    def model_to_schema(self, model):
         return self.schema.model_validate(model, from_attributes=True)
 
     async def get_query(self, session, kwargs):
@@ -38,7 +38,7 @@ class AlchemyRepository(RepositoryHelper):
             models = res.scalars().all()
             if models is None:
                 return None
-            return [await self.model_to_schema(model) for model in models]
+            return [self.model_to_schema(model) for model in models]
 
     async def get_one(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
@@ -46,7 +46,7 @@ class AlchemyRepository(RepositoryHelper):
             model = res.scalars().one_or_none()
             if model is None:
                 return None
-            return await self.model_to_schema(model)
+            return self.model_to_schema(model)
 
     async def add_one(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
@@ -58,7 +58,7 @@ class AlchemyRepository(RepositoryHelper):
             res = await session.execute(query)
 
             model = res.scalars().one_or_none()
-            new_model = await self.model_to_schema(model)
+            new_model = self.model_to_schema(model)
             await session.commit()
 
             return new_model
@@ -76,7 +76,7 @@ class AlchemyRepository(RepositoryHelper):
                 else:
                     print({'error': 'unknown attribute'})
                     return None
-            new_model = await self.model_to_schema(model)
+            new_model = self.model_to_schema(model)
             await session.commit()
             return new_model
 
@@ -107,7 +107,7 @@ class AlchemyRepository(RepositoryHelper):
                     print('soft_delete unknown action')
                     return None
 
-            new_model = await self.model_to_schema(model)
+            new_model = self.model_to_schema(model)
             await session.commit()
             return new_model
 
@@ -137,7 +137,7 @@ class AlchemyRepository(RepositoryHelper):
             models = res.scalars().all()
             if models is None:
                 return None
-            return [await self.model_to_schema(model) for model in models]
+            return [self.model_to_schema(model) for model in models]
 
     async def get_one_rel(self, **kwargs) -> Optional[BaseVar]:
         async with session_factory() as session:
@@ -166,6 +166,6 @@ class AlchemyRepository(RepositoryHelper):
             if model is None:
                 return None
 
-            return await self.model_to_schema(model)
+            return self.model_to_schema(model)
 
 

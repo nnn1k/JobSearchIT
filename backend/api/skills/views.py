@@ -7,7 +7,7 @@ from backend.api.skills.dependencies import (
     get_worker_skills_dependencies,
     get_vacancy_skills_dependencies
 )
-from backend.api.skills.schemas import SkillSchema
+from backend.schemas import SkillSchema
 
 router = APIRouter(prefix="/skills", tags=["skills"])
 

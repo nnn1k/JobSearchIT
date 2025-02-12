@@ -1,7 +1,6 @@
 from fastapi import HTTPException, status
 
 from backend.schemas.global_schema import DynamicSchema
-from backend.utils.auth_utils.check_func import exclude_password
 from backend.utils.other.type_utils import UserVar
 
 
@@ -24,10 +23,5 @@ async def user_patch_dependencies(
                 detail=f"Key {key} is immutable"
             )
 
-        if not isinstance(value, str):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Value {value} is not a string"
-            )
     user = await repository.update_one(id=user.id, **new_user.model_dump())
-    return exclude_password(user, repository.response_schema)
+    return user

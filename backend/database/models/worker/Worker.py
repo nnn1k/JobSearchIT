@@ -18,11 +18,20 @@ class WorkersOrm(Base):
     city: Mapped[str] = mapped_column(nullable=True)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 
-    resumes: Mapped[list['ResumesOrm']] = relationship('ResumesOrm', back_populates='worker')
-    educations: Mapped[list['EducationsOrm']] = relationship('EducationsOrm', back_populates='worker')
+    resumes: Mapped[list['ResumesOrm']] = relationship(
+        'ResumesOrm',
+        back_populates='worker',
+        lazy='noload',
+    )
+    educations: Mapped[list['EducationsOrm']] = relationship(
+        'EducationsOrm',
+        back_populates='worker',
+        lazy='noload',
+    )
     skills: Mapped[list['SkillsOrm']] = relationship(
         'SkillsOrm',
         secondary='workers_skills',
         back_populates='workers',
-        overlaps='workers_skills'
+        overlaps='workers_skills',
+        lazy='noload'
     )

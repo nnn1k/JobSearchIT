@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from backend.api.skills.repository import (
+from backend.api.skills.queries import (
     get_all_skills,
     get_available_skills_on_worker,
     get_skills_by_worker_id,

@@ -9,5 +9,13 @@ class CompaniesOrm(Base):
     name: Mapped[str]
     description: Mapped[str]
 
-    employers: Mapped[list['EmployersOrm']] = relationship('EmployersOrm', back_populates='company')
-    vacancies: Mapped[list['VacanciesOrm']] = relationship('VacanciesOrm', back_populates='company')
+    employers: Mapped[list['EmployersOrm']] = relationship(
+        'EmployersOrm',
+        back_populates='company',
+        lazy='noload'
+    )
+    vacancies: Mapped[list['VacanciesOrm']] = relationship(
+        'VacanciesOrm',
+        back_populates='company',
+        lazy='noload'
+    )

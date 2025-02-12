@@ -7,8 +7,8 @@ from backend.utils.other.redis_func import create_async_redis_client
 class SendEmail:
     
     @staticmethod
-    def get_random_code() -> str:
-        res = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    def get_random_code(k=6) -> str:
+        res = ''.join(random.choices(string.ascii_uppercase + string.digits, k=k))
         return res
 
     @staticmethod

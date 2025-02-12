@@ -5,7 +5,7 @@ from backend.api.users.employers.profile.dependencies import (
     put_employer_dependencies,
     patch_employer_dependencies
 )
-from backend.api.users.employers.profile.schemas import EmployerResponseSchema
+from backend.schemas import EmployerResponseSchema
 
 router = APIRouter(prefix='/employers', tags=['employers'])
 

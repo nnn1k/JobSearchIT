@@ -18,4 +18,8 @@ class EmployersOrm(Base):
     is_owner: Mapped[bool] = mapped_column(default=False)
     is_confirmed: Mapped[bool] = mapped_column(default=False)
 
-    company: Mapped['CompaniesOrm'] = relationship('CompaniesOrm', back_populates='employers')
+    company: Mapped['CompaniesOrm'] = relationship(
+        'CompaniesOrm',
+        back_populates='employers',
+        lazy='noload'
+    )

@@ -1,33 +1,40 @@
 from fastapi import HTTPException, status, Cookie
 
 from backend.api.users.auth.classes.AuthJWT import jwt_token
-from backend.api.users.employers.profile.repository import get_employer_by_id
-from backend.api.users.employers.profile.schemas import EmployerResponseSchema
-from backend.api.users.workers.profile.repository import get_worker_by_id
-from backend.api.users.workers.profile.schemas import WorkerResponseSchema
+from backend.api.users.employers.profile.queries import get_employer_by_id_queries
+
+from backend.api.users.workers.profile.queries import get_worker_by_id_queries
+from backend.schemas import EmployerResponseSchema
+from backend.schemas import WorkerResponseSchema
 from backend.schemas.user_schema import UserTypeSchema
-from backend.utils.auth_utils.check_func import exclude_password
 from backend.utils.other.type_utils import UserVar
 
 ACCESS_TOKEN = 'access_token'
 REFRESH_TOKEN = 'refresh_token'
 
 
-async def get_user_by_token_and_role(access_token, repository) -> UserVar:
+async def get_user_by_token_and_role(access_token, user_type) -> UserVar:
     user = await check_user_role(access_token)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"invalid token (access)",
         )
-    if user.type != repository.user_type:
+    if user.type != user_type:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail='bad user type',
         )
-    user = await repository.get_one(id=int(user.id))
-    if user:
-        return exclude_password(user, repository.response_schema)
+    match user.type:
+        case 'employer':
+            return await get_employer_by_id_queries(user.id)
+        case 'worker':
+            return await get_worker_by_id_queries(user.id)
+        case _:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail='bad user type',
+            )
 
 
 async def check_user_role(access_token=Cookie(None)) -> UserTypeSchema | None:
@@ -47,9 +54,9 @@ async def get_user_by_token(access_token=Cookie(None)) -> None | WorkerResponseS
         return None
     match user.type:
         case 'worker':
-            return await get_worker_by_id(user.id)
+            return await get_worker_by_id_queries(user.id)
         case 'employer':
-            return await get_employer_by_id(user.id)
+            return await get_employer_by_id_queries(user.id)
         case _:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

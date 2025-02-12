@@ -14,10 +14,15 @@ class VacanciesOrm(Base):
     city: Mapped[str] = mapped_column(nullable=True)
     company_id: Mapped[int] = mapped_column(ForeignKey('companies.id', ondelete='CASCADE'))
 
-    company: Mapped['CompaniesOrm'] = relationship('CompaniesOrm', back_populates='vacancies')
+    company: Mapped['CompaniesOrm'] = relationship(
+        'CompaniesOrm',
+        back_populates='vacancies',
+        lazy='noload'
+    )
     skills: Mapped[list['SkillsOrm']] = relationship(
         'SkillsOrm',
         secondary='vacancies_skills',
         back_populates='vacancies',
-        overlaps='vacancies_skills'
+        overlaps='vacancies_skills',
+        lazy='noload'
     )

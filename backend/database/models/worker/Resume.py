@@ -15,4 +15,9 @@ class ResumesOrm(Base):
     is_hidden: Mapped[bool] = mapped_column(default=False)
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
 
-    worker: Mapped['WorkersOrm'] = relationship('WorkersOrm', back_populates='resumes')
+    worker: Mapped['WorkersOrm'] = relationship(
+        'WorkersOrm',
+        back_populates='resumes',
+        lazy='noload'
+    )
+

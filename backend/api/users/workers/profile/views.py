@@ -5,8 +5,8 @@ from backend.api.users.workers.profile.dependencies import (
     patch_worker_dependencies,
     get_worker_by_token
 )
-from backend.api.users.workers.profile.repository import get_worker_by_id_rel
-from backend.api.users.workers.profile.schemas import WorkerResponseSchema
+
+from backend.schemas import WorkerResponseSchema
 
 router = APIRouter(prefix='/me', tags=['workers_profile'])
 
@@ -38,8 +38,3 @@ def update_my_other(
         'user': worker,
         'status': 'ok'
     }
-
-@router.get('/test')
-async def test():
-    worker = await get_worker_by_id_rel(id=1)
-    return worker

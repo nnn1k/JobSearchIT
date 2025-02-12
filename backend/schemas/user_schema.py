@@ -16,7 +16,7 @@ class UserAbstractSchema(GlobalSchema):
     patronymic: Optional[str] = None
     email: EmailStr
     phone: Optional[str] = None
-    is_confirmed: bool = False
+    is_confirmed: Optional[bool] = False
 
 
 class UserSchema(UserAbstractSchema):
