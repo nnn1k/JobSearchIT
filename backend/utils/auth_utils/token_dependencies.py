@@ -1,11 +1,9 @@
-from fastapi import HTTPException, status, Cookie, Response
+from fastapi import HTTPException, status
 
 from backend.api.users.auth.classes.AuthJWT import jwt_token
 from backend.api.users.employers.profile.queries import get_employer_by_id_queries
 
 from backend.api.users.workers.profile.queries import get_worker_by_id_queries
-from backend.schemas import EmployerResponseSchema
-from backend.schemas import WorkerResponseSchema
 from backend.schemas.user_schema import UserTypeSchema
 from backend.utils.other.type_utils import UserVar
 
@@ -68,17 +66,3 @@ def check_refresh_token(refresh_token, response):
         return None
 
 
-async def get_user_by_token(access_token=Cookie(None), refresh_token=Cookie(None), response: Response = None) -> None | WorkerResponseSchema | EmployerResponseSchema:
-    user = await check_user_role(access_token, refresh_token, response)
-    if not user:
-        return None
-    match user.type:
-        case 'worker':
-            return await get_worker_by_id_queries(user.id)
-        case 'employer':
-            return await get_employer_by_id_queries(user.id)
-        case _:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=f"invalid user type",
-            )

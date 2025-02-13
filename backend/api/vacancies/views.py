@@ -1,23 +1,36 @@
-from fastapi import APIRouter, Depends
+from typing import List
 
-from backend.api.vacancies.dependencies import (
-    create_vacancy_dependencies,
-    get_vacancy_by_id_dependencies,
-    delete_vacancy_by_id_dependencies,
-    update_vacancy_by_id_dependencies,
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from backend.api.skills.queries import update_vacancy_skills
+from backend.api.vacancies.queries import (
+    create_vacancy_queries,
+    get_vacancy_by_id_queries,
+    update_vacancy_by_id_queries
 )
+from backend.api.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
+from backend.schemas import EmployerResponseSchema
+from backend.schemas.skill_schema import SkillsResponseSchema
+from backend.utils.auth_utils.check_func import check_employer_can_update
+from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
+from backend.utils.other.time_utils import current_time
 
 router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 
 @router.post('/', summary='Создать вакансию')
-def create_new_vacancy(
-        vacancy_and_user=Depends(create_vacancy_dependencies)
+async def create_new_vacancy(
+        add_vacancy: VacancyAddSchema,
+        user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
-    vacancy, user = vacancy_and_user
-
-    if user:
-        user = user.model_dump(exclude='password')
+    skills: List[SkillsResponseSchema] = add_vacancy.skills
+    if not user.company_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user dont have company'
+        )
+    vacancy = await create_vacancy_queries(company_id=user.company_id, **add_vacancy.model_dump(exclude={'skills'}))
+    await update_vacancy_skills(skills, vacancy.id)
     return {
         'status': 'ok',
         'vacancy': vacancy,
@@ -26,10 +39,17 @@ def create_new_vacancy(
 
 
 @router.get('/{vacancy_id}', summary='Посмотреть информацию о вакансии')
-def get_info_on_vacancy(
-        vacancy_and_user=Depends(get_vacancy_by_id_dependencies),
+async def get_info_on_vacancy(
+        vacancy_id: int,
+        user=Depends(get_user_by_token)
 ):
-    vacancy, user, can_update = vacancy_and_user
+    vacancy = await get_vacancy_by_id_queries(vacancy_id)
+    if not vacancy:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='vacancy is not exist'
+        )
+    can_update = check_employer_can_update(user, vacancy)
 
     return {
         'status': 'ok',
@@ -41,10 +61,17 @@ def get_info_on_vacancy(
 
 
 @router.put('/{vacancy_id}', summary='Изменить вакансию')
-def update_info_on_company(
-        vacancy_and_user=Depends(update_vacancy_by_id_dependencies),
+async def update_info_on_company(
+        vacancy_id: int,
+        new_vacancy: VacancyUpdateSchema,
+        user: EmployerResponseSchema = Depends(get_employer_by_token),
 ):
-    vacancy, user = vacancy_and_user
+    vacancy = await update_vacancy_by_id_queries(vacancy_id, user, **new_vacancy.model_dump())
+    if vacancy is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user is not owner this company or vacancy not found'
+        )
     return {
         'vacancy': vacancy,
         'user': user,
@@ -53,10 +80,17 @@ def update_info_on_company(
 
 
 @router.delete('/{vacancy_id}', summary='Удалить вакансию')
-def delete_info_on_company(
-        vacancy_and_user=Depends(delete_vacancy_by_id_dependencies),
+async def delete_info_on_company(
+        vacancy_id: int,
+        user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
-    vacancy, user = vacancy_and_user
+    deleted_at = current_time()
+    vacancy = await update_vacancy_by_id_queries(vacancy_id, user, deleted_at=deleted_at)
+    if vacancy is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user is not owner this company or vacancy not found'
+        )
     return {
         'user': user,
         'status': 'ok',

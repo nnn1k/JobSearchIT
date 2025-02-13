@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.users.workers.profile.dependencies import (
-    put_worker_dependencies,
-    patch_worker_dependencies,
-    get_worker_by_token
-)
+from backend.api.users.workers.profile.queries import update_worker_by_id_queries
+from backend.api.users.workers.profile.schemas import WorkerProfileSchema
+from backend.schemas.global_schema import DynamicSchema
+from backend.utils.auth_utils.user_login_dependencies import get_worker_by_token
 
 from backend.schemas import WorkerResponseSchema
 
 router = APIRouter(prefix='/me', tags=['workers_profile'])
 
+
 @router.get('/', summary='Узнать информацию о себе')
-def get_my_profile(
+async def get_my_profile(
         worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
     return {
@@ -21,9 +21,11 @@ def get_my_profile(
 
 
 @router.put('/', summary='Редактировать информацию о себе')
-def update_my_profile(
-        worker: WorkerResponseSchema = Depends(put_worker_dependencies)
+async def update_my_profile(
+        new_worker: WorkerProfileSchema,
+        worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
+    worker = await update_worker_by_id_queries(worker_id=worker.id, **new_worker.model_dump())
     return {
         'user': worker,
         'status': 'ok'
@@ -31,9 +33,11 @@ def update_my_profile(
 
 
 @router.patch('/', summary='Редактировать информацию о себе по одному атрибуту')
-def update_my_other(
-        worker: WorkerResponseSchema = Depends(patch_worker_dependencies)
+async def update_my_other(
+        new_worker: DynamicSchema,
+        worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
+    worker = await update_worker_by_id_queries(worker_id=worker.id, **new_worker.model_dump())
     return {
         'user': worker,
         'status': 'ok'

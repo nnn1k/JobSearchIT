@@ -11,6 +11,7 @@ async def create_async_redis_client():
 async def get_code_from_redis(user_type, user_id):
     redis_client = await create_async_redis_client()
     try:
+        print(user_type)
         new_code = await redis_client.hget(f'{user_type}:{user_id}', 'code')
         new_code = new_code.decode('utf-8')
         return new_code

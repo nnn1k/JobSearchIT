@@ -1,6 +1,6 @@
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
@@ -25,8 +25,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+log_directory = "backend/logs"
+os.makedirs(log_directory, exist_ok=True)
 
-logger.add("error_log.log", level="ERROR", rotation="10 MB", retention="1 days", compression="zip")
+# Настройка логгера с указанием директории для логов
+logger.add(os.path.join(log_directory, "error.log"), level="ERROR", rotation="10 KB", retention="1 days", compression="zip")
+logger.add(os.path.join(log_directory, "access.log"), level="INFO", rotation="10 KB", retention="1 days", compression="zip")
+
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     logger.error(f"Необработанное исключение: {exc}")
@@ -34,3 +39,16 @@ async def global_exception_handler(request, exc):
         status_code=500,
         content={"message": "Произошла ошибка на сервере."}
     )
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    # Обрабатываем запрос
+    response = await call_next(request)
+
+    # Проверяем, нужно ли логировать запрос
+    if request.url.path.startswith("/api"):
+        # Логируем успешный запрос
+        logger.info(f"{request.method} {request.url} - Статус: {response.status_code}")
+
+    return response
