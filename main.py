@@ -28,12 +28,26 @@ app.add_middleware(
 log_directory = "backend/logs"
 os.makedirs(log_directory, exist_ok=True)
 
-# Настройка логгера с указанием директории для логов
-logger.add(os.path.join(log_directory, "error.log"), level="ERROR", rotation="10 KB", retention="1 days", compression="zip")
-logger.add(os.path.join(log_directory, "access.log"), level="INFO", rotation="10 KB", retention="1 days", compression="zip")
+logger.add(
+    os.path.join(log_directory, "error.log"),
+    level="ERROR",
+    rotation="10 KB",
+    retention="1 days",
+    compression="zip",
+    format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
+)
+logger.add(
+    os.path.join(log_directory, "access.log"),
+    level="INFO",
+    rotation="10 KB",
+    retention="1 days",
+    compression="zip",
+    format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
+)
+
 
 @app.exception_handler(Exception)
-async def global_exception_handler(request, exc):
+async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Необработанное исключение: {exc}")
     return JSONResponse(
         status_code=500,
@@ -49,6 +63,6 @@ async def log_requests(request: Request, call_next):
     # Проверяем, нужно ли логировать запрос
     if request.url.path.startswith("/api"):
         # Логируем успешный запрос
-        logger.info(f"{request.method} {request.url} - Статус: {response.status_code}")
+        logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
 
     return response

@@ -10,7 +10,7 @@ from backend.api.vacancies.queries import (
 )
 from backend.api.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
 from backend.schemas import EmployerResponseSchema
-from backend.schemas.skill_schema import SkillsResponseSchema
+from backend.schemas.skill_schema import SkillSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
 from backend.utils.other.time_utils import current_time
@@ -23,7 +23,7 @@ async def create_new_vacancy(
         add_vacancy: VacancyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
-    skills: List[SkillsResponseSchema] = add_vacancy.skills
+    skills: List[SkillSchema] = add_vacancy.skills
     if not user.company_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

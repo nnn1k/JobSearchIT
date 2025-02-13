@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy import select
 
-from backend.schemas.skill_schema import SkillSchema, SkillsResponseSchema
+from backend.schemas.skill_schema import SkillSchema
 from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.database.models.other.Skill import SkillsOrm
 from backend.database.models.other.WorkerSkills import WorkersSkillsOrm
