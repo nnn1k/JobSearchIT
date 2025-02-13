@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import Depends, Cookie
+from fastapi import Depends, Cookie, Response
 
 from backend.api.users.workers.profile.queries import update_worker_by_id_queries
 from backend.utils.auth_utils.token_dependencies import get_user_by_token_and_role
@@ -10,9 +10,11 @@ from backend.schemas.global_schema import DynamicSchema
 
 
 async def get_worker_by_token(
-    access_token=Cookie(None),
+        response: Response,
+        access_token=Cookie(None),
+        refresh_token=Cookie(None),
 ) -> WorkerResponseSchema:
-    return await get_user_by_token_and_role(access_token, 'worker')
+    return await get_user_by_token_and_role(access_token=access_token, refresh_token=refresh_token, user_type='worker', response=response)
 
 
 async def put_worker_dependencies(
@@ -20,6 +22,7 @@ async def put_worker_dependencies(
         worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ) -> Optional[WorkerResponseSchema]:
     return await update_worker_by_id_queries(worker_id=worker.id, **new_worker.model_dump())
+
 
 async def patch_worker_dependencies(
         new_worker: DynamicSchema,

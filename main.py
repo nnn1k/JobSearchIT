@@ -3,10 +3,11 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from loguru import logger
+from fastapi.responses import JSONResponse
 
 from backend.api import router as backend_router
 from frontend.routers import router as frontend_router
-
 
 frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
 
@@ -23,3 +24,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+logger.add("error_log.log", level="ERROR", rotation="10 MB", retention="1 days", compression="zip")
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    logger.error(f"Необработанное исключение: {exc}")
+    return JSONResponse(
+        status_code=500,
+        content={"message": "Произошла ошибка на сервере."}
+    )
