@@ -1,11 +1,8 @@
 .body_container{
-
     margin: 0;
     padding: 0;
     height: 100vh;
     font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
-    justify-content: center;
-    align-items: center;
 }
 
 
@@ -44,16 +41,17 @@
 
 }
 
+
 .field_description{
     display: flex;
     flex-direction: row;
-    gap: 213px
+    gap: 24%
 }
 
 .field_salary{
     display: flex;
     flex-direction: row;
-    gap: 116px
+    gap: 13%
 }
 
 
@@ -78,16 +76,22 @@
     font-size: 16px;
 }
 
+.field_city{
+    display: flex;
+    flex-direction: row;
+    gap: 25.5%
+}
 
 .input_for_city_vacancy{
-    margin-left: 255px;
     width: 400px;
     height: 28px;
     font-size: 16px;
 }
 
+
+
 .city_vacancy{
-    margin-bottom: -2%
+    margin-bottom: -2%;
 }
 
 .red_button{
@@ -132,6 +136,7 @@ body {
     display: flex;
     flex-direction: row;
     margin-bottom: 1.5rem;
+    gap: 16%
 }
 
 label {
@@ -198,7 +203,6 @@ input:focus {
 
 .skills-input-container .input-icon {
     width: 100%;
-    margin-left: 140px;
 }
 
 .skills-dropdown {
@@ -232,8 +236,7 @@ input:focus {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 3%;
-  margin-left: 140px;
-    width: 400px;
+  width: 400px;
 }
 
 .skill-tag {
@@ -262,3 +265,8 @@ input:focus {
 .skill-tag button:hover {
   color: var(--red-700);
 }
+
+.input_for_description_vacancy{
+
+}
+

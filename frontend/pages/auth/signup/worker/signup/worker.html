@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/frontend/pages/auth/signup/worker/signup/worker.css">
     <title>Регистрация</title>
 </head>
+{% extends 'base_worker/base_worker.html' %}
+{% block content %}
 <body>
     <div class="container_worker" id="container_worker">
         <div class="login-box">
@@ -20,7 +22,7 @@
                 <div class="textbox" >
                     <input type="password" id="confirm_password" placeholder="Повторите пароль" required>
                 </div>
-                <input id="reg_btn" class="btn" type="button" value="Зарегистрироваться" onclick="regisration()">
+                <input id="reg_btn" class="red_button" type="button" value="Зарегистрироваться" onclick="regisration()">
                 <div class="link_for_login">
                     <p>Уже зарегистрированы?  </p>
                     <a class="link_for_reg" href="{{ url_for('login_page') }}">Войти</a>
@@ -36,10 +38,11 @@
             <div class="textbox">
                 <input type="text" placeholder="Введите код" id="code" required>
             </div>
-            <input class="btn" type="button" id="check_btn" value="Подтвердить" onclick="check_code()">
+            <input class="red_button" type="button" id="check_btn" value="Подтвердить" onclick="check_code()">
         </div>
     </div>
 
     <script type="module"  src="/frontend/pages/auth/signup/worker/signup/worker.js"></script>
 </body>
+{% endblock %}
 </html>

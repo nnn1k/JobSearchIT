@@ -6,8 +6,9 @@
     <title>Поэтапная регистрация</title>
     <link rel="stylesheet" href="/frontend/pages/auth/signup/worker/step_by_step/worker.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% extends 'base_worker/base_worker.html' %}
+{% block content %}
 </head>
-
 <body>
 <div id="registrationForm">
     <div class="step active" id="step1">
@@ -16,7 +17,7 @@
         <input type="text" id="name" placeholder="Имя" required>
         <input type="text" id="patronymic" placeholder="Отчество" required>
         <div class="navigation">
-            <button id="next1">Далее</button>
+            <button class="red_button" id="next1">Далее</button>
         </div>
     </div>
 
@@ -25,8 +26,8 @@
         <input type="tel" id="phone" name="phone" placeholder="+7 (999) 999-99-99"
                pattern="\+7 $$\d{3}$$ \d{3}-\d{2}-\d{2}" required>
         <div class="navigation">
-            <button id="prev1">Назад</button>
-            <button id="next2">Далее</button>
+            <button class="white_button" id="prev1">Назад</button>
+            <button class="red_button" id="next2">Далее</button>
         </div>
     </div>
 
@@ -34,8 +35,8 @@
         <h2>Введите дата рождения</h2>
         <input type="date" id="date_bithday" required>
         <div class="navigation">
-            <button id="prev2">Назад</button>
-            <button id="next3">Далее</button>
+            <button id="prev2" class="white_button">Назад</button>
+            <button class="red_button" id="next3">Далее</button>
         </div>
     </div>
 
@@ -43,11 +44,12 @@
         <h2>Введите город</h2>
         <input type="text" id="city" required>
         <div class="navigation">
-            <button id="prev3" class="cancel"> Назад</button>
-            <input id="complete_reg" class="btn" type="button" value="Завершить" onclick="insert_data_for_profile()">
+            <button id="prev3" class="white_button"> Назад</button>
+            <input id="complete_reg" class="red_button" type="button" value="Завершить" onclick="insert_data_for_profile()">
         </div>
     </div>
 </div>
     <script type="module" src="/frontend/pages/auth/signup/worker/step_by_step/worker.js"></script>
 </body>
+{% endblock %}
 </html>

@@ -59,41 +59,7 @@ body {
     border-radius: 5px;
 }
 
-.btn {
-    width: 100%;
-    padding: 10px;
-    background-color: red;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
 
-.btn:hover {
-    background-color: crimson;
-}
-
-.link_for_reg{
-    text-decoration: none;
-}
-
-.btn_create_vacancy{
-    visibility: hidden;
-}
-
-a:link {
-    color: deepskyblue
-}
-
-a:visited {
-    color: deepskyblue
-}
-
-a:hover {
-    color: orange;
-}
 
 
 

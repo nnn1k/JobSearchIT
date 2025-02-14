@@ -36,7 +36,10 @@ async function regisration() {
         container2.style.alignItems = 'center';
         container2.style.width = '350px';
         container2.style.gap = '30px';
+        return
     }
+    hideLoadingIndicator(loadingIndicator);
+    regBtn.disabled = false
 }
 
 async function check_code(){
@@ -56,6 +59,8 @@ async function check_code(){
         checkBtn.disabled = false
         window.location.href=apiUrl+"/signup/worker/profile"
     }
+    hideLoadingIndicator(loadingIndicator);
+    checkBtn.disabled = false
 }
 window.check_code = check_code;
 window.regisration = regisration;

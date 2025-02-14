@@ -1,17 +1,14 @@
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
-import {createSkillButtons, displaySelectedSkills, getSelectedSkills} from "/frontend/js/skills.js";
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 const skills = [];
 
 tinymce.init({
     menubar: false,
     statusbar: false,
-    display: "flex",
     selector: '#input_for_description_vacancy',
-    width: 600,
-    height: 500,
-    fontsize: 50,
-    whiteSpace: "pre-wrap"
+    width: 500,  // Фиксированная ширина
+    height: 600, // Фиксированная высота
 });
 document.addEventListener('DOMContentLoaded', () => {
     getSkills()
@@ -112,12 +109,13 @@ async function post_vacancy() {
     const salary_first = Number(document.getElementById('input_for_first_salary').value)
     const salary_second = Number(document.getElementById('input_for_second_salary').value)
     const city = document.getElementById('input_for_city_vacancy').value
-    const skills = getSelectedSkills()
-    if (!title){
+    if (!title) {
         alert('Не все данные заполнены')
         return
     }
-
+    const postBtn = document.getElementById('add_vacancy_btn')
+    postBtn.disabled = true
+    const loadingIndicator = showLoadingIndicator();
     const postResponse = await makeRequest({
         method: 'POST',
         url: '/api/vacancy',
@@ -131,9 +129,13 @@ async function post_vacancy() {
         }
     })
     if (postResponse) {
+        postBtn.disabled = false
+        hideLoadingIndicator(loadingIndicator);
         window.location.href = apiUrl + "/vacancies/add"
         alert('Вакансия опубликована');
     }
+    postBtn.disabled = false
+    hideLoadingIndicator(loadingIndicator);
 }
 
 window.post_vacancy = post_vacancy

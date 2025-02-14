@@ -1,6 +1,7 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
@@ -9,12 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 async function get_company() {
+    const loadingIndicator = showLoadingIndicator();
     const company_id = location.pathname.split('/')[2]
     const getResponse = await makeRequest({
         method: 'GET',
         url: `/api/companies/${company_id}`
     })
-    console.log(getResponse)
     const company = getResponse.company;
     document.getElementById('company_name').innerHTML = company.name;
     document.getElementById('company_description').innerHTML = company.description;
@@ -31,10 +32,11 @@ async function get_company() {
         fontsize: 50,
         whiteSpace: "pre-wrap"
     });
-
+    hideLoadingIndicator(loadingIndicator);
     tinymce.get('company_description_update').setContent(getResponse.company.description)
     document.getElementById('company_description_update').value = getResponse.company.description;
-    renderVacancies(getResponse.vacancies, getResponse.can_update)
+    renderVacancies(getResponse.company.vacancies, getResponse.can_update)
+
 }
 
 async function update_company() {

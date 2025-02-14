@@ -36,6 +36,8 @@ async function signup_employer() {
         container2.style.width = '350px';
         container2.style.gap = '30px';
     }
+    hideLoadingIndicator(loadingIndicator);
+    regBtn.disabled = false
 }
 
 

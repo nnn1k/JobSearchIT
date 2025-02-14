@@ -2,33 +2,30 @@
     box-sizing: border-box;
 }
 
-body {
+body{
     margin: 0;
     padding: 0;
     height: 100vh;
-    display: flex;
     font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
     justify-content: center;
     align-items: center;
     background-color: #f2f2f2;
 }
 
+
 .container_worker {
+    height: 80vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 350px;
-    gap: 30px;
 }
 
 .container_check_code {
+    height: 80vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 350px;
-    gap: 30px;
+    margin-left: 40%;
 }
 
 .login-box {
@@ -53,43 +50,11 @@ body {
     border-radius: 5px;
 }
 
-.btn {
-    width: 100%;
-    padding: 10px;
-    background-color: red;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
+#check_btn{
+    height: 15%;
 }
 
-.btn:hover {
-    background-color: crimson;
-}
 
-.link_for_reg{
-    text-decoration: none;
-}
 
-a:link {
-    color: deepskyblue
-}
 
-a:visited {
-    color: deepskyblue
-}
 
-a:hover {
-    color: cornflowerblue;
-}
-
-.link_for_login{
-    font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}

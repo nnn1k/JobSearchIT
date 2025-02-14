@@ -6,12 +6,10 @@
     <title>Поэтапная регистрация</title>
     <link rel="stylesheet" href="/frontend/pages/auth/signup/employer/step_by_step/employer.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-
-    </style>
 </head>
+{% extends 'base_employer/base_employer.html' %}
+{% block content %}
 <body>
-
 <div id="registrationForm">
     <div class="step active" id="step1">
         <h2>Введите ФИО</h2>
@@ -19,7 +17,7 @@
         <input type="text" id="name" placeholder="Имя" required>
         <input type="text" id="patronymic" placeholder="Отчество" required>
         <div class="navigation">
-            <button id="next1">Далее</button>
+            <button class="red_button" id="next1">Далее</button>
         </div>
     </div>
 
@@ -28,11 +26,12 @@
         <input type="tel" id="phone" name="phone" placeholder="+7 (999) 999-99-99"
                pattern="\+7 $$\d{3}$$ \d{3}-\d{2}-\d{2}" required>
         <div class="navigation">
-            <button id="prev3" class="cancel"> Назад</button>
-            <input id="complete_reg" class="btn" type="button" value="Завершить" onclick="insert_data_for_profile()">
+            <button id="prev3" class="white_button"> Назад</button>
+            <input id="complete_reg" class="red_button" type="button" value="Завершить" onclick="insert_data_for_profile()">
         </div>
     </div>
     <script type="module" src="/frontend/pages/auth/signup/employer/step_by_step/employer.js"></script>
 </div>
 </body>
+{% endblock %}
 </html>
