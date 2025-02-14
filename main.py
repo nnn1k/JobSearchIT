@@ -31,7 +31,7 @@ os.makedirs(log_directory, exist_ok=True)
 logger.add(
     os.path.join(log_directory, "logging.log"),
     level="ERROR",
-    rotation="10 KB",
+    rotation="10 MB",
     retention="1 days",
     compression="zip",
     format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
@@ -39,7 +39,7 @@ logger.add(
 logger.add(
     os.path.join(log_directory, "logging.log"),
     level="INFO",
-    rotation="10 KB",
+    rotation="10 MB",
     retention="1 days",
     compression="zip",
     format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
