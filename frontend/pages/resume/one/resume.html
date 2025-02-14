@@ -19,18 +19,22 @@
     <div class="main_info">
         <div class="first_str">
             <h1 id="title"></h1>
-            <div id="btn_delete" style="display: none"></div>
         </div>
 
         <div class="company-info">
             <p id="city"></p>
             <p id="salary"></p>
         </div>
-        <a class="red_button" id="otklik_btn">Написать</a>
+        <button class="red_button" id="feedback">Написать</button>
+        <button class="red_button" id="edit_btn" style="display: none">Редактировать</button>
     </div>
     <div class="vacancy-details">
         <p id="description" class="description_"></p>
     </div>
+     <div id="selectedSkillsContainer">
+        <h3>Выбранные навыки:</h3>
+        <div id="selectedSkills" class="selected-skills-container"></div>
+     </div>
 
 </div>
 <script type="module" src="/frontend/pages/resume/one/resume.js"></script>

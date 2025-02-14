@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/frontend/pages/vacancy/create/vacancy.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
 </head>
-{% extends 'base_employer/base_employer.html' %}
+{% extends 'base_worker/base_worker.html' %}
 {% block content %}
     <body>
     <div class="body_container">
@@ -38,13 +38,10 @@
                 <h3>Выбранные навыки:</h3>
                 <div id="selectedSkills" class="selected-skills-container"></div>
             </div>
-            <div id="skillsContainer">
-                <div>
-                    <input id="cancel_btn" class="white_button" type="button" value="Отменить">
-                    <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить"
-                           onclick="post_vacancy()">
 
-                </div>
+            <div>
+                <input id="cancel_btn" class="white_button" type="button" value="Отменить">
+                <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить">
             </div>
         </div>
         <script type="module" src="/frontend/pages/worker/resume/edit/resume.js"></script>

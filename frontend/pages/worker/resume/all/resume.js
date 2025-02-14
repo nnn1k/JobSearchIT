@@ -31,7 +31,10 @@ async function get_resumes() {
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(resume.updated_at)}`
 
         const editButton = document.createElement('button');
-        editButton.classList.add('edit-button');
+        editButton.classList.add('red_button');
+        editButton.style.width = '40%';
+        editButton.style.height = '25%';
+        editButton.style.marginLeft = '60%';
         editButton.textContent = "Редактировать";
 
         editButton.onclick = () => {

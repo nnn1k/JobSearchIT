@@ -80,10 +80,14 @@
 
 
 .input_for_city_vacancy{
-    margin-left: 235px;
+    margin-left: 255px;
     width: 400px;
     height: 28px;
     font-size: 16px;
+}
+
+.city_vacancy{
+    margin-bottom: -2%
 }
 
 .red_button{
@@ -94,4 +98,167 @@
 
 #add_vacancy_btn{
     width: 30%;
+}
+
+:root {
+  --primary-color: #dc2626;
+  --primary-hover: #b91c1c;
+  --red-50: #fef2f2;
+  --red-100: #fee2e2;
+  --red-200: #fecaca;
+  --red-300: #fca5a5;
+  --red-400: #f87171;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+  --red-800: #991b1b;
+  --red-900: #7f1d1d;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--red-700);
+  margin-bottom: 0.5rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border: 1px solid black;
+  border-radius: 0.375rem;
+  color: var(--red-900);
+  background-color: var(--white);
+  transition: all 0.15s ease-in-out;
+}
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon input,
+.input-icon select {
+  padding-left: 2.5rem;
+}
+
+.input-icon-svg {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--red-400);
+  pointer-events: none;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.skills-container {
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.skills-input-container {
+  display: block;
+  width: 400px;
+  margin-bottom: 1rem;
+}
+
+.skills-input-container .input-icon {
+    width: 100%;
+    margin-left: 140px;
+}
+
+.skills-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  border: 1px solid var(--red-200);
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  display: none;
+}
+
+.skill-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.skill-option:hover {
+  background-color: var(--red-50);
+  color: var(--red-700);
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 3%;
+  margin-left: 140px;
+    width: 400px;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--red-100);
+  color: var(--red-700);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.skill-tag button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem;
+  background: none;
+  border: none;
+  color: var(--red-500);
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+}
+
+.skill-tag button:hover {
+  color: var(--red-700);
 }

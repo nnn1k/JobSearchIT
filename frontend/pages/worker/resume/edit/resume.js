@@ -1,4 +1,6 @@
 import {makeRequest} from "/frontend/js/utils.js";
+import {displaySelectedSkills} from "/frontend/js/skills.js";
+
 tinymce.init({
     menubar: false,
     statusbar: false,
@@ -26,4 +28,5 @@ async function get_resume(){
     tinymce.get('input_for_description_vacancy').setContent(resume.description)
     document.getElementById('input_for_first_salary').value = resume.salary_first
     document.getElementById('input_for_second_salary').value = resume.salary_second
+    displaySelectedSkills(getResponse.skills, true)
 }

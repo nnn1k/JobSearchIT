@@ -42,13 +42,26 @@
             </div>
             <div class="field_city">
                 <label class="city_vacancy">Город</label>
-                <input type="text" class="input_for_city_vacancy" id="input_for_city_vacancy" required="">
+                <input type="text" class="input_for_city_vacancy" id="input_for_city_vacancy" placeholder="Например, Москва" required>
             </div>
-            <div id="selectedSkillsContainer">
-                <h3>Ключевые навыки:</h3>
-                <div id="selectedSkills" class="selected-skills-container"></div>
+           <div class="form-group">
+                <label>Требуемые навыки</label>
+                <div class="skills-container">
+                    <div class="skills-input-container">
+                        <div class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="input-icon-svg">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                            <input type="text" id="skillInput" placeholder="Поиск навыка">
+                        </div>
+                    </div>
+                    <div id="skillsDropdown" class="skills-dropdown"></div>
+                    <div id="skillsList" class="skills-list"></div>
+                </div>
             </div>
-            <div id="skillsContainer"></div>
                 <div>
                     <input id="add_vacancy_btn" class="red_button" type="button" value="Опубликовать"
                            onclick="post_vacancy()">

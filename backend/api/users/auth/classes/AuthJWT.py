@@ -6,10 +6,12 @@ from pydantic import BaseModel
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 class Token(BaseModel):
     access_token: str
     refresh_token: str | None = None
     token_type: str = 'Bearer'
+
 
 class AuthJWT:
     private_key_path: Path = BASE_DIR / "certs" / "jwt-private.pem"
