@@ -4,6 +4,7 @@ from sqlalchemy.orm import selectinload
 from backend.database.models.worker import WorkersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas.models.worker.worker_schema import WorkerResponseSchema
+from backend.utils.other.redis_func import cache_object
 
 
 async def get_worker_by_id_queries(worker_id: int):
@@ -17,6 +18,7 @@ async def get_worker_by_id_queries(worker_id: int):
         )
         worker = stmt.scalars().one_or_none()
         schema = WorkerResponseSchema.model_validate(worker, from_attributes=True)
+        await cache_object(schema)
         return schema
 
 async def update_worker_by_id_queries(worker_id: int, **kwargs):

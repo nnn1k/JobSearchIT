@@ -52,11 +52,13 @@ async def get_user_by_token(
                 detail="invalid token (access)",
             )
         return None
-    if user_jwt_schema.type != user_type:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"invalid user type",
-        )
+
+    if user_type:
+        if user_jwt_schema.type != user_type:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"invalid user type",
+            )
     if user_jwt_schema.type == WORKER_USER_TYPE:
         return await get_worker_by_id_queries(user_jwt_schema.id)
     if user_jwt_schema.type == EMPLOYER_USER_TYPE:

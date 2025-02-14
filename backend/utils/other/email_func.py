@@ -28,6 +28,6 @@ class SendEmail:
         code = SendEmail.get_random_code()
         message = f'Ваш код {code}'
         redis_client = await create_async_redis_client()
-        await redis_client.hset(f'{user_type}:{user.id}', mapping={'code': code, 'email': user.email})
-        await redis_client.expire(f'{user_type}:{user.id}', 3000)
+        await redis_client.hset(f'{user_type}_code:{user.id}', mapping={'code': code, 'email': user.email})
+        await redis_client.expire(f'{user_type}_code:{user.id}', 3000)
         await SendEmail.post_mail(user.email, message)
