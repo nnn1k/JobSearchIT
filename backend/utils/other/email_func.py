@@ -2,7 +2,7 @@ import string
 import random
 
 from aiosmtplib import SMTP
-from backend.utils.other.redis_func import create_async_redis_client
+from backend.utils.other.redis_func import add_code_to_redis
 
 class SendEmail:
     
@@ -24,10 +24,8 @@ class SendEmail:
         await smt.quit()
 
     @staticmethod
-    async def send_code_to_email(user, user_type) -> None:
+    async def send_code_to_email(user) -> None:
         code = SendEmail.get_random_code()
         message = f'Ваш код {code}'
-        redis_client = await create_async_redis_client()
-        await redis_client.hset(f'{user_type}_code:{user.id}', mapping={'code': code, 'email': user.email})
-        await redis_client.expire(f'{user_type}_code:{user.id}', 3000)
+        await add_code_to_redis(user, code)
         await SendEmail.post_mail(user.email, message)

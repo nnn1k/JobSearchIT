@@ -1,3 +1,7 @@
+import json
+from datetime import datetime
+from typing import Any
+
 import redis.asyncio as async_redis
 from fastapi import HTTPException, status
 
@@ -21,16 +25,21 @@ async def get_code_from_redis(user_type, user_id):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Вышло время кода')
 
 
+async def add_code_to_redis(user, code):
+    redis_client = await create_async_redis_client()
+    await redis_client.hset(f'{user.type}_code:{user.id}', mapping={'code': code, 'email': user.email})
+    await redis_client.expire(f'{user.type}_code:{user.id}', 1500)
+
+
 async def cache_object(obj: BaseVar, ttl=3600):
     redis_client = await create_async_redis_client()
-    await redis_client.setex(f'{obj.type}_obj:{obj.id}', ttl, obj.json())
+    await redis_client.set(f'{obj.type}_obj:{obj.id}', obj.json(), ex=ttl)
 
 
 async def get_cached_object(obj_type: str, obj_id: int, schema: BaseVar):
     redis_client = await create_async_redis_client()
-    obj = await redis_client.get(f'{obj_type}_obj:{obj_id}')
-    if obj:
-        obj = obj.decode('utf-8')
-        return schema.model_validate(obj, from_attributes=True)
+    obj_json = await redis_client.get(f'{obj_type}_obj:{obj_id}')  # Получаем строку
+    if obj_json:
+        decoded_obj = json.loads(obj_json.decode('utf-8'))
+        return schema.model_validate(decoded_obj, from_attributes=True)
     return None
-

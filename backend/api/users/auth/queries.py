@@ -2,6 +2,7 @@ from sqlalchemy import select
 
 from backend.api.users.auth.classes.HashPwd import HashPwd
 from backend.database.settings.database import session_factory
+from backend.utils.other.redis_func import cache_object
 
 
 async def login_user_queries(user, user_table, response_schema):
@@ -10,7 +11,9 @@ async def login_user_queries(user, user_table, response_schema):
         login_user = login_user.scalars().one_or_none()
         if not login_user or not HashPwd.validate_password(password=user.password, hashed_password=login_user.password):
             return None
-        return response_schema.model_validate(login_user, from_attributes=True)
+        schema = response_schema.model_validate(login_user, from_attributes=True)
+        await cache_object(schema)
+        return schema
 
 async def register_user_queries(user, user_table, response_schema):
     async with session_factory() as session:
@@ -24,6 +27,7 @@ async def register_user_queries(user, user_table, response_schema):
         await session.refresh(register_user)
         schema = response_schema.model_validate(register_user, from_attributes=True)
         await session.commit()
+        await cache_object(schema)
         return schema
 
 async def update_code_queries(user_id: int, user_table, response_schema):
@@ -35,4 +39,5 @@ async def update_code_queries(user_id: int, user_table, response_schema):
         update_user.is_confirmed = True
         schema = response_schema.model_validate(update_user, from_attributes=True)
         await session.commit()
+        await cache_object(schema)
         return schema

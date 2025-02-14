@@ -72,7 +72,7 @@ async def get_code(
             user = await get_worker_by_token(access_token=access_token, refresh_token=refresh_token, response=response)
         case _:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    await SendEmail.send_code_to_email(user, user.type)
+    await SendEmail.send_code_to_email(user)
     return {
         'message': 'Код отправлен на почту:',
         'email': user.email,

@@ -8,6 +8,8 @@ from backend.database.models.other.Skill import SkillsOrm
 from backend.database.models.other.WorkerSkills import WorkersSkillsOrm
 from backend.database.settings.database import session_factory
 
+from backend.utils.str_const import SKILL_TYPE
+
 
 async def get_all_skills(**kwargs):
     async with session_factory() as session:

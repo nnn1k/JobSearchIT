@@ -5,6 +5,9 @@ from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.employer.company_schema import CompanySchema
+from backend.utils.other.redis_func import cache_object, get_cached_object
+from backend.utils.str_const import COMPANY_TYPE
+
 
 async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
     async with session_factory() as session:
@@ -30,10 +33,15 @@ async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
         company_schema = CompanySchema.model_validate(company, from_attributes=True)
         employer_schema = EmployerResponseSchema.model_validate(employer, from_attributes=True)
         await session.commit()
+        await cache_object(company_schema)
+        await cache_object(employer_schema)
         return company_schema, employer_schema
 
 
 async def get_company_by_id_queries(company_id):
+    cache_company = await get_cached_object(obj_type=COMPANY_TYPE, obj_id=company_id, schema=CompanySchema)
+    if cache_company:
+        return cache_company
     async with session_factory() as session:
         stmt = await session.execute(
             select(CompaniesOrm)
@@ -43,7 +51,9 @@ async def get_company_by_id_queries(company_id):
         company = stmt.scalars().one_or_none()
         if not company:
             return None
-        return CompanySchema.model_validate(company, from_attributes=True)
+        schema = CompanySchema.model_validate(company, from_attributes=True)
+        await cache_object(schema)
+        return schema
 
 async def update_company_queries(company_id, owner: EmployerResponseSchema, **kwargs):
     async with session_factory() as session:
@@ -60,5 +70,6 @@ async def update_company_queries(company_id, owner: EmployerResponseSchema, **kw
         schema = CompanySchema.model_validate(company, from_attributes=True)
         if owner.company_id == company.id and owner.is_owner:
             await session.commit()
+            await cache_object(schema)
             return schema
         return None
