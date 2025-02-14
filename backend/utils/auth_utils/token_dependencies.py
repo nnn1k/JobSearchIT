@@ -1,38 +1,8 @@
 from fastapi import HTTPException, status
 
 from backend.api.users.auth.classes.AuthJWT import jwt_token
-from backend.api.users.employers.profile.queries import get_employer_by_id_queries
-
-from backend.api.users.workers.profile.queries import get_worker_by_id_queries
 from backend.schemas.user_schema import UserTypeSchema
-from backend.utils.other.type_utils import UserVar
-
-ACCESS_TOKEN = 'access_token'
-REFRESH_TOKEN = 'refresh_token'
-
-
-async def get_user_by_token_and_role(access_token=None, refresh_token=None, user_type=None, response=None) -> UserVar:
-    user = await check_user_role(access_token, refresh_token, response)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"invalid token (access)",
-        )
-    if user.type != user_type:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='bad user type',
-        )
-    match user.type:
-        case 'employer':
-            return await get_employer_by_id_queries(user.id)
-        case 'worker':
-            return await get_worker_by_id_queries(user.id)
-        case _:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail='bad user type',
-            )
+from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
 
 
 async def check_user_role(access_token, refresh_token, response) -> UserTypeSchema | None:

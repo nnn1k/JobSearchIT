@@ -1,7 +1,7 @@
 from backend.api.users.auth.queries import login_user_queries, register_user_queries, update_code_queries
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token, \
     get_worker_by_token
-from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
 from fastapi import APIRouter, Cookie, Depends, Response, HTTPException, status
 
 from backend.api.users.auth.schemas import CodeSchema, LoginSchema, RegisterSchema, UserType
@@ -57,17 +57,18 @@ async def register_user_views(
 @type_router.get('/code', summary='Отправка кода')
 async def get_code(
         user_type: UserType,
+        response: Response,
         access_token=Cookie(None),
         refresh_token=Cookie(None),
 ):
     match user_type:
         case UserType.employer:
-            user = await get_employer_by_token(access_token, refresh_token)
+            user = await get_employer_by_token(access_token=access_token, refresh_token=refresh_token, response=response)
         case UserType.worker:
-            user = await get_worker_by_token(access_token, refresh_token)
+            user = await get_worker_by_token(access_token=access_token, refresh_token=refresh_token, response=response)
         case _:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    await SendEmail.send_code_to_email(user, user_type.value)
+    await SendEmail.send_code_to_email(user, user.type)
     return {
         'message': 'Код отправлен на почту:',
         'email': user.email,

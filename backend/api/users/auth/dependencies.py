@@ -8,7 +8,7 @@ from backend.api.users.auth.schemas import UserType
 from backend.database.models.employer import EmployersOrm
 from backend.database.models.worker import WorkersOrm
 from backend.schemas import EmployerResponseSchema, WorkerResponseSchema
-from backend.utils.auth_utils.token_dependencies import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
 
 
 def get_login_db_model(user_type: UserType):
