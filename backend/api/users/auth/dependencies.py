@@ -25,9 +25,9 @@ def create_token(response: Response, user) -> Dict[str, Any]:
     access_token = jwt_token.create_access_token(id=user.id, user_type=user.type)
     refresh_token = jwt_token.create_refresh_token(id=user.id, user_type=user.type)
 
-    response.set_cookie(ACCESS_TOKEN, access_token)
-    response.set_cookie(REFRESH_TOKEN, refresh_token)
-    response.set_cookie('user_type', user.type)
+    response.set_cookie(ACCESS_TOKEN, access_token, max_age=60*60*24*365)
+    response.set_cookie(REFRESH_TOKEN, refresh_token, max_age=60*60*24*365)
+    response.set_cookie('user_type', user.type, max_age=60*60*24*365)
     token = Token(
         access_token=access_token,
         refresh_token=refresh_token,
