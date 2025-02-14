@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token
 from backend.api.users.employers.profile.queries import update_employer_by_id_queries
-from backend.schemas.employer_schema import EmployerResponseSchema
+from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
 from backend.api.users.employers.profile.schemas import EmployerProfileSchema
 from backend.schemas.global_schema import DynamicSchema
 

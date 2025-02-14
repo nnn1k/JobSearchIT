@@ -29,7 +29,7 @@ log_directory = "backend/logs"
 os.makedirs(log_directory, exist_ok=True)
 
 logger.add(
-    os.path.join(log_directory, "error.log"),
+    os.path.join(log_directory, "logging.log"),
     level="ERROR",
     rotation="10 KB",
     retention="1 days",
@@ -37,7 +37,7 @@ logger.add(
     format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
 )
 logger.add(
-    os.path.join(log_directory, "access.log"),
+    os.path.join(log_directory, "logging.log"),
     level="INFO",
     rotation="10 KB",
     retention="1 days",

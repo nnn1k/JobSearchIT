@@ -3,7 +3,7 @@ from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
-from backend.schemas.employer_schema import EmployerResponseSchema
+from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
 
 
 async def get_employer_by_id_queries(employer_id: int):

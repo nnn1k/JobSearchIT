@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, Depends
 
 from backend.api.skills.queries import (
@@ -8,8 +6,7 @@ from backend.api.skills.queries import (
     get_skills_by_vacancy_id,
     get_skills_by_worker_id, update_vacancy_skills, update_worker_skills
 )
-from backend.schemas import SkillSchema
-from backend.schemas.skill_schema import SkillListSchema
+from backend.schemas.models.other.skill_schema import SkillListSchema
 from backend.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
 
 router = APIRouter(prefix="/skills", tags=["skills"])

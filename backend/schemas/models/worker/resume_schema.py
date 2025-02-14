@@ -1,5 +1,6 @@
 from typing import Optional
 from backend.schemas.global_schema import GlobalSchema
+from backend.utils.str_const import RESUME_TYPE
 
 
 class ResumeSchema(GlobalSchema):
@@ -10,6 +11,7 @@ class ResumeSchema(GlobalSchema):
     city: Optional[str] = None
     is_hidden: bool = False
     worker_id: int
+    type: str = RESUME_TYPE
 
     worker: Optional['WorkerResponseSchema'] = None
 

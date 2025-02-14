@@ -4,7 +4,7 @@ from sqlalchemy.orm import selectinload
 from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema
-from backend.schemas.company_schema import CompanySchema
+from backend.schemas.models.employer.company_schema import CompanySchema
 
 async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
     async with session_factory() as session:

@@ -3,7 +3,7 @@ from sqlalchemy.orm import selectinload
 
 from backend.database.models.worker import ResumesOrm, WorkersOrm
 from backend.database.settings.database import session_factory
-from backend.schemas.resume_schema import ResumeSchema
+from backend.schemas.models.worker.resume_schema import ResumeSchema
 
 
 async def create_resume_queries(**kwargs):

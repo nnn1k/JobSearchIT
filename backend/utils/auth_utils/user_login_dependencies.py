@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import Cookie, HTTPException
 from starlette import status
 from starlette.responses import Response
@@ -40,21 +42,24 @@ async def get_user_by_token(
         access_token=Cookie(None),
         refresh_token=Cookie(None),
         response: Response = None,
-        user_type=None
+        user_type: Optional[str] = None
 ) -> None | WorkerResponseSchema | EmployerResponseSchema:
     user_jwt_schema = await check_user_role(access_token, refresh_token, response)
-    if user_jwt_schema is None:
+    if not user_jwt_schema:
         if user_type is not None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="invalid token (access)",
             )
         return None
-    if user_type == WORKER_USER_TYPE:
+    if user_jwt_schema.type != user_type:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"invalid user type",
+        )
+    if user_jwt_schema.type == WORKER_USER_TYPE:
         return await get_worker_by_id_queries(user_jwt_schema.id)
-    if user_type == EMPLOYER_USER_TYPE:
+    if user_jwt_schema.type == EMPLOYER_USER_TYPE:
         return await get_employer_by_id_queries(user_jwt_schema.id)
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail=f"invalid user type",
-    )
+
+

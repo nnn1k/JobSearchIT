@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from backend.schemas.global_schema import GlobalSchema
+from backend.utils.str_const import VACANCY_TYPE
 
 
 class VacancySchema(GlobalSchema):
@@ -10,6 +11,7 @@ class VacancySchema(GlobalSchema):
     salary_second: Optional[int]
     city: str
     company_id: int
+    type: str = VACANCY_TYPE
 
     company: Optional['CompanySchema']
     skills: Optional[List['SkillSchema']]
