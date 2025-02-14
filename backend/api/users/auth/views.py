@@ -51,7 +51,7 @@ async def register_user_views(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="user is exist",
         )
-    return create_token(response, schema)
+    return create_token(response, new_user)
 
 
 @type_router.get('/code', summary='Отправка кода')
