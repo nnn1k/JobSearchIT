@@ -11,7 +11,7 @@ from backend.database.settings.database import session_factory
 from backend.utils.str_const import SKILL_TYPE
 
 
-async def get_all_skills(**kwargs):
+async def get_all_skills_queries(**kwargs):
     async with session_factory() as session:
         stmt = await session.execute(
             select(SkillsOrm)

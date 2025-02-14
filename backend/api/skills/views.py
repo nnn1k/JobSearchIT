@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from backend.api.skills.queries import (
-    get_available_skills_on_vacancy,
+    get_all_skills_queries, get_available_skills_on_vacancy,
     get_available_skills_on_worker,
     get_skills_by_vacancy_id,
     get_skills_by_worker_id, update_vacancy_skills, update_worker_skills
@@ -13,10 +13,10 @@ router = APIRouter(prefix="/skills", tags=["skills"])
 
 
 @router.get('/', summary='Получить все скиллы')
-async def get_all_skills(
+async def get_all_skills_views(
         user=Depends(get_user_by_token)
 ):
-    skills = await get_all_skills()
+    skills = await get_all_skills_queries()
     return {
         'status': 'ok',
         'skills': skills,
