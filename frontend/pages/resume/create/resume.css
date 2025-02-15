@@ -80,21 +80,7 @@ textarea{
 
 }
 
-:root {
-  --primary-color: #dc2626;
-  --primary-hover: #b91c1c;
-  --red-50: #fef2f2;
-  --red-100: #fee2e2;
-  --red-200: #fecaca;
-  --red-300: #fca5a5;
-  --red-400: #f87171;
-  --red-500: #ef4444;
-  --red-600: #dc2626;
-  --red-700: #b91c1c;
-  --red-800: #991b1b;
-  --red-900: #7f1d1d;
-  --white: #ffffff;
-}
+
 
 * {
   margin: 0;
@@ -112,25 +98,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--red-700);
-  margin-bottom: 0.5rem;
-}
 
-input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  border: 1px solid black;
-  border-radius: 0.375rem;
-  color: var(--red-900);
-  background-color: var(--white);
-  transition: all 0.15s ease-in-out;
-}
 
 .input-icon {
   position: relative;
@@ -150,11 +118,6 @@ input {
   pointer-events: none;
 }
 
-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
-}
 
 
 .form-actions {

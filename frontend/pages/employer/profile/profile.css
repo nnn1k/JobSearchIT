@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: white;
 }
 
 .container_user_data {
@@ -18,7 +18,7 @@ body {
     justify-content: center;
     width: 650px;
     gap: 15px;
-    background-color: white;
+    background-color: #f2f2f2;
     padding: 10px;
     margin-left: 50px;
     border-radius: 15px;
@@ -37,6 +37,8 @@ body {
     width: 140px;
 }
 .field_data{
+    width: 35%;
+    height: 60% ;
     margin-left: 120px;
 }
 
@@ -44,67 +46,28 @@ body {
      margin-left: auto;
 }
 
-.btn {
-    width: 100%;
-    padding: 10px;
-    background-color: red;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
 
 
 .link_for_reg{
     text-decoration: none;
 }
 
-a:link {
-    color: deepskyblue
-}
 
-a:visited {
-    color: deepskyblue
-}
-
-a:hover {
-    color: cornflowerblue;
-}
-
-a{
-    text-decoration: none;
-}
 .hide_field{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.btns{
-    display: flex;
-    flex-direction: column;
-}
+
+
 input[name="cancel_btn"]{
     width: 100px;
-    color: red;
-    background-color: #f2f2f2;
-
-
 }
 #put_btn{
     width: 100px;
-    margin-left: 260px;
-    border: none;
+    margin-left: 41%;
 }
 
-#put_btn:hover{
-    background-color: #f2f2f2;
-}
-
-#cancel_btn{
-    border: none;
-}
 
 hr {
     border: 0.5px solid black;

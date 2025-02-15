@@ -64,7 +64,7 @@
 }
 
 .vacancy {
-    background-color: #ffffff;
+    background-color: #f2f2f2;
     border-radius: 8px;
     padding-left: 20px;
     padding-top: 20px;
@@ -92,7 +92,8 @@
 }
 
 .form_container {
-    display: none;
+    display: flex;
+    flex-direction: column;
 }
 
 .btn.active {
@@ -128,27 +129,12 @@ textarea {
     resize: none;
 }
 
-.mce-content-body {
-    white-space: pre-wrap; /* Применяем стиль white-space: pre-wrap */
+#edit_btn{
+    height: 10%;
+    width: 40%;
+    margin-left: auto;
 }
 
 
-/* Стиль для кнопки */
-.edit-button {
-    background-color: crimson;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    text-align: center;
-    font-size: 16px;
-    height: 50px;
-}
 
-.edit-button:hover {
-    background-color: white;
-    color: crimson;
-    border: 1px solid crimson;
-}
+

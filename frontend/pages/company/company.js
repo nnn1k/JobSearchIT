@@ -40,6 +40,7 @@ async function get_company() {
 }
 
 async function update_company() {
+    const loadingIndicator = showLoadingIndicator();
     const company_id = location.pathname.split('/')[2]
     const description = tinymce.get('company_description_update').getContent()
     const putResponse = await makeRequest({
@@ -49,8 +50,7 @@ async function update_company() {
             description
         }
     })
-
-    console.log(putResponse)
+    hideLoadingIndicator(loadingIndicator);
     location.reload(true)
 }
 

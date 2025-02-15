@@ -15,7 +15,8 @@ async function get_vacancy() {
     })
     if (getResponse) {
         const vacancy = getResponse.vacancy;
-        const companyName = getResponse.company_name;
+        const companyName = getResponse.vacancy.company.name;
+        const skills = getResponse.vacancy.skills;
         const deleteElement = document.getElementById('btn_delete')
         if (getResponse.can_update) {
             deleteElement.style.display = 'flex';
@@ -31,6 +32,26 @@ async function get_vacancy() {
         document.getElementById('description_vacancy').innerHTML = vacancy.description;
         const link_company = document.getElementById("link_company");
         link_company.href = `/companies/${vacancy.company_id}`;
+        const skillsList = document.getElementById('skillsList');
+        console.log(skills)
+        const displaySkills = () => {
+            const skillsDisplay = document.getElementById('skillsList');
+            skillsDisplay.innerHTML = '';
+
+            if (skills.length === 0) {
+                skillsDisplay.textContent = 'Нет навыков для отображения';
+                return;
+            }
+
+            skills.forEach(skill => {
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                console.log(skill.name)
+                skillTag.textContent = skill.name;
+                skillsDisplay.appendChild(skillTag);
+            });
+            };
+        displaySkills();
         hideLoadingIndicator(loadingIndicator);
         vacancyContainer.style.display = 'block'
 

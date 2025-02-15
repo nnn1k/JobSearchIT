@@ -8,7 +8,7 @@ tinymce.init({
     statusbar: false,
     selector: '#input_for_description_vacancy',
     width: 500,  // Фиксированная ширина
-    height: 600, // Фиксированная высота
+    height: 500, // Фиксированная высота
 });
 document.addEventListener('DOMContentLoaded', () => {
     getSkills()
@@ -20,11 +20,8 @@ async function getSkills() {
         url: '/api/skills/'
     })
     const available_skills = getResponse.skills;
-    console.log(available_skills)
     const skillInput = document.getElementById('skillInput');
-    const skillsList = document.getElementById('skillsList');
     const skillsDropdown = document.getElementById('skillsDropdown');
-
 
     const sk = available_skills.sort((a, b) => a.name.localeCompare(b.name));
 
@@ -45,12 +42,10 @@ async function getSkills() {
         tag.querySelector('button').addEventListener('click', () => {
             const index = skills.findIndex(s => s.id === skill.id);
             if (index !== -1) {
-                skills.splice(index, 1); // Удаление навыка из списка
-                console.log(skills);
+                skills.splice(index, 1);
                 tag.remove();
             }
         });
-
         return tag;
     };
 

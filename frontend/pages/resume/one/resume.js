@@ -1,6 +1,5 @@
 import {makeRequest} from "/frontend/js/utils.js";
 import {print_salary} from "/frontend/js/print_salary.js";
-import {displaySelectedSkills} from "/frontend/js/skills.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 
@@ -25,7 +24,6 @@ async function get_resume(){
     print_salary(salaryElement, resume.salary_first, resume.salary_second)
     document.getElementById('city').innerHTML += resume.city
     document.getElementById('description').innerHTML = resume.description
-    displaySelectedSkills(getResponse.skills, true)
     if (getResponse.can_update){
         hideLoadingIndicator(loadingIndicator);
         const editBtn = document.getElementById('edit_btn')
