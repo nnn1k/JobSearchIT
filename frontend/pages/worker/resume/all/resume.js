@@ -1,17 +1,20 @@
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {makeRequest} from "/frontend/js/utils.js";
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 document.addEventListener('DOMContentLoaded', function () {
     get_resumes()
 })
 
 async function get_resumes() {
+    const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: '/api/workers/resumes/'
+        url: '/api/workers/me/'
     })
-    const resumes = getResponse.resumes;
+    console.log(getResponse)
+    const resumes = getResponse.user.resumes;
     const container = document.getElementById('resume-container');
 
     resumes.forEach(resume => {
@@ -49,4 +52,5 @@ async function get_resumes() {
 
         container.appendChild(resumeElement);
     });
+    hideLoadingIndicator(loadingIndicator);
 }

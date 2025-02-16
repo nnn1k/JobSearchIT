@@ -15,7 +15,7 @@ def my_account_worker(request: Request):
 
 
 @router.get('/resumes')
-def resume_get(request: Request):
+def resumes_get(request: Request):
     user_type = request.cookies.get("user_type")
     if user_type != "worker":
         return RedirectResponse(url="/login")

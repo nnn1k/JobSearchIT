@@ -1,6 +1,6 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hide_field, cancel_btn} from "/frontend/js/functions_for_profile.js";
-
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 document.getElementById('link_for_edit_name').addEventListener('click', function (event) {
     event.preventDefault();
@@ -72,13 +72,12 @@ $(document).ready(function () {
 });
 
 async function getMe() {
+    const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
             method: 'GET',
             url: '/api/workers/me',
         }
     )
-    console.log(getResponse)
-
     const user = getResponse.user
     document.getElementById('data_name').innerHTML = user.name
     document.getElementById('data_name_2').innerHTML = user.name
@@ -93,6 +92,7 @@ async function getMe() {
     document.getElementById('data_birthday_2').innerHTML = user.birthday
     document.getElementById('data_city').innerHTML = user.city
     document.getElementById('data_city_2').innerHTML = user.city
+    hideLoadingIndicator(loadingIndicator);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 async function patch_field(field) {
+    const loadingIndicator = showLoadingIndicator();
     const value = document.getElementById(`new_${field}`).value
     const patchResponse = await makeRequest({
         method: 'PATCH',
@@ -109,6 +110,7 @@ async function patch_field(field) {
         }
     })
     location.reload(true);
+    hideLoadingIndicator(loadingIndicator);
 }
 
 window.patch_field = patch_field

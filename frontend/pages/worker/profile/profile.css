@@ -38,6 +38,8 @@ body {
     width: 140px;
 }
 .field_data{
+    width: 35%;
+    height: 60% ;
     margin-left: 120px;
 }
 
@@ -45,43 +47,12 @@ body {
      margin-left: auto;
 }
 
-.btn {
-    width: 100%;
-    padding: 10px;
-    background-color: red;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
-
-.link_for_reg{
-    text-decoration: none;
-}
-
-a:link {
-    color: deepskyblue
-}
-
-a:visited {
-    color: deepskyblue
-}
-
-a:hover {
-    color: cornflowerblue;
-}
-
-a{
-    text-decoration: none;
-}
 .hide_field{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
+
 .btns{
     display: flex;
     flex-direction: column;
@@ -90,9 +61,8 @@ input[name="cancel_btn"]{
     width: 100px;
     color: red;
     background-color: #f2f2f2;
-
-
 }
+
 #put_btn{
     width: 100px;
     margin-left: 260px;

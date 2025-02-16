@@ -44,39 +44,25 @@ header{
     width: 50px;
 }
 
-.btn_create_resume{
-    display: flex;
-    margin-top: 5px;
-    height: 80%;
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: white;
-    border-radius: 15px;
-    color: crimson;
-    font-size: 16px;
-}
 
 .content {
     min-width: 100vh;
     min-height: 100vh;
 }
 
-a{
-    text-decoration: none;
+.div_link_my_resumes{
+    margin-right: 60%;
 }
 
-a:link {
-    color: deepskyblue
+#link_my_resumes{
+    font-size: 18px;
+    color: #333333;
 }
 
-a:visited {
-    color: deepskyblue
+#link_my_resumes:hover{
+   color: #f2f2f2;
 }
 
-a:hover {
-    color: orange;
-}
 
 .disabled_link{
     cursor: not-allowed;

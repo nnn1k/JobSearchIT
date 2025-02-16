@@ -1,7 +1,6 @@
-import {apiUrl, makeRequest} from "/frontend/js/utils.js";
+import {makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 import {print_salary} from "/frontend/js/print_salary.js";
-import {formatDateTime} from "/frontend/js/timefunc.js";
 import {createTrashBtnVacancy} from "/frontend/js/create_trash_can.js";
 
 async function get_vacancy() {
@@ -13,6 +12,7 @@ async function get_vacancy() {
         method: 'GET',
         url: `/api/vacancy/${vacancyId}`
     })
+    console.log(getResponse)
     if (getResponse) {
         const vacancy = getResponse.vacancy;
         const companyName = getResponse.vacancy.company.name;
@@ -39,10 +39,9 @@ async function get_vacancy() {
             skillsDisplay.innerHTML = '';
 
             if (skills.length === 0) {
-                skillsDisplay.textContent = 'Нет навыков для отображения';
+                document.getElementById('form-group').style.display = 'none'
                 return;
             }
-
             skills.forEach(skill => {
                 const skillTag = document.createElement('div');
                 skillTag.className = 'skill-tag';

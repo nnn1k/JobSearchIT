@@ -112,7 +112,7 @@ body {
 .input-icon-svg {
   position: absolute;
   left: 0.75rem;
-  top: 50%;
+  top: 32%;
   transform: translateY(-50%);
   color: var(--red-400);
   pointer-events: none;
