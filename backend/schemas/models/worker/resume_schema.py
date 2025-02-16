@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from backend.schemas.global_schema import GlobalSchema
 from backend.utils.str_const import RESUME_TYPE
 
@@ -14,4 +14,5 @@ class ResumeSchema(GlobalSchema):
     type: str = RESUME_TYPE
 
     worker: Optional['WorkerResponseSchema'] = None
+    skills: Optional[List['SkillSchema']] = None
 

@@ -4,8 +4,9 @@ from sqlalchemy.orm import joinedload, selectinload
 from backend.database.models.employer import VacanciesOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
-from backend.utils.other.redis_func import cache_object, get_cached_object
+from backend.modules.redis.redis_utils import cache_object, get_cached_object
 from backend.utils.str_const import VACANCY_TYPE
+from backend.utils.other.celery_utils import cl_app
 
 
 async def create_vacancy_queries(company_id, **kwargs):
@@ -26,10 +27,12 @@ async def create_vacancy_queries(company_id, **kwargs):
         return schema
 
 
-async def get_vacancy_by_id_queries(vacancy_id):
-    cache_vacancy = await get_cached_object(obj_type=VACANCY_TYPE, obj_id=vacancy_id, schema=VacancySchema)
-    if cache_vacancy:
-        return cache_vacancy
+@cl_app.task
+async def get_vacancy_by_id_queries(vacancy_id: int, refresh: bool = False):
+    if not refresh:
+        cache_vacancy = await get_cached_object(obj_type=VACANCY_TYPE, obj_id=vacancy_id, schema=VacancySchema)
+        if cache_vacancy:
+            return cache_vacancy
     async with session_factory() as session:
         stmt = await session.execute(
             select(VacanciesOrm)

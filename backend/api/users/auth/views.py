@@ -13,8 +13,8 @@ from backend.api.users.auth.dependencies import (
     get_login_db_model,
 )
 
-from backend.utils.other.email_func import SendEmail
-from backend.utils.other.redis_func import get_code_from_redis
+from backend.utils.other.email_utils import SendEmail
+from backend.modules.redis.redis_utils import get_code_from_redis
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 type_router = APIRouter(prefix="/{user_type_path}")
@@ -66,10 +66,17 @@ async def get_code(
 ):
     match user_type_path:
         case UserType.employer:
-            user = await get_employer_by_token(access_token=access_token, refresh_token=refresh_token,
-                                               response=response)
+            user = await get_employer_by_token(
+                access_token=access_token,
+                refresh_token=refresh_token,
+                response=response
+            )
         case UserType.worker:
-            user = await get_worker_by_token(access_token=access_token, refresh_token=refresh_token, response=response)
+            user = await get_worker_by_token(
+                access_token=access_token,
+                refresh_token=refresh_token,
+                response=response
+            )
         case _:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     await SendEmail.send_code_to_email(user)

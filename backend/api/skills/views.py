@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 
 from backend.api.skills.queries import (
     get_all_skills_queries, get_available_skills_on_vacancy,
-    get_available_skills_on_worker,
+    get_available_skills_on_resume,
     get_skills_by_vacancy_id,
-    get_skills_by_worker_id, update_vacancy_skills, update_worker_skills
+    get_skills_by_resume_id, update_vacancy_skills, update_resume_skills
 )
 from backend.schemas.models.other.skill_schema import SkillListSchema
 from backend.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
@@ -24,27 +24,29 @@ async def get_all_skills_views(
     }
 
 
-@router.get('/worker/me', summary='Вытащить все скиллы, которые привязаны к работнику')
+@router.get('/resumes/{resume_id}', summary='Вытащить все навыки, которые привязаны к резюме')
 async def get_worker_skills_views(
+        resume_id: int,
         user=Depends(get_worker_by_token)
 ):
-    available_skills = await get_available_skills_on_worker(user.id)
-    worker_skills = await get_skills_by_worker_id(user.id)
+    available_skills = await get_available_skills_on_resume(resume_id)
+    resume_skills = await get_skills_by_resume_id(resume_id)
 
     return {
         'status': 'ok',
-        'worker_skills': worker_skills,
+        'resume_skills': resume_skills,
         'available_skills': available_skills,
         'user': user
     }
 
 
-@router.put('/worker/me', summary='Обновить скиллы работника')
+@router.put('/resumes/{resume_id}', summary='Обновить навыки резюме')
 async def update_worker_skills_views(
+        resume_id: int,
         skills: SkillListSchema,
         user=Depends(get_worker_by_token)
 ):
-    await update_worker_skills(skills.skills, user.id)
+    await update_resume_skills(skills.skills, resume_id)
     return {
         'status': 'ok',
         'worker_skills': skills.skills,
@@ -52,7 +54,7 @@ async def update_worker_skills_views(
     }
 
 
-@router.get('/vacancies/{vacancy_id}', summary='Вытащить все скиллы, которые привязаны к вакансии')
+@router.get('/vacancies/{vacancy_id}', summary='Вытащить все навыки, которые привязаны к вакансии')
 async def get_vacancy_skills_views(
         vacancy_id: int,
         user=Depends(get_user_by_token)
@@ -66,7 +68,7 @@ async def get_vacancy_skills_views(
         'user': user
     }
 
-@router.put('/vacancies/{vacancy_id}', summary='Обновить скиллы вакансии')
+@router.put('/vacancies/{vacancy_id}', summary='Обновить навыки вакансии')
 async def update_vacancy_skills_views(
         vacancy_id: int,
         skills: SkillListSchema,

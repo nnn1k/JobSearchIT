@@ -5,7 +5,8 @@ from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.employer.company_schema import CompanySchema
-from backend.utils.other.redis_func import cache_object, get_cached_object
+from backend.utils.other.celery_utils import cl_app
+from backend.modules.redis.redis_utils import cache_object, get_cached_object
 from backend.utils.str_const import COMPANY_TYPE
 
 
@@ -38,10 +39,12 @@ async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
         return company_schema, employer_schema
 
 
-async def get_company_by_id_queries(company_id):
-    cache_company = await get_cached_object(obj_type=COMPANY_TYPE, obj_id=company_id, schema=CompanySchema)
-    if cache_company:
-        return cache_company
+@cl_app.task
+async def get_company_by_id_queries(company_id: int, refresh: bool = False):
+    if not refresh:
+        cache_company = await get_cached_object(obj_type=COMPANY_TYPE, obj_id=company_id, schema=CompanySchema)
+        if cache_company:
+            return cache_company
     async with session_factory() as session:
         stmt = await session.execute(
             select(CompaniesOrm)
@@ -54,6 +57,7 @@ async def get_company_by_id_queries(company_id):
         schema = CompanySchema.model_validate(company, from_attributes=True)
         await cache_object(schema)
         return schema
+
 
 async def update_company_queries(company_id, owner: EmployerResponseSchema, **kwargs):
     async with session_factory() as session:

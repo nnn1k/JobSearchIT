@@ -2,7 +2,9 @@ import string
 import random
 
 from aiosmtplib import SMTP
-from backend.utils.other.redis_func import add_code_to_redis
+
+from backend.utils.other.celery_utils import cl_app
+from backend.modules.redis.redis_utils import add_code_to_redis
 
 class SendEmail:
     
@@ -12,6 +14,7 @@ class SendEmail:
         return res
 
     @staticmethod
+    @cl_app.task
     async def post_mail(user_to, message) -> None:
         mail_data = {
             'login': 'testemailsendnnn1k@gmail.com',

@@ -4,14 +4,22 @@ from sqlalchemy.orm import joinedload, selectinload
 from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
-from backend.utils.other.redis_func import cache_object, get_cached_object
+from backend.modules.redis.redis_utils import cache_object, get_cached_object
 from backend.utils.str_const import EMPLOYER_USER_TYPE
 
+from backend.utils.other.celery_utils import cl_app
 
-async def get_employer_by_id_queries(employer_id: int):
-    cache_user = await get_cached_object(obj_type=EMPLOYER_USER_TYPE, obj_id=employer_id, schema=EmployerResponseSchema)
-    if cache_user:
-        return cache_user
+
+@cl_app.task
+async def get_employer_by_id_queries(employer_id: int, refresh: bool = False) -> EmployerResponseSchema:
+    if not refresh:
+        cache_user = await get_cached_object(
+            obj_type=EMPLOYER_USER_TYPE,
+            obj_id=employer_id,
+            schema=EmployerResponseSchema
+        )
+        if cache_user:
+            return cache_user
     async with session_factory() as session:
         stmt = await session.execute(
             select(EmployersOrm)

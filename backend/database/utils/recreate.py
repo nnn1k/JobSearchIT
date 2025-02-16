@@ -8,7 +8,7 @@ from backend.database.models.employer.Employer import EmployersOrm
 from backend.database.models.employer.Company import CompaniesOrm
 from backend.database.models.employer.Vacancy import VacanciesOrm
 from backend.database.models.other.Skill import SkillsOrm
-from backend.database.models.other.WorkerSkills import WorkersSkillsOrm
+from backend.database.models.other.ResumeSkills import WorkersSkillsOrm
 from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.database.models.other.Response import ResponsesOrm
 

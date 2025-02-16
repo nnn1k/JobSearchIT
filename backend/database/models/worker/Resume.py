@@ -20,4 +20,12 @@ class ResumesOrm(Base):
         back_populates='resumes',
         lazy='noload'
     )
+    skills: Mapped[list['SkillsOrm']] = relationship(
+        'SkillsOrm',
+        secondary='resumes_skills',
+        back_populates='resumes',
+        overlaps='resumes_skills',
+        lazy='noload'
+    )
+
 

@@ -1,8 +1,7 @@
 from typing import Optional
 
-from fastapi import Cookie, HTTPException
-from starlette import status
-from starlette.responses import Response
+from fastapi import Cookie, HTTPException, status, Response
+
 
 from backend.api.users.employers.profile.queries import get_employer_by_id_queries
 from backend.api.users.workers.profile.queries import get_worker_by_id_queries
@@ -10,6 +9,8 @@ from backend.api.users.workers.profile.queries import get_worker_by_id_queries
 from backend.schemas import EmployerResponseSchema, WorkerResponseSchema
 from backend.utils.auth_utils.token_dependencies import check_user_role
 from backend.utils.str_const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
+
+from backend.utils.other.logger_utils import logger
 
 
 async def get_employer_by_token(
@@ -52,7 +53,7 @@ async def get_user_by_token(
                 detail="invalid token (access)",
             )
         return None
-
+    logger.info(f'user_type: {user_type}, user_jwt_schema: {user_jwt_schema}')
     if user_type:
         if user_jwt_schema.type != user_type:
             raise HTTPException(

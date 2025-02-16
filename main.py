@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from loguru import logger
+from backend.utils.other.logger_utils import logger
 from fastapi.responses import JSONResponse
 
 from backend.api import router as backend_router
@@ -25,26 +25,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-log_directory = "backend/logs"
-os.makedirs(log_directory, exist_ok=True)
-
-logger.add(
-    os.path.join(log_directory, "logging.log"),
-    level="ERROR",
-    rotation="10 MB",
-    retention="1 days",
-    compression="zip",
-    format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
-)
-logger.add(
-    os.path.join(log_directory, "logging.log"),
-    level="INFO",
-    rotation="10 MB",
-    retention="1 days",
-    compression="zip",
-    format="{time:YYYY-MM-DD at HH:mm:ss} | {message}"
-)
-
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
@@ -57,12 +37,9 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    # Обрабатываем запрос
     response = await call_next(request)
 
-    # Проверяем, нужно ли логировать запрос
-    if request.url.path.startswith("/api"):
-        # Логируем успешный запрос
+    if request.url.path.startswith("/api") and 300 >= response.status_code >= 400:
         logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
 
     return response

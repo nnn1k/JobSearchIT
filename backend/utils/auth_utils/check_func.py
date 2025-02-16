@@ -1,6 +1,7 @@
 from backend.schemas import EmployerResponseSchema
 from backend.schemas import WorkerResponseSchema
 from backend.utils.other.type_utils import BaseVar, UserVar
+from backend.utils.other.logger_utils import logger
 
 
 def check_employer_can_update(user, obj: BaseVar) -> bool:
@@ -16,6 +17,7 @@ def check_employer_can_update(user, obj: BaseVar) -> bool:
     return False
 
 def check_worker_can_update(user: UserVar, obj: BaseVar) -> bool:
+    logger.info(f'user: {user}, obj: {obj}')
     if not isinstance(user, WorkerResponseSchema):
         return False
     if hasattr(obj, 'worker_id'):

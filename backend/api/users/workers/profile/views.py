@@ -10,7 +10,7 @@ from backend.schemas import WorkerResponseSchema
 router = APIRouter(prefix='/me', tags=['workers_profile'])
 
 
-@router.get('/', summary='Узнать информацию о себе')
+@router.get('', summary='Узнать информацию о себе')
 async def get_my_profile(
         worker: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
@@ -20,7 +20,7 @@ async def get_my_profile(
     }
 
 
-@router.put('/', summary='Редактировать информацию о себе')
+@router.put('', summary='Редактировать информацию о себе')
 async def update_my_profile(
         new_worker: WorkerProfileSchema,
         worker: WorkerResponseSchema = Depends(get_worker_by_token)
@@ -32,7 +32,7 @@ async def update_my_profile(
     }
 
 
-@router.patch('/', summary='Редактировать информацию о себе по одному атрибуту')
+@router.patch('', summary='Редактировать информацию о себе по одному атрибуту')
 async def update_my_other(
         new_worker: DynamicSchema,
         worker: WorkerResponseSchema = Depends(get_worker_by_token)

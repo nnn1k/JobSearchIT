@@ -8,11 +8,11 @@ class SkillsOrm(Base):
 
     name: Mapped[str]
 
-    workers: Mapped[list['WorkersOrm']] = relationship(
-        'WorkersOrm',
-        secondary='workers_skills',
+    resumes: Mapped[list['ResumesOrm']] = relationship(
+        'ResumesOrm',
+        secondary='resumes_skills',
         back_populates='skills',
-        overlaps='workers_skills'
+        overlaps='resumes_skills'
     )
     vacancies: Mapped[list['VacanciesOrm']] = relationship(
         'VacanciesOrm',

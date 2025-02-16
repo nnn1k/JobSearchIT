@@ -8,7 +8,7 @@ EMPLOYER_USER_TYPE: str = 'employer'
 COMPANY_TYPE: str = 'company'
 VACANCY_TYPE: str = 'vacancy'
 
-SKILL_TYPE: str = 'SKILL'
+SKILL_TYPE: str = 'skill'
 
 
 

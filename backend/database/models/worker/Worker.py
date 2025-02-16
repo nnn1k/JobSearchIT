@@ -28,10 +28,3 @@ class WorkersOrm(Base):
         back_populates='worker',
         lazy='noload',
     )
-    skills: Mapped[list['SkillsOrm']] = relationship(
-        'SkillsOrm',
-        secondary='workers_skills',
-        back_populates='workers',
-        overlaps='workers_skills',
-        lazy='noload'
-    )

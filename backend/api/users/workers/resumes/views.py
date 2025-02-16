@@ -3,7 +3,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
-from backend.api.skills.queries import update_worker_skills
+from backend.api.skills.queries import update_resume_skills
 
 from backend.api.users.workers.resumes.queries import create_resume_queries, get_one_resume_by_id_queries, \
     update_resume_by_id_queries
@@ -29,7 +29,7 @@ async def add_resumes_views(
         )
 
     resume = await create_resume_queries(**add_resume.model_dump(exclude={'skills'}), worker_id=user.id)
-    await update_worker_skills(skills, user.id)
+    await update_resume_skills(skills, resume.id)
     return {
         'status': 'ok',
         'resume': resume,
@@ -48,7 +48,7 @@ async def get_one_resume_views(
             status_code=status.HTTP_404_NOT_FOUND,
             detail='resume is not exist'
         )
-    can_update = check_worker_can_update(resume, user)
+    can_update = check_worker_can_update(user=user, obj=resume)
     return {
         'status': 'ok',
         'resume': resume,

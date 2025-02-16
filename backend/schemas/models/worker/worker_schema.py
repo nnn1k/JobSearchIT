@@ -11,6 +11,5 @@ class WorkerResponseSchema(UserResponseSchema):
     type: str = WORKER_USER_TYPE
 
     resumes: Optional[List['ResumeSchema']] = None
-    skills: Optional[List['SkillSchema']] = None
     educations: Optional[Any] = None
 

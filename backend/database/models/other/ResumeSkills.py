@@ -3,12 +3,12 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.database.settings.database import Base
 
-class WorkersSkillsOrm(Base):
-    __tablename__ = 'workers_skills'
+class ResumesSkillsOrm(Base):
+    __tablename__ = 'resumes_skills'
 
     skill_id: Mapped[int] = mapped_column(ForeignKey('skills.id', ondelete='CASCADE'))
-    worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
+    resume_id: Mapped[int] = mapped_column(ForeignKey('resumes.id', ondelete='CASCADE'))
 
     __table_args__ = (
-        UniqueConstraint('skill_id', 'worker_id', name='uq_skills_workers'),
+        UniqueConstraint('skill_id', 'resume_id', name='uq_skills_resumes'),
     )
