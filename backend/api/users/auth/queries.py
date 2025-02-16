@@ -12,7 +12,6 @@ async def login_user_queries(user, user_table, response_schema):
         if not login_user or not HashPwd.validate_password(password=user.password, hashed_password=login_user.password):
             return None
         schema = response_schema.model_validate(login_user, from_attributes=True)
-        await cache_object(schema)
         return schema
 
 
@@ -28,7 +27,6 @@ async def register_user_queries(user, user_table, response_schema):
         await session.refresh(register_user)
         schema = response_schema.model_validate(register_user, from_attributes=True)
         await session.commit()
-        await cache_object(schema)
         return schema
 
 
@@ -41,7 +39,6 @@ async def update_code_queries(user_id: int, user_table, response_schema):
         update_user.is_confirmed = True
         schema = response_schema.model_validate(update_user, from_attributes=True)
         await session.commit()
-        await cache_object(schema)
         await delete_object(obj_type=f'{schema.type}_code', obj_id=schema.id)
         return schema
 

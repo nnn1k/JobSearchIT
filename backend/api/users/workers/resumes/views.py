@@ -33,7 +33,6 @@ async def add_resumes_views(
     return {
         'status': 'ok',
         'resume': resume,
-        'user': user,
     }
 
 
@@ -53,7 +52,6 @@ async def get_one_resume_views(
         'status': 'ok',
         'resume': resume,
         'can_update': can_update,
-        'user': user,
     }
 
 
@@ -67,8 +65,6 @@ async def update_resume_views(
     return {
         'status': 'ok',
         'resume': resume,
-        'user': user,
-        'message': 'resume updated'
     }
 
 
@@ -87,5 +83,4 @@ async def delete_resume_views(
     return {
         'status': 'ok',
         'user': user,
-        'message': 'resume deleted'
     }

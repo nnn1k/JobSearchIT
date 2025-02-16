@@ -15,16 +15,6 @@ test_user = {
     "confirm_password": "string"
 }
 
-test_worker_token = Token(
-    access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoid29ya2VyIiwic3ViIjoiMjkiLCJleHAiOjE3Mzk1ODMwMzIsImlhdCI6MTczOTU4MTIzMn0.IZYUhW7_KgQzyEh8GRirOv0epeRZsKd86f5nsF3b26Xs06BiuToKcTO6BPRYA2ZxNJaxyaBa0Oc19We0hd-XuJTIct6DqNp-AzXHI4V8at9DfHoheoPgM2FhF-aIsWeAPq2RgzSSLeUV3mrDDtTeS5cQXKnOfhmwREAQTnVO7CE",
-    refresh_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoid29ya2VyIiwic3ViIjoiMjkiLCJleHAiOjE3NDAxODYwMzIsImlhdCI6MTczOTU4MTIzMn0.OECutJbT1035BUI0PR4B-z03un1aoBmAQPBDpCbgQzehRq0PYlgVBGR9aTyvY16dFdmAjWdcv6SB5k6S8Isd4kMn3JawK3-BOZzg1XJHqlq4DhGB6GpEFM4aDF07Ajqbmf4LSkfLwSEE1baPGbtR_jAociVCX8zZAG338FFDzls",
-)
-
-test_employer_token = Token(
-    access_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiZW1wbG95ZXIiLCJzdWIiOiIzMSIsImV4cCI6MTczOTU4MjUxNSwiaWF0IjoxNzM5NTgwNzE1fQ.EmQVCX39xtFUz-yfSW40k0jbaNdgmicStrTnhEzZ-ZYX7nlUdbCW9IhakW9zlT5i2G6CokiCTVMNbVPZ7Q_gKJ73HCuWSwBuOrm8Mw811BGJyC4XnNNzlwT_l5xBof6Mmt4ZRsA9GDb16nWBN1fABRhFCzG6gwG8WUX7V-94LSo",
-    refresh_token="eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiZW1wbG95ZXIiLCJzdWIiOiIzMSIsImV4cCI6MTc0MDE4NTUxNSwiaWF0IjoxNzM5NTgwNzE1fQ.RIUcP7l_saqrRz9QL_Ra-cHWIN6Xtq0TtttOIr8VUMfMj87viiIphkMunebuSwUNXLQ5nvmbjR-bxuFxMFb4kN51vjQzdJpkzclqswyjMduIQ6oP8HQ0hLmIqk_mLNqK2qWdkWPF0jMn08oehA0XqZ2N00zmf1rIeVPB1GpHoYM",
-)
-
 
 def async_client():
     return AsyncClient(
@@ -66,6 +56,7 @@ def check_token(response):
     assert isinstance(token_schema, Token)
     return token_schema
 
+
 async def cache_worker(user, token):
     await cache_object(
         obj_id=1,
@@ -78,12 +69,14 @@ async def cache_worker(user, token):
         obj=token
     )
 
+
 async def get_worker():
     return await get_cached_object(
         obj_id=1,
         obj_type='test_worker',
         schema=WorkerResponseSchema
     )
+
 
 async def delete_worker(worker):
     await delete_user(
@@ -95,12 +88,14 @@ async def delete_worker(worker):
     await delete_object(obj_type='test_worker_token', obj_id=1)
     await delete_object(obj_type='worker', obj_id=worker.id)
 
+
 async def get_employer():
     return await get_cached_object(
         obj_id=1,
         obj_type='test_employer',
         schema=EmployerResponseSchema
     )
+
 
 async def delete_employer(employer):
     await delete_user(

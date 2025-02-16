@@ -3,7 +3,6 @@ from fastapi import Depends, APIRouter, HTTPException, status
 from backend.api.companies.queries import create_company_queries, get_company_by_id_queries, update_company_queries
 from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
-from backend.schemas import CompanySchema
 from backend.schemas import EmployerResponseSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
 
@@ -24,7 +23,6 @@ async def create_new_company(
     return {
         'status': 'ok',
         'company': company,
-        'user': user
     }
 
 
@@ -43,7 +41,6 @@ async def get_info_on_company(
     return {
         'status': 'ok',
         'company': company,
-        'user': user,
         'can_update': can_update
     }
 
@@ -63,5 +60,4 @@ async def update_company(
     return {
         'status': 'ok',
         'company': company,
-        'user': user
     }

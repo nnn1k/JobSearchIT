@@ -34,7 +34,6 @@ async def create_new_vacancy(
     return {
         'status': 'ok',
         'vacancy': vacancy,
-        'user': user
     }
 
 
@@ -54,9 +53,7 @@ async def get_info_on_vacancy(
     return {
         'status': 'ok',
         'vacancy': vacancy,
-        'user': user,
         'can_update': can_update,
-
     }
 
 
@@ -74,7 +71,6 @@ async def update_info_on_company(
         )
     return {
         'vacancy': vacancy,
-        'user': user,
         'status': 'ok',
     }
 
@@ -92,6 +88,5 @@ async def delete_info_on_company(
             detail='user is not owner this company or vacancy not found'
         )
     return {
-        'user': user,
         'status': 'ok',
     }

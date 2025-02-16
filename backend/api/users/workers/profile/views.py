@@ -7,7 +7,7 @@ from backend.utils.auth_utils.user_login_dependencies import get_worker_by_token
 
 from backend.schemas import WorkerResponseSchema
 
-router = APIRouter(prefix='/me', tags=['workers_profile'])
+router = APIRouter(prefix='/me', tags=['workers'])
 
 
 @router.get('', summary='Узнать информацию о себе')

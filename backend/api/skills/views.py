@@ -20,14 +20,13 @@ async def get_all_skills_views(
     return {
         'status': 'ok',
         'skills': skills,
-        'user': user
     }
 
 
 @router.get('/resumes/{resume_id}', summary='Вытащить все навыки, которые привязаны к резюме')
 async def get_worker_skills_views(
         resume_id: int,
-        user=Depends(get_worker_by_token)
+        user=Depends(get_user_by_token)
 ):
     available_skills = await get_available_skills_on_resume(resume_id)
     resume_skills = await get_skills_by_resume_id(resume_id)
@@ -36,7 +35,6 @@ async def get_worker_skills_views(
         'status': 'ok',
         'resume_skills': resume_skills,
         'available_skills': available_skills,
-        'user': user
     }
 
 
@@ -44,13 +42,12 @@ async def get_worker_skills_views(
 async def update_worker_skills_views(
         resume_id: int,
         skills: SkillListSchema,
-        user=Depends(get_worker_by_token)
+        user=Depends(get_user_by_token)
 ):
     await update_resume_skills(skills.skills, resume_id)
     return {
         'status': 'ok',
         'worker_skills': skills.skills,
-        'user': user
     }
 
 
@@ -65,7 +62,6 @@ async def get_vacancy_skills_views(
         'status': 'ok',
         'vacancy_skills': vacancy_skills,
         'available_skills': available_skills,
-        'user': user
     }
 
 @router.put('/vacancies/{vacancy_id}', summary='Обновить навыки вакансии')
@@ -78,5 +74,4 @@ async def update_vacancy_skills_views(
     return {
         'status': 'ok',
         'vacancy_skills': skills.skills,
-        'user': user
     }
