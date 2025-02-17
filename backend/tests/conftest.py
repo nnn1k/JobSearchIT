@@ -1,6 +1,7 @@
 import asyncio
 import pytest
-from backend.tests.utils import delete_employer, delete_worker, get_employer, get_worker
+from backend.tests.worker.utils import delete_worker, get_worker
+from backend.tests.employer.utils import delete_employer, get_employer
 
 
 async def clear_users():

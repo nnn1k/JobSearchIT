@@ -53,7 +53,8 @@ async def update_resume_by_id_queries(resume_id: int, worker, **kwargs):
             .values(**kwargs)
             .filter_by(id=int(resume_id))
             .returning(ResumesOrm)
-            .options(selectinload(ResumesOrm.worker).selectinload(WorkersOrm.skills))
+            .options(selectinload(ResumesOrm.worker))
+            .options(selectinload(ResumesOrm.skills))
         )
         resume = stmt.scalars().one_or_none()
         if not resume:

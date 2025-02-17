@@ -34,7 +34,7 @@ async def add_code_to_redis(user, code):
 
 
 @cl_app.task
-async def cache_object(obj: BaseVar, obj_id: int = 0, obj_type: str = '', ttl=3600):
+async def cache_object(obj: BaseVar, obj_id: int = 0, obj_type: str = '', ttl=1):
     if obj_id == 0:
         obj_id = obj.id
     if obj_type == '':
@@ -44,7 +44,7 @@ async def cache_object(obj: BaseVar, obj_id: int = 0, obj_type: str = '', ttl=36
 
 
 @cl_app.task
-async def cache_list_object(objects: List[BaseVar], ttl=3600):
+async def cache_list_object(objects: List[BaseVar], ttl=1):
     redis_client = await create_async_redis_client()
     for obj in objects:
         await redis_client.set(f'{obj.type}_obj:{obj.id}', obj.model_dump_json(), ex=ttl)

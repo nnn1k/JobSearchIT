@@ -16,7 +16,7 @@ from backend.utils.other.time_utils import current_time
 router = APIRouter(prefix="/resumes", tags=["resumes"])
 
 
-@router.post('/', summary='Создать резюме')
+@router.post('', summary='Создать резюме')
 async def add_resumes_views(
         add_resume: ResumeAddSchema,
         user: WorkerResponseSchema = Depends(get_worker_by_token)

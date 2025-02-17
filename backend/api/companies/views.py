@@ -9,7 +9,7 @@ from backend.utils.auth_utils.check_func import check_employer_can_update
 router = APIRouter(prefix='/companies', tags=['companies'])
 
 
-@router.post('/', summary='Создать компанию')
+@router.post('', summary='Создать компанию')
 async def create_new_company(
         company: CompanyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)

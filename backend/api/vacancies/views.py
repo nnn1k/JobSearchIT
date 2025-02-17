@@ -18,7 +18,7 @@ from backend.utils.other.time_utils import current_time
 router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 
-@router.post('/', summary='Создать вакансию')
+@router.post('', summary='Создать вакансию')
 async def create_new_vacancy(
         add_vacancy: VacancyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)

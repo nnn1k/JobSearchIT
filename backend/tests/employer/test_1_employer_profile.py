@@ -1,6 +1,8 @@
 import pytest
 
-from backend.tests.utils import check_user, employer_client
+from backend.modules.redis.redis_utils import cache_object
+from backend.tests.utils import check_user
+from backend.tests.employer.utils import employer_client
 
 
 class TestEmployerProfile:
@@ -13,7 +15,7 @@ class TestEmployerProfile:
         )
 
         assert response.status_code == 200
-        check_user(response)
+        user = check_user(response)
 
     @pytest.mark.asyncio
     async def test_put_employer(self):

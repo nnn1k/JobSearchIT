@@ -19,3 +19,4 @@ class ResumeUpdateSchema(BaseModel):
     description: Optional[str] = None
     salary_first: Optional[int] = None
     salary_second: Optional[int] = None
+    city: Optional[str] = None

@@ -1,7 +1,8 @@
 import pytest
 
 from backend.modules.redis.redis_utils import cache_object, get_code_from_redis
-from backend.tests.utils import async_client, check_token, check_user, employer_client, get_employer, test_user
+from backend.tests.utils import async_client, check_token, check_user, test_user
+from backend.tests.employer.utils import cache_employer, employer_client, get_employer
 from backend.utils.str_const import EMPLOYER_USER_TYPE
 
 
@@ -15,16 +16,7 @@ class TestEmployerAuth:
         assert response.status_code == 200
         user = check_user(response)
         token = check_token(response)
-        await cache_object(
-            obj_id=1,
-            obj_type='test_employer',
-            obj=user
-        )
-        await cache_object(
-            obj_id=1,
-            obj_type='test_employer_token',
-            obj=token
-        )
+        await cache_employer(user, token)
 
     @pytest.mark.asyncio
     async def test_login_employer(self):

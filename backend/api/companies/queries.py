@@ -48,8 +48,8 @@ async def get_company_by_id_queries(company_id: int, refresh: bool = False):
     async with session_factory() as session:
         stmt = await session.execute(
             select(CompaniesOrm)
-            .options(selectinload(CompaniesOrm.vacancies))
-            .where(CompaniesOrm.id == company_id)
+            .options(selectinload(CompaniesOrm.vacancies).filter_by(deleted_at=None))
+            .filter_by(id=company_id, deleted_at=None)
         )
         company = stmt.scalars().one_or_none()
         if not company:
