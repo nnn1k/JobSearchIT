@@ -5,9 +5,6 @@ from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.employer.company_schema import CompanySchema
-from backend.utils.other.celery_utils import cl_app
-from backend.utils.other.time_utils import time_it_async
-from backend.utils.str_const import COMPANY_TYPE
 from backend.database.models.employer import VacanciesOrm
 
 
@@ -57,18 +54,13 @@ async def get_company_by_id_queries(company_id: int, refresh: bool = False):
 
 
 async def update_company_queries(company_id, owner: EmployerResponseSchema, **kwargs):
+    if not (owner.company_id == company_id and owner.is_owner):
+        return None
     async with session_factory() as session:
         stmt = await session.execute(
             update(CompaniesOrm)
             .values(**kwargs)
-            .filter_by(id=company_id)
-            .returning(CompaniesOrm)
+            .filter_by(id=company_id, deleted_at=None)
         )
-        company = stmt.scalars().one_or_none()
-        if not company:
-            return None
-        schema = CompanySchema.model_validate(company, from_attributes=True)
-        if not (owner.company_id == schema.id and owner.is_owner):
-            return None
         await session.commit()
     return await get_company_by_id_queries(company_id, refresh=True)

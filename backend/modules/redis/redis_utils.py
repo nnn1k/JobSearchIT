@@ -1,7 +1,6 @@
 import json
 import redis.asyncio as async_redis
 
-from backend.utils.other.celery_utils import cl_app
 from backend.utils.other.time_utils import time_it_async
 from backend.utils.other.type_utils import BaseVar
 
@@ -25,6 +24,7 @@ async def clear_redis():
 async def check_redis_connection():
     redis_client = await create_async_redis_client()
     await redis_client.ping()
+
 
 async def cache_object(key: str, obj: BaseVar, ttl=TTL):
     redis_client = await create_async_redis_client()
