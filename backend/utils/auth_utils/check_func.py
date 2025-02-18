@@ -1,7 +1,6 @@
 from backend.schemas import EmployerResponseSchema
 from backend.schemas import WorkerResponseSchema
 from backend.utils.other.type_utils import BaseVar, UserVar
-from backend.utils.other.logger_utils import logger
 
 
 def check_employer_can_update(user, obj: BaseVar) -> bool:
