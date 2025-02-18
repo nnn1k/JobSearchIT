@@ -27,8 +27,8 @@ async function get_company() {
         statusbar: false,
         display: "flex",
         selector: '#company_description_update',
-        width: 600,
-        height: 500,
+        width: 1000,
+        height: 600,
         fontsize: 50,
         whiteSpace: "pre-wrap"
     });
@@ -80,8 +80,8 @@ function renderVacancies(vacancies, can_update) {
         vacancyElement.classList.add('vacancy');
 
         const linkElement = document.createElement('a');
-        linkElement.href = `/vacancies/${vacancy.id}`; // Ссылка на вакансию
-        linkElement.style.textDecoration = 'none'; // Убираем подчеркивание
+        linkElement.href = `/vacancies/${vacancy.id}`;
+        linkElement.style.textDecoration = 'none';
 
         const titleElement = document.createElement('h2');
         titleElement.textContent = vacancy.title;
@@ -95,23 +95,32 @@ function renderVacancies(vacancies, can_update) {
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
 
+        const statsLabel = document.createElement('p');
+        statsLabel.textContent = 'Статистика:'
+        const stastElement = document.createElement('div');
+        stastElement.classList.add('stats');
+        stastElement.textContent = `0 откликов`
+
         linkElement.appendChild(titleElement);
         linkElement.appendChild(updatedAtElement);
+        linkElement.appendChild(statsLabel);
+        linkElement.appendChild(stastElement);
         linkElement.appendChild(salaryElement);
         linkElement.appendChild(cityElement);
-        vacancyElement.appendChild(linkElement); // Оборачиваем весь контент в ссылку
+        vacancyElement.appendChild(linkElement);
 
-        // if (can_update) {
-        //     const editButton = document.createElement('button');
-        //     editButton.classList.add('red_button');
-        //     editButton.style.width = '30%';
-        //     editButton.textContent = "Редактировать";
-        //     editButton.onclick = () => {
-        //         window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
-        //     };
-        //     vacancyElement.appendChild(editButton);
-        // }
-        container.appendChild(vacancyElement);
+
+        if (can_update) {
+            const editButton = document.createElement('button');
+            editButton.classList.add('red_button');
+            editButton.style.width = '30%';
+            editButton.textContent = "Редактировать";
+            editButton.onclick = () => {
+                window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
+            };
+            vacancyElement.appendChild(editButton);
+            container.appendChild(vacancyElement);
+        }
     });
 }
 

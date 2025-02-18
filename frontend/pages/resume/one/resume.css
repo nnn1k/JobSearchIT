@@ -37,12 +37,15 @@ h2 {
 
 .vacancy-details{
     margin-top: 4%;
-    width: 80%;
 }
 
 .first_str{
     display: flex;
     flex-direction: row;
+}
+
+p{
+    width: 86%;
 }
 
 #btn_delete{

@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function (){
 async function getSkills(){
     const getResponse = await makeRequest({
         method: 'GET',
-        url: '/api/skills/worker/me'
+        url: '/api/skills/'
     })
-    const available_skills = getResponse.available_skills
+    const available_skills = getResponse.skills
     const skillInput = document.getElementById('skillInput');
     const skillsList = document.getElementById('skillsList');
     const skillsDropdown = document.getElementById('skillsDropdown');

@@ -5,24 +5,29 @@ body {
     background-color: #ffffff;
 }
 
+.main_container{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-left: 7%;
+}
+
 main {
     display: flex;
-    margin-left: 20%; /* Выравнивание по центру */
-    padding: 20px;
 }
 
 #resume-container {
-    width: 40%; /* Ширина контейнера резюме */
+    width: 45%;
     display: flex;
-    flex-direction: column; /* Выравнивание резюме в колонку */
-    gap: 20px; /* Промежуток между резюме */
+    flex-direction: column;
+    gap: 40px;
 }
 
 .resume {
-    background: #fff;
-    border: 2px solid #c8102e; /* Красная рамка */
-    border-radius: 5px;
-    padding: 15px;
+    background: #f2f2f2;
+    border: 2px solid #cccccc;
+    border-radius: 30px;
+    padding: 25px;
     transition: box-shadow 0.3s;
     width: 100%;
 }
@@ -34,26 +39,18 @@ main {
 
 
 .resume p {
-    margin: 5px 0;
+    margin: 15px 0;
     color: #333; /* Цвет текста */
 }
 
-
-/* Стиль для кнопки */
-.edit-button {
-    background-color: crimson;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    text-align: center;
-    font-size: 16px;
-    height: 50px;
+.stats{
+    display: inline-block;
+    border: 2px solid #cccccc;
+    border-radius: 15px;
+    padding: 15px;
 }
 
-.edit-button:hover {
-    background-color: white;
-    color: crimson;
+.resume-link:visited{
+    color: deepskyblue;
 }
+
