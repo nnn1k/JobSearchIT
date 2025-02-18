@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Компания</title>
+    <link rel="stylesheet" href="/frontend/pages/company/company.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
+</head>
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
+{% block content %}
+    <body>
+    <div class="container_all">
+        <div class="title_company_container">
+            <div class="company_name">
+                <p> Компания </p>
+                <h1 id="company_name"></h1>
+            </div>
+            <div class="container_buttons">
+                <input type="button" value="О компании" class="btn" id="switch_description"
+                       onclick="showForm('desc_form', this)">
+                <input type="button" value="Вакансии" class="btn" id="switch_vacancy"
+                       onclick="showForm('vac_form', this)">
+                <input type="button" value="Изменить описание" class="btn" id="can_update"
+                       onclick="showForm('upd_form', this)">
+            </div>
+        </div>
+        <div class="form_container" id="desc_form">
+            <p id="company_description"></p>
+        </div>
+        <div class="form_container" id="vac_form">
+            <div id="vacancies-container"></div>
+        </div>
+        <div class="form_container" id="upd_form">
+            <div class="update_container">
+                <textarea id="company_description_update"></textarea>
+                <input id="edit_btn" type="button" value="Изменить" onclick="update_company()" class="red_button">
+            </div>
+
+        </div>
+    </div>
+    <script type="module" src="/frontend/pages/company/company.js"></script>
+    </body>
+{% endblock %}
+</html>

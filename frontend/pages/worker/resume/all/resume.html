@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои Резюме</title>
+    <link rel="stylesheet" href="/frontend/pages/worker/resume/all/resume.css">
+</head>
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
+{% block content %}
+<body>
+    <main>
+        <div id="resume-container"></div>
+    </main>
+    <script type='module' src="/frontend/pages/worker/resume/all/resume.js"></script>
+</body>
+{% endblock %}
+</html>

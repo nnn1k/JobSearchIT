@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/frontend/pages/company/create/create.css">
+</head>
+{% extends 'base_employer/base_employer.html' %}
+{% block content %}
+    <body>
+    <div class="container_all">
+        <div class="container_form">
+            <div class="company_name">
+                <input type="text" id="name" placeholder="Название компании">
+            </div>
+            <div class="company_description">
+                <textarea id="description" placeholder="Описание компании"></textarea>
+            </div>
+            <input type="button" onclick="create_company()" class="btn" value="Добавить компанию">
+        </div>
+    </div>
+    <script type="module" src="/frontend/pages/company/create/create.js"></script>
+    </body>
+{% endblock %}
+</html>

@@ -34,6 +34,7 @@ class Base(DeclarativeBase):
             onupdate=lambda: datetime.datetime.utcnow() + datetime.timedelta(hours=3)
         )
     ]]
+    deleted_at: Mapped[datetime.datetime] = mapped_column(default=None, nullable=True)
 
     def __repr__(self):
         cols = []
@@ -41,5 +42,3 @@ class Base(DeclarativeBase):
             if col in self.repr_cols or idx < self.repr_cols_num:
                 cols.append(f'{col}={getattr(self, col)}')
         return f'<{self.__class__.__name__} {", ".join(cols)}>'
-
-

@@ -1,0 +1,35 @@
+.container_all{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+.container_form{
+    height: 600px;
+    width: 400px;
+
+}
+input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.btn {
+    background: white;
+    color: red;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-color: red;
+    width: 85%;
+    height: 35px;
+}
+#description{
+    height: 400px;
+    resize: none;
+    width: 85%;
+}

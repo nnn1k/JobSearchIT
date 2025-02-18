@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/base_worker/base_worker.css">
+    <link rel="stylesheet" href="/frontend/css/style.css">
+    <title></title>
+</head>
+<body>
+<header class="header">
+    <div class="choose" id="choose_role" style="display: none">
+        <a class="disabled_link" href="">
+            Соискателям
+        </a>
+        <a href={{ url_for('home_page_employer') }}>
+            Работадателям
+        </a>
+    </div>
+    <div class="panel">
+        <div class="logo">
+            <img src="/frontend/pictures/main_logo.png" alt="Логотип"/>
+        </div>
+        <div class="div_link_my_resumes">
+            <a id="link_my_resumes" href={{ url_for('resumes_get') }}>Мои резюме</a>
+        </div>
+        <div class="right_side_header">
+                <div>
+                    <button class="white_button" onclick="logout()">Выйти</button>
+                </div>
+                <div>
+                    <button class="white_button" onclick="clickAddResume()">Создать резюме</button>
+                </div>
+            <div class="account-button">
+                <a id="pic_profile" onclick="clickProfile()">
+                    <img class="logo_profile" src="/frontend/pictures/profile.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="content">
+    {% block content %} {% endblock %}
+</div>
+<script type="module" src="/frontend/base_worker/base_worker.js"></script>
+</body>
+</html>

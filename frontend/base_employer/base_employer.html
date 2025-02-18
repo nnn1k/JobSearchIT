@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/base_employer/base_employer.css">
+    <link rel="stylesheet" href="/frontend/css/style.css">
+    <title></title>
+</head>
+<body>
+<header class="header">
+    <div class="choose" id="choose_role" style="display: none">
+        <a href={{ url_for('home_page_worker') }}>
+            Соискателям
+        </a>
+        <a class="disabled_link" href="">
+            Работадателям
+        </a>
+    </div>
+    <div class="panel">
+        <div class="logo">
+            <img src="/frontend/pictures/main_logo.png" alt="Логотип"/>
+        </div>
+        <div class="right_side_header">
+            <div>
+                <button class="white_button" onclick="logout()">Выйти</button>
+            </div>
+            <div>
+                <button class="white_button" onclick="clickAddVacancy()"> Добавить вакансию</button>
+            </div>
+            <div class="account-button">
+                <a id="pic_profile" onclick="clickProfile()">
+                    <img class="logo_profile" src="/frontend/pictures/profile.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</header>
+<div class="content">
+    {% block content %} {% endblock %}
+</div>
+<script type="module" src="/frontend/base_employer/base_employer.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
- export const apiUrl= 'http://127.0.0.1:8000'
+export const apiUrl = 'http://127.0.0.1:8000'
 
- export async function makeRequest(request) {
+export async function makeRequest(request) {
     const response = await fetch(
         apiUrl + request.url,
         {
@@ -13,10 +13,13 @@
     if (response.ok) {
         const data = await response.json()
         return data
-    } else if (response.status == 401){
-        window.location.href = apiUrl + '/login'
-    } else {
-        console.error('error:', response.status)
+    } else if (response.status >= 400 && response.status <= 500) {
+        const errorData = await response.json()
+        console.log(errorData)
+        alert(errorData.detail)
+    } else if (response.status === 500) {
+        console.error('Ошибка 500: Внутренняя ошибка сервера.');
+        alert('Произошла ошибка на сервере. Попробуйте позже.');
     }
 }
 

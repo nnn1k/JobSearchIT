@@ -1,0 +1,85 @@
+.vacancy-container {
+    display: block;
+    font-family: Arial, sans-serif;
+    margin-left: 13%;
+    margin-top: 5%;
+    margin-right: 30%;
+}
+
+.main_info {
+    background: #fff;
+    border-radius: 38px;
+    font-size: 18px;
+    width: 70%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1px 20px 20px 30px;
+}
+
+h1 {
+    font-size: 30px;
+    color: #333;
+}
+
+h2 {
+    font-size: 20px;
+    color: #555;
+}
+
+.company-info, .vacancy-details {
+    margin-bottom: 10px;
+}
+
+.red_button{
+    margin-left: 5%;
+    margin-bottom: 3%;
+}
+
+#name_company{
+    color: #333333;
+}
+
+#name_company:hover{
+    color: gray;
+}
+
+.vacancy-details{
+    margin-top: 4%;
+    width: 80%;
+}
+
+.first_str{
+    display: flex;
+    flex-direction: row;
+}
+
+#btn_delete{
+    display: flex;
+    margin-left: auto;
+    margin-top: 3%;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+
+.skills-list {
+    margin-top: 1%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3%;
+    width: 70%;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--red-100);
+  color: var(--red-700);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+

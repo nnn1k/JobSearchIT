@@ -1,0 +1,47 @@
+#registrationForm {
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Расположение элементов по вертикали */
+    font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
+    justify-content: center;
+    background-color: #f2f2f2;
+    border-radius: 25px;
+    max-width: 350px; /* Уменьшенная максимальная ширина */
+    width: 90%; /* Ширина по умолчанию */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Тень для улучшения визуала */
+    position: absolute; /* Позиционирование */
+    top: 50%; /* Центрирование по вертикали */
+    left: 50%; /* Центрирование по горизонтали */
+    transform: translate(-50%, -50%); /* Смещение для точного центрирования */
+}
+
+.step {
+    display: none; /* Скрываем все шаги */
+}
+
+.active {
+    display: flex;
+    flex-direction: column; /* Расположение элементов по вертикали *//* Показываем только активный шаг */
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.navigation{
+    display: flex;
+    flex-direction: row;
+    gap: 50%;
+}

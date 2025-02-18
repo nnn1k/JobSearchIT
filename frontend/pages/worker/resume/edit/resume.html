@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование резюме</title>
+    <link rel="stylesheet" href="/frontend/pages/vacancy/create/vacancy.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
+</head>
+{% extends 'base_worker/base_worker.html' %}
+{% block content %}
+    <body>
+    <div class="body_container">
+
+        <h1 class="new_vacancy">Редактирование резюме</h1>
+        <h3 class="main_info">Основная информация</h3>
+        <div class="fields_for_data">
+            <div class="field_title">
+                <label class="title_vacancy">Желаяемая должность</label>
+                <input type="text" class="input_for_title_vacancy" id="input_for_title_vacancy" required="">
+            </div>
+            <div class="field_description">
+                <label class="description_vacancy">Описание</label>
+                <textarea id="input_for_description_vacancy" class="input_for_description_vacancy" required="">
+                </textarea>
+            </div>
+            <div class="field_salary">
+                <label class="salary_vacancy">Предпологаемый доход</label>
+                <div class="inputs_for_salary">
+                    <input type="number" class="input_for_first_salary" id="input_for_first_salary" placeholder="От">
+                    <input type="number" class="input_for_second_salary" id="input_for_second_salary" placeholder="До">
+                </div>
+            </div>
+            <div class="field_city">
+                <label class="city_vacancy">Город</label>
+                <input type="text" class="input_for_city_vacancy" id="input_for_city_vacancy" required="">
+            </div>
+            <div class="form-group" id="form-group">
+                <div class="label_skills">
+                    <label>Выбранные навыки</label>
+                </div>
+                <div id="skillsList" class="skills-list"></div>
+
+            </div>
+
+            <div>
+                <input id="cancel_btn" class="white_button" type="button" value="Отменить">
+                <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить">
+            </div>
+        </div>
+        <script type="module" src="/frontend/pages/worker/resume/edit/resume.js"></script>
+    </div>
+    </body>
+{% endblock %}
+</html>

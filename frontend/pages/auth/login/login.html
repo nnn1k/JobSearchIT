@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/frontend/pages/auth/login/login.css">
+    <title>Вход в личный кабинет</title>
+</head>
+{% extends 'base_employer/base_employer.html' %}
+{% block content %}
+<body>
+    <div class="container_all">
+    <div class="container_worker" id="container_worker">
+        <div class="login-box">
+            <h2>Поиск работы</h2>
+            <form>
+                <div class="textbox">
+                    <input type="text" placeholder="Электронная почта" id="login" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" placeholder="Пароль" id="password" required>
+                </div>
+                <input id="login_btn" class="red_button" type="button" value="Войти в личный кабинет" onclick="login_worker()">
+                <a class="link_for_reg" href="{{ url_for('signup_worker') }}">Нет аккаунта?</a>
+            </form>
+        </div>
+         <div class="login-box">
+            <h2>Поиск сотрудников</h2>
+            <p>
+                Размещение вакансий и доступ к базе резюме
+            </p>
+            <button class="red_button" type="button" id="switchLoginForm_1">Я ищу сотрудников</button>
+        </div>
+    </div>
+
+    <div class="container_employer" id="container_employer" style="display: none;">
+        <div class="login-box">
+            <h2>Поиск сотрудников</h2>
+            <form>
+                <div class="textbox">
+                    <input type="text" placeholder="Электронная почта" id="login_employer" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" placeholder="Пароль"  id="password_employer" required>
+                </div>
+                <input id="login_btn_2" class="red_button" type="button" value="Войти в личный кабинет" onclick="login_employer_form()">
+                <a class="link_for_reg" href="{{ url_for('signup_employer') }}">Нет аккаунта?</a>
+            </form>
+        </div>
+
+         <div class="login-box">
+            <h2>Поиск работы</h2>
+            <p>
+                Публикация резюме и поиск по вакансиям
+            </p>
+            <button class="red_button" type="button" id="switchLoginForm_2">Я ищу работу</button>
+        </div>
+    </div>
+        </div>
+     <script type="module" src="/frontend/pages/auth/login/login.js"></script>
+</body>
+{% endblock %}
+</html>

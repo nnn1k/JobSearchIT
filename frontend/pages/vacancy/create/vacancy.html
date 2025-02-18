@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Создание вакансии</title>
+    <link rel="stylesheet" href="/frontend/pages/vacancy/create/vacancy.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
+</head>
+{% extends 'base_employer/base_employer.html' %}
+{% block content %}
+    <body>
+    <div class="body_container">
+
+        <h1 class="new_vacancy">Новая вакансия</h1>
+        <h3 class="main_info">Основная информация</h3>
+        <div class="fields_for_data">
+            <div class="field_title">
+                <label class="title_vacancy">Название вакансии</label>
+                <input type="text" class="input_for_title_vacancy" id="input_for_title_vacancy" required="">
+            </div>
+            <div class="field_description">
+                <label class="description_vacancy">Описание</label>
+                <textarea id="input_for_description_vacancy" class="input_for_description_vacancy" required="">
+                    <pre id="text_description_vacancy">
+Обязанности:
+ —
+ —
+Требования:
+ —
+ —
+Условия:
+ —
+                    </pre>
+                </textarea>
+            </div>
+            <div class="field_salary">
+                <label class="salary_vacancy">Предполагаемый доход</label>
+                <div class="inputs_for_salary">
+                    <input type="number" class="input_for_first_salary" id="input_for_first_salary" placeholder="От">
+                    <input type="number" class="input_for_second_salary" id="input_for_second_salary" placeholder="До">
+                </div>
+            </div>
+            <div class="field_city">
+                <div>
+                    <label class="city_vacancy">Город</label>
+                </div>
+                <div>
+                    <input type="text" class="input_for_city_vacancy" id="input_for_city_vacancy" placeholder="Например, Москва" required>
+                </div>
+            </div>
+           <div class="form-group">
+               <div class="label_skills">
+                    <label >Требуемые навыки</label>
+               </div>
+                <div class="skills-container">
+                    <div class="skills-input-container">
+                        <div class="input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="input-icon-svg">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                            <input type="text" id="skillInput" placeholder="Поиск навыка">
+                        </div>
+                    </div>
+                    <div id="skillsDropdown" class="skills-dropdown"></div>
+                    <div id="skillsList" class="skills-list"></div>
+                </div>
+            </div>
+                <div>
+                    <input id="add_vacancy_btn" class="red_button" type="button" value="Опубликовать"
+                           onclick="post_vacancy()">
+                </div>
+            </div>
+        </div>
+        <script type="module" src="/frontend/pages/vacancy/create/vacancy.js"></script>
+    </div>
+    </body>
+{% endblock %}
+</html>
