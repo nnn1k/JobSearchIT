@@ -3,6 +3,13 @@ import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
     const first_button = document.getElementById('switch_description')
@@ -110,6 +117,18 @@ function renderVacancies(vacancies, can_update) {
         vacancyElement.appendChild(linkElement);
 
 
+        const userType = getCookie('user_type')
+
+        if (userType === 'worker'){
+            const feedbackButton = document.createElement('button');
+            feedbackButton.classList.add('red_button');
+            feedbackButton.style.width = '30%';
+            feedbackButton.textContent = "Откликнуться";
+            vacancyElement.appendChild(feedbackButton);
+            container.appendChild(vacancyElement);
+            return;
+        }
+
         if (can_update) {
             const editButton = document.createElement('button');
             editButton.classList.add('red_button');
@@ -120,7 +139,9 @@ function renderVacancies(vacancies, can_update) {
             };
             vacancyElement.appendChild(editButton);
             container.appendChild(vacancyElement);
+            return;
         }
+        container.appendChild(vacancyElement);
     });
 }
 
