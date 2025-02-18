@@ -1,4 +1,5 @@
-export const apiUrl = window.location.host
+export const apiUrl = window.location.protocol + '//' + window.location.host;
+
 
 export async function makeRequest(request) {
     const response = await fetch(
@@ -11,6 +12,7 @@ export async function makeRequest(request) {
             body: JSON.stringify(request.data)
         })
     if (response.ok) {
+        console.log(apiUrl)
         const data = await response.json()
         return data
     } else if (response.status >= 400 && response.status <= 500) {
