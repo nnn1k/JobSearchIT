@@ -3,20 +3,18 @@ from typing import Optional, List
 from pydantic import BaseModel
 
 from backend.schemas import SkillSchema
+from backend.schemas.global_schema import ValidateSalarySchema
 
 
-class VacancyAddSchema(BaseModel):
+class VacancyAddSchema(ValidateSalarySchema):
     title: str
     description: str
-    salary_first: Optional[int]
-    salary_second: Optional[int]
     city: Optional[str]
     skills: List[SkillSchema]
 
-class VacancyUpdateSchema(BaseModel):
+
+class VacancyUpdateSchema(ValidateSalarySchema):
     title: str
     description: str
-    salary_first: Optional[int]
-    salary_second: Optional[int]
     city: str
 

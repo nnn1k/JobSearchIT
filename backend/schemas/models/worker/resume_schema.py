@@ -1,10 +1,10 @@
 from typing import List, Optional
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, validator
 
 from backend.schemas.global_schema import GlobalSchema
 from backend.utils.str_const import RESUME_TYPE
-
+from fastapi import status, HTTPException
 
 class ResumeSchema(GlobalSchema):
     title: str
@@ -20,3 +20,4 @@ class ResumeSchema(GlobalSchema):
     skills: Optional[List['SkillSchema']] = None
 
     model_config = ConfigDict(from_attributes=True)
+

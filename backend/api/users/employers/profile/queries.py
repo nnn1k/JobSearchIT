@@ -18,7 +18,7 @@ async def get_employer_by_id_queries(employer_id: int, refresh: bool = False) ->
         stmt = await session.execute(
             select(EmployersOrm)
             .options(joinedload(EmployersOrm.company))
-            .filter_by(id=int(employer_id))
+            .filter_by(id=int(employer_id), deleted_at=None)
         )
         employer = stmt.scalars().one_or_none()
         schema = EmployerResponseSchema.model_validate(employer, from_attributes=True)

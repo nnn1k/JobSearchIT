@@ -1,4 +1,4 @@
-from sqlalchemy import select, text
+from sqlalchemy import text
 
 from backend.database.settings.database import session_factory
 from backend.utils.other.logger_utils import logger

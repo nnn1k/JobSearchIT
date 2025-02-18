@@ -1,4 +1,4 @@
-export const apiUrl = 'http://127.0.0.1:8000'
+export const apiUrl = window.location.host
 
 export async function makeRequest(request) {
     const response = await fetch(

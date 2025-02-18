@@ -1,26 +1,27 @@
 from sqlalchemy import select, update
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import contains_eager, selectinload
 
-from backend.database.models.worker import WorkersOrm
+from backend.database.models.worker import ResumesOrm, WorkersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas.models.worker.worker_schema import WorkerResponseSchema
-from backend.utils.str_const import WORKER_USER_TYPE
-
-from backend.utils.other.celery_utils import cl_app
 
 
-@cl_app.task
+from backend.utils.other.time_utils import time_it_async
+
+
+@time_it_async
 async def get_worker_by_id_queries(worker_id: int, refresh: bool = False):
     if not refresh:
         ...
     async with session_factory() as session:
         stmt = await session.execute(
             select(WorkersOrm)
-            .options(selectinload(WorkersOrm.resumes))
-            .options(selectinload(WorkersOrm.educations))
-            .filter_by(id=int(worker_id))
+            .outerjoin(ResumesOrm)
+            .filter(WorkersOrm.id == int(worker_id))
+            .filter(ResumesOrm.deleted_at==None)
+            .options(contains_eager(WorkersOrm.resumes))
         )
-        worker = stmt.scalars().one_or_none()
+        worker = stmt.scalars().unique().one_or_none()
         schema = WorkerResponseSchema.model_validate(worker, from_attributes=True)
         return schema
 
@@ -28,13 +29,9 @@ async def update_worker_by_id_queries(worker_id: int, **kwargs):
     async with session_factory() as session:
         stmt = await session.execute(
             update(WorkersOrm)
-            .filter_by(id=int(worker_id))
+            .filter_by(id=int(worker_id), deleted_at=None)
             .values(**kwargs)
             .returning(WorkersOrm)
-            .options(selectinload(WorkersOrm.resumes))
-            .options(selectinload(WorkersOrm.educations))
         )
-        worker = stmt.scalars().one_or_none()
-        schema = WorkerResponseSchema.model_validate(worker, from_attributes=True)
         await session.commit()
-        return schema
+        return await get_worker_by_id_queries(worker_id)
