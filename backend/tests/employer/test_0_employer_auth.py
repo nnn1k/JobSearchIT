@@ -1,15 +1,17 @@
 import pytest
 
-from backend.modules.redis.redis_utils import cache_object, get_code_from_redis
+from backend.modules.redis.redis_code_utils import get_code_from_redis
 from backend.tests.utils import async_client, check_token, check_user, test_user
-from backend.tests.employer.utils import cache_employer, employer_client, get_employer
+from backend.tests.employer.utils_test import cache_employer, employer_client, get_employer
 from backend.utils.str_const import EMPLOYER_USER_TYPE
+from backend.utils.other.logger_utils import logger
 
 
 class TestEmployerAuth:
 
     @pytest.mark.asyncio
     async def test_register_employer(self):
+        logger.debug('\n\nTEST STARTED\n\n')
         client = async_client()
         response = await client.post("/auth/employers/register", json=test_user)
 
@@ -24,7 +26,10 @@ class TestEmployerAuth:
         response = await client.post("/auth/employers/login", json=test_user)
 
         assert response.status_code == 200
-        check_user(response)
+        user = check_user(response)
+        token = check_token(response)
+        await cache_employer(user, token)
+
 
     @pytest.mark.asyncio
     async def test_get_code_employer(self):

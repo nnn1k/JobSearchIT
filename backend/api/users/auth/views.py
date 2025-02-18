@@ -4,6 +4,7 @@ from backend.utils.auth_utils.user_login_dependencies import (
     get_user_by_token,
     get_worker_by_token
 )
+from backend.utils.other.time_utils import time_it_async
 from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
 from fastapi import APIRouter, Cookie, Depends, Response, HTTPException, status
 
@@ -14,13 +15,14 @@ from backend.api.users.auth.dependencies import (
 )
 
 from backend.utils.other.email_utils import SendEmail
-from backend.modules.redis.redis_utils import get_code_from_redis
+from backend.modules.redis.redis_code_utils import get_code_from_redis
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 type_router = APIRouter(prefix="/{user_type_path}")
 
 
 @type_router.post('/login', summary='Вход пользователя')
+@time_it_async
 async def login_user_views(
         response: Response,
         user_type_path: UserType,
@@ -37,6 +39,7 @@ async def login_user_views(
 
 
 @type_router.post('/register', summary='Регистрация пользователя')
+@time_it_async
 async def register_user_views(
         response: Response,
         user_type_path: UserType,
@@ -58,6 +61,7 @@ async def register_user_views(
 
 
 @type_router.get('/code', summary='Отправка кода')
+@time_it_async
 async def get_code(
         user_type_path: UserType,
         response: Response,
@@ -88,6 +92,7 @@ async def get_code(
 
 
 @type_router.post('/code', summary='Проверка кода')
+@time_it_async
 async def send_code(
         user_type_path: UserType,
         code: CodeSchema,

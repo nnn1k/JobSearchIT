@@ -53,7 +53,6 @@ async def get_user_by_token(
                 detail="invalid token (access)",
             )
         return None
-    logger.info(f'user_type: {user_type}, user_jwt_schema: {user_jwt_schema}')
     if user_type:
         if user_jwt_schema.type != user_type:
             raise HTTPException(

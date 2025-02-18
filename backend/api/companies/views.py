@@ -5,11 +5,13 @@ from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
 from backend.schemas import EmployerResponseSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
+from backend.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix='/companies', tags=['companies'])
 
 
 @router.post('', summary='Создать компанию')
+@time_it_async
 async def create_new_company(
         company: CompanyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
@@ -27,6 +29,7 @@ async def create_new_company(
 
 
 @router.get('/{company_id}', summary='Посмотреть информацию о компании')
+@time_it_async
 async def get_info_on_company(
         company_id: int,
         user=Depends(get_user_by_token)
@@ -46,6 +49,7 @@ async def get_info_on_company(
 
 
 @router.put('/{company_id}', summary='Изменить описание компании')
+@time_it_async
 async def update_company(
         new_company: CompanyUpdateSchema,
         company_id: int,

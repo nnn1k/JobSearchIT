@@ -1,8 +1,8 @@
 import pytest
 
-from backend.modules.redis.redis_utils import get_code_from_redis
+from backend.modules.redis.redis_code_utils import get_code_from_redis
 from backend.tests.utils import async_client, check_token, check_user, test_user
-from backend.tests.worker.utils import cache_worker, get_worker, worker_client
+from backend.tests.worker.utils_test import cache_worker, get_worker, worker_client
 from backend.utils.str_const import WORKER_USER_TYPE
 
 
@@ -24,7 +24,9 @@ class TestWorkerAuth:
         response = await client.post("/auth/workers/login", json=test_user)
 
         assert response.status_code == 200
-        check_user(response)
+        user = check_user(response)
+        token = check_token(response)
+        await cache_worker(user, token)
 
     @pytest.mark.asyncio
     async def test_get_code_worker(self):

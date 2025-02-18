@@ -4,7 +4,8 @@ import random
 from aiosmtplib import SMTP
 
 from backend.utils.other.celery_utils import cl_app
-from backend.modules.redis.redis_utils import add_code_to_redis
+from backend.modules.redis.redis_code_utils import add_code_to_redis
+
 
 class SendEmail:
     

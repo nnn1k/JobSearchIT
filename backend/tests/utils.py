@@ -5,7 +5,7 @@ from backend.schemas.user_schema import UserResponseSchema
 base_url = 'http://127.0.0.1:8000/api/'
 
 test_user = {
-    "email": "testtest@example.com",
+    "email": "tttest@example.com",
     "password": "string",
     "confirm_password": "string"
 }

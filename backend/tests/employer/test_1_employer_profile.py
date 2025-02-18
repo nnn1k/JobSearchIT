@@ -1,8 +1,7 @@
 import pytest
 
-from backend.modules.redis.redis_utils import cache_object
 from backend.tests.utils import check_user
-from backend.tests.employer.utils import employer_client
+from backend.tests.employer.utils_test import employer_client
 
 
 class TestEmployerProfile:

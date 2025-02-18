@@ -13,12 +13,13 @@ from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.other.skill_schema import SkillSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
-from backend.utils.other.time_utils import current_time
+from backend.utils.other.time_utils import current_time, time_it_async
 
 router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 
 @router.post('', summary='Создать вакансию')
+@time_it_async
 async def create_new_vacancy(
         add_vacancy: VacancyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
@@ -38,6 +39,7 @@ async def create_new_vacancy(
 
 
 @router.get('/{vacancy_id}', summary='Посмотреть информацию о вакансии')
+@time_it_async
 async def get_info_on_vacancy(
         vacancy_id: int,
         user=Depends(get_user_by_token)
@@ -58,6 +60,7 @@ async def get_info_on_vacancy(
 
 
 @router.put('/{vacancy_id}', summary='Изменить вакансию')
+@time_it_async
 async def update_info_on_company(
         vacancy_id: int,
         new_vacancy: VacancyUpdateSchema,
@@ -76,6 +79,7 @@ async def update_info_on_company(
 
 
 @router.delete('/{vacancy_id}', summary='Удалить вакансию')
+@time_it_async
 async def delete_info_on_company(
         vacancy_id: int,
         user: EmployerResponseSchema = Depends(get_employer_by_token)

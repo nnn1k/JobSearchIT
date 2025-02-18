@@ -8,11 +8,13 @@ from backend.api.skills.queries import (
 )
 from backend.schemas.models.other.skill_schema import SkillListSchema
 from backend.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
+from backend.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/skills", tags=["skills"])
 
 
 @router.get('/', summary='Получить все скиллы')
+@time_it_async
 async def get_all_skills_views(
         user=Depends(get_user_by_token)
 ):
@@ -24,6 +26,7 @@ async def get_all_skills_views(
 
 
 @router.get('/resumes/{resume_id}', summary='Вытащить все навыки, которые привязаны к резюме')
+@time_it_async
 async def get_worker_skills_views(
         resume_id: int,
         user=Depends(get_user_by_token)
@@ -39,6 +42,7 @@ async def get_worker_skills_views(
 
 
 @router.put('/resumes/{resume_id}', summary='Обновить навыки резюме')
+@time_it_async
 async def update_worker_skills_views(
         resume_id: int,
         skills: SkillListSchema,

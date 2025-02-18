@@ -2,7 +2,6 @@ from sqlalchemy import delete, select
 
 from backend.api.users.auth.classes.HashPwd import HashPwd
 from backend.database.settings.database import session_factory
-from backend.modules.redis.redis_utils import cache_object, delete_object
 
 
 async def login_user_queries(user, user_table, response_schema):
@@ -39,7 +38,6 @@ async def update_code_queries(user_id: int, user_table, response_schema):
         update_user.is_confirmed = True
         schema = response_schema.model_validate(update_user, from_attributes=True)
         await session.commit()
-        await delete_object(obj_type=f'{schema.type}_code', obj_id=schema.id)
         return schema
 
 
@@ -54,6 +52,5 @@ async def delete_user(user_id: int, user_table, response_schema):
         if deleted_user:
             schema = response_schema.model_validate(deleted_user, from_attributes=True)
             await session.commit()
-            await delete_object(obj_type=schema.type, obj_id=schema.id)
             return schema
         return None

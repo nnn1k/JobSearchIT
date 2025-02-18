@@ -1,13 +1,14 @@
 from sqlalchemy import insert, select, update
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import contains_eager
 
 from backend.database.models.employer import CompaniesOrm, EmployersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.employer.company_schema import CompanySchema
 from backend.utils.other.celery_utils import cl_app
-from backend.modules.redis.redis_utils import cache_object, get_cached_object
+from backend.utils.other.time_utils import time_it_async
 from backend.utils.str_const import COMPANY_TYPE
+from backend.database.models.employer import VacanciesOrm
 
 
 async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
@@ -34,28 +35,24 @@ async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
         company_schema = CompanySchema.model_validate(company, from_attributes=True)
         employer_schema = EmployerResponseSchema.model_validate(employer, from_attributes=True)
         await session.commit()
-        await cache_object(company_schema)
-        await cache_object(employer_schema)
         return company_schema, employer_schema
 
 
-@cl_app.task
 async def get_company_by_id_queries(company_id: int, refresh: bool = False):
     if not refresh:
-        cache_company = await get_cached_object(obj_type=COMPANY_TYPE, obj_id=company_id, schema=CompanySchema)
-        if cache_company:
-            return cache_company
+        ...
     async with session_factory() as session:
         stmt = await session.execute(
             select(CompaniesOrm)
-            .options(selectinload(CompaniesOrm.vacancies).filter_by(deleted_at=None))
-            .filter_by(id=company_id, deleted_at=None)
+            .outerjoin(CompaniesOrm.vacancies)
+            .filter(CompaniesOrm.id == company_id, CompaniesOrm.deleted_at == None)
+            .filter(VacanciesOrm.deleted_at == None)
+            .options(contains_eager(CompaniesOrm.vacancies))
         )
-        company = stmt.scalars().one_or_none()
+        company = stmt.scalars().unique().one_or_none()
         if not company:
             return None
         schema = CompanySchema.model_validate(company, from_attributes=True)
-        await cache_object(schema)
         return schema
 
 
@@ -66,14 +63,12 @@ async def update_company_queries(company_id, owner: EmployerResponseSchema, **kw
             .values(**kwargs)
             .filter_by(id=company_id)
             .returning(CompaniesOrm)
-            .options(selectinload(CompaniesOrm.vacancies))
         )
         company = stmt.scalars().one_or_none()
         if not company:
             return None
         schema = CompanySchema.model_validate(company, from_attributes=True)
-        if owner.company_id == company.id and owner.is_owner:
-            await session.commit()
-            await cache_object(schema)
-            return schema
-        return None
+        if not (owner.company_id == schema.id and owner.is_owner):
+            return None
+        await session.commit()
+    return await get_company_by_id_queries(company_id, refresh=True)

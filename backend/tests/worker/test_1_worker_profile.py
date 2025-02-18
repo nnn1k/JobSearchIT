@@ -1,7 +1,7 @@
 import pytest
 
 from backend.tests.utils import check_user
-from backend.tests.worker.utils import worker_client
+from backend.tests.worker.utils_test import worker_client
 
 
 class TestWorkerProfile:

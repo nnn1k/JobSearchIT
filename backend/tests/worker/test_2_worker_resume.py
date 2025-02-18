@@ -1,6 +1,6 @@
 import pytest
 
-from backend.tests.worker.utils import cache_resume, get_resume, worker_client
+from backend.tests.worker.utils_test import cache_resume, get_resume, worker_client
 from backend.schemas.models.worker.resume_schema import ResumeSchema
 
 

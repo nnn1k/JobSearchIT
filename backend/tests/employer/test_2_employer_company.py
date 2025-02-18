@@ -1,6 +1,6 @@
 import pytest
 
-from backend.tests.employer.utils import cache_company, employer_client, get_company
+from backend.tests.employer.utils_test import cache_company, employer_client, get_company
 from backend.schemas import CompanySchema
 
 
