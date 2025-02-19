@@ -38,7 +38,7 @@ async function get_resume(){
             if (skills.length === 0) {
                 const link = document.createElement('a');
                 link.textContent = 'Добавить навыки';
-                link.href = '#';
+                link.href = `/worker/resumes/${resume_id}/edit/skills`;
                 link.classList.add('resume-link');
                 skillsDisplay.appendChild(link)
                 return;
@@ -49,6 +49,11 @@ async function get_resume(){
                 skillTag.textContent = skill.name;
                 skillsDisplay.appendChild(skillTag);
             });
+            const linkForEditSkills = document.createElement('a');
+            linkForEditSkills.href = `/worker/resumes/${resume_id}/edit/skills`;
+            linkForEditSkills.classList.add('resume-link');
+            linkForEditSkills.textContent = 'Изменить';
+            skillsDisplay.appendChild(linkForEditSkills);
             };
         displaySkills();
 }
@@ -75,6 +80,4 @@ async function put_resume(){
     })
     location.reload(true);
 }
-
-
 window.put_resume = put_resume
