@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import BaseModel, ConfigDict
 
-from backend.schemas.global_schema import GlobalSchema
+from backend.schemas.global_schema import GlobalSchemaNoDate
 
 
-class SkillSchema(GlobalSchema):
+class SkillSchema(GlobalSchemaNoDate):
     name: str
 
     model_config = ConfigDict(from_attributes=True)

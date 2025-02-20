@@ -6,9 +6,6 @@ from backend.database.models.employer import VacanciesOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
 
-from backend.utils.other.celery_utils import cl_app
-
-
 async def create_vacancy_queries(company_id, **kwargs):
     async with session_factory() as session:
         stmt = await session.execute(
@@ -27,7 +24,6 @@ async def create_vacancy_queries(company_id, **kwargs):
         return schema
 
 
-@cl_app.task
 async def get_vacancy_by_id_queries(vacancy_id: int, refresh: bool = False):
     if not refresh:
         ...
@@ -36,6 +32,7 @@ async def get_vacancy_by_id_queries(vacancy_id: int, refresh: bool = False):
             select(VacanciesOrm)
             .options(joinedload(VacanciesOrm.company))
             .options(selectinload(VacanciesOrm.skills))
+            .options(selectinload(VacanciesOrm.profession))
             .filter_by(id=vacancy_id, deleted_at=None)
         )
         vacancy = stmt.scalars().one_or_none()

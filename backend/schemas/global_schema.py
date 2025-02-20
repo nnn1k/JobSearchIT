@@ -5,11 +5,8 @@ from pydantic import BaseModel, Field, field_validator, validator
 from fastapi import HTTPException, status
 
 
-class GlobalSchema(BaseModel):
+class GlobalSchemaNoDate(BaseModel):
     id: Optional[int] = None
-    created_at: Optional[datetime.datetime]
-    updated_at: Optional[datetime.datetime]
-    deleted_at: Optional[datetime.datetime]
 
     @validator('id')
     def check_id(cls, id, values):
@@ -21,9 +18,16 @@ class GlobalSchema(BaseModel):
         return id
 
 
+class GlobalSchema(GlobalSchemaNoDate):
+    created_at: Optional[datetime.datetime]
+    updated_at: Optional[datetime.datetime]
+    deleted_at: Optional[datetime.datetime]
+
+
 class DynamicSchema(BaseModel):
     class Config:
         extra = 'allow'
+
 
 class ValidateSalarySchema(BaseModel):
     profession_id: int
