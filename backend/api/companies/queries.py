@@ -45,10 +45,11 @@ async def get_company_by_id_queries(company_id: int, refresh: bool = False):
             .outerjoin(CompaniesOrm.vacancies)
             .filter(CompaniesOrm.id == company_id)
             .options(
-                contains_eager(CompaniesOrm.vacancies)
+                contains_eager(CompaniesOrm.vacancies).selectinload(VacanciesOrm.profession)
             )
         )
         company = stmt.scalars().unique().one_or_none()
+        company.vacancies = [vacancy for vacancy in company.vacancies if vacancy.deleted_at is None]
         if not company:
             return None
         schema = CompanySchema.model_validate(company, from_attributes=True)
@@ -66,3 +67,20 @@ async def update_company_queries(company_id, owner: EmployerResponseSchema, **kw
         )
         await session.commit()
     return await get_company_by_id_queries(company_id, refresh=True)
+
+async def delete_company_queries(company_id: int, owner: EmployerResponseSchema):
+    if not (company_id == owner.company_id and owner.is_owner):
+        ...
+    async with session_factory() as session:
+        from sqlalchemy import delete
+        stmt = await session.execute(
+            delete(CompaniesOrm)
+            .filter_by(id=company_id)
+            .returning(CompaniesOrm)
+        )
+        company = stmt.scalars().one_or_none()
+        if not company:
+            ...
+
+        await session.commit()
+        return None

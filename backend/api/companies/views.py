@@ -59,9 +59,17 @@ async def update_company(
     if not company:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail='error'
+            detail='company is not exist'
         )
     return {
         'status': 'ok',
         'company': company,
     }
+
+@router.delete('/{company_id}', summary='Удалить компанию')
+@time_it_async
+async def delete_company(
+        company_id: int,
+        user: EmployerResponseSchema = Depends(get_employer_by_token)
+):
+    pass
