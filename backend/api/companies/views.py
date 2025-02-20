@@ -1,6 +1,7 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 
-from backend.api.companies.queries import create_company_queries, get_company_by_id_queries, update_company_queries
+from backend.api.companies.queries import create_company_queries, delete_company_queries, get_company_by_id_queries, \
+    update_company_queries
 from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
 from backend.schemas import EmployerResponseSchema
@@ -56,11 +57,6 @@ async def update_company(
         user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
     company = await update_company_queries(company_id, user, **new_company.model_dump())
-    if not company:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='company is not exist'
-        )
     return {
         'status': 'ok',
         'company': company,
@@ -72,4 +68,7 @@ async def delete_company(
         company_id: int,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
-    pass
+    await delete_company_queries(company_id, user)
+    return {
+        'status': 'ok'
+    }

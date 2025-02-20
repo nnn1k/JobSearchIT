@@ -8,6 +8,7 @@ from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.employer.company_schema import CompanySchema
 from backend.database.models.employer import VacanciesOrm
 
+from fastapi import HTTPException, status
 
 async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
     async with session_factory() as session:
@@ -58,19 +59,32 @@ async def get_company_by_id_queries(company_id: int, refresh: bool = False):
 
 async def update_company_queries(company_id, owner: EmployerResponseSchema, **kwargs):
     if not (owner.company_id == company_id and owner.is_owner):
-        return None
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user is not owner in company'
+        )
     async with session_factory() as session:
         stmt = await session.execute(
             update(CompaniesOrm)
             .values(**kwargs)
             .filter_by(id=company_id, deleted_at=None)
+            .returning(CompaniesOrm)
         )
+        company = stmt.scalars().one_or_none()
+        if not company:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail='company is not exist'
+            )
         await session.commit()
     return await get_company_by_id_queries(company_id, refresh=True)
 
 async def delete_company_queries(company_id: int, owner: EmployerResponseSchema):
     if not (company_id == owner.company_id and owner.is_owner):
-        ...
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user is not owner in company'
+        )
     async with session_factory() as session:
         from sqlalchemy import delete
         stmt = await session.execute(
@@ -80,7 +94,19 @@ async def delete_company_queries(company_id: int, owner: EmployerResponseSchema)
         )
         company = stmt.scalars().one_or_none()
         if not company:
-            ...
-
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='company not found'
+            )
+        stmt = await session.execute(
+            update(EmployersOrm)
+            .values(company_id=None, is_owner=False)
+            .filter_by(id=owner.id)
+        )
+        employer = stmt.scalars().one_or_none()
+        if not employer:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='employer not found'
+            )
         await session.commit()
-        return None
