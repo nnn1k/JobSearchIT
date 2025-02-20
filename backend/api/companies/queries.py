@@ -1,4 +1,5 @@
-from sqlalchemy import insert, select, update
+
+from sqlalchemy import insert, select, update, or_
 from sqlalchemy.orm import contains_eager
 
 from backend.database.models.employer import CompaniesOrm, EmployersOrm
@@ -42,9 +43,10 @@ async def get_company_by_id_queries(company_id: int, refresh: bool = False):
         stmt = await session.execute(
             select(CompaniesOrm)
             .outerjoin(CompaniesOrm.vacancies)
-            .filter(CompaniesOrm.id == company_id, CompaniesOrm.deleted_at == None)
-            .filter(VacanciesOrm.deleted_at == None)
-            .options(contains_eager(CompaniesOrm.vacancies).selectinload(VacanciesOrm.profession))
+            .filter(CompaniesOrm.id == company_id)
+            .options(
+                contains_eager(CompaniesOrm.vacancies)
+            )
         )
         company = stmt.scalars().unique().one_or_none()
         if not company:

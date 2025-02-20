@@ -80,7 +80,7 @@ async def update_info_on_company(
 
 @router.delete('/{vacancy_id}', summary='Удалить вакансию')
 @time_it_async
-async def delete_info_on_company(
+async def delete_info_on_vacancy(
         vacancy_id: int,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
