@@ -12,7 +12,7 @@ class TestWorkerResume:
         response = await client.post(
             '/workers/resumes',
             json={
-                "title": "test",
+                "profession_id": 1,
                 "description": "test",
                 "salary_first": 100,
                 "salary_second": 200,
@@ -50,7 +50,7 @@ class TestWorkerResume:
         response = await client.put(
             f'/workers/resumes/{resume.id}',
             json={
-                "title": "testt",
+                "profession_id": 2,
                 "description": "testt",
                 "salary_first": 300,
                 "salary_second": 400,

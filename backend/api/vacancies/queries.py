@@ -1,3 +1,4 @@
+from fastapi import HTTPException, status
 from sqlalchemy import insert, select, update
 from sqlalchemy.orm import joinedload, selectinload
 
@@ -16,6 +17,7 @@ async def create_vacancy_queries(company_id, **kwargs):
             .returning(VacanciesOrm)
             .options(selectinload(VacanciesOrm.company))
             .options(selectinload(VacanciesOrm.skills))
+            .options(selectinload(VacanciesOrm.profession))
         )
         vacancy = stmt.scalars().one_or_none()
         if not vacancy:
@@ -44,19 +46,23 @@ async def get_vacancy_by_id_queries(vacancy_id: int, refresh: bool = False):
 
 
 async def update_vacancy_by_id_queries(vacancy_id, owner: EmployerResponseSchema, **kwargs):
-    if not owner.is_owner:
-        return None
     async with session_factory() as session:
         stmt = await session.execute(
             update(VacanciesOrm)
             .values(**kwargs)
-            .filter_by(id=vacancy_id)
+            .filter_by(id=vacancy_id, deleted_at=None)
             .returning(VacanciesOrm)
         )
         vacancy = stmt.scalars().one_or_none()
         if not vacancy:
-            return None
-        if owner.company_id == vacancy.company_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail='vacancy not found'
+            )
+        if owner.company_id == vacancy.company_id and owner.is_owner:
             await session.commit()
             return await get_vacancy_by_id_queries(vacancy_id)
-        return None
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail='user is not owner this company'
+        )

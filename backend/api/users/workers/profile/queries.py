@@ -19,7 +19,7 @@ async def get_worker_by_id_queries(worker_id: int, refresh: bool = False):
             .outerjoin(ResumesOrm)
             .filter(WorkersOrm.id == int(worker_id))
             .filter(ResumesOrm.deleted_at==None)
-            .options(contains_eager(WorkersOrm.resumes))
+            .options(contains_eager(WorkersOrm.resumes).selectinload(ResumesOrm.profession))
         )
         worker = stmt.scalars().unique().one_or_none()
         schema = WorkerResponseSchema.model_validate(worker, from_attributes=True)

@@ -86,11 +86,6 @@ async def delete_info_on_company(
 ):
     deleted_at = current_time()
     vacancy = await update_vacancy_by_id_queries(vacancy_id, user, deleted_at=deleted_at)
-    if vacancy is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='user is not owner this company or vacancy not found'
-        )
     return {
         'status': 'ok',
     }
