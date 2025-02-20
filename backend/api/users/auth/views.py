@@ -6,7 +6,7 @@ from backend.utils.auth_utils.user_login_dependencies import (
 )
 from backend.utils.other.time_utils import time_it_async
 from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
-from fastapi import APIRouter, Cookie, Depends, Response, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, Response, HTTPException, status
 
 from backend.api.users.auth.schemas import CodeSchema, LoginSchema, RegisterSchema, UserType
 from backend.api.users.auth.dependencies import (
@@ -65,6 +65,7 @@ async def register_user_views(
 async def get_code(
         user_type_path: UserType,
         response: Response,
+        bg: BackgroundTasks,
         access_token=Cookie(None),
         refresh_token=Cookie(None),
 ):
@@ -83,6 +84,7 @@ async def get_code(
             )
         case _:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    #bg.add_task(SendEmail.send_code_to_email, user)
     await SendEmail.send_code_to_email(user)
     return {
         'message': 'Код отправлен на почту:',

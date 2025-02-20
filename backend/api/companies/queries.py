@@ -44,7 +44,7 @@ async def get_company_by_id_queries(company_id: int, refresh: bool = False):
             .outerjoin(CompaniesOrm.vacancies)
             .filter(CompaniesOrm.id == company_id, CompaniesOrm.deleted_at == None)
             .filter(VacanciesOrm.deleted_at == None)
-            .options(contains_eager(CompaniesOrm.vacancies))
+            .options(contains_eager(CompaniesOrm.vacancies).selectinload(VacanciesOrm.profession))
         )
         company = stmt.scalars().unique().one_or_none()
         if not company:
