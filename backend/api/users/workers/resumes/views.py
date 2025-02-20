@@ -85,5 +85,4 @@ async def delete_resume_views(
         )
     return {
         'status': 'ok',
-        'user': user,
     }
