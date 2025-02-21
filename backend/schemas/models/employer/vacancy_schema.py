@@ -3,7 +3,7 @@ from typing import List, Optional
 from pydantic import ConfigDict
 
 from backend.schemas.global_schema import GlobalSchema
-from backend.utils.str_const import VACANCY_TYPE
+from backend.utils.const import VACANCY_TYPE
 
 
 class VacancySchema(GlobalSchema):

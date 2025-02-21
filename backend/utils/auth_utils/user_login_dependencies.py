@@ -8,7 +8,7 @@ from backend.api.users.workers.profile.queries import get_worker_by_id_queries
 
 from backend.schemas import EmployerResponseSchema, WorkerResponseSchema
 from backend.utils.auth_utils.token_dependencies import check_user_role
-from backend.utils.str_const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
+from backend.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
 
 from backend.utils.other.logger_utils import logger
 

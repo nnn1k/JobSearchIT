@@ -5,7 +5,7 @@ from backend.utils.auth_utils.user_login_dependencies import (
     get_worker_by_token
 )
 from backend.utils.other.time_utils import time_it_async
-from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, Response, HTTPException, status
 
 from backend.api.users.auth.schemas import CodeSchema, LoginSchema, RegisterSchema, UserType
@@ -84,8 +84,8 @@ async def get_code(
             )
         case _:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    #bg.add_task(SendEmail.send_code_to_email, user)
-    await SendEmail.send_code_to_email(user)
+    bg.add_task(SendEmail.send_code_to_email, user)
+
     return {
         'message': 'Код отправлен на почту:',
         'email': user.email,

@@ -1,17 +1,20 @@
-from http.client import HTTPException
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 
 from backend.api.skills.queries import update_resume_skills
 
-from backend.api.users.workers.resumes.queries import create_resume_queries, get_one_resume_by_id_queries, \
+from backend.api.users.workers.resumes.queries import (
+    create_resume_queries,
+    delete_resume_by_id_queries,
+    get_one_resume_by_id_queries,
     update_resume_by_id_queries
+)
 from backend.api.users.workers.resumes.schemas import ResumeAddSchema, ResumeUpdateSchema
 from backend.schemas import SkillSchema, WorkerResponseSchema
 from backend.utils.auth_utils.check_func import check_worker_can_update
 from backend.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
-from backend.utils.other.time_utils import current_time, time_it_async
+from backend.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/resumes", tags=["resumes"])
 
@@ -23,13 +26,7 @@ async def add_resumes_views(
         user: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
     skills: List[SkillSchema] = add_resume.skills
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated",
-        )
-
-    resume = await create_resume_queries(**add_resume.model_dump(exclude={'skills'}), worker_id=user.id)
+    resume = await create_resume_queries(worker_id=user.id, **add_resume.model_dump(exclude={'skills'}))
     await update_resume_skills(skills, resume.id)
     return {
         'status': 'ok',
@@ -44,11 +41,6 @@ async def get_one_resume_views(
         user: WorkerResponseSchema = Depends(get_user_by_token)
 ):
     resume = await get_one_resume_by_id_queries(resume_id)
-    if not resume:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='resume is not exist'
-        )
     can_update = check_worker_can_update(user=user, obj=resume)
     return {
         'status': 'ok',
@@ -76,13 +68,7 @@ async def delete_resume_views(
         resume_id: int,
         user: WorkerResponseSchema = Depends(get_worker_by_token)
 ):
-    deleted_at = current_time()
-    resume = await update_resume_by_id_queries(resume_id, user, deleted_at=deleted_at)
-    if resume is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='no rights or resume not found'
-        )
+    await delete_resume_by_id_queries(resume_id, user)
     return {
         'status': 'ok',
     }

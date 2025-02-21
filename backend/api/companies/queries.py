@@ -1,5 +1,5 @@
 
-from sqlalchemy import insert, select, update, or_
+from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import contains_eager
 
 from backend.database.models.employer import CompaniesOrm, EmployersOrm
@@ -10,7 +10,13 @@ from backend.database.models.employer import VacanciesOrm
 
 from fastapi import HTTPException, status
 
+from backend.utils.exc import company_not_found_exc, employer_not_found_exc, user_have_company_exc, \
+    user_is_not_owner_exc
+
+
 async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
+    if employer.company_id:
+        raise user_have_company_exc
     async with session_factory() as session:
         stmt = await session.execute(
             insert(CompaniesOrm)
@@ -19,7 +25,7 @@ async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
         )
         company = stmt.scalars().one_or_none()
         if not company:
-            return None
+            raise company_not_found_exc
 
         stmt = await session.execute(
             update(EmployersOrm)
@@ -29,7 +35,7 @@ async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
         )
         employer = stmt.scalars().one_or_none()
         if not employer:
-            return None
+            raise employer_not_found_exc
 
         company_schema = CompanySchema.model_validate(company, from_attributes=True)
         employer_schema = EmployerResponseSchema.model_validate(employer, from_attributes=True)
@@ -37,56 +43,44 @@ async def create_company_queries(employer: EmployerResponseSchema, **kwargs):
         return company_schema, employer_schema
 
 
-async def get_company_by_id_queries(company_id: int, refresh: bool = False):
-    if not refresh:
-        ...
+async def get_company_by_id_queries(company_id: int):
     async with session_factory() as session:
         stmt = await session.execute(
             select(CompaniesOrm)
             .outerjoin(CompaniesOrm.vacancies)
             .filter(CompaniesOrm.id == company_id)
             .options(
-                contains_eager(CompaniesOrm.vacancies).selectinload(VacanciesOrm.profession)
+                contains_eager(CompaniesOrm.vacancies)
+                .selectinload(VacanciesOrm.profession)
             )
         )
         company = stmt.scalars().unique().one_or_none()
-        company.vacancies = [vacancy for vacancy in company.vacancies if vacancy.deleted_at is None]
         if not company:
-            return None
+            raise company_not_found_exc
         schema = CompanySchema.model_validate(company, from_attributes=True)
         return schema
 
 
 async def update_company_queries(company_id, owner: EmployerResponseSchema, **kwargs):
     if not (owner.company_id == company_id and owner.is_owner):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='user is not owner in company'
-        )
+        raise user_is_not_owner_exc
     async with session_factory() as session:
         stmt = await session.execute(
             update(CompaniesOrm)
             .values(**kwargs)
-            .filter_by(id=company_id, deleted_at=None)
+            .filter_by(id=company_id)
             .returning(CompaniesOrm)
         )
         company = stmt.scalars().one_or_none()
         if not company:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail='company is not exist'
-            )
+            raise company_not_found_exc
         await session.commit()
-    return await get_company_by_id_queries(company_id, refresh=True)
+    return await get_company_by_id_queries(company_id)
 
 async def delete_company_queries(company_id: int, owner: EmployerResponseSchema):
     if not (company_id == owner.company_id and owner.is_owner):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='user is not owner in company'
-        )
+        raise user_is_not_owner_exc
     async with session_factory() as session:
-        from sqlalchemy import delete
         stmt = await session.execute(
             delete(CompaniesOrm)
             .filter_by(id=company_id)
@@ -94,10 +88,7 @@ async def delete_company_queries(company_id: int, owner: EmployerResponseSchema)
         )
         company = stmt.scalars().one_or_none()
         if not company:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='company not found'
-            )
+            raise company_not_found_exc
         stmt = await session.execute(
             update(EmployersOrm)
             .values(company_id=None, is_owner=False)
@@ -105,8 +96,5 @@ async def delete_company_queries(company_id: int, owner: EmployerResponseSchema)
         )
         employer = stmt.scalars().one_or_none()
         if not employer:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail='employer not found'
-            )
+            raise employer_not_found_exc
         await session.commit()

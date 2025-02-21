@@ -2,11 +2,14 @@ from typing import List
 
 from sqlalchemy import select
 
+from backend.database.models.employer import VacanciesOrm
+from backend.database.models.worker import ResumesOrm
 from backend.schemas.models.other.skill_schema import SkillSchema
 from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.database.models.other.Skill import SkillsOrm
 from backend.database.models.other.ResumeSkills import ResumesSkillsOrm
 from backend.database.settings.database import session_factory
+from backend.utils.exc import resume_not_found_exc, vacancy_not_found_exc
 
 
 async def get_all_skills_queries(**kwargs):
@@ -23,6 +26,13 @@ async def get_all_skills_queries(**kwargs):
 async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
+        stmt = await session.execute(
+            select(ResumesOrm)
+            .filter_by(id=resume_id)
+        )
+        resume = stmt.scalars().one_or_none()
+        if not resume:
+            raise resume_not_found_exc
 
         result = await session.execute(select(ResumesSkillsOrm).filter_by(resume_id=resume_id))
         current_skills = result.scalars().all()
@@ -32,17 +42,18 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
         skills_to_add = set(skills_list) - current_skill_ids
 
         skills_to_remove = current_skill_ids - set(skills_list)
-
+        from backend.utils.other.logger_utils import logger
+        logger.info('1')
         for skill_id in skills_to_add:
-            new_worker_skill = ResumesSkillsOrm(resume_id=resume_id, skill_id=skill_id)
-            session.add(new_worker_skill)
+            new_resume_skill = ResumesSkillsOrm(resume_id=resume_id, skill_id=skill_id)
+            session.add(new_resume_skill)
 
         for skill_id in skills_to_remove:
-            worker_skill_to_remove = await session.execute(
+            resume_skill_to_remove = await session.execute(
                 select(ResumesSkillsOrm).filter_by(resume_id=resume_id, skill_id=skill_id))
-            worker_skill_to_remove = worker_skill_to_remove.scalars().first()
-            if worker_skill_to_remove:
-                await session.delete(worker_skill_to_remove)
+            resume_skill_to_remove = resume_skill_to_remove.scalars().first()
+            if resume_skill_to_remove:
+                await session.delete(resume_skill_to_remove)
 
         await session.commit()
 
@@ -50,6 +61,13 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
 async def update_vacancy_skills(skills_list, vacancy_id):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
+        stmt = await session.execute(
+            select(VacanciesOrm)
+            .filter_by(id=vacancy_id)
+        )
+        vacancy = stmt.scalars().one_or_none()
+        if not vacancy:
+            raise vacancy_not_found_exc
 
         result = await session.execute(select(VacanciesSkillsOrm).filter_by(vacancy_id=vacancy_id))
         current_skills = result.scalars().all()
@@ -66,7 +84,7 @@ async def update_vacancy_skills(skills_list, vacancy_id):
 
         for skill_id in skills_to_remove:
             worker_skill_to_remove = await session.execute(
-                select(VacanciesSkillsOrm).filter_by(worker_id=vacancy_id, skill_id=skill_id))
+                select(VacanciesSkillsOrm).filter_by(vacancy_id=vacancy_id, skill_id=skill_id))
             worker_skill_to_remove = worker_skill_to_remove.scalars().first()
             if worker_skill_to_remove:
                 await session.delete(worker_skill_to_remove)
@@ -74,62 +92,73 @@ async def update_vacancy_skills(skills_list, vacancy_id):
         await session.commit()
 
 
-async def get_available_skills_on_resume(resume_id: int):
-    async with session_factory() as session:
-        stmt = (
-            select(SkillsOrm)
-            .outerjoin(ResumesSkillsOrm, ResumesSkillsOrm.skill_id == SkillsOrm.id)
-            .filter(
-                (resume_id != ResumesSkillsOrm.resume_id) |
-                (ResumesSkillsOrm.resume_id.is_(None))
-            )
-            .order_by(SkillsOrm.id)
-        )
-
-        result = await session.execute(stmt)
-        available_skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in result.scalars().all()]
-        return available_skills
-
-
-async def get_available_skills_on_vacancy(vacancy_id: int):
-    async with session_factory() as session:
-        stmt = (
-            select(SkillsOrm)
-            .outerjoin(VacanciesSkillsOrm, VacanciesSkillsOrm.skill_id == SkillsOrm.id)
-            .filter((vacancy_id != VacanciesSkillsOrm.vacancy_id) | (VacanciesSkillsOrm.vacancy_id.is_(None)))
-            .order_by(SkillsOrm.id)
-        )
-
-        result = await session.execute(stmt)
-        available_skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in result.scalars().all()]
-        return available_skills
-
-
 async def get_skills_by_resume_id(resume_id: int):
     async with session_factory() as session:
-        stmt = select(ResumesSkillsOrm).filter_by(resume_id=resume_id)
+        stmt = await session.execute(
+            select(ResumesOrm)
+            .filter_by(id=resume_id)
+        )
+        resume = stmt.scalars().one_or_none()
+        if not resume:
+            raise resume_not_found_exc
 
-        result = await session.execute(stmt)
-        resume_skills = result.scalars().all()
+        stmt = await session.execute(
+            select(ResumesSkillsOrm)
+            .filter_by(resume_id=resume_id)
+        )
+
+        resume_skills = stmt.scalars().all()
 
         skill_ids = [ws.skill_id for ws in resume_skills]
-        skills_stmt = select(SkillsOrm).filter(SkillsOrm.id.in_(skill_ids)).order_by(SkillsOrm.id)
-
-        skills_result = await session.execute(skills_stmt)
-        skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in skills_result.scalars().all()]
-        return skills
+        resume_stmt = await session.execute(
+            select(SkillsOrm)
+            .filter(SkillsOrm.id.in_(skill_ids))
+            .order_by(SkillsOrm.id)
+        )
+        available_stmt = await session.execute(
+            select(SkillsOrm)
+            .filter(SkillsOrm.id.notin_(skill_ids))
+            .order_by(SkillsOrm.id)
+        )
+        resume_skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in
+                         resume_stmt.scalars().all()]
+        available_skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in
+                            available_stmt.scalars().all()]
+        return resume_skills, available_skills
 
 
 async def get_skills_by_vacancy_id(vacancy_id: int):
     async with session_factory() as session:
-        stmt = select(VacanciesSkillsOrm).filter_by(vacancy_id=vacancy_id)
+        stmt = await session.execute(
+            select(VacanciesOrm)
+            .filter_by(id=vacancy_id)
+        )
+        vacancy = stmt.scalars().one_or_none()
+        if not vacancy:
+            raise vacancy_not_found_exc
 
-        result = await session.execute(stmt)
-        vacancy_skills = result.scalars().all()
+        stmt = await session.execute(
+            select(VacanciesSkillsOrm)
+            .filter_by(vacancy_id=vacancy_id)
+        )
+
+        vacancy_skills = stmt.scalars().all()
 
         skill_ids = [vs.skill_id for vs in vacancy_skills]
-        skills_stmt = select(SkillsOrm).filter(SkillsOrm.id.in_(skill_ids)).order_by(SkillsOrm.id)
 
-        skills_result = await session.execute(skills_stmt)
-        skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in skills_result.scalars().all()]
-        return skills
+        vacancy_stmt = await session.execute(
+            select(SkillsOrm)
+            .filter(SkillsOrm.id.in_(skill_ids))
+            .order_by(SkillsOrm.id)
+        )
+        available_stmt = await session.execute(
+            select(SkillsOrm)
+            .filter(SkillsOrm.id.notin_(skill_ids))
+            .order_by(SkillsOrm.id)
+        )
+
+        vacancy_skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in
+                          vacancy_stmt.scalars().all()]
+        available_skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in
+                            available_stmt.scalars().all()]
+        return vacancy_skills, available_skills

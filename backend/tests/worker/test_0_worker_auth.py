@@ -3,7 +3,7 @@ import pytest
 from backend.modules.redis.redis_code_utils import get_code_from_redis
 from backend.tests.utils import async_client, check_token, check_user, test_user
 from backend.tests.worker.utils_test import cache_worker, get_worker, worker_client
-from backend.utils.str_const import WORKER_USER_TYPE
+from backend.utils.const import WORKER_USER_TYPE
 
 
 class TestWorkerAuth:

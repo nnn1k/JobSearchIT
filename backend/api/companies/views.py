@@ -17,11 +17,6 @@ async def create_new_company(
         company: CompanyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
-    if user.company_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='user have company'
-        )
     company, user = await create_company_queries(user, **company.model_dump())
     return {
         'status': 'ok',
@@ -37,11 +32,6 @@ async def get_info_on_company(
 ):
     company = await get_company_by_id_queries(company_id)
     can_update = check_employer_can_update(user, company)
-    if not company:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail='company is not exist'
-        )
     return {
         'status': 'ok',
         'company': company,
