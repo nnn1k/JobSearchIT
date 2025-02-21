@@ -2,20 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Редактирование резюме</title>
-    <link rel="stylesheet" href="/frontend/pages/worker/resume/edit/resume.css">
+    <title>Редактирование вакансии</title>
+    <link rel="stylesheet" href="/frontend/pages/vacancy/edit/vacancy.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
 </head>
-{% extends 'base_worker/base_worker.html' %}
+{% extends 'base_employer/base_employer.html' %}
 {% block content %}
     <body>
     <div class="body_container">
-
-        <h1 class="new_vacancy">Редактирование резюме</h1>
+        <h1 class="new_vacancy">Редактирование вакансии</h1>
         <h3 class="main_info">Основная информация</h3>
         <div class="fields_for_data">
             <div class="field_title">
-                <label class="title_vacancy">Желаяемая должность</label>
+                <label class="title_vacancy">Название вакансии</label>
                 <form id="jobForm" class="input_for_title_vacancy">
                     <input type="text" id="jobInput" placeholder="Введите название..." autocomplete="off">
                     <div id="jobsDropdown" class="dropdown"></div>
@@ -27,7 +26,7 @@
                 </textarea>
             </div>
             <div class="field_salary">
-                <label class="salary_vacancy">Предпологаемый доход</label>
+                <label class="salary_vacancy">Возможный доход</label>
                 <div class="inputs_for_salary">
                     <input type="number" class="input_for_first_salary" id="input_for_first_salary" placeholder="От">
                     <input type="number" class="input_for_second_salary" id="input_for_second_salary" placeholder="До">
@@ -39,7 +38,7 @@
             </div>
             <div class="form-group" id="form-group">
                 <div class="label_skills">
-                    <label>Выбранные навыки</label>
+                    <label>Требуемые навыки</label>
                 </div>
                 <div id="skillsList" class="skills-list"></div>
 
@@ -47,10 +46,10 @@
 
             <div class="btns">
                 <input id="cancel_btn" class="white_button" type="button" value="Отменить">
-                <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить" onclick="put_resume()">
+                <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить" onclick="put_vacancy()">
             </div>
         </div>
-        <script type="module" src="/frontend/pages/worker/resume/edit/resume.js"></script>
+        <script type="module" src="/frontend/pages/vacancy/edit/vacancy.js"></script>
     </div>
     </body>
 {% endblock %}

@@ -9,21 +9,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 async function getSkills() {
-    const resume_id = location.pathname.split('/')[3]
+    const vacancyId = location.pathname.split('/')[2]
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: `/api/skills/resumes/${resume_id}`
+        url: `/api/skills/vacancies/${vacancyId}`
     })
     hideLoadingIndicator(loadingIndicator)
     const available_skills = getResponse.available_skills;
-    skills = getResponse.resume_skills;
+    skills = getResponse.vacancy_skills;
+    console.log(skills)
     const skillInput = document.getElementById('skillInput');
     const skillsList = document.getElementById('skillsList');
     const skillsDropdown = document.getElementById('skillsDropdown');
 
     const sk = available_skills.sort((a, b) => a.name.localeCompare(b.name));
-
 
     const createSkillTag = (skill) => {
         const tag = document.createElement('div');
@@ -43,6 +43,7 @@ async function getSkills() {
             if (index !== -1) {
                 skills.splice(index, 1); // Удаление навыка из списка
                 tag.remove();
+                console.log(skills)
             }
         });
 
@@ -102,21 +103,22 @@ async function getSkills() {
 }
 
 async function put_skills(){
-    const resume_id = location.pathname.split('/')[3]
+    console.log(skills)
+    const vacancyId = location.pathname.split('/')[2]
     const loadingIndicator = showLoadingIndicator();
     const putResponse = await makeRequest({
         method: 'PUT',
-        url: `/api/skills/resumes/${resume_id}`,
+        url: `/api/skills/vacancies/${vacancyId}`,
         data: {
             skills
         }
     })
-    window.location.href = apiUrl + `/worker/resumes/${resume_id}/edit/`
+    window.location.href = apiUrl + `/vacancies/${vacancyId}/edit`
 }
 
 async function cancel_click() {
-    const resume_id = location.pathname.split('/')[3]
-    window.location.href = apiUrl + `/worker/resumes/${resume_id}/edit/`
+    const resume_id = location.pathname.split('/')[2]
+    window.location.href = apiUrl + `/vacancies/${vacancyId}/edit`
 }
 
 window.cancel_click = cancel_click

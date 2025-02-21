@@ -27,7 +27,7 @@ async function get_resumes() {
 
         const link = document.createElement('a');
         link.textContent = 'тут';
-        link.href = '/resumes/add'; // замените на нужный URL
+        link.href = '/resumes/add';
         link.classList.add('resume-link');
 
         noResumesLabel.appendChild(link); // добавляем ссылку в текст
@@ -41,7 +41,7 @@ async function get_resumes() {
         resumeElement.classList.add('resume');
 
         const titleElement = document.createElement('h2');
-        titleElement.textContent = resume.title;
+        titleElement.textContent = resume.profession.title;
 
         const salaryElement = document.createElement('p');
         print_salary(salaryElement, resume.salary_first, resume.salary_second)

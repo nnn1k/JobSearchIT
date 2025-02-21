@@ -1,91 +1,100 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+.body_container{
+    margin: 0;
+    padding: 0;
+    font-family: "Open Sans", Calibri, Candara, Arial, sans-serif;
 }
 
-.container {
-    max-width: 600px;
-    margin-top: 80px;
-    margin-left: 30%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #fff;
+.new_vacancy{
+    display: flex;
+    color:gray;
+    padding-top: 30px;
+    padding-left: 230px;
 }
 
-h1 {
-    text-align: center;
+.main_info{
+    color: gray;
+    padding-left: 10%;
 }
 
-label {
-    display: block;
-    margin-bottom: 10px;
+.fields_for_data{
+    color:gray;
+    display: flex;
+    flex-direction: column;
+    margin-left: 8%;
+    margin-top: 4%;
+    margin-right: 35%;
+    gap: 30px;
 }
 
-input, select, textarea {
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.field_title{
+    display: flex;
+    flex-direction: row;
 }
 
-.step {
-    display: none; /* Скрываем все этапы по умолчанию */
+.input_for_title_vacancy{
+    margin-left: 16.7%;
+    width: 400px;
+    height: 28px;
+    font-size: 16px;
 }
 
-.active {
-    display: block; /* Показываем активный этап */
+
+.field_description{
+    display: flex;
+    flex-direction: row;
+    gap: 24%
 }
 
-.experienceEntry {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+.field_salary{
+    display: flex;
+    flex-direction: row;
+    gap: 17%
 }
 
-.selected-skills-container {
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9; /* Цвет фона для контейнера выбранных навыков */
-    display: flex; /* Используем flexbox для выравнивания кнопок */
-    flex-wrap: wrap; /* Позволяем кнопкам переноситься на новую строку */
+
+.inputs_for_salary {
+    display: flex;
+    flex-direction: row;
+    gap: -10px;
+    box-sizing: border-box;
 }
 
-.selected-skill-button {
-    margin: 5px; /* Отступы между кнопками */
-    padding: 5px 10px;
-    background-color: #007BFF; /* Цвет фона для кнопок выбранных навыков */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.input_for_first_salary {
+    box-sizing: border-box;
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
 }
 
-.selected-skill-button:hover {
-    background-color: #0056b3; /* Темно-синий при наведении */
+.input_for_second_salary {
+    box-sizing: border-box;
+    width: 200px;
+    height: 30px;
+    font-size: 16px;
 }
 
-textarea{
-    resize: none;
+.field_city{
+    display: flex;
+    flex-direction: row;
+    gap: 27%
 }
 
-#btns_resumes{
-    width: 24%;
-    font-size: 14px;
-
+.input_for_city_vacancy{
+    width: 400px;
+    height: 28px;
+    font-size: 16px;
 }
 
-#next_after_title{
-    width: 24%;
-    font-size: 14px;
+
+
+.city_vacancy{
+    margin-bottom: -2%;
 }
 
+.red_button{
+    display: flex;
+    margin-bottom: 2%;
+}
 
 * {
   margin: 0;
@@ -100,9 +109,11 @@ body {
 
 
 .form-group {
-  margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1.5rem;
+    gap: 16%
 }
-
 
 .input-icon {
   position: relative;
@@ -116,11 +127,12 @@ body {
 .input-icon-svg {
   position: absolute;
   left: 0.75rem;
-  top: 32%;
+  top: 50%;
   transform: translateY(-50%);
   color: var(--red-400);
   pointer-events: none;
 }
+
 
 .form-actions {
   display: flex;
@@ -134,12 +146,13 @@ body {
 }
 
 .skills-input-container {
-  position: relative;
+  display: block;
+  width: 400px;
   margin-bottom: 1rem;
 }
 
 .skills-input-container .input-icon {
-  width: 100%;
+    width: 100%;
 }
 
 .skills-dropdown {
@@ -172,7 +185,8 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-    margin-bottom: 3%;
+  margin-bottom: 3%;
+  width: 400px;
 }
 
 .skill-tag {
@@ -202,6 +216,14 @@ body {
   color: var(--red-700);
 }
 
+
+
+.btns{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+}
+
 .dropdown {
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -222,3 +244,4 @@ body {
 .job-option:hover {
     background-color: #f0f0f0;
 }
+

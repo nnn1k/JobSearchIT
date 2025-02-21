@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/frontend/pages/worker/resume/edit/edit_skills/skills.css">
+    <link rel="stylesheet" href="/frontend/pages/vacancy/edit/edit_skills/vacancy.css">
     <title>Редактирование</title>
 </head>
-{% extends 'base_worker/base_worker.html' %}
+{% extends 'base_employer/base_employer.html' %}
 {% block content %}
     <body>
-    <h1 class="edit_label">Редактирование навыков</h1>
+    <h1 class="edit_label">Редактирование требуемых навыков</h1>
     <div class="main_container">
         <div class="skills-container">
             <div class="skills-input-container">
@@ -30,7 +30,7 @@
             <button id="btns_resumes" class="red_button" type="button" onclick="put_skills()">Изменить</button>
         </div>
     </div>
-    <script type="module" src="/frontend/pages/worker/resume/edit/edit_skills/skills.js"></script>
+    <script type="module" src="/frontend/pages/vacancy/edit/edit_skills/vacancy.js"></script>
     </body>
 {% endblock %}
 </html>

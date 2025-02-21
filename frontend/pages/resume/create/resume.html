@@ -18,8 +18,11 @@
         <!-- Этап 1: Выбор профессии -->
         <div class="step active" id="step1">
             <label for="title">Желаяемая должность:</label>
-            <input type="text" id="title">
-            <button id="btns_resumes" class="red_button" type="button" onclick="nextStep(1)">Далее</button>
+            <form id="jobForm">
+            <input  type="text" id="jobInput" placeholder="Введите название..." autocomplete="off">
+            <div id="jobsDropdown" class="dropdown"></div>
+        </form>
+            <button id="next_after_title" class="red_button" type="button" onclick="nextStep(1)">Далее</button>
         </div>
 
         <!-- Этап 2: Ввод данных о зарплате и городе -->

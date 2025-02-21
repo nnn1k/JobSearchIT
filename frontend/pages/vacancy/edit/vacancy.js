@@ -1,6 +1,7 @@
 import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
+
 var profession_id
 
 tinymce.init({
@@ -14,7 +15,7 @@ tinymce.init({
     whiteSpace: "pre-wrap"
 });
 document.addEventListener('DOMContentLoaded', function (){
-    get_resume()
+    get_vacancy()
     getProfessions()
 })
 
@@ -27,13 +28,10 @@ async function getProfessions() {
     const form = document.getElementById('jobForm');
     const jobInput = document.getElementById('jobInput');
     const jobsDropdown = document.getElementById('jobsDropdown');
-    const nextButton = document.getElementById('next_after_title');
 
-    // Имитация списка IT профессий с сервера в виде объектов
     const availableJobs = getResponse.professions
 
 
-    // const availableJobs = noSortAvailableJobs.sort((a, b) => a.name.localeCompare(b.name));
 
     // Function to filter and show matching jobs
     const filterJobs = (searchText) => {
@@ -58,12 +56,11 @@ async function getProfessions() {
             option.textContent = job.title;
             option.addEventListener('click', () => {
                 profession_id = job.id
-                jobInput.value = job.title; // Вставка выбранной профессии в input
+                jobInput.value = job.title;
                 jobsDropdown.style.display = 'none';
             });
             jobsDropdown.appendChild(option);
         });
-
         jobsDropdown.style.display = 'block';
     };
 
@@ -80,31 +77,33 @@ async function getProfessions() {
     });
 }
 
-async function get_resume(){
-    const resume_id = location.pathname.split('/')[3]
+async function get_vacancy() {
+    const vacancyId = location.pathname.split('/')[2]
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: `/api/workers/resumes/${resume_id}`
+        url: `/api/vacancy/${vacancyId}`
     })
-    hideLoadingIndicator(loadingIndicator);
-    profession_id = getResponse.resume.profession_id
-    const resume= getResponse.resume
-    const skills = getResponse.resume.skills
-    console.log(profession_id)
-    document.getElementById('jobInput').value = resume.profession.title;
-    document.getElementById('input_for_city_vacancy').value = resume.city
-    tinymce.get('input_for_description_vacancy').setContent(resume.description)
-    document.getElementById('input_for_first_salary').value = resume.salary_first
-    document.getElementById('input_for_second_salary').value = resume.salary_second
-    const displaySkills = () => {
+    console.log(getResponse)
+    if (getResponse) {
+        profession_id = getResponse.vacancy.profession.id
+        console.log(profession_id)
+        const vacancy = getResponse.vacancy;
+        const skills = getResponse.vacancy.skills;
+        document.getElementById('jobInput').value = vacancy.profession.title
+        document.getElementById('input_for_city_vacancy').value = vacancy.city;
+        tinymce.get('input_for_description_vacancy').setContent(vacancy.description)
+        document.getElementById('input_for_first_salary').value = vacancy.salary_first
+        document.getElementById('input_for_second_salary').value = vacancy.salary_second
+        console.log(skills)
+        const displaySkills = () => {
             const skillsDisplay = document.getElementById('skillsList');
-            skillsDisplay.innerHTML = '';
+            skillsDisplay.value = '';
 
             if (skills.length === 0) {
                 const link = document.createElement('a');
                 link.textContent = 'Добавить навыки';
-                link.href = `/worker/resumes/${resume_id}/edit/skills`;
+                link.href = `/vacancies/${vacancyId}/edit/skills`;
                 link.classList.add('resume-link');
                 skillsDisplay.appendChild(link)
                 return;
@@ -112,31 +111,32 @@ async function get_resume(){
             skills.forEach(skill => {
                 const skillTag = document.createElement('div');
                 skillTag.className = 'skill-tag';
+                console.log(skill.name)
                 skillTag.textContent = skill.name;
                 skillsDisplay.appendChild(skillTag);
             });
             const linkForEditSkills = document.createElement('a');
-            linkForEditSkills.href = `/worker/resumes/${resume_id}/edit/skills`;
+            linkForEditSkills.href = `/vacancies/${vacancyId}/edit/skills`;
             linkForEditSkills.classList.add('resume-link');
             linkForEditSkills.textContent = 'Изменить';
             skillsDisplay.appendChild(linkForEditSkills);
             };
         displaySkills();
+        hideLoadingIndicator(loadingIndicator);
+    }
 }
 
 
-async function put_resume(){
-    const resume_id = location.pathname.split('/')[3]
+async function put_vacancy(){
+    const vacancyId = location.pathname.split('/')[2]
     const loadingIndicator = showLoadingIndicator();
-    // const title = document.getElementById('jobInput').value
-    console.log(profession_id)
     const description = tinymce.get('input_for_description_vacancy').getContent()
     const city = document.getElementById('input_for_city_vacancy').value
     const salary_first = document.getElementById('input_for_first_salary').value
     const salary_second = document.getElementById('input_for_second_salary').value
     const putResponse = await makeRequest({
         method: 'PUT',
-        url: `/api/workers/resumes/${resume_id}`,
+        url: `/api/vacancy/${vacancyId}`,
         data: {
             profession_id,
             description,
@@ -145,6 +145,6 @@ async function put_resume(){
             salary_second,
         }
     })
-    window.location.href = apiUrl + `/resumes/${resume_id}`
+    window.location.href = apiUrl + `/vacancies/${vacancyId}`
 }
-window.put_resume = put_resume
+window.put_vacancy = put_vacancy

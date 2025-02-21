@@ -20,12 +20,12 @@ async function get_resume(){
     console.log(getResponse)
     const resume= getResponse.resume
     const skills = resume.skills
-    document.getElementById('title').innerHTML += resume.title
+    document.getElementById('title').innerHTML += resume.profession.title
     document.title = resume.title
     const salaryElement = document.getElementById('salary')
     print_salary(salaryElement, resume.salary_first, resume.salary_second)
     document.getElementById('city').innerHTML += resume.city
-    document.getElementById('vacancy-details').style.width = "200px";
+
     document.getElementById('description').innerHTML += resume.description
     const displaySkills = () => {
             const skillsDisplay = document.getElementById('skillsList');

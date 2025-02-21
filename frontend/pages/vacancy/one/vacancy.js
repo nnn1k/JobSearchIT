@@ -3,6 +3,12 @@ import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions
 import {print_salary} from "/frontend/js/print_salary.js";
 import {createTrashBtnVacancy} from "/frontend/js/create_trash_can.js";
 
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 async function get_vacancy() {
     const vacancyId = location.pathname.split('/')[2]
     const vacancyContainer = document.getElementById('vacancy-container')
@@ -17,13 +23,14 @@ async function get_vacancy() {
         const vacancy = getResponse.vacancy;
         const companyName = getResponse.vacancy.company.name;
         const skills = getResponse.vacancy.skills;
+        const flexBtn = document.getElementById('otlik_btn')
         const deleteElement = document.getElementById('btn_delete')
         if (getResponse.can_update) {
             deleteElement.style.display = 'flex';
             const trashBtn = createTrashBtnVacancy(vacancy);
             deleteElement.appendChild(trashBtn);
         }
-        document.getElementById('title_vacancy').innerHTML = vacancy.title;
+        document.getElementById('title_vacancy').innerHTML = vacancy.profession.title
         document.getElementById('name_company').innerHTML = companyName;
         document.getElementById('city_vacancy').innerHTML = vacancy.city;
         const salaryElement = document.getElementById('salary_vacancy')
@@ -49,10 +56,25 @@ async function get_vacancy() {
                 skillsDisplay.appendChild(skillTag);
             });
             };
+        if (getResponse.can_update){
+            flexBtn.textContent = 'Редактировать'
+            flexBtn.onclick = () => {
+                window.location.href = `/vacancies/${vacancy.id}/edit`;
+            };
+        }
+
+        const userType = getCookie('user_type')
+
+        if (userType === 'worker' || !userType){
+            flexBtn.textContent = 'Отклинуться'
+        }
+
+        if (userType === 'employer' && !getResponse.can_update){
+            flexBtn.style.display = 'none'
+        }
         displaySkills();
         hideLoadingIndicator(loadingIndicator);
         vacancyContainer.style.display = 'block'
-
     }
 }
 

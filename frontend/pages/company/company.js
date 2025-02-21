@@ -91,7 +91,7 @@ function renderVacancies(vacancies, can_update) {
         linkElement.style.textDecoration = 'none';
 
         const titleElement = document.createElement('h2');
-        titleElement.textContent = vacancy.title;
+        titleElement.textContent = vacancy.profession.title;
 
         const salaryElement = document.createElement('p');
         print_salary(salaryElement, vacancy.salary_first, vacancy.salary_second)
@@ -119,7 +119,7 @@ function renderVacancies(vacancies, can_update) {
 
         const userType = getCookie('user_type')
 
-        if (userType === 'worker'){
+        if (userType === 'worker' || !userType){
             const feedbackButton = document.createElement('button');
             feedbackButton.classList.add('red_button');
             feedbackButton.style.width = '30%';
@@ -135,7 +135,7 @@ function renderVacancies(vacancies, can_update) {
             editButton.style.width = '30%';
             editButton.textContent = "Редактировать";
             editButton.onclick = () => {
-                window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
+                window.location.href = `/vacancies/${vacancy.id}/edit`;
             };
             vacancyElement.appendChild(editButton);
             container.appendChild(vacancyElement);
