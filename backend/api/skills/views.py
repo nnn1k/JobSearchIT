@@ -19,9 +19,7 @@ router = APIRouter(prefix="/skills", tags=["skills"])
 
 @router.get('/', summary='Получить все скиллы')
 @time_it_async
-async def get_all_skills_views(
-        user=Depends(get_user_by_token)
-):
+async def get_all_skills_views():
     skills = await get_all_skills_queries()
     return {
         'status': 'ok',
@@ -33,7 +31,6 @@ async def get_all_skills_views(
 @time_it_async
 async def get_worker_skills_views(
         resume_id: int,
-        user=Depends(get_user_by_token)
 ):
     resume_skills, available_skills = await get_skills_by_resume_id(resume_id)
 
@@ -51,7 +48,7 @@ async def update_worker_skills_views(
         skills: SkillListSchema,
         user=Depends(get_worker_by_token)
 ):
-    await update_resume_skills(skills.skills, resume_id)
+    await update_resume_skills(skills.skills, resume_id, user)
     return {
         'status': 'ok',
         'message': 'skills updated'
@@ -59,9 +56,9 @@ async def update_worker_skills_views(
 
 
 @router.get('/vacancies/{vacancy_id}', summary='Вытащить все навыки, которые привязаны к вакансии')
+@time_it_async
 async def get_vacancy_skills_views(
         vacancy_id: int,
-        user=Depends(get_user_by_token)
 ):
     vacancy_skills, available_skills = await get_skills_by_vacancy_id(vacancy_id)
     return {
@@ -70,13 +67,15 @@ async def get_vacancy_skills_views(
         'available_skills': available_skills,
     }
 
+
 @router.put('/vacancies/{vacancy_id}', summary='Обновить навыки вакансии')
+@time_it_async
 async def update_vacancy_skills_views(
         vacancy_id: int,
         skills: SkillListSchema,
         user=Depends(get_employer_by_token)
 ):
-    await update_vacancy_skills(skills.skills, vacancy_id)
+    await update_vacancy_skills(skills.skills, vacancy_id, user)
     return {
         'status': 'ok',
         'message': 'skills updated'

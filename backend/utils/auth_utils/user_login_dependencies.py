@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import Cookie, HTTPException, status, Response
+from fastapi import Cookie, HTTPException, Query, status, Response
 
 
 from backend.api.users.employers.profile.queries import get_employer_by_id_queries
@@ -18,12 +18,8 @@ async def get_employer_by_token(
         access_token=Cookie(None),
         refresh_token=Cookie(None),
 ) -> EmployerResponseSchema:
-    return await get_user_by_token(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        response=response,
-        user_type=EMPLOYER_USER_TYPE
-    )
+    return await get_user_by_token(access_token=access_token, refresh_token=refresh_token, response=response,
+                                   user_type=EMPLOYER_USER_TYPE)
 
 
 async def get_worker_by_token(
@@ -31,19 +27,15 @@ async def get_worker_by_token(
         access_token=Cookie(None),
         refresh_token=Cookie(None),
 ) -> WorkerResponseSchema:
-    return await get_user_by_token(
-        access_token=access_token,
-        refresh_token=refresh_token,
-        response=response,
-        user_type=WORKER_USER_TYPE
-    )
+    return await get_user_by_token(access_token=access_token, refresh_token=refresh_token, response=response,
+                                   user_type=WORKER_USER_TYPE)
 
 
 async def get_user_by_token(
-        access_token=Cookie(None),
-        refresh_token=Cookie(None),
+        access_token=Cookie(None, include_in_schema=False),
+        refresh_token=Cookie(None, include_in_schema=False),
         response: Response = None,
-        user_type: Optional[str] = None
+        user_type: Optional[str] = Query(None, include_in_schema=False),
 ) -> None | WorkerResponseSchema | EmployerResponseSchema:
     user_jwt_schema = await check_user_role(access_token, refresh_token, response)
     logger.info(f'{user_jwt_schema=}')

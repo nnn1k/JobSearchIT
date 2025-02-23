@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 
 from fastapi import APIRouter, Depends
@@ -5,7 +6,7 @@ from fastapi import APIRouter, Depends
 from backend.api.skills.queries import update_vacancy_skills
 from backend.api.vacancies.queries import (
     create_vacancy_queries,
-    delete_vacancy_by_id_queries, get_vacancy_by_id_queries,
+    delete_vacancy_by_id_queries, get_all_vacancies_query, get_vacancy_by_id_queries,
     update_vacancy_by_id_queries
 )
 from backend.api.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
@@ -26,10 +27,34 @@ async def create_new_vacancy(
 ):
     skills: List[SkillSchema] = add_vacancy.skills
     vacancy = await create_vacancy_queries(company_id=user.company_id, user=user, **add_vacancy.model_dump(exclude={'skills'}))
-    await update_vacancy_skills(skills, vacancy.id)
+    await update_vacancy_skills(skills, vacancy.id, user)
     return {
         'status': 'ok',
         'vacancy': vacancy,
+    }
+
+@router.get('', summary='Поиск по вакансиям')
+@time_it_async
+async def get_vacancies(
+        user=Depends(get_user_by_token),
+        min_salary: int = None,
+        have_salary: bool = None,
+        profession: str = None,
+        city: str = None,
+):
+    vacancies = await get_all_vacancies_query(
+        user,
+        min_salary=min_salary,
+        have_salary=have_salary,
+        profession=profession,
+        city=city
+    )
+    cities = Counter(vacancy.city for vacancy in vacancies)
+    return {
+        'length': len(vacancies),
+        'cities': cities,
+        'status': 'ok',
+        'vacancies': vacancies,
     }
 
 

@@ -1,11 +1,46 @@
 from fastapi import HTTPException, status
-from sqlalchemy import insert, select, update, delete
+from sqlalchemy import and_, desc, insert, select, update, delete
 from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.models.employer import VacanciesOrm
+from backend.database.models.other import ProfessionsOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
+from backend.utils.other.type_utils import UserVar
+
+
+async def get_all_vacancies_query(user: UserVar, **kwargs):
+    min_salary = kwargs.get('min_salary', None)
+    have_salary = kwargs.get('have_salary', None)
+    profession = kwargs.get('profession', None)
+    city = kwargs.get('city', None)
+    async with session_factory() as session:
+        stmt = (
+            select(VacanciesOrm)
+            .join(ProfessionsOrm)
+            .options(selectinload(VacanciesOrm.profession))
+        )
+        conditions = []
+        if city:
+            conditions.append(VacanciesOrm.city == city)
+        if have_salary:
+            conditions.append(VacanciesOrm.salary_first >= 0)
+            conditions.append(VacanciesOrm.salary_second >= 0)
+        if min_salary:
+            print(1)
+            conditions.append(VacanciesOrm.salary_first >= min_salary)
+        if profession:
+            conditions.append(ProfessionsOrm.title.like(f'{profession}%'))
+        if conditions:
+            stmt = stmt.where(and_(*conditions))
+        stmt = stmt.order_by(desc(VacanciesOrm.updated_at))
+        result = await session.execute(stmt)
+        vacancies = result.scalars().unique().all()
+        if not vacancies:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Vacancies not found')
+        schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
+        return schemas
 
 
 async def create_vacancy_queries(company_id, user, **kwargs):
