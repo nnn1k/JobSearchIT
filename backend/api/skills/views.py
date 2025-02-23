@@ -1,13 +1,17 @@
 from fastapi import APIRouter, Depends
 
 from backend.api.skills.queries import (
-    get_all_skills_queries, get_available_skills_on_vacancy,
-    get_available_skills_on_resume,
+    get_all_skills_queries,
     get_skills_by_vacancy_id,
-    get_skills_by_resume_id, update_vacancy_skills, update_resume_skills
+    get_skills_by_resume_id,
+    update_vacancy_skills,
+    update_resume_skills
 )
 from backend.schemas.models.other.skill_schema import SkillListSchema
-from backend.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
+from backend.utils.auth_utils.user_login_dependencies import (
+    get_employer_by_token,
+    get_user_by_token,
+    get_worker_by_token)
 from backend.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/skills", tags=["skills"])
@@ -31,8 +35,7 @@ async def get_worker_skills_views(
         resume_id: int,
         user=Depends(get_user_by_token)
 ):
-    available_skills = await get_available_skills_on_resume(resume_id)
-    resume_skills = await get_skills_by_resume_id(resume_id)
+    resume_skills, available_skills = await get_skills_by_resume_id(resume_id)
 
     return {
         'status': 'ok',
@@ -46,12 +49,12 @@ async def get_worker_skills_views(
 async def update_worker_skills_views(
         resume_id: int,
         skills: SkillListSchema,
-        user=Depends(get_user_by_token)
+        user=Depends(get_worker_by_token)
 ):
     await update_resume_skills(skills.skills, resume_id)
     return {
         'status': 'ok',
-        'worker_skills': skills.skills,
+        'message': 'skills updated'
     }
 
 
@@ -60,8 +63,7 @@ async def get_vacancy_skills_views(
         vacancy_id: int,
         user=Depends(get_user_by_token)
 ):
-    available_skills = await get_available_skills_on_vacancy(vacancy_id)
-    vacancy_skills = await get_skills_by_vacancy_id(vacancy_id)
+    vacancy_skills, available_skills = await get_skills_by_vacancy_id(vacancy_id)
     return {
         'status': 'ok',
         'vacancy_skills': vacancy_skills,
@@ -72,10 +74,10 @@ async def get_vacancy_skills_views(
 async def update_vacancy_skills_views(
         vacancy_id: int,
         skills: SkillListSchema,
-        user=Depends(get_user_by_token)
+        user=Depends(get_employer_by_token)
 ):
     await update_vacancy_skills(skills.skills, vacancy_id)
     return {
         'status': 'ok',
-        'vacancy_skills': skills.skills,
+        'message': 'skills updated'
     }

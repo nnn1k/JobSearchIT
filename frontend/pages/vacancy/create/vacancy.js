@@ -3,6 +3,8 @@ import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions
 
 const skills = [];
 
+var profession_id = 1
+
 tinymce.init({
     menubar: false,
     statusbar: false,
@@ -12,7 +14,71 @@ tinymce.init({
 });
 document.addEventListener('DOMContentLoaded', () => {
     getSkills()
+    getProfessions()
 })
+
+
+async function getProfessions() {
+
+    const getResponse = await makeRequest({
+        method: 'GET',
+        url: '/api/professions'
+    })
+    const form = document.getElementById('jobForm');
+    const jobInput = document.getElementById('jobInput');
+    const jobsDropdown = document.getElementById('jobsDropdown');
+    const nextButton = document.getElementById('next_after_title');
+
+    // Имитация списка IT профессий с сервера в виде объектов
+    const availableJobs = getResponse.professions
+
+
+    // const availableJobs = noSortAvailableJobs.sort((a, b) => a.name.localeCompare(b.name));
+
+    // Function to filter and show matching jobs
+    const filterJobs = (searchText) => {
+        jobsDropdown.innerHTML = '';
+        if (!searchText) {
+            jobsDropdown.style.display = 'none';
+            return;
+        }
+
+        const matchingJobs = availableJobs.filter(job =>
+            job.title.toLowerCase().includes(searchText.toLowerCase())
+        );
+
+        if (matchingJobs.length === 0) {
+            jobsDropdown.style.display = 'none';
+            return;
+        }
+
+        matchingJobs.forEach(job => {
+            const option = document.createElement('div');
+            option.className = 'job-option';
+            option.textContent = job.title;
+            option.addEventListener('click', () => {
+                profession_id = job.id
+                jobInput.value = job.title; // Вставка выбранной профессии в input
+                jobsDropdown.style.display = 'none';
+            });
+            jobsDropdown.appendChild(option);
+        });
+
+        jobsDropdown.style.display = 'block';
+    };
+
+    // Event listener for input changes
+    jobInput.addEventListener('input', (e) => {
+        filterJobs(e.target.value);
+    });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!jobInput.contains(e.target) && !jobsDropdown.contains(e.target)) {
+            jobsDropdown.style.display = 'none';
+        }
+    });
+}
 
 async function getSkills() {
     const getResponse = await makeRequest({
@@ -99,15 +165,10 @@ async function getSkills() {
 }
 
 async function post_vacancy() {
-    const title = document.getElementById('input_for_title_vacancy').value
     const description = tinymce.get('input_for_description_vacancy').getContent()
     const salary_first = Number(document.getElementById('input_for_first_salary').value)
     const salary_second = Number(document.getElementById('input_for_second_salary').value)
     const city = document.getElementById('input_for_city_vacancy').value
-    if (!title) {
-        alert('Не все данные заполнены')
-        return
-    }
     const postBtn = document.getElementById('add_vacancy_btn')
     postBtn.disabled = true
     const loadingIndicator = showLoadingIndicator();
@@ -115,7 +176,7 @@ async function post_vacancy() {
         method: 'POST',
         url: '/api/vacancy',
         data: {
-            title,
+            profession_id,
             description,
             salary_first,
             salary_second,

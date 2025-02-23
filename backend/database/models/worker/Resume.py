@@ -7,7 +7,7 @@ from backend.database.settings.database import Base
 class ResumesOrm(Base):
     __tablename__ = 'resumes'
 
-    title: Mapped[str]
+    profession_id: Mapped[int] = mapped_column(ForeignKey('professions.id'))
     description: Mapped[str]
     salary_first: Mapped[int] = mapped_column(nullable=True)
     salary_second: Mapped[int] = mapped_column(nullable=True)
@@ -27,5 +27,8 @@ class ResumesOrm(Base):
         overlaps='resumes_skills',
         lazy='noload'
     )
-
-
+    profession: Mapped['ProfessionsOrm'] = relationship(
+        'ProfessionsOrm',
+        back_populates='resumes',
+        lazy='noload'
+    )

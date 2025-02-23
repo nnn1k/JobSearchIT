@@ -16,7 +16,10 @@
         <div class="fields_for_data">
             <div class="field_title">
                 <label class="title_vacancy">Название вакансии</label>
-                <input type="text" class="input_for_title_vacancy" id="input_for_title_vacancy" required="">
+                <form id="jobForm" class="input_for_title_vacancy">
+                    <input type="text" id="jobInput" placeholder="Введите название..." autocomplete="off">
+                    <div id="jobsDropdown" class="dropdown"></div>
+                </form>
             </div>
             <div class="field_description">
                 <label class="description_vacancy">Описание</label>
@@ -34,7 +37,7 @@
                 </textarea>
             </div>
             <div class="field_salary">
-                <label class="salary_vacancy">Предполагаемый доход</label>
+                <label class="salary_vacancy">Возможный доход</label>
                 <div class="inputs_for_salary">
                     <input type="number" class="input_for_first_salary" id="input_for_first_salary" placeholder="От">
                     <input type="number" class="input_for_second_salary" id="input_for_second_salary" placeholder="До">

@@ -12,7 +12,6 @@ export async function makeRequest(request) {
             body: JSON.stringify(request.data)
         })
     if (response.ok) {
-        console.log(apiUrl)
         const data = await response.json()
         return data
     } else if (response.status >= 400 && response.status <= 500) {

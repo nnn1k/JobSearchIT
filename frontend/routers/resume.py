@@ -18,3 +18,9 @@ def resume_add(request: Request):
 def resume_get(request: Request):
     user_type = request.cookies.get("user_type")
     return templates.TemplateResponse("/pages/resume/one/resume.html", {"request": request, 'user_type': user_type})
+
+
+
+
+
+

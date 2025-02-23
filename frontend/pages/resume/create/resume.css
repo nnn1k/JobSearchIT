@@ -70,6 +70,7 @@ input, select, textarea {
 .selected-skill-button:hover {
     background-color: #0056b3; /* Темно-синий при наведении */
 }
+
 textarea{
     resize: none;
 }
@@ -80,6 +81,10 @@ textarea{
 
 }
 
+#next_after_title{
+    width: 24%;
+    font-size: 14px;
+}
 
 
 * {
@@ -99,7 +104,6 @@ body {
 }
 
 
-
 .input-icon {
   position: relative;
 }
@@ -117,8 +121,6 @@ body {
   color: var(--red-400);
   pointer-events: none;
 }
-
-
 
 .form-actions {
   display: flex;
@@ -198,4 +200,25 @@ body {
 
 .skill-tag button:hover {
   color: var(--red-700);
+}
+
+.dropdown {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none; /* Скрыт по умолчанию */
+    background: white;
+    position: absolute;
+    width: 30%;
+    z-index: 1000;
+}
+
+.job-option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.job-option:hover {
+    background-color: #f0f0f0;
 }

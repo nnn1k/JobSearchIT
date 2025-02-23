@@ -4,6 +4,7 @@ from backend.schemas.models.other.skill_schema import SkillSchema
 from backend.schemas.models.employer.company_schema import CompanySchema
 from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
 from backend.schemas.models.employer.vacancy_schema import VacancySchema
+from backend.schemas.models.other.profession_schema import ProfessionSchema
 
 
 WorkerResponseSchema.model_rebuild()

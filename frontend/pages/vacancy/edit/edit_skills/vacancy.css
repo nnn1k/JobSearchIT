@@ -1,0 +1,135 @@
+.main_container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
+  background: #f2f2f2;
+  border: 2px solid #cccccc;
+  border-radius: 30px;
+  margin-left: 25%;
+  margin-top: 2%;
+  padding: 15px;
+  height: 40%;
+}
+
+.edit_label{
+  display: flex;
+    color:gray;
+    padding-top: 1%;
+    padding-left: 27%;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon input,
+.input-icon select {
+  padding-left: 2.5rem;
+}
+
+.input-icon-svg {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--red-400);
+  pointer-events: none;
+}
+
+
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.skills-container {
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.skills-input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.skills-input-container .input-icon {
+  width: 60%;
+  margin-left: 16%;
+}
+
+.skills-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--white);
+  border: 1px solid var(--red-200);
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  display: none;
+}
+
+.skill-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.skill-option:hover {
+  background-color: var(--red-50);
+  color: var(--red-700);
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+    margin-bottom: 3%;
+  margin-left: 16%;
+  width: 70%;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--red-100);
+  color: var(--red-700);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+.skill-tag button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem;
+  background: none;
+  border: none;
+  color: var(--red-500);
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+}
+
+.skill-tag button:hover {
+  color: var(--red-700);
+}
+
+.btns{
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  margin-left: auto;
+  margin-right: 3%;
+}

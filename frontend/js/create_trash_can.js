@@ -8,7 +8,7 @@ function createTrashBtn(func, obj) {
     img.style.width = "27px";
     img.style.height = "27px";
     trashBtn.style.border = 'None'
-    trashBtn.style.backgroundColor = 'white'
+    trashBtn.style.backgroundColor = '#f2f2f2;'
     trashBtn.appendChild(img);
 
     trashBtn.onclick = async () => await func(obj)

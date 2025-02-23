@@ -4,5 +4,6 @@ from .Skill import SkillsOrm
 from .VacancySkills import VacanciesSkillsOrm
 from .ResumeSkills import ResumesSkillsOrm
 from .Response import ResponsesOrm
+from .Profession import ProfessionsOrm
 
 

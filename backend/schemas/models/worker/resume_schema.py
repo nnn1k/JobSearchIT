@@ -1,14 +1,13 @@
 from typing import List, Optional
 
-from pydantic import ConfigDict, validator
+from pydantic import ConfigDict
 
 from backend.schemas.global_schema import GlobalSchema
-from backend.utils.str_const import RESUME_TYPE
-from fastapi import status, HTTPException
+from backend.utils.const import RESUME_TYPE
 
 class ResumeSchema(GlobalSchema):
-    title: str
     description: str
+    profession_id: int
     salary_first: Optional[int] = None
     salary_second: Optional[int] = None
     city: Optional[str] = None
@@ -18,6 +17,7 @@ class ResumeSchema(GlobalSchema):
 
     worker: Optional['WorkerResponseSchema'] = None
     skills: Optional[List['SkillSchema']] = None
+    profession: Optional['ProfessionSchema'] = None
 
     model_config = ConfigDict(from_attributes=True)
 

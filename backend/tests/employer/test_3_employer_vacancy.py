@@ -12,7 +12,7 @@ class TestEmployerVacancy:
         response = await client.post(
             '/vacancy',
             json={
-                "title": "test",
+                "profession_id": 1,
                 "description": "test",
                 "salary_first": 100,
                 "salary_second": 200,
@@ -50,7 +50,7 @@ class TestEmployerVacancy:
         response = await client.put(
             f'/vacancy/{vacancy.id}',
             json={
-                "title": "testt",
+                "profession_id": 5,
                 "description": "testt",
                 "salary_first": 300,
                 "salary_second": 400,

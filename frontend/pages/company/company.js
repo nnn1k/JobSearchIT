@@ -3,6 +3,13 @@ import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     get_company()
     const first_button = document.getElementById('switch_description')
@@ -27,8 +34,8 @@ async function get_company() {
         statusbar: false,
         display: "flex",
         selector: '#company_description_update',
-        width: 600,
-        height: 500,
+        width: 1000,
+        height: 600,
         fontsize: 50,
         whiteSpace: "pre-wrap"
     });
@@ -80,11 +87,11 @@ function renderVacancies(vacancies, can_update) {
         vacancyElement.classList.add('vacancy');
 
         const linkElement = document.createElement('a');
-        linkElement.href = `/vacancies/${vacancy.id}`; // Ссылка на вакансию
-        linkElement.style.textDecoration = 'none'; // Убираем подчеркивание
+        linkElement.href = `/vacancies/${vacancy.id}`;
+        linkElement.style.textDecoration = 'none';
 
         const titleElement = document.createElement('h2');
-        titleElement.textContent = vacancy.title;
+        titleElement.textContent = vacancy.profession.title;
 
         const salaryElement = document.createElement('p');
         print_salary(salaryElement, vacancy.salary_first, vacancy.salary_second)
@@ -95,22 +102,45 @@ function renderVacancies(vacancies, can_update) {
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
 
+        const statsLabel = document.createElement('p');
+        statsLabel.textContent = 'Статистика:'
+        const stastElement = document.createElement('div');
+        stastElement.classList.add('stats');
+        stastElement.textContent = `0 откликов`
+
         linkElement.appendChild(titleElement);
         linkElement.appendChild(updatedAtElement);
+        linkElement.appendChild(statsLabel);
+        linkElement.appendChild(stastElement);
         linkElement.appendChild(salaryElement);
         linkElement.appendChild(cityElement);
-        vacancyElement.appendChild(linkElement); // Оборачиваем весь контент в ссылку
+        vacancyElement.appendChild(linkElement);
 
-        // if (can_update) {
-        //     const editButton = document.createElement('button');
-        //     editButton.classList.add('red_button');
-        //     editButton.style.width = '30%';
-        //     editButton.textContent = "Редактировать";
-        //     editButton.onclick = () => {
-        //         window.location.href = `/employer/vacancies/${vacancy.id}/edit`;
-        //     };
-        //     vacancyElement.appendChild(editButton);
-        // }
+
+        const userType = getCookie('user_type')
+
+        if (userType === 'worker' || !userType){
+            const feedbackButton = document.createElement('button');
+            feedbackButton.classList.add('red_button');
+            feedbackButton.style.width = '30%';
+            feedbackButton.textContent = "Откликнуться";
+            vacancyElement.appendChild(feedbackButton);
+            container.appendChild(vacancyElement);
+            return;
+        }
+
+        if (can_update) {
+            const editButton = document.createElement('button');
+            editButton.classList.add('red_button');
+            editButton.style.width = '30%';
+            editButton.textContent = "Редактировать";
+            editButton.onclick = () => {
+                window.location.href = `/vacancies/${vacancy.id}/edit`;
+            };
+            vacancyElement.appendChild(editButton);
+            container.appendChild(vacancyElement);
+            return;
+        }
         container.appendChild(vacancyElement);
     });
 }

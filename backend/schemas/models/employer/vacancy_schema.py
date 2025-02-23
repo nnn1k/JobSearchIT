@@ -3,11 +3,10 @@ from typing import List, Optional
 from pydantic import ConfigDict
 
 from backend.schemas.global_schema import GlobalSchema
-from backend.utils.str_const import VACANCY_TYPE
+from backend.utils.const import VACANCY_TYPE
 
 
 class VacancySchema(GlobalSchema):
-    title: str
     description: str
     salary_first: Optional[int]
     salary_second: Optional[int]
@@ -17,5 +16,6 @@ class VacancySchema(GlobalSchema):
 
     company: Optional['CompanySchema']
     skills: Optional[List['SkillSchema']]
+    profession: Optional['ProfessionSchema'] = None
 
     model_config = ConfigDict(from_attributes=True)

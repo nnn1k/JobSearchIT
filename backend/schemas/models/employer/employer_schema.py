@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import ConfigDict
 
 from backend.schemas.user_schema import UserResponseSchema
-from backend.utils.str_const import EMPLOYER_USER_TYPE
+from backend.utils.const import EMPLOYER_USER_TYPE
 
 
 class EmployerResponseSchema(UserResponseSchema):

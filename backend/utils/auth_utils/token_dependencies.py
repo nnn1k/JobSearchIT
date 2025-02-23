@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 
 from backend.api.users.auth.classes.AuthJWT import jwt_token
 from backend.schemas.user_schema import UserTypeSchema
-from backend.utils.str_const import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 
 async def check_user_role(access_token, refresh_token, response) -> UserTypeSchema | None:
     if access_token is None:

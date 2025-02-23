@@ -14,15 +14,34 @@ async function get_resumes() {
         url: '/api/workers/me/'
     })
     console.log(getResponse)
+    if (!getResponse){
+        hideLoadingIndicator(loadingIndicator)
+    }
     const resumes = getResponse.user.resumes;
     const container = document.getElementById('resume-container');
+
+    if (resumes.length === 0) {
+        container.style.marginTop = '15%'
+        const noResumesLabel = document.createElement('h2');
+        noResumesLabel.textContent = `У вас еще нет резюме. Мы можете создать его `;
+
+        const link = document.createElement('a');
+        link.textContent = 'тут';
+        link.href = '/resumes/add';
+        link.classList.add('resume-link');
+
+        noResumesLabel.appendChild(link); // добавляем ссылку в текст
+        container.appendChild(noResumesLabel);
+        hideLoadingIndicator(loadingIndicator);
+        return;
+    }
 
     resumes.forEach(resume => {
         const resumeElement = document.createElement('div');
         resumeElement.classList.add('resume');
 
         const titleElement = document.createElement('h2');
-        titleElement.textContent = resume.title;
+        titleElement.textContent = resume.profession.title;
 
         const salaryElement = document.createElement('p');
         print_salary(salaryElement, resume.salary_first, resume.salary_second)
@@ -35,17 +54,23 @@ async function get_resumes() {
 
         const editButton = document.createElement('button');
         editButton.classList.add('red_button');
-        editButton.style.width = '40%';
-        editButton.style.height = '25%';
-        editButton.style.marginLeft = '60%';
+        editButton.style.width = '30%';
+        editButton.style.height = '15%';
         editButton.textContent = "Редактировать";
 
         editButton.onclick = () => {
             window.location.href = `/worker/resumes/${resume.id}/edit`;
         };
+        const statsLabel = document.createElement('p');
+        statsLabel.textContent = 'Статистика:'
+        const stastElement = document.createElement('div');
+        stastElement.classList.add('stats');
+        stastElement.textContent = `0 просмотров`
 
         resumeElement.appendChild(titleElement);
-        resumeElement.appendChild(updatedAtElement)
+        resumeElement.appendChild(updatedAtElement);
+        resumeElement.appendChild(statsLabel);
+        resumeElement.appendChild(stastElement);
         resumeElement.appendChild(salaryElement);
         resumeElement.appendChild(cityElement);
         resumeElement.appendChild(editButton);

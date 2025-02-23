@@ -28,3 +28,11 @@ def resume_edit(request: Request):
     if user_type != "worker":
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/worker/resume/edit/resume.html", {"request": request})
+
+
+@router.get('/resumes/{resume_id}/edit/skills')
+def resume_skills_edit(request: Request):
+    user_type = request.cookies.get("user_type")
+    if user_type != "worker":
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse("/pages/worker/resume/edit/edit_skills/skills.html", {"request": request})

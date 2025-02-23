@@ -17,6 +17,7 @@ from backend.database.models.other.Skill import SkillsOrm
 from backend.database.models.other.ResumeSkills import ResumesSkillsOrm
 from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.database.models.other.Response import ResponsesOrm
+from backend.database.models.other.Profession import ProfessionsOrm
 
 config = context.config
 

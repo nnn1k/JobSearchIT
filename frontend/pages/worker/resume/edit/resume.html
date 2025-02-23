@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Редактирование резюме</title>
-    <link rel="stylesheet" href="/frontend/pages/vacancy/create/vacancy.css">
+    <link rel="stylesheet" href="/frontend/pages/worker/resume/edit/resume.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.2/tinymce.min.js"></script>
 </head>
 {% extends 'base_worker/base_worker.html' %}
@@ -16,7 +16,10 @@
         <div class="fields_for_data">
             <div class="field_title">
                 <label class="title_vacancy">Желаяемая должность</label>
-                <input type="text" class="input_for_title_vacancy" id="input_for_title_vacancy" required="">
+                <form id="jobForm" class="input_for_title_vacancy">
+                    <input type="text" id="jobInput" placeholder="Введите название..." autocomplete="off">
+                    <div id="jobsDropdown" class="dropdown"></div>
+                </form>
             </div>
             <div class="field_description">
                 <label class="description_vacancy">Описание</label>
@@ -42,9 +45,9 @@
 
             </div>
 
-            <div>
+            <div class="btns">
                 <input id="cancel_btn" class="white_button" type="button" value="Отменить">
-                <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить">
+                <input id="add_vacancy_btn" class="red_button" type="button" value="Сохранить" onclick="put_resume()">
             </div>
         </div>
         <script type="module" src="/frontend/pages/worker/resume/edit/resume.js"></script>

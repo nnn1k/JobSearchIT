@@ -15,6 +15,7 @@ class TestEmployerProfile:
 
         assert response.status_code == 200
         user = check_user(response)
+        assert user.name == ""
 
     @pytest.mark.asyncio
     async def test_put_employer(self):
@@ -32,7 +33,8 @@ class TestEmployerProfile:
         )
 
         assert response.status_code == 200
-        check_user(response)
+        user = check_user(response)
+        assert user.name == "test"
 
     @pytest.mark.asyncio
     async def test_patch_employer(self):
@@ -40,9 +42,10 @@ class TestEmployerProfile:
         response = await client.patch(
             '/employers/me',
             json={
-                "name": "test",
+                "name": "ttest",
             }
         )
 
         assert response.status_code == 200
-        check_user(response)
+        user = check_user(response)
+        assert user.name == "ttest"
