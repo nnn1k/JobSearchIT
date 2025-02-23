@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -11,4 +11,4 @@ class SkillSchema(GlobalSchemaNoDate):
     model_config = ConfigDict(from_attributes=True)
 
 class SkillListSchema(BaseModel):
-    skills: List['SkillSchema']
+    skills: List[Optional['SkillSchema']]
