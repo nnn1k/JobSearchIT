@@ -28,7 +28,6 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
             conditions.append(VacanciesOrm.salary_first >= 0)
             conditions.append(VacanciesOrm.salary_second >= 0)
         if min_salary:
-            print(1)
             conditions.append(VacanciesOrm.salary_first >= min_salary)
         if profession:
             conditions.append(ProfessionsOrm.title.like(f'{profession}%'))
