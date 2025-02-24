@@ -38,7 +38,7 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         result = await session.execute(stmt)
         vacancies = result.scalars().unique().all()
         if not vacancies:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Vacancies not found')
+            return []
         schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
         return schemas
 
