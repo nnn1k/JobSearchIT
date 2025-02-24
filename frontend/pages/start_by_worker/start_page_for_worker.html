@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/pages/start_by_worker/start_page_for_worker.css">
+    <title>IT JobSearch - Поиск работы в IT</title>
+</head>
+{% extends 'base_worker/base_worker.html' %}
+{% block content %}
+<body>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Найдите работу вашей мечты в IT</h1>
+                <p>Тысячи вакансий для IT-специалистов ждут вас</p>
+                <form class="search-form">
+                    <input type="text" class="search-input" id="job-search" placeholder="Введите желаемую должность">
+                    <button type="submit" class="search-button" id="search-button"> Найти</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="categories">
+            <div class="container">
+                <h2>Популярные категории</h2>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <h3>Разработка</h3>
+                    </div>
+                    <div class="category-card">
+
+                        <h3>DevOps</h3>
+                    </div>
+                    <div class="category-card">
+
+                        <h3>UX/UI Дизайн</h3>
+                    </div>
+                    <div class="category-card">
+                        <h3>Data Science</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="jobs">
+            <div class="container">
+                <h2>Последние вакансии</h2>
+                <div class="job-grid">
+                    <div class="job-card">
+                        <h3>Frontend Developer</h3>
+                        <p>Компания "IT Solutions"</p>
+                        <p>Москва • Полный рабочий день</p>
+                        <a type="button" class="red_button">Подробнее</a>
+                    </div>
+                    <div class="job-card">
+                        <h3>Python Developer</h3>
+                        <p>Компания "Tech Innovators"</p>
+                        <p>Санкт-Петербург • Удаленная работа</p>
+                        <a type="button" class="red_button">Подробнее</a>
+                    </div>
+                    <div class="job-card">
+                        <h3>Data Analyst</h3>
+                        <p>Компания "Data Insights"</p>
+                        <p>Казань • Гибридный график</p>
+                        <a type="button" class="red_button">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Почему IT JobSearch?</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Актуальные вакансии</h3>
+                        <p>Ежедневно обновляемая база вакансий от ведущих IT-компаний</p>
+                    </div>
+                    <div class="feature-card">
+
+                        <h3>Специализация на IT</h3>
+                        <p>Фокус на технологических профессиях и навыках</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Умный поиск</h3>
+                        <p>Находите подходящие вакансии с помощью продвинутых фильтров</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script type="module" src="/frontend/pages/start_by_worker/start_page_for_worker.js"></script>
+</body>
+{% endblock %}
+</html>

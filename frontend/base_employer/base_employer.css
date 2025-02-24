@@ -19,9 +19,9 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 30px;
     background-color: crimson;
     border-bottom: 1px solid #ccc;
+    width: 100%;
 }
 
 .logo img {

@@ -19,9 +19,9 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 30px;
     background-color: crimson;
     border-bottom: 1px solid #ccc;
+    width: 100%;
 }
 
 .logo img {
@@ -46,13 +46,10 @@ header{
 
 
 .content {
-    min-width: 100vh;
     min-height: 100vh;
 }
 
-.div_link_my_resumes{
-    margin-right: 60%;
-}
+
 
 #link_my_resumes{
     font-size: 18px;
@@ -75,11 +72,11 @@ header{
 }
 
 .footer {
-  background-color: #f8f8f8;
-  color: #333;
-  padding: 40px 0 20px;
-  font-family: Arial, sans-serif;
-    margin-top: 3%
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 40px 0 20px;
+    font-family: Arial, sans-serif;
+    margin-top: 3%;
 }
 
 .footer-content {
@@ -171,6 +168,11 @@ header{
     margin-bottom: 30px;
   }
 }
+
+.div_link_my_resumes{
+    margin-right: auto;
+}
+
 
 
 
