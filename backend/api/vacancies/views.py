@@ -38,16 +38,16 @@ async def create_new_vacancy(
 async def get_vacancies(
         user=Depends(get_user_by_token),
         min_salary: int = None,
-        have_salary: bool = None,
         profession: str = None,
         city: str = None,
+        start_page: bool = None
 ):
     vacancies = await get_all_vacancies_query(
-        user,
+        user=user,
         min_salary=min_salary,
-        have_salary=have_salary,
         profession=profession,
-        city=city
+        city=city,
+        start_page=start_page
     )
     cities = Counter(vacancy.city for vacancy in vacancies)
     return {

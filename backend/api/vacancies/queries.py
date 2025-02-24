@@ -4,17 +4,19 @@ from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.models.employer import VacanciesOrm
 from backend.database.models.other import ProfessionsOrm
+from backend.database.models.worker import ResumesOrm, WorkersOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
+from backend.utils.const import WORKER_USER_TYPE
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
 from backend.utils.other.type_utils import UserVar
 
 
 async def get_all_vacancies_query(user: UserVar, **kwargs):
     min_salary = kwargs.get('min_salary', None)
-    have_salary = kwargs.get('have_salary', None)
     profession = kwargs.get('profession', None)
     city = kwargs.get('city', None)
+    start_page = kwargs.get('start_page', None)
     async with session_factory() as session:
         stmt = (
             select(VacanciesOrm)
@@ -24,13 +26,20 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         conditions = []
         if city:
             conditions.append(VacanciesOrm.city == city)
-        if have_salary:
-            conditions.append(VacanciesOrm.salary_first >= 0)
-            conditions.append(VacanciesOrm.salary_second >= 0)
         if min_salary:
             conditions.append(VacanciesOrm.salary_first >= min_salary)
         if profession:
             conditions.append(ProfessionsOrm.title.like(f'{profession}%'))
+        if start_page and user.type == WORKER_USER_TYPE:
+            last_resume = await session.execute(
+                select(ResumesOrm)
+                .where(and_(ResumesOrm.worker_id == user.id))
+                .options(selectinload(ResumesOrm.profession))
+                .order_by(desc(ResumesOrm.updated_at))
+                .limit(1)
+            )
+            last_resume = last_resume.scalars().one_or_none()
+            conditions.append(ProfessionsOrm.title.like(f'{last_resume.profession.title}%'))
         if conditions:
             stmt = stmt.where(and_(*conditions))
         stmt = stmt.order_by(desc(VacanciesOrm.updated_at))
