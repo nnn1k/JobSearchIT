@@ -34,7 +34,7 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, w
         resume = stmt.scalars().one_or_none()
         if not resume:
             raise resume_not_found_exc
-        if worker.id != resume.id:
+        if worker.id != resume.worker_id:
             raise user_is_not_owner_exc
 
         result = await session.execute(select(ResumesSkillsOrm).filter_by(resume_id=resume_id))
@@ -45,8 +45,6 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, w
         skills_to_add = set(skills_list) - current_skill_ids
 
         skills_to_remove = current_skill_ids - set(skills_list)
-        from backend.utils.other.logger_utils import logger
-        logger.info('1')
         for skill_id in skills_to_add:
             new_resume_skill = ResumesSkillsOrm(resume_id=resume_id, skill_id=skill_id)
             session.add(new_resume_skill)
