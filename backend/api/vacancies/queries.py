@@ -4,33 +4,34 @@ from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.models.employer import VacanciesOrm
 from backend.database.models.other import ProfessionsOrm
-from backend.database.models.worker import ResumesOrm, WorkersOrm
+from backend.database.models.worker import ResumesOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
-from backend.utils.const import WORKER_USER_TYPE
+from backend.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
 from backend.utils.other.type_utils import UserVar
 
+async def build_conditions(session, user, **kwargs):
+    min_salary: int = kwargs.get('min_salary', None)
+    profession: str = kwargs.get('profession', None)
+    city: str = kwargs.get('city', None)
+    all_vacancy: bool = kwargs.get('all_vacancy', None)
+    title: str = None
+    conditions = []
+    if city:
+        conditions.append(VacanciesOrm.city == city)
+    if min_salary:
+        conditions.append(VacanciesOrm.salary_first >= min_salary)
+    if profession:
+        conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
+    if not conditions and not all_vacancy:
+        condition, title = await get_user_conditions(session, user)
+        conditions.append(condition)
+    return conditions, title
 
-async def get_all_vacancies_query(user: UserVar, **kwargs):
-    min_salary = kwargs.get('min_salary', None)
-    profession = kwargs.get('profession', None)
-    city = kwargs.get('city', None)
-
-    async with session_factory() as session:
-        stmt = (
-            select(VacanciesOrm)
-            .join(ProfessionsOrm)
-            .options(selectinload(VacanciesOrm.profession))
-        )
-        conditions = []
-        if city:
-            conditions.append(VacanciesOrm.city == city)
-        if min_salary:
-            conditions.append(VacanciesOrm.salary_first >= min_salary)
-        if profession:
-            conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
-        if user.type == WORKER_USER_TYPE and not conditions:
+async def get_user_conditions(session, user):
+    if user:
+        if user.type == WORKER_USER_TYPE:
             last_resume = await session.execute(
                 select(ResumesOrm)
                 .where(and_(ResumesOrm.worker_id == user.id))
@@ -43,8 +44,22 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
             for word in last_resume.profession.title.split():
                 condition.append(ProfessionsOrm.title.ilike(word))
             condition.append(ProfessionsOrm.title.ilike(last_resume.profession.title))
-            conditions.append(or_(*condition))
-            profession = last_resume.profession.title
+            title = last_resume.profession.title
+            return or_(*condition), title
+
+        if user.type == EMPLOYER_USER_TYPE:
+            return VacanciesOrm.company_id != user.company_id, None
+
+
+async def get_all_vacancies_query(user: UserVar, **kwargs):
+    async with session_factory() as session:
+        stmt = (
+            select(VacanciesOrm)
+            .join(ProfessionsOrm)
+            .options(selectinload(VacanciesOrm.profession))
+        )
+        conditions, title = await build_conditions(session, user, **kwargs)
+
         if conditions:
             stmt = stmt.where(and_(*conditions))
         stmt = stmt.order_by(desc(VacanciesOrm.updated_at))
@@ -53,7 +68,7 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         if not vacancies:
             return []
         schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
-        return schemas, profession
+        return schemas, title
 
 
 async def create_vacancy_queries(company_id, user, **kwargs):
