@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from sqlalchemy import and_, desc, insert, select, update, delete
+from sqlalchemy import and_, desc, insert, or_, select, update, delete
 from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.models.employer import VacanciesOrm
@@ -16,7 +16,7 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
     min_salary = kwargs.get('min_salary', None)
     profession = kwargs.get('profession', None)
     city = kwargs.get('city', None)
-    start_page = kwargs.get('start_page', None)
+
     async with session_factory() as session:
         stmt = (
             select(VacanciesOrm)
@@ -29,8 +29,8 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         if min_salary:
             conditions.append(VacanciesOrm.salary_first >= min_salary)
         if profession:
-            conditions.append(ProfessionsOrm.title.like(f'{profession}%'))
-        if start_page and user.type == WORKER_USER_TYPE:
+            conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
+        if user.type == WORKER_USER_TYPE and not conditions:
             last_resume = await session.execute(
                 select(ResumesOrm)
                 .where(and_(ResumesOrm.worker_id == user.id))
@@ -39,7 +39,12 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
                 .limit(1)
             )
             last_resume = last_resume.scalars().one_or_none()
-            conditions.append(ProfessionsOrm.title.like(f'{last_resume.profession.title}%'))
+            condition = []
+            for word in last_resume.profession.title.split():
+                condition.append(ProfessionsOrm.title.ilike(word))
+            condition.append(ProfessionsOrm.title.ilike(last_resume.profession.title))
+            conditions.append(or_(*condition))
+            profession = last_resume.profession.title
         if conditions:
             stmt = stmt.where(and_(*conditions))
         stmt = stmt.order_by(desc(VacanciesOrm.updated_at))
@@ -48,7 +53,7 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         if not vacancies:
             return []
         schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
-        return schemas
+        return schemas, profession
 
 
 async def create_vacancy_queries(company_id, user, **kwargs):

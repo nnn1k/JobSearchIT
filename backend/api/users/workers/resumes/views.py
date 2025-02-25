@@ -27,7 +27,7 @@ async def add_resumes_views(
 ):
     skills: List[SkillSchema] = add_resume.skills
     resume = await create_resume_queries(worker_id=user.id, **add_resume.model_dump(exclude={'skills'}))
-    await update_resume_skills(skills, resume.id)
+    await update_resume_skills(skills, resume.id, user)
     return {
         'status': 'ok',
         'resume': resume,

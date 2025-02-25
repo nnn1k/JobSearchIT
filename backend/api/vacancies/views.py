@@ -40,18 +40,17 @@ async def get_vacancies(
         min_salary: int = None,
         profession: str = None,
         city: str = None,
-        start_page: bool = None
 ):
-    vacancies = await get_all_vacancies_query(
+    vacancies, profession = await get_all_vacancies_query(
         user=user,
         min_salary=min_salary,
         profession=profession,
         city=city,
-        start_page=start_page
     )
     cities = Counter(vacancy.city for vacancy in vacancies)
     return {
         'length': len(vacancies),
+        'profession': profession,
         'cities': cities,
         'status': 'ok',
         'vacancies': vacancies,
