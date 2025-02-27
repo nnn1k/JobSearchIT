@@ -53,7 +53,7 @@ async def get_vacancies(
     user_type = user.type if user else None
     return {
         'params': params,
-        'count': len(vacancies),
+        'length': len(vacancies),
         'user_type': user_type,
         'cities': cities,
         'status': 'ok',
