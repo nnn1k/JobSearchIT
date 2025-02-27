@@ -54,7 +54,7 @@ async function getVacancies(){
         hideLoadingIndicator(loadingIndicator)
         return
     }
-    renderVacancies(getResponse.vacancies, true, profession ,getResponse.length, )
+    renderVacancies(getResponse.vacancies, true, profession ,getResponse.count)
     hideLoadingIndicator(loadingIndicator)
 }
 
