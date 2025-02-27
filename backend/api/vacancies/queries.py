@@ -11,12 +11,11 @@ from backend.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
 from backend.utils.other.type_utils import UserVar
 
-async def build_conditions(session, user, **kwargs):
+async def build_conditions(user, **kwargs):
     min_salary: int = kwargs.get('min_salary', None)
     profession: str = kwargs.get('profession', None)
     city: str = kwargs.get('city', None)
     all_vacancy: bool = kwargs.get('all_vacancy', None)
-    title: str = None
     conditions = []
     if city:
         conditions.append(VacanciesOrm.city == city)
@@ -24,31 +23,9 @@ async def build_conditions(session, user, **kwargs):
         conditions.append(VacanciesOrm.salary_first >= min_salary)
     if profession:
         conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
-    if not conditions and not all_vacancy:
-        condition, title = await get_user_conditions(session, user)
-        conditions.append(condition)
-    return conditions, title
-
-async def get_user_conditions(session, user):
-    if user:
-        if user.type == WORKER_USER_TYPE:
-            last_resume = await session.execute(
-                select(ResumesOrm)
-                .where(and_(ResumesOrm.worker_id == user.id))
-                .options(selectinload(ResumesOrm.profession))
-                .order_by(desc(ResumesOrm.updated_at))
-                .limit(1)
-            )
-            last_resume = last_resume.scalars().one_or_none()
-            condition = []
-            for word in last_resume.profession.title.split():
-                condition.append(ProfessionsOrm.title.ilike(word))
-            condition.append(ProfessionsOrm.title.ilike(last_resume.profession.title))
-            title = last_resume.profession.title
-            return or_(*condition), title
-
-        if user.type == EMPLOYER_USER_TYPE:
-            return VacanciesOrm.company_id != user.company_id, None
+    if user.type == EMPLOYER_USER_TYPE:
+        conditions.append(VacanciesOrm.company_id != user.company_id)
+    return conditions
 
 
 async def get_all_vacancies_query(user: UserVar, **kwargs):
@@ -58,7 +35,7 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
             .join(ProfessionsOrm)
             .options(selectinload(VacanciesOrm.profession))
         )
-        conditions, title = await build_conditions(session, user, **kwargs)
+        conditions = await build_conditions(user, **kwargs)
 
         if conditions:
             stmt = stmt.where(and_(*conditions))
@@ -68,7 +45,7 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         if not vacancies:
             return []
         schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
-        return schemas, title
+        return schemas, kwargs
 
 
 async def create_vacancy_queries(company_id, user, **kwargs):
