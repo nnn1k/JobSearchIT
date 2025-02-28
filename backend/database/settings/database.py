@@ -1,17 +1,23 @@
 import datetime
 from typing import Annotated
 
-from sqlalchemy import text
+from sqlalchemy import text, event
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
+from backend.utils.other.logger_utils import logger
 
 from backend.database.settings.config import settings
 
 engine = create_async_engine(
     url=settings.ASYNC_DB_URL,
-    echo=True
+    echo=False
 )
 
+def log_queries(conn, cursor, statement, parameters, context, executemany):
+    logger.log('DATABASE',f"Executing: {statement} | Params: {parameters}\n")
+
+
+event.listen(engine.sync_engine, 'before_cursor_execute', log_queries)
 session_factory = async_sessionmaker(engine)
 
 class Base(DeclarativeBase):

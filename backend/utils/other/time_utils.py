@@ -26,8 +26,8 @@ def time_it_async(func):
         else:
             filename = filename
 
-        logger.debug(f"Функция {func.__name__} выполнена за {duration:.4f} секунд. "
-              f"Вызвана из {filename}, строка {lineno}.")
+        logger.log('TIME', f"Функция {func.__name__} выполнена за {duration:.4f} секунд. \n"
+              f"Вызвана из {filename}, строка {lineno}. \n")
         return result
 
     return wrapper

@@ -38,7 +38,6 @@ async def get_user_by_token(
         user_type: Optional[str] = Query(None, include_in_schema=False),
 ) -> None | WorkerResponseSchema | EmployerResponseSchema:
     user_jwt_schema = await check_user_role(access_token, refresh_token, response)
-    logger.info(f'{user_jwt_schema=}')
     if not user_jwt_schema:
         if user_type is not None:
             raise HTTPException(

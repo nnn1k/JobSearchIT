@@ -5,13 +5,12 @@ from backend.api.users.employers.profile.queries import update_employer_by_id_qu
 from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
 from backend.api.users.employers.profile.schemas import EmployerProfileSchema
 from backend.schemas.global_schema import DynamicSchema
-from backend.utils.other.time_utils import time_it_async
+
 
 router = APIRouter(prefix='/employers/me', tags=['employers'])
 
 
 @router.get('', summary='Узнать информацию о себе')
-@time_it_async
 async def get_my_profile(
         employer: EmployerResponseSchema = Depends(get_employer_by_token)
 ):
@@ -22,7 +21,6 @@ async def get_my_profile(
 
 
 @router.put('', summary='Редактировать информацию о себе')
-@time_it_async
 async def update_my_profile(
         new_employer: EmployerProfileSchema,
         employer: EmployerResponseSchema = Depends(get_employer_by_token)
@@ -35,7 +33,6 @@ async def update_my_profile(
 
 
 @router.patch('', summary='Редактировать информацию о себе по одному атрибуту')
-@time_it_async
 async def update_my_other(
         new_employer: DynamicSchema,
         employer: EmployerResponseSchema = Depends(get_employer_by_token)

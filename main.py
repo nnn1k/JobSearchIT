@@ -1,5 +1,6 @@
 import os
 
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -39,7 +40,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 async def log_requests(request: Request, call_next):
     response = await call_next(request)
 
-    if request.url.path.startswith("/api") and 300 >= response.status_code >= 400:
+    if request.url.path.startswith("/api"):
         logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
 
     return response

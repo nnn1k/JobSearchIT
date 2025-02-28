@@ -15,7 +15,6 @@ async def build_conditions(user, **kwargs):
     min_salary: int = kwargs.get('min_salary', None)
     profession: str = kwargs.get('profession', None)
     city: str = kwargs.get('city', None)
-    all_vacancy: bool = kwargs.get('all_vacancy', None)
     conditions = []
     if city:
         conditions.append(VacanciesOrm.city == city)
@@ -23,8 +22,9 @@ async def build_conditions(user, **kwargs):
         conditions.append(VacanciesOrm.salary_first >= min_salary)
     if profession:
         conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
-    if user.type == EMPLOYER_USER_TYPE:
-        conditions.append(VacanciesOrm.company_id != user.company_id)
+    if user:
+        if user.type == EMPLOYER_USER_TYPE:
+            conditions.append(VacanciesOrm.company_id != user.company_id)
     return conditions
 
 
