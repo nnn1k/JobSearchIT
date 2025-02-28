@@ -61,6 +61,7 @@ async function getVacancies(){
 function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
     const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
+    container.style.width = '450px'
 
     const countVacancyElement = document.createElement('h2');
 
@@ -76,6 +77,7 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
     vacancies.forEach(vacancy => {
         const vacancyElement = document.createElement('div');
         vacancyElement.classList.add('vacancy');
+        vacancyElement.style.width = '150%'
 
         const linkElement = document.createElement('a');
         linkElement.href = `/vacancies/${vacancy.id}`;

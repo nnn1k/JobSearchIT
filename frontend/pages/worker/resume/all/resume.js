@@ -1,6 +1,6 @@
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
-import {makeRequest} from "/frontend/js/utils.js";
+import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -37,6 +37,10 @@ async function get_resumes() {
     }
 
     resumes.forEach(resume => {
+        const linkElement = document.createElement('a')
+        linkElement.href = apiUrl + `/resumes/${resume.id}`
+        linkElement.style.color = '#555'
+
         const resumeElement = document.createElement('div');
         resumeElement.classList.add('resume');
 
@@ -65,7 +69,7 @@ async function get_resumes() {
         statsLabel.textContent = 'Статистика:'
         const stastElement = document.createElement('div');
         stastElement.classList.add('stats');
-        stastElement.textContent = `0 просмотров`
+        stastElement.textContent = `0 приглашений`
 
         resumeElement.appendChild(titleElement);
         resumeElement.appendChild(updatedAtElement);
@@ -75,7 +79,9 @@ async function get_resumes() {
         resumeElement.appendChild(cityElement);
         resumeElement.appendChild(editButton);
 
-        container.appendChild(resumeElement);
+        linkElement.appendChild(resumeElement)
+
+        container.appendChild(linkElement);
     });
     hideLoadingIndicator(loadingIndicator);
 }
