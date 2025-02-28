@@ -8,7 +8,7 @@ from backend.utils.const import COMPANY_TYPE
 
 class CompanySchema(GlobalSchema):
     name: str
-    description: str
+    description: Optional[str] = ''
     type: str = COMPANY_TYPE
 
     vacancies: Optional[List['VacancySchema']]

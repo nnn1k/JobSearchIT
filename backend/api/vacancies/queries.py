@@ -17,9 +17,10 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         stmt = (
             select(VacanciesOrm)
             .join(ProfessionsOrm)
-            .options(joinedload(VacanciesOrm.company))
+            .options(selectinload(VacanciesOrm.company))
             .options(selectinload(VacanciesOrm.profession))
         )
+
         min_salary: int = kwargs.get('min_salary', None)
         profession: str = kwargs.get('profession', None)
         city: str = kwargs.get('city', None)
@@ -44,7 +45,6 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         vacancies = result.scalars().all()
         if not vacancies:
             return list(), kwargs
-
         schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
         return schemas, kwargs
 

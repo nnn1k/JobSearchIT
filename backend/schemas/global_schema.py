@@ -1,7 +1,7 @@
 import datetime
 from typing import Optional
 
-from pydantic import BaseModel, Field, field_validator, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, validator
 from fastapi import HTTPException, status
 
 
@@ -19,9 +19,13 @@ class GlobalSchemaNoDate(BaseModel):
 
 
 class GlobalSchema(GlobalSchemaNoDate):
-    created_at: Optional[datetime.datetime]
-    updated_at: Optional[datetime.datetime]
+    created_at: Optional[datetime.datetime] = Field(default=None, strict=False)
+    updated_at: Optional[datetime.datetime] = Field(default=None, strict=False)
 
+    model_config = ConfigDict(
+        extra='ignore',
+        strict=False,
+    )
 
 class DynamicSchema(BaseModel):
     class Config:
