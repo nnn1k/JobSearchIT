@@ -1,7 +1,7 @@
 from collections import Counter
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from backend.api.skills.queries import update_vacancy_skills
 from backend.api.vacancies.queries import (
@@ -37,11 +37,11 @@ async def create_new_vacancy(
 @time_it_async
 async def get_vacancies(
         user=Depends(get_user_by_token),
-        min_salary: int = None,
+        min_salary: int = Query(None, ge=0),
         profession: str = None,
         city: str = None,
-        page: int = 0,
-        size: int = 10,
+        page: int = Query(1, gt=0),
+        size: int = Query(10, ge=0),
 ):
     vacancies, params = await get_all_vacancies_query(
         user=user,
@@ -57,7 +57,7 @@ async def get_vacancies(
         'user_type': user_type,
         'cities': cities,
         'status': 'ok',
-        'vacancies': vacancies[page * size:(page + 1) * size],
+        'vacancies': vacancies[(page - 1) * size:page * size],
     }
 
 

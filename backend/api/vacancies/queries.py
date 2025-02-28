@@ -4,29 +4,11 @@ from sqlalchemy.orm import joinedload, selectinload
 
 from backend.database.models.employer import VacanciesOrm
 from backend.database.models.other import ProfessionsOrm
-from backend.database.models.worker import ResumesOrm
 from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
-from backend.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
+from backend.utils.const import EMPLOYER_USER_TYPE
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
 from backend.utils.other.type_utils import UserVar
-
-async def build_conditions(user, **kwargs):
-    min_salary: int = kwargs.get('min_salary', None)
-    profession: str = kwargs.get('profession', None)
-    city: str = kwargs.get('city', None)
-    conditions = []
-    if city:
-        conditions.append(VacanciesOrm.city == city)
-    if min_salary:
-        conditions.append(VacanciesOrm.salary_first >= min_salary)
-    if profession:
-        conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
-    if user:
-        if user.type == EMPLOYER_USER_TYPE:
-            conditions.append(VacanciesOrm.company_id != user.company_id)
-    return conditions
-
 
 async def get_all_vacancies_query(user: UserVar, **kwargs):
     async with session_factory() as session:
@@ -35,7 +17,19 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
             .join(ProfessionsOrm)
             .options(selectinload(VacanciesOrm.profession))
         )
-        conditions = await build_conditions(user, **kwargs)
+        min_salary: int = kwargs.get('min_salary', None)
+        profession: str = kwargs.get('profession', None)
+        city: str = kwargs.get('city', None)
+        conditions = []
+        if city:
+            conditions.append(VacanciesOrm.city == city)
+        if min_salary:
+            conditions.append(VacanciesOrm.salary_first >= min_salary)
+        if profession:
+            conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
+        if user:
+            if user.type == EMPLOYER_USER_TYPE:
+                conditions.append(VacanciesOrm.company_id != user.company_id)
 
         if conditions:
             stmt = stmt.where(and_(*conditions))
