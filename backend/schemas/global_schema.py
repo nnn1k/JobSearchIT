@@ -21,7 +21,6 @@ class GlobalSchemaNoDate(BaseModel):
 class GlobalSchema(GlobalSchemaNoDate):
     created_at: Optional[datetime.datetime]
     updated_at: Optional[datetime.datetime]
-    deleted_at: Optional[datetime.datetime]
 
 
 class DynamicSchema(BaseModel):

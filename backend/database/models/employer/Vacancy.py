@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
@@ -30,4 +30,8 @@ class VacanciesOrm(Base):
         'ProfessionsOrm',
         back_populates='vacancies',
         lazy='noload'
+    )
+    __table_args__ = (
+        Index('idx_vacancies_city', 'city'),
+        Index('idx_vacancies_salary', 'salary_first')
     )

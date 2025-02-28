@@ -8,18 +8,25 @@ from backend.database.settings.database import session_factory
 from backend.schemas import EmployerResponseSchema, VacancySchema
 from backend.utils.const import EMPLOYER_USER_TYPE
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
+from backend.utils.other.time_utils import time_it_async
 from backend.utils.other.type_utils import UserVar
 
+@time_it_async
 async def get_all_vacancies_query(user: UserVar, **kwargs):
     async with session_factory() as session:
         stmt = (
             select(VacanciesOrm)
             .join(ProfessionsOrm)
+            .options(joinedload(VacanciesOrm.company))
             .options(selectinload(VacanciesOrm.profession))
         )
         min_salary: int = kwargs.get('min_salary', None)
         profession: str = kwargs.get('profession', None)
         city: str = kwargs.get('city', None)
+        if isinstance(city, str):
+            city = city.strip()
+        if isinstance(profession, str):
+            profession = profession.strip()
         conditions = []
         if city:
             conditions.append(VacanciesOrm.city == city)
@@ -30,14 +37,14 @@ async def get_all_vacancies_query(user: UserVar, **kwargs):
         if user:
             if user.type == EMPLOYER_USER_TYPE:
                 conditions.append(VacanciesOrm.company_id != user.company_id)
-
         if conditions:
             stmt = stmt.where(and_(*conditions))
         stmt = stmt.order_by(desc(VacanciesOrm.updated_at))
         result = await session.execute(stmt)
-        vacancies = result.scalars().unique().all()
+        vacancies = result.scalars().all()
         if not vacancies:
-            return []
+            return list(), kwargs
+
         schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
         return schemas, kwargs
 

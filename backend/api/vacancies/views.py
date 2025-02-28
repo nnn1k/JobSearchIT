@@ -3,6 +3,7 @@ from typing import List
 
 from fastapi import APIRouter, Depends, Query
 
+
 from backend.api.skills.queries import update_vacancy_skills
 from backend.api.vacancies.queries import (
     create_vacancy_queries,
@@ -20,7 +21,6 @@ router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 
 @router.post('', summary='Создать вакансию')
-@time_it_async
 async def create_new_vacancy(
         add_vacancy: VacancyAddSchema,
         user: EmployerResponseSchema = Depends(get_employer_by_token)
@@ -34,7 +34,6 @@ async def create_new_vacancy(
     }
 
 @router.get('', summary='Поиск по вакансиям')
-@time_it_async
 async def get_vacancies(
         user=Depends(get_user_by_token),
         min_salary: int = Query(None, ge=0),
@@ -43,6 +42,7 @@ async def get_vacancies(
         page: int = Query(1, gt=0),
         size: int = Query(10, ge=0),
 ):
+
     vacancies, params = await get_all_vacancies_query(
         user=user,
         min_salary=min_salary,
@@ -62,7 +62,6 @@ async def get_vacancies(
 
 
 @router.get('/{vacancy_id}', summary='Посмотреть информацию о вакансии')
-@time_it_async
 async def get_info_on_vacancy(
         vacancy_id: int,
         user=Depends(get_user_by_token)
@@ -77,7 +76,6 @@ async def get_info_on_vacancy(
 
 
 @router.put('/{vacancy_id}', summary='Изменить вакансию')
-@time_it_async
 async def update_info_on_company(
         vacancy_id: int,
         new_vacancy: VacancyUpdateSchema,
@@ -91,7 +89,6 @@ async def update_info_on_company(
 
 
 @router.delete('/{vacancy_id}', summary='Удалить вакансию')
-@time_it_async
 async def delete_info_on_vacancy(
         vacancy_id: int,
         user: EmployerResponseSchema = Depends(get_employer_by_token)

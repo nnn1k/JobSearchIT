@@ -1,5 +1,7 @@
+from sqlalchemy import Index
 from sqlalchemy.orm import Mapped, relationship
 
+from backend.database.models.worker import ResumesOrm
 from backend.database.settings.database import Base
 
 class ProfessionsOrm(Base):
@@ -16,4 +18,8 @@ class ProfessionsOrm(Base):
         back_populates='profession',
         lazy='noload'
     )
+    __table_args__ = (
+        Index('idx_professions_title', 'title'),
+    )
+
 

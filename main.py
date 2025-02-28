@@ -8,6 +8,7 @@ from backend.utils.other.logger_utils import logger
 from fastapi.responses import JSONResponse
 
 from backend.api import router as backend_router
+from backend.utils.settings import settings
 from frontend.routers import router as frontend_router
 
 frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
@@ -44,3 +45,6 @@ async def log_requests(request: Request, call_next):
         logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
 
     return response
+
+if __name__ == "__main__":
+    uvicorn.run(app, host=settings.run.host, port=settings.run.port)
