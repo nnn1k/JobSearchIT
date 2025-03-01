@@ -42,7 +42,7 @@ async function getProfessions() {
         }
 
         const matchingJobs = availableJobs.filter(job =>
-            job.title.toLowerCase().includes(searchText.toLowerCase())
+            job.title.toLowerCase().startsWith(searchText.toLowerCase())
         );
 
         if (matchingJobs.length === 0) {
@@ -56,11 +56,12 @@ async function getProfessions() {
             option.textContent = job.title;
             option.addEventListener('click', () => {
                 profession_id = job.id
-                jobInput.value = job.title;
+                jobInput.value = job.title; // Вставка выбранной профессии в input
                 jobsDropdown.style.display = 'none';
             });
             jobsDropdown.appendChild(option);
         });
+
         jobsDropdown.style.display = 'block';
     };
 
@@ -147,4 +148,10 @@ async function put_vacancy(){
     })
     window.location.href = apiUrl + `/vacancies/${vacancyId}`
 }
+
+async function cancel_edit_vacancy(){
+    const vacancyId = location.pathname.split('/')[2]
+    window.location.href = apiUrl + `/vacancies/${vacancyId}`
+}
+
 window.put_vacancy = put_vacancy

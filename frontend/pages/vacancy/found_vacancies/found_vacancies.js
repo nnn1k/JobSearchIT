@@ -5,18 +5,81 @@ import {formatDateTime} from "/frontend/js/timefunc.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     getVacancies()
+    getProfessions()
 })
+
+async function getProfessions() {
+    const getResponse = await makeRequest({
+        method: 'GET',
+        url: '/api/professions'
+    })
+    const form = document.getElementById('jobForm');
+    const jobInput = document.getElementById('job-search');
+    const jobsDropdown = document.getElementById('jobsDropdown');
+
+    // Имитация списка IT профессий с сервера в виде объектов
+    const availableJobs = getResponse.professions
+
+
+    // const availableJobs = noSortAvailableJobs.sort((a, b) => a.name.localeCompare(b.name));
+
+    // Function to filter and show matching jobs
+    const filterJobs = (searchText) => {
+        jobsDropdown.innerHTML = '';
+        if (!searchText) {
+            jobsDropdown.style.display = 'none';
+            return;
+        }
+
+        const matchingJobs = availableJobs.filter(job =>
+            job.title.toLowerCase().startsWith(searchText.toLowerCase())
+        );
+
+        if (matchingJobs.length === 0) {
+            jobsDropdown.style.display = 'none';
+            return;
+        }
+
+        matchingJobs.forEach(job => {
+            const option = document.createElement('div');
+            option.className = 'job-option';
+            option.textContent = job.title;
+            option.addEventListener('click', () => {
+                jobInput.value = job.title; // Вставка выбранной профессии в input
+                jobsDropdown.style.display = 'none';
+            });
+            jobsDropdown.appendChild(option);
+        });
+
+        jobsDropdown.style.display = 'block';
+    };
+
+    // Event listener for input changes
+    jobInput.addEventListener('input', (e) => {
+        filterJobs(e.target.value);
+    });
+
+    // Hide dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!jobInput.contains(e.target) && !jobsDropdown.contains(e.target)) {
+            jobsDropdown.style.display = 'none';
+        }
+    });
+}
 
 
 async function getVacancies(){
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
+    const { page } = getUrlParams()
 
     const profession = url.searchParams.get("profession");
     const city =  url.searchParams.get("city")
     const min_salary =  url.searchParams.get("min_salary")
 
+
     const searchParams = new URLSearchParams();
+    searchParams.append('page', page);
     if (profession){
         searchParams.append('profession', profession);
         document.getElementById('job-search').value = profession
@@ -30,6 +93,8 @@ async function getVacancies(){
         searchParams.append('min_salary', min_salary);
         document.getElementById('salary').value = min_salary
     }
+
+
 
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
@@ -55,6 +120,8 @@ async function getVacancies(){
         return
     }
     renderVacancies(getResponse.vacancies, true, profession ,getResponse.count)
+    const totalPages = Math.ceil(getResponse.count / 10) // Предполагаем, что на странице 10 вакансий
+    createPagination(page, totalPages)
     hideLoadingIndicator(loadingIndicator)
 }
 
@@ -95,6 +162,17 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
 
+        const linkCompany = document.createElement('a')
+        linkCompany.innerHTML = vacancy.company.name
+        linkCompany.href = apiUrl + `/companies/${vacancy.company.id}`
+        linkCompany.style.color = '#666'
+        linkCompany.addEventListener('mouseover', function() {
+            linkCompany.style.color = 'deepskyblue'; // Цвет текста ссылки при наведении
+        });
+        linkCompany.addEventListener('mouseout', function() {
+            linkCompany.style.color = '#666'; // Цвет текста ссылки при наведении
+        });
+
         const statsLabel = document.createElement('p');
         statsLabel.textContent = 'Статистика:'
         const stastElement = document.createElement('div');
@@ -103,6 +181,7 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
 
         linkElement.appendChild(titleElement);
         linkElement.appendChild(updatedAtElement);
+        linkElement.appendChild(linkCompany)
         linkElement.appendChild(statsLabel);
         linkElement.appendChild(stastElement);
         linkElement.appendChild(salaryElement);
@@ -136,12 +215,94 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
     });
 }
 
+function createPagination(currentPage, totalPages) {
+  const paginationElement = document.getElementById("pagination")
+  paginationElement.innerHTML = ""
+
+  const maxVisiblePages = 5
+  let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1)
+  const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages)
+
+  if (endPage - startPage + 1 < maxVisiblePages) {
+    startPage = Math.max(endPage - maxVisiblePages + 1, 1)
+  }
+
+  // Кнопка "Предыдущая"
+  const prevButton = document.createElement("button")
+  prevButton.textContent = "«"
+  prevButton.disabled = currentPage === 1
+  prevButton.addEventListener("click", () => changePage(currentPage - 1))
+  paginationElement.appendChild(prevButton)
+
+  // Номера страниц
+  for (let i = startPage; i <= endPage; i++) {
+    const pageLink = document.createElement("button")
+    pageLink.href = "#"
+    pageLink.textContent = i
+    if (i === currentPage) {
+      pageLink.classList.add("active")
+    }
+    pageLink.addEventListener("click", (e) => {
+      e.preventDefault()
+      changePage(i)
+    })
+    paginationElement.appendChild(pageLink)
+  }
+
+  // Кнопка "Следующая"
+  const nextButton = document.createElement("button")
+  nextButton.textContent = "»"
+  nextButton.disabled = currentPage === totalPages
+  nextButton.addEventListener("click", () => changePage(currentPage + 1))
+  paginationElement.appendChild(nextButton)
+
+  // Информация о страницах
+  const pageInfo = document.createElement("span")
+  pageInfo.className = "pagination-info"
+  pageInfo.textContent = `${currentPage} из ${totalPages}`
+  paginationElement.appendChild(pageInfo)
+}
+
+// Функция для изменения страницы
+function changePage(newPage) {
+  updateUrlParams({ page: newPage })
+  getVacancies()
+  scrollToTop()
+}
+
+function getUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        page: parseInt(params.get('page')) || 0
+    };
+}
+
+// Функция для обновления URL с новыми параметрами
+function updateUrlParams(params) {
+    const url = new URL(window.location);
+    Object.keys(params).forEach(key => {
+        url.searchParams.set(key, params[key]);
+    });
+    window.history.pushState({}, '', url);
+}
+
+// Функция для прокрутки страницы вверх
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
 
 async function searchVacancy(){
+
     const profession = document.getElementById('job-search').value;
     const city = document.getElementById('city').value
     const min_salary = document.getElementById('salary').value
+
     const searchParams = new URLSearchParams();
+    searchParams.append('page', 1);
     if (profession){
         searchParams.append('profession', profession);
     }

@@ -44,7 +44,7 @@ async function getProfessions() {
         }
 
         const matchingJobs = availableJobs.filter(job =>
-            job.title.toLowerCase().includes(searchText.toLowerCase())
+            job.title.toLowerCase().startsWith(searchText.toLowerCase())
         );
 
         if (matchingJobs.length === 0) {

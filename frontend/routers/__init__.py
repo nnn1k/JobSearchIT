@@ -25,13 +25,15 @@ router.include_router(resume_router)
 def home_page_worker(request: Request):
     user_type = request.cookies.get("user_type")
     if user_type == "worker":
-        return RedirectResponse(url="/vacancies")
+        return RedirectResponse(url="/vacancies/?page=1")
+    if user_type == "employer":
+        return RedirectResponse(url="/employer")
     return templates.TemplateResponse("/pages/start_by_worker/start_page_for_worker.html", {"request": request})
 
 
 @router.get("/employer")
 def home_page_employer(request: Request):
-    return templates.TemplateResponse("/base_employer/base_employer.html", {"request": request})
+    return templates.TemplateResponse("/pages/start_for_employer/start_page.html", {"request": request})
 
 
 @router.get("/login")

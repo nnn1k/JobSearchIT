@@ -137,7 +137,7 @@ function renderVacancies(vacancies, can_update) {
             editButton.onclick = () => {
                 window.location.href = `/vacancies/${vacancy.id}/edit`;
             };
-            vacancyElement.appendChild(feedbackButton);
+            vacancyElement.appendChild(editButton);
             linkElement.appendChild(vacancyElement);
             container.appendChild(linkElement);
             return;

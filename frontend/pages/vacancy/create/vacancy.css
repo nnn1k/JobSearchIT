@@ -145,8 +145,6 @@ body {
 }
 
 
-
-
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -229,9 +227,6 @@ body {
   color: var(--red-700);
 }
 
-.input_for_description_vacancy{
-
-}
 
 .dropdown {
     border: 1px solid #ccc;

@@ -134,8 +134,75 @@
     font-size: 14px;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
+.pagination button,
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 5px;
+  background-color: #fff;
+  color: crimson;
+  border: 1px solid crimson;
+  border-radius: 3px;
+  cursor: pointer;
+  text-decoration: none;
+}
 
+.pagination button:hover,
+.pagination button:hover {
+  background-color: crimson;
+    color: #f2f2f2;
+}
+
+.pagination button:disabled {
+  background-color: #f1f1f1;
+  color: #999;
+  border-color: #ddd;
+  cursor: not-allowed;
+}
+
+.pagination .active {
+  background-color: crimson;
+  color: #fff;
+}
+
+.pagination .active:hover {
+  background-color: #f2f2f2;
+  color: crimson;
+}
+
+.pagination-info {
+  margin: 0 10px;
+  color: #666;
+}
+
+.dropdown {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none; /* Скрыт по умолчанию */
+    background: white;
+    position: absolute;
+    width: 33%;
+    z-index: 1000;
+    margin-top: 3%;
+}
+
+.job-option {
+    padding: 10px;
+    cursor: pointer;
+    color: #555555;
+}
+
+.job-option:hover {
+    background-color: #f0f0f0;
+}
 
 /* Адаптивность для мобильных устройств */
 @media (max-width: 600px) {

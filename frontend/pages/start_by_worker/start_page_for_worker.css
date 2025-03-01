@@ -159,3 +159,27 @@ ul {
     color: #0070f3;
     margin-bottom: 1rem;
 }
+
+.dropdown {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none; /* Скрыт по умолчанию */
+    background: white;
+    position: absolute;
+    width: 33%;
+    z-index: 1000;
+    margin-top: 3%;
+    text-align: left;
+}
+
+.job-option {
+    padding: 10px;
+    cursor: pointer;
+    color: #555555;
+}
+
+.job-option:hover {
+    background-color: #f0f0f0;
+}
