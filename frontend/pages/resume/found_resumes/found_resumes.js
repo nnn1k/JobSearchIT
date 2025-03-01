@@ -4,9 +4,16 @@ import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-    getVacancies()
+    getResumes()
     getProfessions()
 })
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 
 async function getProfessions() {
     const getResponse = await makeRequest({
@@ -67,15 +74,14 @@ async function getProfessions() {
     });
 }
 
-
-async function getVacancies(){
+async function getResumes(){
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
     const { page } = getUrlParams()
 
     const profession = url.searchParams.get("profession");
     const city =  url.searchParams.get("city")
-    const min_salary =  url.searchParams.get("min_salary")
+    const max_salary =  url.searchParams.get("max_salary")
 
 
     const searchParams = new URLSearchParams();
@@ -89,9 +95,9 @@ async function getVacancies(){
         document.getElementById('city').value = city
 
     }
-    if (min_salary){
-        searchParams.append('min_salary', min_salary);
-        document.getElementById('salary').value = min_salary
+    if (max_salary){
+        searchParams.append('max_salary', max_salary);
+        document.getElementById('salary').value = max_salary
     }
 
 
@@ -99,10 +105,10 @@ async function getVacancies(){
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: `/api/vacancy/?${searchParams.toString()}`
+        url: `/api/resumes/?${searchParams.toString()}`
     })
     console.log(getResponse)
-    if (getResponse.vacancies.length === 0){
+    if (getResponse.resumes.length === 0){
         const container = document.getElementById('vacancies-container');
         container.innerHTML = '';
         const countVacancyElement = document.createElement('h2');
@@ -119,19 +125,13 @@ async function getVacancies(){
         hideLoadingIndicator(loadingIndicator)
         return
     }
-    renderVacancies(getResponse.vacancies, getResponse.can_update, profession ,getResponse.count)
+    renderVacancies(getResponse.resumes, profession ,getResponse.count)
     const totalPages = Math.ceil(getResponse.count / 10) // Предполагаем, что на странице 10 вакансий
     createPagination(page, totalPages)
     hideLoadingIndicator(loadingIndicator)
 }
 
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
-function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
+function renderVacancies(vacancies, name_vacancy, count_vacancy) {
     const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
     container.style.width = '450px'
@@ -139,11 +139,11 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
     const countVacancyElement = document.createElement('h2');
 
     if (name_vacancy){
-        countVacancyElement.textContent = `${count_vacancy} вакансий "${name_vacancy}"`
+        countVacancyElement.textContent = `${count_vacancy} резюме "${name_vacancy}"`
         container.appendChild(countVacancyElement);
     }
     else{
-        countVacancyElement.textContent = ` Найдено ${count_vacancy} вакансий`
+        countVacancyElement.textContent = ` Найдено ${count_vacancy} резюме`
         container.appendChild(countVacancyElement);
     }
 
@@ -153,7 +153,7 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
         vacancyElement.style.width = '150%'
 
         const linkElement = document.createElement('a');
-        linkElement.href = `/vacancies/${vacancy.id}`;
+        linkElement.href = `/resumes/${vacancy.id}`;
         linkElement.style.textDecoration = 'none';
 
         const titleElement = document.createElement('h2');
@@ -168,22 +168,13 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(vacancy.updated_at)}`
 
-        const linkCompany = document.createElement('a')
-        linkCompany.innerHTML = vacancy.company.name
-        linkCompany.href = apiUrl + `/companies/${vacancy.company.id}`
-        linkCompany.style.color = '#666'
-        linkCompany.addEventListener('mouseover', function() {
-            linkCompany.style.color = 'deepskyblue'; // Цвет текста ссылки при наведении
-        });
-        linkCompany.addEventListener('mouseout', function() {
-            linkCompany.style.color = '#666'; // Цвет текста ссылки при наведении
-        });
+
 
         const statsLabel = document.createElement('p');
         statsLabel.textContent = 'Статистика:'
         const stastElement = document.createElement('div');
         stastElement.classList.add('stats');
-        stastElement.textContent = `0 откликов`
+        stastElement.textContent = `0 приглашений`
 
         vacancyElement.appendChild(titleElement);
         vacancyElement.appendChild(updatedAtElement);
@@ -195,11 +186,11 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
 
         const userType = getCookie('user_type')
 
-        if (userType === 'worker' || !userType) {
+        if (userType === 'employer' || !userType) {
             const feedBack = document.createElement('button');
             feedBack.classList.add('red_button');
             feedBack.style.width = '30%';
-            feedBack.textContent = "Откликнуться";
+            feedBack.textContent = "Написать";
             vacancyElement.appendChild(feedBack);
             container.appendChild(linkElement);
             return;
@@ -207,6 +198,7 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
         container.appendChild(linkElement);
     });
 }
+
 
 function createPagination(currentPage, totalPages) {
   const paginationElement = document.getElementById("pagination")
@@ -256,10 +248,11 @@ function createPagination(currentPage, totalPages) {
   paginationElement.appendChild(pageInfo)
 }
 
+
 // Функция для изменения страницы
 function changePage(newPage) {
   updateUrlParams({ page: newPage })
-  getVacancies()
+  getResumes()
   scrollToTop()
 }
 
@@ -287,12 +280,11 @@ function scrollToTop() {
     });
 }
 
-
-async function searchVacancy(){
+async function searchResume(){
 
     const profession = document.getElementById('job-search').value;
     const city = document.getElementById('city').value
-    const min_salary = document.getElementById('salary').value
+    const max_salary = document.getElementById('salary').value
 
     const searchParams = new URLSearchParams();
     searchParams.append('page', 1);
@@ -302,22 +294,22 @@ async function searchVacancy(){
     if (city){
         searchParams.append('city', city);
     }
-    if (min_salary){
-        searchParams.append('min_salary', min_salary);
+    if (max_salary){
+        searchParams.append('max_salary', max_salary);
     }
-    const searchUrl = apiUrl + `/vacancies/?${searchParams.toString()}`;
-
-    window.location.href = searchUrl;
-}
-
-async function moveResumes() {
-    const searchParams = new URLSearchParams();
-    searchParams.append('page', 1);
-
     const searchUrl = apiUrl + `/resumes/?${searchParams.toString()}`;
 
     window.location.href = searchUrl;
 }
 
-window.moveResumes = moveResumes
-window.searchVacancy = searchVacancy
+async function moveVacancies() {
+    const searchParams = new URLSearchParams();
+    searchParams.append('page', 1);
+
+    const searchUrl = apiUrl + `/vacancies/?${searchParams.toString()}`;
+
+    window.location.href = searchUrl;
+}
+
+window.searchResume = searchResume
+window.moveVacancies = moveVacancies

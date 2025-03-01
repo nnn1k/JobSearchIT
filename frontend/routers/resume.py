@@ -7,7 +7,7 @@ templates = Jinja2Templates(directory='frontend')
 
 
 @router.get('/')
-def resume_add(request: Request):
+def resume_all(request: Request):
     user_type = request.cookies.get("user_type")
     return templates.TemplateResponse("/pages/resume/found_resumes/found_resumes.html", {"request": request, 'user_type': user_type})
 

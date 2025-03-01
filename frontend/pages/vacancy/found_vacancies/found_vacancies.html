@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/frontend/pages/vacancy/found_vacancies/found_vacancies.css">
-    <title>Title</title>
+    <title>Вакансии</title>
 </head>
 {% if user_type == 'worker' %}
     {% extends 'base_worker/base_worker.html' %}
@@ -18,7 +18,7 @@
         <div class="search_panel">
             <div class="btns_navigation">
                 <button class="red_button">Вакансии</button>
-                <button class="white_button">Резюме</button>
+                <button class="white_button" onclick="moveResumes()">Резюме</button>
                 <button class="white_button">Компании</button>
             </div>
             <div class="search_string">

@@ -33,6 +33,11 @@ def home_page_worker(request: Request):
 
 @router.get("/employer")
 def home_page_employer(request: Request):
+    user_type = request.cookies.get("user_type")
+    if user_type == "employer":
+        return RedirectResponse(url="/resumes/?page=1")
+    if user_type == "worker":
+        return RedirectResponse(url="/")
     return templates.TemplateResponse("/pages/start_for_employer/start_page.html", {"request": request})
 
 

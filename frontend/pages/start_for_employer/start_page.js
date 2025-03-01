@@ -4,7 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     getProfessions()
 })
 
+document.querySelector('.search-form').addEventListener('submit', function (event) {
+    event.preventDefault();
 
+    const searchInput = document.getElementById('job-search').value; // Получаем значение из поля ввода
+    const searchParams = new URLSearchParams({page: 1, profession: searchInput});
+    const searchUrl = apiUrl + `/resumes/?${searchParams.toString()}`;
+
+    window.location.href = searchUrl;
+});
 async function getProfessions() {
 
     const getResponse = await makeRequest({
