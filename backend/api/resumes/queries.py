@@ -28,7 +28,7 @@ async def get_all_resumes_query(user, **kwargs):
         if max_salary:
             conditions.append(ResumesOrm.salary_second <= max_salary)
         if profession:
-            conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
+            conditions.append(ProfessionsOrm.title.ilike(f'%{profession}%'))
         if user:
             if user.type == WORKER_USER_TYPE:
                 pass

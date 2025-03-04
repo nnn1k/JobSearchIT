@@ -35,7 +35,7 @@ async def get_all_vacancies_query(user: UserVar, session: AsyncSession, **kwargs
     if min_salary:
         conditions.append(VacanciesOrm.salary_first >= min_salary)
     if profession:
-        conditions.append(ProfessionsOrm.title.ilike(f'{profession}%'))
+        conditions.append(ProfessionsOrm.title.ilike(f'%{profession}%'))
     if user:
         if user.type == EMPLOYER_USER_TYPE:
             conditions.append(VacanciesOrm.company_id != user.company_id)
