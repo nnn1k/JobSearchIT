@@ -2,8 +2,9 @@
 
 
 export async function makeRequest(request) {
+    const secureUrl = request.url.replace(/^http:\/\//i, 'https://');
     const response = await fetch(
-        request.url,
+        secureUrl,
         {
             method: request.method,
             headers: {
