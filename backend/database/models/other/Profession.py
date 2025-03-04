@@ -1,5 +1,5 @@
 from sqlalchemy import Index
-from sqlalchemy.orm import Mapped, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.database.models.worker import ResumesOrm
 from backend.database.settings.database import Base
@@ -7,7 +7,7 @@ from backend.database.settings.database import Base
 class ProfessionsOrm(Base):
     __tablename__ = 'professions'
 
-    title: Mapped[str]
+    title: Mapped[str] = mapped_column(index=True)
     vacancies: Mapped['VacanciesOrm'] = relationship(
         'VacanciesOrm',
         back_populates='profession',
@@ -18,8 +18,6 @@ class ProfessionsOrm(Base):
         back_populates='profession',
         lazy='noload'
     )
-    __table_args__ = (
-        Index('idx_professions_title', 'title'),
-    )
+
 
 

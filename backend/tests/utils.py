@@ -20,7 +20,7 @@ def async_client():
 
 def check_user(response):
     user = response.json().get('user')
-    user_schema = UserResponseSchema.model_validate(user, from_attributes=True)
+    user_schema = UserResponseSchema.model_validate(user)
     assert user is not None
     assert isinstance(user_schema, UserResponseSchema)
     return user_schema
@@ -28,7 +28,7 @@ def check_user(response):
 
 def check_token(response):
     token = response.json().get('token')
-    token_schema = Token.model_validate(token, from_attributes=True)
+    token_schema = Token.model_validate(token)
     assert token is not None
     assert isinstance(token_schema, Token)
     return token_schema
