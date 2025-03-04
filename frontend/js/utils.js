@@ -1,9 +1,9 @@
-export const apiUrl = window.location.protocol + '//' + window.location.host;
+ export const apiUrl = window.location.protocol + '//' + window.location.host;
 
 
 export async function makeRequest(request) {
     const response = await fetch(
-        apiUrl + request.url,
+        request.url,
         {
             method: request.method,
             headers: {
@@ -11,7 +11,6 @@ export async function makeRequest(request) {
             },
             body: JSON.stringify(request.data)
         })
-        console.log(apiUrl)
     if (response.ok) {
         const data = await response.json()
         return data
