@@ -11,6 +11,7 @@ export async function makeRequest(request) {
             },
             body: JSON.stringify(request.data)
         })
+        console.log(apiUrl)
     if (response.ok) {
         const data = await response.json()
         return data
