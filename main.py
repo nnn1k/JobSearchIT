@@ -1,17 +1,33 @@
 import os
+from contextlib import asynccontextmanager
 
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+
+from backend.database.settings.database import engine
 from backend.utils.other.logger_utils import logger
 from fastapi.responses import JSONResponse
 
 from backend.api import router as backend_router
+from backend.utils.settings import settings
 from frontend.routers import router as frontend_router
 
 frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.log('DATABASE', 'ПОДКЛЮЧЕНИЕ К БД')
+    app.state.db = await engine.connect()
+    yield
+    logger.log('DATABASE', 'ОТКЛЮЧЕНИЕ ОТ БД')
+    await app.state.db.close()
+
+
+app = FastAPI(lifespan=lifespan)
+
 app.mount("/frontend", StaticFiles(directory=frontend_dir), name="static")
 app.include_router(backend_router)
 app.include_router(frontend_router)
@@ -39,7 +55,11 @@ async def global_exception_handler(request: Request, exc: Exception):
 async def log_requests(request: Request, call_next):
     response = await call_next(request)
 
-    if request.url.path.startswith("/api") and 300 >= response.status_code >= 400:
+    if request.url.path.startswith("/api"):
         logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
 
     return response
+
+
+if __name__ == "__main__":
+    uvicorn.run('main:app', host=settings.run.host, port=settings.run.port, reload=True)

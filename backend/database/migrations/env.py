@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from backend.database.settings.database import Base, settings as database_settings
+from backend.database.settings.database import Base
 
 from backend.database.models.worker.Worker import WorkersOrm
 from backend.database.models.worker.Resume import ResumesOrm
@@ -24,7 +24,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-config.set_main_option('sqlalchemy.url', database_settings.ASYNC_DB_URL + "?async_fallback=True")
+config.set_main_option('sqlalchemy.url', 'postgresql+asyncpg://postgres:HXjGMYSHgliDTHdJyjPWuXYunubKtacO@monorail.proxy.rlwy.net:52369/railway' + "?async_fallback=True")
 
 target_metadata = Base.metadata
 

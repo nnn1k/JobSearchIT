@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobSearchIt - Поиск IT специалистов</title>
+    <link rel="stylesheet" href="/frontend/pages/start_for_employer/start_page.css">
+    <style>
+
+    </style>
+</head>
+{% extends 'base_employer/base_employer.html' %}
+{% block content %}
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Найдите талантливых IT-специалистов для вашей команды</h1>
+                <p>JobSearchIt — платформа, которая соединяет ведущие компании с лучшими IT-профессионалами. Начните поиск прямо сейчас!</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="search-box">
+            <h3 class="search-title">Поиск резюме</h3>
+            <form class="search-form">
+                <input type="text" class="search-input" id="job-search" placeholder="Введите должность (например, DevOps-инженер)">
+                <div id="jobsDropdown" class="dropdown"></div>
+                <button type="submit" id="search_btn" class="red_button">Найти кандидатов</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Почему работодатели выбирают нас</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3 class="feature-title">Целевой поиск</h3>
+                    <p class="feature-desc">Находите именно тех специалистов, которые соответствуют требованиям вашей компании и корпоративной культуре</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3 class="feature-title">Быстрый результат</h3>
+                    <p class="feature-desc">Сокращайте время на поиск и наём благодаря нашей базе активных IT-специалистов</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"></div>
+                    <h3 class="feature-title">Проверенные кандидаты</h3>
+                    <p class="feature-desc">Все резюме в нашей базе проходят верификацию, что гарантирует качество кандидатов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Готовы найти идеальных кандидатов?</h2>
+                <p>Зарегистрируйтесь сейчас и получите доступ к базе IT-специалистов.</p>
+                <button href="#" class="search-btn">Разместить вакансию</button>
+            </div>
+        </div>
+    </section>
+<script type="module" src="/frontend/pages/start_for_employer/start_page.js"></script>
+</body>
+{% endblock %}
+</html>

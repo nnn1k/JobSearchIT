@@ -1,6 +1,6 @@
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
-import {makeRequest} from "/frontend/js/utils.js";
+import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -14,7 +14,7 @@ async function get_resumes() {
         url: '/api/workers/me/'
     })
     console.log(getResponse)
-    if (!getResponse){
+    if (!getResponse) {
         hideLoadingIndicator(loadingIndicator)
     }
     const resumes = getResponse.user.resumes;
@@ -37,6 +37,10 @@ async function get_resumes() {
     }
 
     resumes.forEach(resume => {
+        const linkElement = document.createElement('a')
+        linkElement.href = apiUrl + `/resumes/${resume.id}`
+        linkElement.style.color = '#555'
+
         const resumeElement = document.createElement('div');
         resumeElement.classList.add('resume');
 
@@ -52,20 +56,25 @@ async function get_resumes() {
         const updatedAtElement = document.createElement('p')
         updatedAtElement.innerHTML = `Обновлено ${formatDateTime(resume.updated_at)}`
 
-        const editButton = document.createElement('button');
-        editButton.classList.add('red_button');
-        editButton.style.width = '30%';
-        editButton.style.height = '15%';
-        editButton.textContent = "Редактировать";
+        const editLink = document.createElement('a');
+        editLink.classList.add('red_button');
+        editLink.style.width = '30%';
+        editLink.style.color = '#f2f2f2'
+        editLink.addEventListener('mouseover', function() {
+            editLink.style.color = 'crimson'; // Цвет текста ссылки при наведении
+        });
+        editLink.addEventListener('mouseout', function() {
+            editLink.style.color = '#f2f2f2'; // Цвет текста ссылки при наведении
+        });
+        editLink.style.height = '15%';
+        editLink.textContent = "Редактировать";
+        editLink.href = apiUrl + `/worker/resumes/${resume.id}/edit`; // Устанавливаем ссылку
 
-        editButton.onclick = () => {
-            window.location.href = `/worker/resumes/${resume.id}/edit`;
-        };
         const statsLabel = document.createElement('p');
         statsLabel.textContent = 'Статистика:'
         const stastElement = document.createElement('div');
         stastElement.classList.add('stats');
-        stastElement.textContent = `0 просмотров`
+        stastElement.textContent = `0 приглашений`
 
         resumeElement.appendChild(titleElement);
         resumeElement.appendChild(updatedAtElement);
@@ -73,9 +82,12 @@ async function get_resumes() {
         resumeElement.appendChild(stastElement);
         resumeElement.appendChild(salaryElement);
         resumeElement.appendChild(cityElement);
-        resumeElement.appendChild(editButton);
+        resumeElement.appendChild(editLink);
 
-        container.appendChild(resumeElement);
+        linkElement.appendChild(resumeElement)
+
+
+        container.appendChild(linkElement);
     });
     hideLoadingIndicator(loadingIndicator);
 }

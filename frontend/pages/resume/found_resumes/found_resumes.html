@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/frontend/pages/resume/found_resumes/found_resumes.css">
+    <title>Вакансии</title>
+</head>
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
+{% block content %}
+    <body>
+    <div class="container_all">
+        <div class="search_panel">
+            <div class="btns_navigation">
+                <button class="white_button" onclick="moveVacancies()">Вакансии</button>
+                <button class="red_button">Резюме</button>
+                <button class="white_button">Компании</button>
+            </div>
+            <div class="search_string">
+                <input type="text" class="search-input" id="job-search" placeholder="Введите желаемую должность">
+                <div id="jobsDropdown" class="dropdown"></div>
+                <button class="red_button" id="search-button" onclick="searchResume()"> Найти</button>
+            </div>
+        </div>
+        <div class="vacancy_filter">
+            <div class="form_container" id="vac_form">
+                <div id="vacancies-container"></div>
+            </div>
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label for="city">Город</label>
+                    <input type="text" id="city" class="filter-input" placeholder="Москва">
+                </div>
+
+                <!-- Фильтр по зарплате -->
+                <div class="filter-group">
+                    <label for="salary">Зарплата до</label>
+                    <input type="number" id="salary" class="filter-input" placeholder="30 000">
+                    <span class="currency">₽</span>
+                </div>
+            </div>
+        </div>
+        <div id="pagination" class="pagination">
+
+        </div>
+    </div>
+    <script type="module" src="/frontend/pages/resume/found_resumes/found_resumes.js"></script>
+    </body>
+{% endblock %}
+</html>

@@ -88,7 +88,7 @@ function renderVacancies(vacancies, can_update) {
 
         const linkElement = document.createElement('a');
         linkElement.href = `/vacancies/${vacancy.id}`;
-        linkElement.style.textDecoration = 'none';
+        linkElement.style.color = '#555'
 
         const titleElement = document.createElement('h2');
         titleElement.textContent = vacancy.profession.title;
@@ -108,13 +108,12 @@ function renderVacancies(vacancies, can_update) {
         stastElement.classList.add('stats');
         stastElement.textContent = `0 откликов`
 
-        linkElement.appendChild(titleElement);
-        linkElement.appendChild(updatedAtElement);
-        linkElement.appendChild(statsLabel);
-        linkElement.appendChild(stastElement);
-        linkElement.appendChild(salaryElement);
-        linkElement.appendChild(cityElement);
-        vacancyElement.appendChild(linkElement);
+        vacancyElement.appendChild(titleElement);
+        vacancyElement.appendChild(updatedAtElement);
+        vacancyElement.appendChild(statsLabel);
+        vacancyElement.appendChild(stastElement);
+        vacancyElement.appendChild(salaryElement);
+        vacancyElement.appendChild(cityElement);
 
 
         const userType = getCookie('user_type')
@@ -125,7 +124,8 @@ function renderVacancies(vacancies, can_update) {
             feedbackButton.style.width = '30%';
             feedbackButton.textContent = "Откликнуться";
             vacancyElement.appendChild(feedbackButton);
-            container.appendChild(vacancyElement);
+            linkElement.appendChild(vacancyElement);
+            container.appendChild(linkElement);
             return;
         }
 
@@ -138,10 +138,11 @@ function renderVacancies(vacancies, can_update) {
                 window.location.href = `/vacancies/${vacancy.id}/edit`;
             };
             vacancyElement.appendChild(editButton);
-            container.appendChild(vacancyElement);
+            linkElement.appendChild(vacancyElement);
+            container.appendChild(linkElement);
             return;
         }
-        container.appendChild(vacancyElement);
+        container.appendChild(linkElement);
     });
 }
 

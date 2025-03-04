@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 import inspect
 from .logger_utils import logger
+from pyinstrument import Profiler
 
 
 def current_time():
@@ -26,8 +27,29 @@ def time_it_async(func):
         else:
             filename = filename
 
-        logger.debug(f"Функция {func.__name__} выполнена за {duration:.4f} секунд. "
-              f"Вызвана из {filename}, строка {lineno}.")
+        logger.log('TIME', f"Функция {func.__name__} выполнена за {duration:.4f} секунд. \n"
+                           f"Вызвана из {filename}, строка {lineno}. \n")
+        return result
+
+    return wrapper
+
+
+def profile_pyinstrument(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        # Создаем профилировщик
+        profiler = Profiler()
+        profiler.start()
+
+        # Выполняем функцию
+        result = func(*args, **kwargs)
+
+        # Останавливаем профилировщик
+        profiler.stop()
+
+        # Выводим результаты
+        print(profiler.output_text(unicode=True, color=True))
+        profiler.reset()
         return result
 
     return wrapper

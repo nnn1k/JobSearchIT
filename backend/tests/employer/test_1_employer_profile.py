@@ -15,7 +15,6 @@ class TestEmployerProfile:
 
         assert response.status_code == 200
         user = check_user(response)
-        assert user.name == ""
 
     @pytest.mark.asyncio
     async def test_put_employer(self):

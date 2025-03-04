@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
@@ -9,9 +9,9 @@ class VacanciesOrm(Base):
 
     profession_id: Mapped[int] = mapped_column(ForeignKey('professions.id'))
     description: Mapped[str]
-    salary_first: Mapped[int] = mapped_column(nullable=True)
+    salary_first: Mapped[int] = mapped_column(nullable=True, index=True)
     salary_second: Mapped[int] = mapped_column(nullable=True)
-    city: Mapped[str] = mapped_column(nullable=True)
+    city: Mapped[str] = mapped_column(nullable=True, index=True)
     company_id: Mapped[int] = mapped_column(ForeignKey('companies.id', ondelete='CASCADE'))
 
     company: Mapped['CompaniesOrm'] = relationship(

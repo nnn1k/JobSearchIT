@@ -3,8 +3,8 @@ import random
 
 from aiosmtplib import SMTP
 
-from backend.utils.other.celery_utils import cl_app
 from backend.modules.redis.redis_code_utils import add_code_to_redis
+from backend.utils.settings import settings
 
 
 class SendEmail:
@@ -15,16 +15,11 @@ class SendEmail:
         return res
 
     @staticmethod
-    @cl_app.task
     async def post_mail(user_to, message) -> None:
-        mail_data = {
-            'login': 'testemailsendnnn1k@gmail.com',
-            'password': 'znwt bffc blls fpqp',
-        }
         smt = SMTP(hostname='smtp.gmail.com', port=587, start_tls=True)
         await smt.connect()
-        await smt.login(mail_data['login'], mail_data['password'])
-        await smt.sendmail(mail_data['login'], user_to, message.encode('utf-8'))
+        await smt.login(settings.email.login, settings.email.login)
+        await smt.sendmail(settings.email.login, user_to, message.encode('utf-8'))
         await smt.quit()
 
     @staticmethod

@@ -1,5 +1,5 @@
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
-
+import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 function createTrashBtn(func, obj) {
     const trashBtn = document.createElement('button');
@@ -9,6 +9,7 @@ function createTrashBtn(func, obj) {
     img.style.height = "27px";
     trashBtn.style.border = 'None'
     trashBtn.style.backgroundColor = '#f2f2f2;'
+    trashBtn.style.cursor = 'pointer'
     trashBtn.appendChild(img);
 
     trashBtn.onclick = async () => await func(obj)
@@ -16,20 +17,22 @@ function createTrashBtn(func, obj) {
 }
 
 async function deleteVacancy(vacancy) {
+    const loadingIndicator = showLoadingIndicator();
     const deleteResponse = await makeRequest({
         method: 'DELETE',
         url: `/api/vacancy/${vacancy.id}`
     })
-    console.log(deleteResponse)
+    hideLoadingIndicator(loadingIndicator)
     window.location.href = apiUrl + `/companies/${vacancy.company_id}`
 }
 
 async function deleteResume(resume) {
+    const loadingIndicator = showLoadingIndicator();
     const deleteResponse = await makeRequest({
         method: 'DELETE',
         url: `/api/workers/resumes/${resume.id}`
     })
-    console.log(deleteResponse)
+    hideLoadingIndicator(loadingIndicator)
     window.location.href = apiUrl + `/worker/resumes`
 }
 

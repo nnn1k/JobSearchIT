@@ -44,7 +44,7 @@ async function getProfessions() {
         }
 
         const matchingJobs = availableJobs.filter(job =>
-            job.title.toLowerCase().includes(searchText.toLowerCase())
+            job.title.toLowerCase().startsWith(searchText.toLowerCase())
         );
 
         if (matchingJobs.length === 0) {
@@ -147,4 +147,10 @@ async function put_resume(){
     })
     window.location.href = apiUrl + `/resumes/${resume_id}`
 }
+function cancel_edit_resume(){
+    const resume_id = location.pathname.split('/')[3]
+    window.location.href = apiUrl + `/resumes/${resume_id}`
+}
+
 window.put_resume = put_resume
+window.cancel_edit_resume = cancel_edit_resume

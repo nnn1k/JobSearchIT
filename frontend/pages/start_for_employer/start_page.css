@@ -1,0 +1,237 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #ffffff;
+    color: #2d3748;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+
+/* Hero section */
+.hero {
+    background-color: #f7fafc;
+    padding: 80px 0 120px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    background-color: #6b46c1;
+    opacity: 0.05;
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    text-align: left;
+}
+
+.hero h1 {
+    font-size: 42px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    color: #1a202c;
+    font-weight: 800;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 40px;
+    color: #4a5568;
+    max-width: 600px;
+}
+
+/* Search box */
+.search-box {
+    background-color: white;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+    margin: -60px auto 60px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 2;
+}
+
+.search-title {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #1a202c;
+    font-weight: 700;
+}
+
+.search-form {
+    display: flex;
+    gap: 15px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+
+#search_btn {
+    width: 20%;
+}
+
+
+/* Features section */
+.features {
+    padding: 80px 0;
+    background-color: #fff;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 60px;
+    color: #1a202c;
+    font-weight: 800;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.feature-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #e2e8f0;
+}
+
+
+/* CTA section */
+.cta {
+    background: linear-gradient(to left, indianred, crimson);
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.cta-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.cta p {
+    font-size: 18px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+
+.search-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: gray;
+    color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: dimgray;
+}
+
+.dropdown {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none; /* Скрыт по умолчанию */
+    background: white;
+    position: absolute;
+    width: 60%;
+    z-index: 1000;
+    margin-top: 8%;
+}
+
+.job-option {
+    padding: 10px;
+    cursor: pointer;
+    color: #555555;
+}
+
+.job-option:hover {
+    background-color: #f0f0f0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+
+    .feature-card {
+        padding: 30px 20px;
+    }
+
+    .testimonial-card {
+        padding: 30px 20px;
+    }
+}

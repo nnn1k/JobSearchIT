@@ -1,4 +1,7 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.api.users.auth.queries import login_user_queries, register_user_queries, update_code_queries
+from backend.database.utils.dependencies import get_db
 from backend.utils.auth_utils.user_login_dependencies import (
     get_employer_by_token,
     get_user_by_token,
@@ -27,9 +30,10 @@ async def login_user_views(
         response: Response,
         user_type_path: UserType,
         schema: LoginSchema,
+        session: AsyncSession = Depends(get_db),
 ):
     db_model, response_schema = get_login_db_model(user_type_path)
-    user = await login_user_queries(schema, db_model, response_schema)
+    user = await login_user_queries(user=schema, user_table=db_model, response_schema=response_schema, session=session)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -44,6 +48,7 @@ async def register_user_views(
         response: Response,
         user_type_path: UserType,
         schema: RegisterSchema,
+        session: AsyncSession = Depends(get_db),
 ):
     db_model, response_schema = get_login_db_model(user_type_path)
     if schema.password != schema.confirm_password:
@@ -51,7 +56,8 @@ async def register_user_views(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="password mismatch",
         )
-    new_user = await register_user_queries(schema, db_model, response_schema)
+    new_user = await register_user_queries(user=schema, user_table=db_model, response_schema=response_schema,
+                                           session=session)
     if new_user is None:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -68,19 +74,22 @@ async def get_code(
         bg: BackgroundTasks,
         access_token=Cookie(None),
         refresh_token=Cookie(None),
+        session: AsyncSession = Depends(get_db)
 ):
     match user_type_path:
         case UserType.employer:
             user = await get_employer_by_token(
                 access_token=access_token,
                 refresh_token=refresh_token,
-                response=response
+                response=response,
+                session=session,
             )
         case UserType.worker:
             user = await get_worker_by_token(
                 access_token=access_token,
                 refresh_token=refresh_token,
-                response=response
+                response=response,
+                session=session,
             )
         case _:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
@@ -98,7 +107,8 @@ async def get_code(
 async def send_code(
         user_type_path: UserType,
         code: CodeSchema,
-        user=Depends(get_user_by_token)
+        user=Depends(get_user_by_token),
+        session: AsyncSession = Depends(get_db),
 ):
     db_model, response_schema = get_login_db_model(user_type_path)
 
@@ -108,7 +118,7 @@ async def send_code(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect code",
         )
-    user = await update_code_queries(user.id, db_model, response_schema)
+    user = await update_code_queries(user.id, db_model, response_schema, session)
 
     return {
         'user': user,

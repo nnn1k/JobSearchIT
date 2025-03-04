@@ -3,15 +3,13 @@ import redis.asyncio as async_redis
 
 from backend.utils.other.time_utils import time_it_async
 from backend.utils.other.type_utils import BaseVar
+from backend.utils.settings import settings
 
 TTL = 600
 
-global_redis_client = None
-
 
 async def create_async_redis_client():
-    connect_string = 'redis://default:MXnVzZUbxetVwLWVzvWSTLMIacVdknim@monorail.proxy.rlwy.net:44060'
-    global_redis_client = await async_redis.from_url(connect_string)
+    global_redis_client = await async_redis.from_url(settings.redis.url)
     return global_redis_client
 
 

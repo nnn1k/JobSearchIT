@@ -4,12 +4,13 @@ from sqlalchemy import select
 
 from backend.database.models.employer import VacanciesOrm
 from backend.database.models.worker import ResumesOrm
+from backend.schemas import WorkerResponseSchema
 from backend.schemas.models.other.skill_schema import SkillSchema
 from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.database.models.other.Skill import SkillsOrm
 from backend.database.models.other.ResumeSkills import ResumesSkillsOrm
 from backend.database.settings.database import session_factory
-from backend.utils.exc import resume_not_found_exc, vacancy_not_found_exc
+from backend.utils.exc import resume_not_found_exc, user_is_not_owner_exc, vacancy_not_found_exc
 
 
 async def get_all_skills_queries(**kwargs):
@@ -23,7 +24,7 @@ async def get_all_skills_queries(**kwargs):
         return skills
 
 
-async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
+async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, worker: WorkerResponseSchema):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
         stmt = await session.execute(
@@ -33,6 +34,8 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
         resume = stmt.scalars().one_or_none()
         if not resume:
             raise resume_not_found_exc
+        if worker.id != resume.worker_id:
+            raise user_is_not_owner_exc
 
         result = await session.execute(select(ResumesSkillsOrm).filter_by(resume_id=resume_id))
         current_skills = result.scalars().all()
@@ -42,8 +45,6 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
         skills_to_add = set(skills_list) - current_skill_ids
 
         skills_to_remove = current_skill_ids - set(skills_list)
-        from backend.utils.other.logger_utils import logger
-        logger.info('1')
         for skill_id in skills_to_add:
             new_resume_skill = ResumesSkillsOrm(resume_id=resume_id, skill_id=skill_id)
             session.add(new_resume_skill)
@@ -58,7 +59,7 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int):
         await session.commit()
 
 
-async def update_vacancy_skills(skills_list, vacancy_id):
+async def update_vacancy_skills(skills_list, vacancy_id, owner):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
         stmt = await session.execute(
@@ -68,6 +69,8 @@ async def update_vacancy_skills(skills_list, vacancy_id):
         vacancy = stmt.scalars().one_or_none()
         if not vacancy:
             raise vacancy_not_found_exc
+        if owner.company_id != vacancy.company_id:
+            raise user_is_not_owner_exc
 
         result = await session.execute(select(VacanciesSkillsOrm).filter_by(vacancy_id=vacancy_id))
         current_skills = result.scalars().all()
