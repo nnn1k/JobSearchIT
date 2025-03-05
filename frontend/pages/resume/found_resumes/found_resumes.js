@@ -77,7 +77,7 @@ async function getProfessions() {
 async function getResumes(){
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
-    const { page } = getUrlParams()
+    const { page, size } = getUrlParams()
 
     const profession = url.searchParams.get("profession");
     const city =  url.searchParams.get("city")

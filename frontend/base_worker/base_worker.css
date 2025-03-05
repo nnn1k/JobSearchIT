@@ -44,12 +44,9 @@ header{
     width: 50px;
 }
 
-
 .content {
     min-height: 100vh;
 }
-
-
 
 #link_my_resumes{
     font-size: 18px;
@@ -170,9 +167,22 @@ header{
 }
 
 .div_link_my_resumes{
+    display: flex;
+    flex-direction: row;
     margin-right: auto;
+    gap: 20px;
 }
 
+
+#link_my_feedbacks{
+    font-size: 18px;
+    color: #333333;
+}
+
+
+#link_my_feedbacks:hover{
+    color: #f2f2f2;
+}
 
 
 
