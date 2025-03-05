@@ -65,7 +65,6 @@ async def send_response_queries(
     return schema
 
 
-
 async def get_responses_queries(
         user: UserResponseSchema,
         session: AsyncSession,
