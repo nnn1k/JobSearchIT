@@ -7,7 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.api.skills.queries import update_vacancy_skills
 from backend.api.vacancies.queries import (
     create_vacancy_queries,
-    delete_vacancy_by_id_queries, get_all_vacancies_query, get_vacancy_by_id_queries,
+    delete_vacancy_by_id_queries,
+    get_all_vacancies_query,
+    get_vacancy_by_id_queries,
     update_vacancy_by_id_queries
 )
 from backend.api.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
@@ -16,7 +18,6 @@ from backend.schemas import EmployerResponseSchema
 from backend.schemas.models.other.skill_schema import SkillSchema
 from backend.utils.auth_utils.check_func import check_employer_can_update
 from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
-from backend.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
@@ -108,3 +109,4 @@ async def delete_info_on_vacancy(
     return {
         'status': 'ok',
     }
+

@@ -34,3 +34,8 @@ user_is_not_owner_exc = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail='user is not owner'
 )
+
+incorrect_user_type_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="incorrect user type",
+)

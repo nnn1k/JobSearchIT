@@ -16,8 +16,8 @@ from backend.utils.other.logger_utils import logger
 
 async def get_employer_by_token(
         response: Response,
-        access_token=Cookie(None),
-        refresh_token=Cookie(None),
+        access_token=Cookie(None, include_in_schema=False),
+        refresh_token=Cookie(None, include_in_schema=False),
         session: AsyncSession = Depends(get_db),
 ) -> EmployerResponseSchema:
     return await get_user_by_token(
@@ -31,8 +31,8 @@ async def get_employer_by_token(
 
 async def get_worker_by_token(
         response: Response,
-        access_token=Cookie(None),
-        refresh_token=Cookie(None),
+        access_token=Cookie(None, include_in_schema=False),
+        refresh_token=Cookie(None, include_in_schema=False),
         session: AsyncSession = Depends(get_db),
 ) -> WorkerResponseSchema:
     return await get_user_by_token(

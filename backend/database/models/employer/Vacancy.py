@@ -1,4 +1,6 @@
-from sqlalchemy import ForeignKey, Index
+from typing import List
+
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
@@ -29,5 +31,10 @@ class VacanciesOrm(Base):
     profession: Mapped['ProfessionsOrm'] = relationship(
         'ProfessionsOrm',
         back_populates='vacancies',
+        lazy='noload'
+    )
+    responses: Mapped[list['ResponsesOrm']] = relationship(
+        'ResponsesOrm',
+        back_populates='vacancy',
         lazy='noload'
     )

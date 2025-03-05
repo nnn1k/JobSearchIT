@@ -6,7 +6,7 @@ from sqlalchemy.orm import joinedload, selectinload
 from backend.database.models.employer import VacanciesOrm
 from backend.database.models.other import ProfessionsOrm
 from backend.database.settings.database import session_factory
-from backend.schemas import EmployerResponseSchema, VacancySchema
+from backend.schemas import EmployerResponseSchema, VacancySchema, WorkerResponseSchema
 from backend.utils.const import EMPLOYER_USER_TYPE
 from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
 from backend.utils.other.time_utils import time_it_async
@@ -117,3 +117,4 @@ async def delete_vacancy_by_id_queries(vacancy_id: int, owner: EmployerResponseS
     if not (owner.company_id == vacancy.company_id and owner.is_owner):
         raise user_is_not_owner_exc
     await session.commit()
+

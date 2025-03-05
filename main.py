@@ -19,10 +19,10 @@ frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.log('DATABASE', 'ПОДКЛЮЧЕНИЕ К БД')
+    logger.log('DATABASE', 'db connect')
     app.state.db = await engine.connect()
     yield
-    logger.log('DATABASE', 'ОТКЛЮЧЕНИЕ ОТ БД')
+    logger.log('DATABASE', 'db disconnect')
     await app.state.db.close()
 
 
