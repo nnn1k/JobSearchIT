@@ -1,7 +1,8 @@
 from typing import List
 
-from sqlalchemy import and_, insert, select, update
+from sqlalchemy import and_, desc, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from backend.database.models.other import ResponsesOrm
 from backend.database.models.worker import ResumesOrm
@@ -74,6 +75,8 @@ async def get_responses_queries(
         raise incorrect_user_type_exc
     stmt = (
         select(ResponsesOrm)
+        .options(joinedload(ResponsesOrm.resume))
+        .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.company))
     )
     conditions = []
     if user.type == WORKER_USER_TYPE:
@@ -90,7 +93,7 @@ async def get_responses_queries(
         conditions.append(ResponsesOrm.is_worker_accepted.is_(True))
     else:
         conditions.append(ResponsesOrm.is_employer_accepted.is_(True))
-
+    stmt = stmt.order_by(desc(ResponsesOrm.updated_at))
     stmt = stmt.where(and_(*conditions))
     result = await session.execute(stmt)
     responses = result.scalars().all()

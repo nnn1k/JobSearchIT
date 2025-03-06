@@ -5,6 +5,7 @@ from backend.schemas.models.employer.company_schema import CompanySchema
 from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
 from backend.schemas.models.employer.vacancy_schema import VacancySchema
 from backend.schemas.models.other.profession_schema import ProfessionSchema
+from backend.schemas.models.other.response_schema import ResponseSchema
 
 
 WorkerResponseSchema.model_rebuild()
@@ -12,3 +13,4 @@ ResumeSchema.model_rebuild()
 EmployerResponseSchema.model_rebuild()
 CompanySchema.model_rebuild()
 VacancySchema.model_rebuild()
+ResponseSchema.model_rebuild()
