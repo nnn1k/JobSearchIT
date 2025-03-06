@@ -75,7 +75,8 @@ async def get_responses_queries(
         raise incorrect_user_type_exc
     stmt = (
         select(ResponsesOrm)
-        .options(joinedload(ResponsesOrm.resume))
+        .options(joinedload(ResponsesOrm.resume).joinedload(ResumesOrm.profession))
+        .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.profession))
         .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.company))
     )
     conditions = []
