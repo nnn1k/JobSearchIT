@@ -125,13 +125,13 @@ async function getResumes(){
         hideLoadingIndicator(loadingIndicator)
         return
     }
-    renderVacancies(getResponse.resumes, profession ,getResponse.count)
+    renderResumes(getResponse.resumes, profession ,getResponse.count)
     const totalPages = Math.ceil(getResponse.count / 10) // Предполагаем, что на странице 10 вакансий
     createPagination(page, totalPages)
     hideLoadingIndicator(loadingIndicator)
 }
 
-function renderVacancies(vacancies, name_vacancy, count_vacancy) {
+function renderResumes(vacancies, name_vacancy, count_vacancy) {
     const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
     container.style.width = '450px'
@@ -146,7 +146,6 @@ function renderVacancies(vacancies, name_vacancy, count_vacancy) {
         countVacancyElement.textContent = ` Найдено ${count_vacancy} резюме`
         container.appendChild(countVacancyElement);
     }
-
     vacancies.forEach(vacancy => {
         const vacancyElement = document.createElement('div');
         vacancyElement.classList.add('vacancy');
@@ -190,7 +189,7 @@ function renderVacancies(vacancies, name_vacancy, count_vacancy) {
             const feedBack = document.createElement('button');
             feedBack.classList.add('red_button');
             feedBack.style.width = '30%';
-            feedBack.textContent = "Написать";
+            feedBack.textContent = "Пригласить";
             vacancyElement.appendChild(feedBack);
             container.appendChild(linkElement);
             return;

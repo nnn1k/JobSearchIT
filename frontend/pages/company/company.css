@@ -36,7 +36,7 @@
 }
 
 .btn {
-    color: black;
+    color: gray;
     padding: 10px 15px;
     border-radius: 30px;
     cursor: pointer;
@@ -47,16 +47,6 @@
     margin-left: 50px;
 }
 
-.btn_upd_form {
-    color: black;
-    padding: 10px 15px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.3s;
-    border: 0px solid gray;
-    width: 150px;
-    height: 60px;
-}
 
 .vacancy {
     background-color: #f2f2f2;
@@ -92,7 +82,7 @@
 }
 
 .btn.active {
-    background-color: black;
+    background-color: gray;
     color: white;
 }
 

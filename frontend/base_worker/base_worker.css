@@ -184,6 +184,15 @@ header{
     color: #f2f2f2;
 }
 
+#link_my_invites{
+    font-size: 18px;
+    color: #333333;
+}
+
+
+#link_my_invites:hover{
+    color: #f2f2f2;
+}
 
 
 
