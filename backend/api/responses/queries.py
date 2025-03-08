@@ -76,8 +76,11 @@ async def get_responses_queries(
     stmt = (
         select(ResponsesOrm)
         .options(joinedload(ResponsesOrm.resume).joinedload(ResumesOrm.profession))
+        .options(joinedload(ResponsesOrm.resume).joinedload(ResumesOrm.worker))
+        .options(joinedload(ResponsesOrm.resume).selectinload(ResumesOrm.skills))
         .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.profession))
         .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.company))
+        .options(joinedload(ResponsesOrm.vacancy).selectinload(VacanciesOrm.skills))
     )
     conditions = []
     if user.type == WORKER_USER_TYPE:
@@ -97,5 +100,5 @@ async def get_responses_queries(
     stmt = stmt.order_by(desc(ResponsesOrm.updated_at))
     stmt = stmt.where(and_(*conditions))
     result = await session.execute(stmt)
-    responses = result.scalars().all()
+    responses = result.scalars().unique().all()
     return [ResponseSchema.model_validate(response, from_attributes=True) for response in responses]
