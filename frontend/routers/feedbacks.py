@@ -9,5 +9,7 @@ router = APIRouter(prefix='/feedbacks')
 @router.get('/')
 def feedbacks_all(request: Request):
     user_type = request.cookies.get("user_type")
+    if not user_type:
+        return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/feedbacks/feedbacks.html", {"request": request, 'user_type': user_type})
 

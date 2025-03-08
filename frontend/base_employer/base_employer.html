@@ -23,7 +23,7 @@
         </div>
         <div class="div_my_links">
             <a id="link_my_invites">Приглашения</a>
-            <a id="link_my_feedbacks">Отклики</a>
+            <a id="link_my_feedbacks" href="{{ url_for('feedbacks_all') }}">Отклики</a>
         </div>
         <div class="right_side_header">
             <div>
@@ -59,9 +59,9 @@
       <h3>Ссылки</h3>
       <ul>
         <li><a href={{ url_for('home_page_employer') }}>Главная</a></li>
-        <li><a href="#">Вакансии</a></li>
+        <li><a href={{ url_for('vacancy_all') }}>Вакансии</a></li>
+        <li><a href={{ url_for('resume_all') }}>Резюме</a></li>
         <li><a href="#">Компании</a></li>
-        <li><a href="#">Блог</a></li>
       </ul>
     </div>
     <div class="footer-section">

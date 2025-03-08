@@ -7,9 +7,11 @@ router = APIRouter(prefix='/vacancies')
 
 
 @router.get('/')
-def vacancy_all(request: Request):
+def vacancy_all(request: Request, page: int = 1):
     user_type = request.cookies.get("user_type")
-    return templates.TemplateResponse("/pages/vacancy/found_vacancies/found_vacancies.html", {"request": request, 'user_type': user_type})
+    return templates.TemplateResponse("/pages/vacancy/found_vacancies/found_vacancies.html", {"request": request,
+                                                                                              'user_type': user_type,
+                                                                                              })
 
 
 @router.get('/add')

@@ -46,7 +46,7 @@
 <div class="content">
     {% block content %} {% endblock %}
 </div>
-<script type="module" src="/frontend/base_worker/base_worker.js"></script>
+
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-section">
@@ -62,9 +62,9 @@
       <h3>Ссылки</h3>
       <ul>
         <li><a href={{ url_for('home_page_worker') }}>Главная</a></li>
-        <li><a href="#">Вакансии</a></li>
+        <li><a href={{ url_for('vacancy_all') }}>Вакансии</a></li>
+        <li><a href={{ url_for('resume_all') }}>Резюме</a></li>
         <li><a href="#">Компании</a></li>
-        <li><a href="#">Блог</a></li>
       </ul>
     </div>
     <div class="footer-section">
@@ -83,5 +83,6 @@
     <p>&copy; 2025 JobSearchIT. Все права защищены.</p>
   </div>
 </footer>
+<script type="module" src="/frontend/base_worker/base_worker.js"></script>
 </body>
 </html>

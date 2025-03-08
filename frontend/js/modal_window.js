@@ -51,9 +51,8 @@ export function createModal(title, resumes, vacancy_id) {
                 url: `/api/responses/?${searchParams.toString()}`,
             })
             if(postResponse){
-                console.log('ТЫ пидор')
+                document.body.style.overflow = ""
             }
-            console.log(`Отклик на вакансию с резюме ID: ${selectedResumeId}`);
             modal.style.display = 'none';
             document.body.removeChild(modal);
         } else {
