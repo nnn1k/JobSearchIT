@@ -12,10 +12,11 @@ from backend.schemas.user_schema import UserResponseSchema
 from backend.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
 from backend.utils.exc import (
     incorrect_user_type_exc,
-    resume_not_found_exc,
+    response_not_found_exc, resume_not_found_exc,
     user_is_not_owner_exc,
     vacancy_not_found_exc
 )
+
 
 async def send_response_queries(
         user: UserResponseSchema,
@@ -59,6 +60,8 @@ async def send_response_queries(
         new_stmt = new_stmt.values(is_employer_accepted=accept)
 
     new_stmt = new_stmt.returning(ResponsesOrm)
+    new_stmt = new_stmt.options(joinedload(ResponsesOrm.resume))
+    new_stmt = new_stmt.options(joinedload(ResponsesOrm.vacancy))
     result = await session.execute(new_stmt)
     response = result.scalars().one_or_none()
     schema = ResponseSchema.model_validate(response, from_attributes=True)
@@ -102,3 +105,28 @@ async def get_responses_queries(
     result = await session.execute(stmt)
     responses = result.scalars().unique().all()
     return [ResponseSchema.model_validate(response, from_attributes=True) for response in responses]
+
+
+async def delete_response_queries(
+        user: UserResponseSchema,
+        session: AsyncSession,
+        response_id: int
+):
+    if not user:
+        raise incorrect_user_type_exc
+    response = await session.get(ResponsesOrm, response_id)
+    if not response:
+        raise response_not_found_exc
+    vacancy = await session.get(VacanciesOrm, response.vacancy_id)
+    resume = await session.get(ResumesOrm, response.resume_id)
+    if user.type == WORKER_USER_TYPE:
+        if resume.worker_id != user.id:
+            raise user_is_not_owner_exc
+    elif user.type == EMPLOYER_USER_TYPE:
+        if vacancy.company_id != user.company_id:
+            raise user_is_not_owner_exc
+
+    await session.delete(response)
+    await session.commit()
+
+

@@ -39,3 +39,8 @@ incorrect_user_type_exc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="incorrect user type",
 )
+
+response_not_found_exc = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail='response not found'
+)

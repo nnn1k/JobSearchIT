@@ -1,11 +1,10 @@
-
 from typing import Optional
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.responses.queries import (
-    get_responses_queries,
+    delete_response_queries, get_responses_queries,
     send_response_queries
 )
 from backend.database.utils.dependencies import get_db
@@ -64,4 +63,16 @@ async def get_invite_views(
         'accepted': [response for response in responses if response.is_worker_accepted is True],
         'rejected': [response for response in responses if response.is_worker_accepted is False],
         'waiting': [response for response in responses if response.is_worker_accepted is None],
+    }
+
+
+@router.delete('/{response_id}', summary='Удалить отклик')
+async def delete_response_views(
+        response_id: int,
+        user: UserResponseSchema = Depends(get_user_by_token),
+        session: AsyncSession = Depends(get_db),
+):
+    await delete_response_queries(user=user, session=session, response_id=response_id)
+    return {
+        'status': 'ok',
     }
