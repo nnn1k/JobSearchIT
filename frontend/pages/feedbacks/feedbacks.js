@@ -1,6 +1,7 @@
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {formatDateTime} from "/frontend/js/timefunc.js";
+import {showNotification} from "/frontend/js/showNotification.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     const first_button = document.getElementById('switch_all')
@@ -39,16 +40,23 @@ async function getFeedbacks() {
 
     const userType = getCookie('user_type')
     if (userType === 'worker') {
-        renderFeedbacksForWorker(getResponse.all, getResponse.accepted, getResponse.rejected, getResponse.waiting)
+        renderFeedbacksForWorker(getResponse.all, 'all_form')
+        renderFeedbacksForWorker(getResponse.waiting, 'unread_form')
+        renderFeedbacksForWorker(getResponse.accepted, 'invites_form')
+        renderFeedbacksForWorker(getResponse.rejected, 'discard_form')
     }
     if (userType === 'employer') {
-        renderFeedbacksForEmployer(getResponse.all)
+        renderFeedbacksForEmployer(getResponse.all, 'all_form')
+        renderFeedbacksForEmployer(getResponse.waiting, 'unread_form')
+        renderFeedbacksForEmployer(getResponse.accepted, 'invites_form')
+        renderFeedbacksForEmployer(getResponse.rejected, 'discard_form')
     }
     hideLoadingIndicator(loadingIndicator)
 }
 
-function renderFeedbacksForWorker(allFeedbacks, acceptedFeedback, rejectedFeedback, waitingFeedback) {
-    const all_feedbacks = document.getElementById('all_form')
+function renderFeedbacksForWorker(allFeedbacks, nameForm) {
+    const all_feedbacks = document.getElementById(nameForm)
+    const unread_feedbacks = document.getElementById('unread_form')
     all_feedbacks.innerHTML = '';
     if (allFeedbacks.length === 0) {
         const countFeedbacks = document.createElement('h2');
@@ -70,6 +78,28 @@ function renderFeedbacksForWorker(allFeedbacks, acceptedFeedback, rejectedFeedba
         deleteBtn.classList = 'red_button'
         deleteBtn.style.marginLeft = '70%'
         deleteBtn.style.width = '25%'
+        deleteBtn.addEventListener('click', function () {
+            showNotification('Отклик удален')
+            console.log(`Отклик ${feedback.id} удален`);
+            const loadingIndicator = showLoadingIndicator();
+            makeRequest({
+                method: 'DELETE',
+                url: `/api/responses/${feedback.id}`
+            })
+                .then(response => {
+                    hideLoadingIndicator(loadingIndicator);
+                    if (response) {
+                        all_feedbacks.removeChild(feedbackElement);
+                        location.reload(true);
+                    } else {
+                        console.error('Ошибка при удалении отклика');
+                    }
+                })
+                .catch(error => {
+                    hideLoadingIndicator(loadingIndicator);
+                    console.error('Ошибка:', error);
+                });
+        })
         feedbackElement.appendChild(titleVacancy)
         feedbackElement.appendChild(nameCompany)
         feedbackElement.appendChild(createAt)
@@ -79,104 +109,18 @@ function renderFeedbacksForWorker(allFeedbacks, acceptedFeedback, rejectedFeedba
             linkForChat.href = '#'
             feedbackElement.appendChild(linkForChat)
         }
+        if (feedback.is_employer_accepted === false) {
+            const rejectedFeedback = document.createElement('p')
+            rejectedFeedback.textContent = 'Отказ'
+            feedbackElement.appendChild(rejectedFeedback)
+        }
         feedbackElement.appendChild(deleteBtn)
         all_feedbacks.appendChild(feedbackElement)
     });
-
-    const accepted_feedbacks = document.getElementById('invites_form')
-    accepted_feedbacks.innerHTML = ''
-    if (acceptedFeedback.length === 0) {
-        const countFeedbacks = document.createElement('h2');
-        countFeedbacks.textContent = `Тут пока пусто :(`
-        accepted_feedbacks.appendChild(countFeedbacks);
-    }
-    acceptedFeedback.forEach(feedback => {
-        const feedbackElement = document.createElement('div');
-        feedbackElement.classList = 'feedback'
-
-        const titleVacancy = document.createElement('h2');
-        titleVacancy.textContent = feedback.vacancy.profession.title
-        const nameCompany = document.createElement('h3');
-        nameCompany.textContent = feedback.vacancy.company.name
-        const createAt = document.createElement('p')
-        createAt.textContent = formatDateTime(feedback.created_at)
-        const linkForChat = document.createElement('a')
-        linkForChat.textContent = 'Перейти в чат'
-        linkForChat.href = '#'
-        const deleteBtn = document.createElement('button')
-        deleteBtn.textContent = 'Удалить'
-        deleteBtn.classList = 'red_button'
-        deleteBtn.style.marginLeft = '70%'
-        deleteBtn.style.width = '25%'
-        feedbackElement.appendChild(titleVacancy)
-        feedbackElement.appendChild(nameCompany)
-        feedbackElement.appendChild(createAt)
-        feedbackElement.appendChild(linkForChat)
-        feedbackElement.appendChild(deleteBtn)
-        accepted_feedbacks.appendChild(feedbackElement)
-    });
-
-    const rejected_feedbacks = document.getElementById('discard_form')
-    rejected_feedbacks.innerHTML = ''
-    if (rejectedFeedback.length === 0) {
-        const countFeedbacks = document.createElement('h2');
-        countFeedbacks.textContent = `Тут пока пусто :(`
-        rejected_feedbacks.appendChild(countFeedbacks);
-    }
-    rejectedFeedback.forEach(feedback => {
-        const feedbackElement = document.createElement('div');
-        feedbackElement.classList = 'feedback'
-
-        const titleVacancy = document.createElement('h2');
-        titleVacancy.textContent = feedback.vacancy.profession.title
-        const nameCompany = document.createElement('h3');
-        nameCompany.textContent = feedback.vacancy.company.name
-        const createAt = document.createElement('p')
-        createAt.textContent = formatDateTime(feedback.created_at)
-        const deleteBtn = document.createElement('button')
-        deleteBtn.textContent = 'Удалить'
-        deleteBtn.classList = 'red_button'
-        deleteBtn.style.marginLeft = '70%'
-        deleteBtn.style.width = '25%'
-        feedbackElement.appendChild(titleVacancy)
-        feedbackElement.appendChild(nameCompany)
-        feedbackElement.appendChild(createAt)
-        feedbackElement.appendChild(deleteBtn)
-        rejected_feedbacks.appendChild(feedbackElement)
-    });
-
-    const waiting_feedbacks = document.getElementById('unread_form')
-    waiting_feedbacks.innerHTML = ''
-    if (waitingFeedback.length === 0) {
-        const countFeedbacks = document.createElement('h2');
-        countFeedbacks.textContent = `Тут пока пусто :(`
-        waiting_feedbacks.appendChild(countFeedbacks);
-    }
-    waitingFeedback.forEach(feedback => {
-        const feedbackElement = document.createElement('div');
-        feedbackElement.classList = 'feedback'
-
-        const titleVacancy = document.createElement('h2');
-        titleVacancy.textContent = feedback.vacancy.profession.title
-        const nameCompany = document.createElement('h3');
-        nameCompany.textContent = feedback.vacancy.company.name
-        const createAt = document.createElement('p')
-        createAt.textContent = formatDateTime(feedback.created_at)
-        const deleteBtn = document.createElement('button')
-        deleteBtn.textContent = 'Удалить'
-        deleteBtn.classList = 'red_button'
-        deleteBtn.style.marginLeft = '70%'
-        deleteBtn.style.width = '25%'
-        feedbackElement.appendChild(titleVacancy)
-        feedbackElement.appendChild(nameCompany)
-        feedbackElement.appendChild(createAt)
-        feedbackElement.appendChild(deleteBtn)
-        waiting_feedbacks.appendChild(feedbackElement)
-    });
 }
 
-function renderFeedbacksForEmployer(allFeedbacks) {
-    const all_feedbacks = document.getElementById('all_form')
+function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
+    const all_feedbacks = document.getElementById(nameForm)
     if (allFeedbacks.length === 0) {
         const countFeedbacks = document.createElement('h2');
         countFeedbacks.textContent = `Тут пока пусто :(`
@@ -288,7 +232,7 @@ function renderFeedbacksForEmployer(allFeedbacks) {
         candidateBlock.appendChild(candidateInfo);
         candidateBlock.appendChild(candidateMeta);
 
-        if (feedback.is_worker_accepted && feedback.is_employer_accepted){
+        if (feedback.is_worker_accepted && feedback.is_employer_accepted) {
             const linkForChat = document.createElement('a')
             linkForChat.textContent = 'Перейти в чат'
             linkForChat.href = '#'
@@ -301,7 +245,7 @@ function renderFeedbacksForEmployer(allFeedbacks) {
             return
         }
 
-        if (feedback.is_employer_accepted === false){
+        if (feedback.is_employer_accepted === false) {
             cardContent.appendChild(jobTitleHeader);
             cardContent.appendChild(candidateBlock);
             card.appendChild(cardContent);
@@ -315,17 +259,13 @@ function renderFeedbacksForEmployer(allFeedbacks) {
         // Кнопка "Отклонить"
         const rejectButton = document.createElement('button');
         rejectButton.className = 'white_button';
-        rejectButton.innerHTML = `
-    Отклонить
-  `;
+        rejectButton.innerHTML = `Отклонить`;
         rejectButton.style.width = '20%'
 
         // Кнопка "Одобрить"
         const approveButton = document.createElement('button');
         approveButton.className = 'red_button';
-        approveButton.innerHTML = `
-    Одобрить
-  `;
+        approveButton.innerHTML = `Одобрить`;
         approveButton.style.width = '20%'
 
         // Добавляем кнопки в контейнер
@@ -339,19 +279,47 @@ function renderFeedbacksForEmployer(allFeedbacks) {
         card.appendChild(cardContent);
 
 
-        // rejectButton.addEventListener('click', function () {
-        //     console.log(`Кандидат ${candidate.name} отклонен`);
-        //     // Здесь можно добавить логику для отклонения кандидата
-        //     statusBadge.className = 'badge badge-status badge-rejected';
-        //     statusBadge.textContent = 'Отклонено';
-        // });
-        //
-        // approveButton.addEventListener('click', function () {
-        //     console.log(`Кандидат ${candidate.name} одобрен`);
-        //     // Здесь можно добавить логику для одобрения кандидата
-        //     statusBadge.className = 'badge badge-status badge-approved';
-        //     statusBadge.textContent = 'Одобрено';
-        // });
+        rejectButton.addEventListener('click', function () {
+            const loadingIndicator = showLoadingIndicator();
+            showNotification('Отклик отклонен')
+             makeRequest({
+                method: 'POST',
+                url: `/api/responses/${feedback.id}/reject`
+            })
+                .then(response => {
+                    hideLoadingIndicator(loadingIndicator);
+                    if (response) {
+                        location.reload(true);
+                    } else {
+                        console.error('Ошибка');
+                    }
+                })
+                .catch(error => {
+                    hideLoadingIndicator(loadingIndicator);
+                    console.error('Ошибка:', error);
+                });
+        });
+
+        approveButton.addEventListener('click', function () {
+            const loadingIndicator = showLoadingIndicator();
+            showNotification('Отклик одобрен')
+             makeRequest({
+                method: 'POST',
+                url: `/api/responses/${feedback.id}/accept`
+            })
+                .then(response => {
+                    hideLoadingIndicator(loadingIndicator);
+                    if (response) {
+                        location.reload(true);
+                    } else {
+                        console.error('Ошибка');
+                    }
+                })
+                .catch(error => {
+                    hideLoadingIndicator(loadingIndicator);
+                    console.error('Ошибка:', error);
+                });
+        });
 
 
         all_feedbacks.appendChild(card);

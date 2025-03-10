@@ -19,7 +19,7 @@
     </div>
     <div class="panel">
         <div class="logo">
-            <img src="/frontend/pictures/main_logo.png" alt="Логотип"/>
+            <a href={{ url_for('home_page_employer') }}><img src="/frontend/pictures/main_logo.png" alt="Логотип"/></a>
         </div>
         <div class="div_my_links">
             <a id="link_my_invites">Приглашения</a>
@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-
+    <div id="notification-container"></div>
 </header>
 <div class="content">
     {% block content %} {% endblock %}

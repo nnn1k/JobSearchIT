@@ -19,7 +19,7 @@
     </div>
     <div class="panel">
         <div class="logo">
-            <img src="/frontend/pictures/main_logo.png" alt="Логотип"/>
+            <a href={{ url_for('home_page_worker') }}><img src="/frontend/pictures/main_logo.png" alt="Логотип"/></a>
         </div>
         <div class="div_link_my_resumes">
             <a id="link_my_resumes" href={{ url_for('resumes_get') }}>Мои резюме</a>
@@ -42,6 +42,7 @@
             </div>
         </div>
     </div>
+    <div id="notification-container"></div>
 </header>
 <div class="content">
     {% block content %} {% endblock %}
@@ -62,8 +63,8 @@
       <h3>Ссылки</h3>
       <ul>
         <li><a href={{ url_for('home_page_worker') }}>Главная</a></li>
-        <li><a href={{ url_for('vacancy_all') }}>Вакансии</a></li>
-        <li><a href={{ url_for('resume_all') }}>Резюме</a></li>
+        <li><a href='#'>Вакансии</a></li>
+        <li><a href='#'>Резюме</a></li>
         <li><a href="#">Компании</a></li>
       </ul>
     </div>

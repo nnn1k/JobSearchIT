@@ -128,3 +128,27 @@ input:focus {
 h1, h2, h3, p{
     color: gray;
 }
+
+
+#notification-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1000; /* Убедитесь, что уведомления поверх других элементов */
+}
+
+.notification {
+    background-color: seagreen; /* Зеленый цвет для успешных уведомлений */
+    color: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    transform: translateY(-20px); /* Начальное положение для анимации */
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0); /* Конечное положение для анимации */
+}

@@ -1,5 +1,6 @@
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
+import {showNotification} from "/frontend/js/showNotification.js";
 
 export function createModal(title, resumes, vacancy_id) {
     document.body.style.overflow = "hidden"
@@ -51,7 +52,9 @@ export function createModal(title, resumes, vacancy_id) {
                 url: `/api/responses/?${searchParams.toString()}`,
             })
             if(postResponse){
+                showNotification('Вы успешно откликнулись')
                 document.body.style.overflow = ""
+
             }
             modal.style.display = 'none';
             document.body.removeChild(modal);
