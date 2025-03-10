@@ -16,15 +16,31 @@ from backend.utils.exc import (
     user_is_not_owner_exc,
     vacancy_not_found_exc
 )
+async def send_reaction_to_response(
+        user: UserResponseSchema,
+        session: AsyncSession,
+        response_id: int,
+        reaction: bool
+) -> ResponseSchema:
+    response = await session.get(ResponsesOrm, response_id)
+    if not response:
+        raise response_not_found_exc
+    return await send_response_queries(
+        user=user,
+        session=session,
+        resume_id=response.resume_id,
+        vacancy_id=response.vacancy_id,
+        reaction=reaction
+    )
 
 
 async def send_response_queries(
         user: UserResponseSchema,
         resume_id: int,
         vacancy_id: int,
-        accept: bool,
+        reaction: bool,
         session: AsyncSession
-) -> ResponsesOrm:
+) -> ResponseSchema:
     if not user:
         raise incorrect_user_type_exc
     resume = await session.get(ResumesOrm, resume_id)
@@ -52,18 +68,19 @@ async def send_response_queries(
     if user.type == WORKER_USER_TYPE:
         if user.id != resume.worker_id:
             raise user_is_not_owner_exc
-        new_stmt = new_stmt.values(is_worker_accepted=accept)
+        new_stmt = new_stmt.values(is_worker_accepted=reaction)
 
     elif user.type == EMPLOYER_USER_TYPE:
         if user.company_id != vacancy.company_id:
             raise user_is_not_owner_exc
-        new_stmt = new_stmt.values(is_employer_accepted=accept)
+        new_stmt = new_stmt.values(is_employer_accepted=reaction)
 
     new_stmt = new_stmt.returning(ResponsesOrm)
     new_stmt = new_stmt.options(joinedload(ResponsesOrm.resume))
     new_stmt = new_stmt.options(joinedload(ResponsesOrm.vacancy))
     result = await session.execute(new_stmt)
     response = result.scalars().one_or_none()
+    print(response.vacancy)
     schema = ResponseSchema.model_validate(response, from_attributes=True)
     await session.commit()
     return schema
@@ -111,22 +128,27 @@ async def delete_response_queries(
         user: UserResponseSchema,
         session: AsyncSession,
         response_id: int
-):
-    if not user:
-        raise incorrect_user_type_exc
+) -> None:
     response = await session.get(ResponsesOrm, response_id)
     if not response:
         raise response_not_found_exc
     vacancy = await session.get(VacanciesOrm, response.vacancy_id)
     resume = await session.get(ResumesOrm, response.resume_id)
+    if not resume:
+        raise resume_not_found_exc
+    if not vacancy:
+        raise vacancy_not_found_exc
+    if not user:
+        raise incorrect_user_type_exc
+
     if user.type == WORKER_USER_TYPE:
         if resume.worker_id != user.id:
             raise user_is_not_owner_exc
     elif user.type == EMPLOYER_USER_TYPE:
         if vacancy.company_id != user.company_id:
             raise user_is_not_owner_exc
+    else:
+        raise incorrect_user_type_exc
 
     await session.delete(response)
     await session.commit()
-
-
