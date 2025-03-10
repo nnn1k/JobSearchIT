@@ -80,7 +80,6 @@ async def send_response_queries(
     new_stmt = new_stmt.options(joinedload(ResponsesOrm.vacancy))
     result = await session.execute(new_stmt)
     response = result.scalars().one_or_none()
-    print(response.vacancy)
     schema = ResponseSchema.model_validate(response, from_attributes=True)
     await session.commit()
     return schema
