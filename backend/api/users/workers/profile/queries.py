@@ -2,11 +2,11 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database.models.worker import ResumesOrm, WorkersOrm
-from backend.schemas.models.worker.worker_schema import WorkerResponseSchema
-from backend.utils.exc import worker_not_found_exc
+from backend.core.database.models.worker import ResumesOrm, WorkersOrm
+from backend.core.schemas import WorkerResponseSchema
+from backend.core.utils.exc import worker_not_found_exc
 
-from backend.utils.other.time_utils import time_it_async
+from backend.core.utils.other.time_utils import time_it_async
 
 
 @time_it_async

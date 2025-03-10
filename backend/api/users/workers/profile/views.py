@@ -3,11 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.users.workers.profile.queries import update_worker_by_id_queries
 from backend.api.users.workers.profile.schemas import WorkerProfileSchema
-from backend.database.utils.dependencies import get_db
-from backend.schemas.global_schema import DynamicSchema
-from backend.utils.auth_utils.user_login_dependencies import get_worker_by_token
+from backend.core.database.utils.dependencies import get_db
+from backend.core.schemas.global_schema import DynamicSchema
+from backend.core.utils.auth_utils.user_login_dependencies import get_worker_by_token
 
-from backend.schemas import WorkerResponseSchema
+from backend.core.schemas import WorkerResponseSchema
 
 router = APIRouter(prefix='/me', tags=['workers'])
 

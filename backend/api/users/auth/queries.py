@@ -1,7 +1,7 @@
 from sqlalchemy import delete, select
 
 from backend.api.users.auth.classes.HashPwd import HashPwd
-from backend.database.settings.database import session_factory
+from backend.core.database.settings.database import session_factory
 
 
 async def login_user_queries(user, user_table, response_schema, session):

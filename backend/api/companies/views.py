@@ -1,14 +1,14 @@
-from fastapi import Depends, APIRouter, HTTPException, status
+from fastapi import Depends, APIRouter
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.companies.queries import create_company_queries, delete_company_queries, get_company_by_id_queries, \
     update_company_queries
 from backend.api.companies.schemas import CompanyAddSchema, CompanyUpdateSchema
-from backend.database.utils.dependencies import get_db
-from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
-from backend.schemas import EmployerResponseSchema
-from backend.utils.auth_utils.check_func import check_employer_can_update
-from backend.utils.other.time_utils import time_it_async
+from backend.core.database.utils.dependencies import get_db
+from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
+from backend.core.schemas import EmployerResponseSchema
+from backend.core.utils.auth_utils.check_func import check_employer_can_update
+from backend.core.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix='/companies', tags=['companies'])
 

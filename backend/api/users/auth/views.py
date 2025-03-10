@@ -1,14 +1,14 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.users.auth.queries import login_user_queries, register_user_queries, update_code_queries
-from backend.database.utils.dependencies import get_db
-from backend.utils.auth_utils.user_login_dependencies import (
+from backend.core.database.utils.dependencies import get_db
+from backend.core.utils.auth_utils.user_login_dependencies import (
     get_employer_by_token,
     get_user_by_token,
     get_worker_by_token
 )
-from backend.utils.other.time_utils import time_it_async
-from backend.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.core.utils.other.time_utils import time_it_async
+from backend.core.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, Response, HTTPException, status
 
 from backend.api.users.auth.schemas import CodeSchema, LoginSchema, RegisterSchema, UserType
@@ -17,8 +17,8 @@ from backend.api.users.auth.dependencies import (
     get_login_db_model,
 )
 
-from backend.utils.other.email_utils import SendEmail
-from backend.modules.redis.redis_code_utils import get_code_from_redis
+from backend.core.utils.other.email_utils import SendEmail
+from backend.core.utils.redis_utils.redis_code_utils import get_code_from_redis
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 type_router = APIRouter(prefix="/{user_type_path}")

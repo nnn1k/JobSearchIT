@@ -2,15 +2,15 @@ from typing import List
 
 from sqlalchemy import select
 
-from backend.database.models.employer import VacanciesOrm
-from backend.database.models.worker import ResumesOrm
-from backend.schemas import WorkerResponseSchema
-from backend.schemas.models.other.skill_schema import SkillSchema
-from backend.database.models.other.VacancySkills import VacanciesSkillsOrm
-from backend.database.models.other.Skill import SkillsOrm
-from backend.database.models.other.ResumeSkills import ResumesSkillsOrm
-from backend.database.settings.database import session_factory
-from backend.utils.exc import resume_not_found_exc, user_is_not_owner_exc, vacancy_not_found_exc
+from backend.core.database.models.employer import VacanciesOrm
+from backend.core.database.models.worker import ResumesOrm
+from backend.core.schemas import WorkerResponseSchema
+from backend.core.schemas import SkillSchema
+from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
+from backend.core.database.models.other.Skill import SkillsOrm
+from backend.core.database.models.other.ResumeSkills import ResumesSkillsOrm
+from backend.core.database.settings.database import session_factory
+from backend.core.utils.exc import resume_not_found_exc, user_is_not_owner_exc, vacancy_not_found_exc
 
 
 async def get_all_skills_queries(**kwargs):

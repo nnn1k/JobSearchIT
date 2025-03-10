@@ -2,12 +2,10 @@ from sqlalchemy import delete, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database.models.worker import ResumesOrm
-from backend.database.settings.database import session_factory
-from backend.schemas import WorkerResponseSchema
-from backend.schemas.models.worker.resume_schema import ResumeSchema
-from backend.utils.exc import resume_not_found_exc, user_is_not_owner_exc
-from backend.utils.other.logger_utils import logger
+from backend.core.database.models.worker import ResumesOrm
+from backend.core.schemas import WorkerResponseSchema
+from backend.core.schemas import ResumeSchema
+from backend.core.utils.exc import resume_not_found_exc, user_is_not_owner_exc
 
 
 async def create_resume_queries(session: AsyncSession, **kwargs):

@@ -5,10 +5,10 @@ from starlette import status
 
 from backend.api.users.auth.classes.AuthJWT import Token, jwt_token
 from backend.api.users.auth.schemas import UserType
-from backend.database.models.employer import EmployersOrm
-from backend.database.models.worker import WorkersOrm
-from backend.schemas import EmployerResponseSchema, WorkerResponseSchema
-from backend.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
+from backend.core.database.models.employer import EmployersOrm
+from backend.core.database.models.worker import WorkersOrm
+from backend.core.schemas import EmployerResponseSchema, WorkerResponseSchema
+from backend.core.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 
 
 def get_login_db_model(user_type: UserType):

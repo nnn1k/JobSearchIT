@@ -1,16 +1,15 @@
 from fastapi import HTTPException, status
-from sqlalchemy import and_, desc, insert, or_, select, update, delete
+from sqlalchemy import and_, desc, insert, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
-from backend.database.models.employer import VacanciesOrm
-from backend.database.models.other import ProfessionsOrm
-from backend.database.settings.database import session_factory
-from backend.schemas import EmployerResponseSchema, VacancySchema, WorkerResponseSchema
-from backend.utils.const import EMPLOYER_USER_TYPE
-from backend.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
-from backend.utils.other.time_utils import time_it_async
-from backend.utils.other.type_utils import UserVar
+from backend.core.database.models.employer import VacanciesOrm
+from backend.core.database.models.other import ProfessionsOrm
+from backend.core.schemas import EmployerResponseSchema, VacancySchema
+from backend.core.utils.const import EMPLOYER_USER_TYPE
+from backend.core.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
+from backend.core.utils.other.time_utils import time_it_async
+from backend.core.utils.other.type_utils import UserVar
 
 
 @time_it_async

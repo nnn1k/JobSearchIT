@@ -9,9 +9,9 @@ from backend.api.resumes.views import router as resumes_router
 
 from backend.api.skills.views import router as skills_router
 from backend.api.responses.views import router as responses_router
-from backend.database.utils.dependencies import get_db
-from backend.database.utils.queries import check_connection_db
-from backend.modules.redis.redis_utils import check_redis_connection, clear_redis
+from backend.core.database.utils.dependencies import get_db
+from backend.core.database.utils.queries import check_connection_db
+from backend.core.utils.redis_utils.redis_obj_utils import check_redis_connection, clear_redis
 
 router = APIRouter(prefix="/api")
 

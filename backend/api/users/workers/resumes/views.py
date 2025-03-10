@@ -12,11 +12,11 @@ from backend.api.users.workers.resumes.queries import (
     update_resume_by_id_queries
 )
 from backend.api.users.workers.resumes.schemas import ResumeAddSchema, ResumeUpdateSchema
-from backend.database.utils.dependencies import get_db
-from backend.schemas import SkillSchema, WorkerResponseSchema
-from backend.utils.auth_utils.check_func import check_worker_can_update
-from backend.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
-from backend.utils.other.time_utils import time_it_async
+from backend.core.database.utils.dependencies import get_db
+from backend.core.schemas import SkillSchema, WorkerResponseSchema
+from backend.core.utils.auth_utils.check_func import check_worker_can_update
+from backend.core.utils.auth_utils.user_login_dependencies import get_user_by_token, get_worker_by_token
+from backend.core.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/resumes", tags=["resumes"])
 

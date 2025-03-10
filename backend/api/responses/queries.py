@@ -4,13 +4,13 @@ from sqlalchemy import and_, desc, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
-from backend.database.models.other import ResponsesOrm
-from backend.database.models.worker import ResumesOrm
-from backend.database.models.employer import VacanciesOrm
-from backend.schemas.models.other.response_schema import ResponseSchema
-from backend.schemas.user_schema import UserResponseSchema
-from backend.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
-from backend.utils.exc import (
+from backend.core.database.models.other import ResponsesOrm
+from backend.core.database.models.worker import ResumesOrm
+from backend.core.database.models.employer import VacanciesOrm
+from backend.core.schemas import ResponseSchema
+from backend.core.schemas.user_schema import UserResponseSchema
+from backend.core.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
+from backend.core.utils.exc import (
     incorrect_user_type_exc,
     response_not_found_exc, resume_not_found_exc,
     user_is_not_owner_exc,

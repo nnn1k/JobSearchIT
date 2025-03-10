@@ -1,17 +1,15 @@
 import os
 from contextlib import asynccontextmanager
 
-import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from backend.database.settings.database import engine
-from backend.utils.other.logger_utils import logger
+from backend.core.utils.other.logger_utils import logger
 from fastapi.responses import JSONResponse
 
 from backend.api import router as backend_router
-from backend.utils.settings import settings
+
 from frontend.routers import router as frontend_router
 
 frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
@@ -19,11 +17,7 @@ frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.log('DATABASE', 'db connect')
-    app.state.db = await engine.connect()
     yield
-    logger.log('DATABASE', 'db disconnect')
-    await app.state.db.close()
 
 
 app = FastAPI(lifespan=lifespan)

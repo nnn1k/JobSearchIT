@@ -7,12 +7,12 @@ from backend.api.skills.queries import (
     update_vacancy_skills,
     update_resume_skills
 )
-from backend.schemas.models.other.skill_schema import SkillListSchema
-from backend.utils.auth_utils.user_login_dependencies import (
+from backend.core.schemas.models.other.skill_schema import SkillListSchema
+from backend.core.utils.auth_utils.user_login_dependencies import (
     get_employer_by_token,
-    get_user_by_token,
-    get_worker_by_token)
-from backend.utils.other.time_utils import time_it_async
+    get_worker_by_token
+)
+from backend.core.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/skills", tags=["skills"])
 

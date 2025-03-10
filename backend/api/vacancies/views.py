@@ -13,11 +13,11 @@ from backend.api.vacancies.queries import (
     update_vacancy_by_id_queries
 )
 from backend.api.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
-from backend.database.utils.dependencies import get_db
-from backend.schemas import EmployerResponseSchema
-from backend.schemas.models.other.skill_schema import SkillSchema
-from backend.utils.auth_utils.check_func import check_employer_can_update
-from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
+from backend.core.database.utils.dependencies import get_db
+from backend.core.schemas import EmployerResponseSchema
+from backend.core.schemas import SkillSchema
+from backend.core.utils.auth_utils.check_func import check_employer_can_update
+from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
 
 router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 

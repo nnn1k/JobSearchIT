@@ -1,11 +1,11 @@
 from sqlalchemy import and_, desc, select
 from sqlalchemy.orm import selectinload
 
-from backend.database.models.other import ProfessionsOrm
-from backend.database.models.worker import ResumesOrm
-from backend.database.settings.database import session_factory
-from backend.schemas import ResumeSchema
-from backend.utils.const import WORKER_USER_TYPE
+from backend.core.database.models.other import ProfessionsOrm
+from backend.core.database.models.worker import ResumesOrm
+from backend.core.database.settings.database import session_factory
+from backend.core.schemas import ResumeSchema
+from backend.core.utils.const import WORKER_USER_TYPE
 
 
 async def get_all_resumes_query(user, **kwargs):

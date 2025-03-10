@@ -2,11 +2,11 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
-from backend.database.models.employer import EmployersOrm
+from backend.core.database.models.employer import EmployersOrm
 
-from backend.schemas.models.employer.employer_schema import EmployerResponseSchema
+from backend.core.schemas.models.employer.employer_schema import EmployerResponseSchema
 
-from backend.utils.exc import employer_not_found_exc
+from backend.core.utils.exc import employer_not_found_exc
 
 
 async def get_employer_by_id_queries(employer_id: int, session: AsyncSession) -> EmployerResponseSchema:

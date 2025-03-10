@@ -9,9 +9,9 @@ from backend.api.responses.queries import (
     send_reaction_to_response,
     send_response_queries,
 )
-from backend.database.utils.dependencies import get_db
-from backend.schemas.user_schema import UserResponseSchema
-from backend.utils.auth_utils.user_login_dependencies import (
+from backend.core.database.utils.dependencies import get_db
+from backend.core.schemas.user_schema import UserResponseSchema
+from backend.core.utils.auth_utils.user_login_dependencies import (
     get_user_by_token
 )
 
