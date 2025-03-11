@@ -5,7 +5,7 @@ import redis
 
 from backend.core.utils.other.time_utils import time_it_async
 from backend.core.utils.other.type_utils import BaseVar
-from backend.core.utils.settings import settings
+from backend.core.config.settings import settings
 
 TTL = 600
 

@@ -1,7 +1,7 @@
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.core.utils.other.logger_utils import logger
+from backend.core.utils.logger_utils.logger_func import logger
 from backend.core.utils.other.time_utils import time_it_async
 
 

@@ -5,8 +5,8 @@ from sqlalchemy import text, event
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 
-from backend.core.utils.settings import settings
-from backend.core.utils.other.logger_utils import logger
+from backend.core.config.settings import settings
+from backend.core.utils.logger_utils.logger_func import logger
 
 engine = create_async_engine(
     url=settings.db.url,

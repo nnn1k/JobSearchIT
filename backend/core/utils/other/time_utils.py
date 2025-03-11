@@ -2,7 +2,7 @@ import time
 from datetime import datetime, timedelta
 from functools import wraps
 import inspect
-from .logger_utils import logger
+from backend.core.utils.logger_utils.logger_func import logger
 from pyinstrument import Profiler
 
 

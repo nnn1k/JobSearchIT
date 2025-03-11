@@ -4,7 +4,7 @@ import random
 from aiosmtplib import SMTP
 
 from backend.core.utils.redis_utils.redis_code_utils import add_code_to_redis
-from backend.core.utils.settings import settings
+from backend.core.config.settings import settings
 
 
 class SendEmail:
