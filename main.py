@@ -1,6 +1,7 @@
 import os
 from contextlib import asynccontextmanager
 
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -54,5 +55,5 @@ async def log_requests(request: Request, call_next):
 
     return response
 
-
-
+if __name__ == '__main__':
+    uvicorn.run(app)
