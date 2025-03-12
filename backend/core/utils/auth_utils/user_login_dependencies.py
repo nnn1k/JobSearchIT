@@ -62,3 +62,19 @@ async def get_user_by_token(
         return await get_employer_by_id_queries(user_jwt_schema.id, session)
     else:
         raise incorrect_user_type_exc
+
+async def get_auth_user_by_token(
+        response: Response,
+        access_token=Cookie(None, include_in_schema=False),
+        refresh_token=Cookie(None, include_in_schema=False),
+        session: AsyncSession = Depends(get_db),
+):
+    user_jwt_schema = await check_user_role(access_token, refresh_token, response)
+    if not user_jwt_schema:
+        raise incorrect_user_type_exc
+    if user_jwt_schema.type == WORKER_USER_TYPE:
+        return await get_worker_by_id_queries(user_jwt_schema.id, session)
+    elif user_jwt_schema.type == EMPLOYER_USER_TYPE:
+        return await get_employer_by_id_queries(user_jwt_schema.id, session)
+    else:
+        raise incorrect_user_type_exc

@@ -12,7 +12,7 @@ from backend.api.responses.queries import (
 from backend.core.database.utils.dependencies import get_db
 from backend.core.schemas.user_schema import UserResponseSchema
 from backend.core.utils.auth_utils.user_login_dependencies import (
-    get_employer_by_token, get_user_by_token, get_worker_by_token
+    get_auth_user_by_token, get_employer_by_token, get_user_by_token, get_worker_by_token
 )
 
 router = APIRouter(prefix='/responses', tags=['responses'])
@@ -56,7 +56,7 @@ async def send_invite_views(
 
 @router.get('/response', summary='Посмотреть все отклики')
 async def get_responses_worker_views(
-        user: UserResponseSchema = Depends(get_user_by_token),
+        user: UserResponseSchema = Depends(get_auth_user_by_token),
         session: AsyncSession = Depends(get_db),
 ):
     responses = await get_responses_queries(user=user, session=session, response=True)
@@ -71,7 +71,7 @@ async def get_responses_worker_views(
 
 @router.get('/invite', summary='Посмотреть все приглашения')
 async def get_invite_views(
-        user: UserResponseSchema = Depends(get_user_by_token),
+        user: UserResponseSchema = Depends(get_auth_user_by_token),
         session: AsyncSession = Depends(get_db),
 ):
     responses = await get_responses_queries(user=user, session=session, response=False)
@@ -86,7 +86,7 @@ async def get_invite_views(
 @router.post('/{response_id}/accept', summary='Подтвердить отклик/приглашение')
 async def accept_invite_views(
         response_id: int,
-        user: UserResponseSchema = Depends(get_user_by_token),
+        user: UserResponseSchema = Depends(get_auth_user_by_token),
         session: AsyncSession = Depends(get_db),
 ):
     response = await send_reaction_to_response(user=user, session=session, response_id=response_id, reaction=True)
@@ -98,7 +98,7 @@ async def accept_invite_views(
 @router.post('/{response_id}/reject', summary='Отклонить отклик/приглашение')
 async def accept_invite_views(
         response_id: int,
-        user: UserResponseSchema = Depends(get_user_by_token),
+        user: UserResponseSchema = Depends(get_auth_user_by_token),
         session: AsyncSession = Depends(get_db),
 ):
     response = await send_reaction_to_response(user=user, session=session, response_id=response_id, reaction=False)
@@ -110,7 +110,7 @@ async def accept_invite_views(
 @router.delete('/{response_id}', summary='Удалить отклик/приглашение')
 async def delete_response_views(
         response_id: int,
-        user: UserResponseSchema = Depends(get_user_by_token),
+        user: UserResponseSchema = Depends(get_auth_user_by_token),
         session: AsyncSession = Depends(get_db),
 ):
     await delete_response_queries(user=user, session=session, response_id=response_id)
