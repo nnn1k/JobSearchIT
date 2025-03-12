@@ -1,5 +1,3 @@
-from typing import Optional
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -9,10 +7,13 @@ from backend.api.responses.queries import (
     send_reaction_to_response,
     send_response_queries,
 )
+
 from backend.core.database.utils.dependencies import get_db
 from backend.core.schemas.user_schema import UserResponseSchema
 from backend.core.utils.auth_utils.user_login_dependencies import (
-    get_auth_user_by_token, get_employer_by_token, get_user_by_token, get_worker_by_token
+    get_auth_user_by_token,
+    get_employer_by_token,
+    get_worker_by_token
 )
 
 router = APIRouter(prefix='/responses', tags=['responses'])

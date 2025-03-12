@@ -31,7 +31,8 @@ async def get_all_resumes_query(user, **kwargs):
             conditions.append(ProfessionsOrm.title.ilike(f'%{profession}%'))
         if user:
             if user.type == WORKER_USER_TYPE:
-                pass
+                ...
+                #conditions.append(ResumesOrm.worker_id != user.id)
         if conditions:
             stmt = stmt.where(and_(*conditions))
         stmt = stmt.order_by(desc(ResumesOrm.updated_at))

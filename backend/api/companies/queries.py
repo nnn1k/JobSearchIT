@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import contains_eager
 
 from backend.core.database.models.employer import CompaniesOrm, EmployersOrm
+from backend.core.database.settings.database import session_factory
 from backend.core.schemas import EmployerResponseSchema
 from backend.core.schemas.models.employer.company_schema import CompanySchema
 from backend.core.database.models.employer import VacanciesOrm
@@ -78,7 +79,9 @@ async def update_company_queries(company_id, owner: EmployerResponseSchema, sess
     return await get_company_by_id_queries(company_id, session)
 
 
-async def delete_company_queries(company_id: int, owner: EmployerResponseSchema, session: AsyncSession):
+async def delete_company_queries(company_id: int, owner: EmployerResponseSchema, session: AsyncSession = None):
+    if not session:
+        session = session_factory()
     if not (company_id == owner.company_id and owner.is_owner):
         raise user_is_not_owner_exc
 
