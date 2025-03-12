@@ -11,6 +11,7 @@ class ResponsesOrm(Base):
     resume_id: Mapped[int] = mapped_column(ForeignKey('resumes.id', ondelete='CASCADE'))
     is_worker_accepted: Mapped[bool] = mapped_column(nullable=True, default=None)
     is_employer_accepted: Mapped[bool] = mapped_column(nullable=True, default=None)
+    first: Mapped[str] = mapped_column(nullable=True, default=None)
 
     _table_args__ = (
         UniqueConstraint('vacancy_id', 'resume_id', name='uq_responses_vacancies'),

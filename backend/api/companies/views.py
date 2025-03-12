@@ -38,8 +38,8 @@ async def get_info_on_company(
     can_update = check_employer_can_update(user, company)
     return {
         'status': 'ok',
+        'can_update': can_update,
         'company': company,
-        'can_update': can_update
     }
 
 

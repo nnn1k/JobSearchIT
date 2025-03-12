@@ -8,7 +8,7 @@ from backend.core.config.settings import settings
 
 
 class SendEmail:
-    
+
     @staticmethod
     def get_random_code(k=6) -> str:
         res = ''.join(random.choices(string.ascii_uppercase + string.digits, k=k))

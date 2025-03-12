@@ -45,6 +45,11 @@ response_not_found_exc = HTTPException(
     detail='response not found'
 )
 
+response_is_exist_exc = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail='response already exist'
+)
+
 incorrect_token_exc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="invalid token",
