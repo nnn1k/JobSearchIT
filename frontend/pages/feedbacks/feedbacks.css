@@ -52,7 +52,7 @@
 .feedback{
     background-color: #f2f2f2;
     border-radius: 25px;
-    padding: 15px;
+    padding: 50px;
     margin: 5px 0;
     border: 2px solid #cccccc;
     transition: box-shadow 0.3s;
@@ -125,7 +125,6 @@
         align-items: center;
     }
 }
-
 
 
 /* Основная информация о кандидате */
@@ -283,6 +282,162 @@
     height: 12px;
 }
 
+
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --bg-card: #ffffff;
+    --border-color: #e5e7eb;
+}
+
+
+.feedback-card {
+    background-color: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width:650px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color);
+    margin-bottom: 2%;
+}
+
+.feedback-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.title-section h2 {
+    margin: 0 0 0.25rem 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.title-section h3 {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+
+
+.card-content_2 {
+    margin-bottom: 1.5rem;
+    padding: 0;
+    display: block;
+}
+
+/* More aggressive reset for the date element */
+.date {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 0 0 1rem 0;
+    padding: 0;
+    text-align: left;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    left: 0;
+}
+
+.delete-button {
+    background-color: transparent;
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-button:hover {
+    background-color: crimson;
+    color: white;
+}
+
+.delete-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+.delete-icon {
+    margin-right: 0.375rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+.chat-link {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ebf5ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0.5rem 0.75rem;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #bfdbfe;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.chat-link:hover {
+    background-color: #dbeafe;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.chat-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.chat-link:active {
+    transform: translateY(0);
+}
+
+.chat-link svg {
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 480px) {
+    .feedback-card {
+        max-width: 100%;
+        border-radius: 8px;
+        padding: 1.25rem;
+    }
+}
 
 
 

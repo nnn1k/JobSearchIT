@@ -22,7 +22,6 @@ async function getMyResumes() {
         url: '/api/workers/me/'
     })
     resumes = getMyResumes.user.resumes
-    console.log(resumes)
 }
 
 async function getProfessions() {

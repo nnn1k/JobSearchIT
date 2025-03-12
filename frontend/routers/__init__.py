@@ -7,6 +7,7 @@ from .companies import router as company_router
 from .vacancies import router as vacancy_router
 from .resume import router as resume_router
 from .feedbacks import router as feedback_router
+from .invitations import router as invite_router
 
 
 from fastapi import APIRouter, Request
@@ -22,6 +23,7 @@ router.include_router(company_router)
 router.include_router(vacancy_router)
 router.include_router(resume_router)
 router.include_router(feedback_router)
+router.include_router(invite_router)
 
 
 @router.get("/")

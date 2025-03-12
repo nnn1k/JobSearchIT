@@ -56,29 +56,90 @@ async function getFeedbacks() {
 
 function renderFeedbacksForWorker(allFeedbacks, nameForm) {
     const all_feedbacks = document.getElementById(nameForm)
-    const unread_feedbacks = document.getElementById('unread_form')
     all_feedbacks.innerHTML = '';
     if (allFeedbacks.length === 0) {
         const countFeedbacks = document.createElement('h2');
         countFeedbacks.textContent = `Тут пока пусто :(`
         all_feedbacks.appendChild(countFeedbacks);
     }
-    allFeedbacks.forEach(feedback => {
-        const feedbackElement = document.createElement('div');
-        feedbackElement.classList = 'feedback'
 
-        const titleVacancy = document.createElement('h2');
-        titleVacancy.textContent = feedback.vacancy.profession.title
-        const nameCompany = document.createElement('h3');
-        nameCompany.textContent = feedback.vacancy.company.name
-        const createAt = document.createElement('p')
-        createAt.textContent = formatDateTime(feedback.created_at)
-        const deleteBtn = document.createElement('button')
-        deleteBtn.textContent = 'Удалить'
-        deleteBtn.classList = 'red_button'
-        deleteBtn.style.marginLeft = '70%'
-        deleteBtn.style.width = '25%'
-        deleteBtn.addEventListener('click', function () {
+    allFeedbacks.forEach(feedback => {
+        const card = document.createElement('div');
+        card.className = 'feedback-card';
+
+        // Create card header
+        const cardHeader = document.createElement('div');
+        cardHeader.className = 'card-header';
+
+        // Create title section
+        const titleSection = document.createElement('div');
+        titleSection.className = 'title-section';
+
+        // Create title
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = feedback.vacancy.profession.title;
+
+        // Create subtitle
+        const subtitleElement = document.createElement('h3');
+        subtitleElement.textContent = feedback.vacancy.company.name;
+
+        // Add title and subtitle to title section
+        titleSection.appendChild(titleElement);
+        titleSection.appendChild(subtitleElement);
+
+        let statusElement
+
+        if (feedback.is_worker_accepted && feedback.is_employer_accepted) {
+            statusElement = document.createElement('a');
+            statusElement.className = 'chat-link';
+            statusElement.href = '#';
+            statusElement.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chat-icon">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+    Перейти в чат
+  `;
+        } else if (feedback.is_employer_accepted === false) {
+            statusElement = document.createElement('div');
+            statusElement.className = 'status-badge status-rejected';
+            statusElement.textContent = 'Отказ';
+        } else {
+            statusElement = document.createElement('div');
+            statusElement.className = 'status-badge status-pending';
+            statusElement.textContent = 'На рассмотрении';
+        }
+
+
+        // Add title section and status element to header
+        cardHeader.appendChild(titleSection);
+        cardHeader.appendChild(statusElement);
+
+        // Create card content
+        const cardContent = document.createElement('div');
+        cardContent.className = 'card-content_2';
+
+        // Create date element
+        const dateElement = document.createElement('h4');
+        dateElement.className = 'date';
+        dateElement.textContent = formatDateTime(feedback.created_at);
+
+        // Add date to card content
+        cardContent.appendChild(dateElement);
+
+        // Create delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete-button';
+
+
+        // Add trash icon and text to button
+        deleteButton.innerHTML = `
+    <svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    </svg>
+    Удалить
+  `;
+
+        deleteButton.addEventListener('click', function () {
             showNotification('Отклик удален')
             console.log(`Отклик ${feedback.id} удален`);
             const loadingIndicator = showLoadingIndicator();
@@ -87,9 +148,8 @@ function renderFeedbacksForWorker(allFeedbacks, nameForm) {
                 url: `/api/responses/${feedback.id}`
             })
                 .then(response => {
-                    hideLoadingIndicator(loadingIndicator);
                     if (response) {
-                        all_feedbacks.removeChild(feedbackElement);
+                        all_feedbacks.removeChild(card);
                         location.reload(true);
                     } else {
                         console.error('Ошибка при удалении отклика');
@@ -100,23 +160,14 @@ function renderFeedbacksForWorker(allFeedbacks, nameForm) {
                     console.error('Ошибка:', error);
                 });
         })
-        feedbackElement.appendChild(titleVacancy)
-        feedbackElement.appendChild(nameCompany)
-        feedbackElement.appendChild(createAt)
-        if (feedback.is_worker_accepted && feedback.is_employer_accepted) {
-            const linkForChat = document.createElement('a')
-            linkForChat.textContent = 'Перейти в чат'
-            linkForChat.href = '#'
-            feedbackElement.appendChild(linkForChat)
-        }
-        if (feedback.is_employer_accepted === false) {
-            const rejectedFeedback = document.createElement('p')
-            rejectedFeedback.textContent = 'Отказ'
-            feedbackElement.appendChild(rejectedFeedback)
-        }
-        feedbackElement.appendChild(deleteBtn)
-        all_feedbacks.appendChild(feedbackElement)
-    });
+
+        // Assemble the card
+        card.appendChild(cardHeader);
+        card.appendChild(cardContent);
+        card.appendChild(deleteButton);
+
+        all_feedbacks.appendChild(card)
+    })
 }
 
 function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
@@ -174,10 +225,11 @@ function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
         candidateName.className = 'candidate-name';
         candidateName.textContent = `${feedback.resume.worker.name} ${feedback.resume.worker.surname}`;
 
-        const candidatePosition = document.createElement('p');
+        const candidatePosition = document.createElement('a');
         candidatePosition.className = 'candidate-position';
         candidatePosition.textContent = feedback.resume.profession.title;
-
+        candidatePosition.href = apiUrl + `/resumes/${feedback.resume.id}`
+        candidatePosition.style.color = 'gray'
         const skillsContainer = document.createElement('div');
         skillsContainer.className = 'skills';
 
@@ -234,9 +286,15 @@ function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
 
         if (feedback.is_worker_accepted && feedback.is_employer_accepted) {
             const linkForChat = document.createElement('a')
-            linkForChat.textContent = 'Перейти в чат'
+            linkForChat.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chat-icon">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            Перейти в чат
+          `;
             linkForChat.href = '#'
             linkForChat.style.marginLeft = '85%'
+            linkForChat.className = 'chat-link'
             cardContent.appendChild(jobTitleHeader);
             cardContent.appendChild(candidateBlock);
             cardContent.appendChild(linkForChat)
@@ -282,7 +340,7 @@ function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
         rejectButton.addEventListener('click', function () {
             const loadingIndicator = showLoadingIndicator();
             showNotification('Отклик отклонен')
-             makeRequest({
+            makeRequest({
                 method: 'POST',
                 url: `/api/responses/${feedback.id}/reject`
             })
@@ -303,7 +361,7 @@ function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
         approveButton.addEventListener('click', function () {
             const loadingIndicator = showLoadingIndicator();
             showNotification('Отклик одобрен')
-             makeRequest({
+            makeRequest({
                 method: 'POST',
                 url: `/api/responses/${feedback.id}/accept`
             })

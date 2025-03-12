@@ -2,11 +2,29 @@ import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
+import {createModal} from "/frontend/js/modal_window.js";
+
+var vacancies
 
 document.addEventListener('DOMContentLoaded', function () {
     getResumes()
     getProfessions()
+    getMyVacancies()
+
 })
+
+async function getMyVacancies() {
+    const userType = getCookie('user_type')
+    if (!userType || userType === 'worker') {
+        return
+    }
+    const getResponse = await makeRequest({
+        method: 'GET',
+        url: '/api/employers/me/'
+    })
+    vacancies = getResponse.user.company.vacancies
+    console.log(getResponse.user.company.vacancies)
+}
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -131,7 +149,7 @@ async function getResumes(){
     hideLoadingIndicator(loadingIndicator)
 }
 
-function renderResumes(vacancies, name_vacancy, count_vacancy) {
+function renderResumes(resumes, name_vacancy, count_vacancy) {
     const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
     container.style.width = '450px'
@@ -146,7 +164,7 @@ function renderResumes(vacancies, name_vacancy, count_vacancy) {
         countVacancyElement.textContent = ` Найдено ${count_vacancy} резюме`
         container.appendChild(countVacancyElement);
     }
-    vacancies.forEach(vacancy => {
+    resumes.forEach(vacancy => {
         const vacancyElement = document.createElement('div');
         vacancyElement.classList.add('vacancy');
         vacancyElement.style.width = '150%'
@@ -186,12 +204,20 @@ function renderResumes(vacancies, name_vacancy, count_vacancy) {
         const userType = getCookie('user_type')
 
         if (userType === 'employer' || !userType) {
-            const feedBack = document.createElement('button');
-            feedBack.classList.add('red_button');
-            feedBack.style.width = '30%';
-            feedBack.textContent = "Пригласить";
-            vacancyElement.appendChild(feedBack);
+            const inviteBtn = document.createElement('button');
+            inviteBtn.classList.add('red_button');
+            inviteBtn.style.width = '30%';
+            inviteBtn.textContent = "Пригласить";
+            vacancyElement.appendChild(inviteBtn);
             container.appendChild(linkElement);
+            inviteBtn.onclick = function () {
+                event.preventDefault(); // Остановить переход по ссылке
+                if (!userType) {
+                    window.location.href = apiUrl + '/login';
+                    return
+                }
+                createModal('Выберите вакансию для приглашения', vacancies, vacancy.id);
+            };
             return;
         }
         container.appendChild(linkElement);

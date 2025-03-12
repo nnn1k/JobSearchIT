@@ -1,5 +1,6 @@
 import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
+import {showNotification} from "/frontend/js/showNotification.js";
 
 const skills = [];
 
@@ -165,6 +166,7 @@ async function getSkills() {
 }
 
 async function post_vacancy() {
+    showNotification('Вакансия опубликована')
     const description = tinymce.get('input_for_description_vacancy').getContent()
     const salary_first = Number(document.getElementById('input_for_first_salary').value)
     const salary_second = Number(document.getElementById('input_for_second_salary').value)
@@ -188,7 +190,6 @@ async function post_vacancy() {
         postBtn.disabled = false
         hideLoadingIndicator(loadingIndicator);
         window.location.href = apiUrl + "/vacancies/add"
-        alert('Вакансия опубликована');
     }
     postBtn.disabled = false
     hideLoadingIndicator(loadingIndicator);

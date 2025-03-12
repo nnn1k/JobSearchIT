@@ -1,4 +1,4 @@
- export const apiUrl = window.location.protocol + '//' + window.location.host;
+export const apiUrl = window.location.protocol + '//' + window.location.host;
 
 
 export async function makeRequest(request) {

@@ -1,7 +1,10 @@
-import {makeRequest} from "/frontend/js/utils.js";
+import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 import {print_salary} from "/frontend/js/print_salary.js";
 import {createTrashBtnVacancy} from "/frontend/js/create_trash_can.js";
+import {createModal} from "/frontend/js/modal_window.js";
+
+var resumes
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -9,7 +12,21 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-async function get_vacancy() {
+
+async function getMyResumes() {
+    const userType = getCookie('user_type')
+    if (!userType || userType === 'employer') {
+        return
+    }
+    const getMyResumes = await makeRequest({
+        method: 'GET',
+        url: '/api/workers/me/'
+    })
+    resumes = getMyResumes.user.resumes
+}
+
+
+async function getVacancy() {
     const vacancyId = location.pathname.split('/')[2]
     const vacancyContainer = document.getElementById('vacancy-container')
     vacancyContainer.style.display = 'none'
@@ -51,7 +68,6 @@ async function get_vacancy() {
             skills.forEach(skill => {
                 const skillTag = document.createElement('div');
                 skillTag.className = 'skill-tag';
-                console.log(skill.name)
                 skillTag.textContent = skill.name;
                 skillsDisplay.appendChild(skillTag);
             });
@@ -66,7 +82,14 @@ async function get_vacancy() {
         const userType = getCookie('user_type')
 
         if (userType === 'worker' || !userType){
-            flexBtn.textContent = 'Отклинуться'
+            flexBtn.textContent = 'Откликнуться'
+            flexBtn.onclick = function () {
+                if (!userType) {
+                    window.location.href = apiUrl + '/login';
+                    return
+                }
+                createModal('Выберите резюме для отклика', resumes, vacancy.id);
+            };
         }
 
         if (userType === 'employer' && !getResponse.can_update){
@@ -79,5 +102,6 @@ async function get_vacancy() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    get_vacancy()
+    getVacancy()
+    getMyResumes()
 })
