@@ -12,5 +12,6 @@ class MessagesOrm(Base):
 
     chat: Mapped['ChatsOrm'] = relationship(
         'ChatsOrm',
-        back_populates='messages'
+        back_populates='messages',
+        lazy='noload'
     )

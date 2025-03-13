@@ -12,18 +12,27 @@
         <ul id='messages'>
         </ul>
         <script>
-            const ws = new WebSocket("ws://127.0.0.1:8000/api/chats/ws/1");
+            const chat_id = location.pathname.split('/')[3]
+            console.log(chat_id)
+            const ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws/${chat_id}`);
+            ws.onopen = function () {
+                ws.send(JSON.stringify({'message': '', 'type': 'join', 'chat_id': chat_id}))
+            }
+
             ws.onmessage = function(event) {
                 const messages = document.getElementById('messages')
                 const message = document.createElement('li')
-                const content = document.createTextNode(event.data)
+                const content = document.createTextNode(JSON.parse(event.data))
+                console.log(JSON.parse(event.data))
                 message.appendChild(content)
                 messages.appendChild(message)
             };
             function sendMessage(event) {
                 const input = document.getElementById("messageText")
                 const data = {
-                    "message": input.value
+                    "message": input.value,
+                    'type': 'message',
+                    'chat_id': chat_id,
                 }
                 ws.send(JSON.stringify(data))
                 input.value = ''

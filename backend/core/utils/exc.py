@@ -54,3 +54,8 @@ incorrect_token_exc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="invalid token",
 )
+
+chat_not_found_exc = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail='chat not found'
+)

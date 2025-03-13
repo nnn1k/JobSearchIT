@@ -1,20 +1,27 @@
+import datetime
+from typing import Optional
+
 from pydantic import BaseModel
 
+from backend.core.schemas.global_schema import GlobalSchema
 
-class ChatSchema(BaseModel):
+
+class ChatSchema(GlobalSchema):
     response_id: int
-    message: list['MessageSchema']
+    messages: Optional[list['MessageSchema']]
 
-class MessageSchema(BaseModel):
+class MessageSchema(GlobalSchema):
     chat_id: int
     message: str
     sender_id: int
     sender_type: str
 
-    chat: 'ChatSchema'
+    chat: Optional['ChatSchema']
 
 class ChatMessageSchema(BaseModel):
     chat_id: int
     message: str
     sender_id: int
     sender_type: str
+    created_at: datetime.datetime
+    updated_at: datetime.datetime

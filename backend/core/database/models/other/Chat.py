@@ -7,8 +7,8 @@ class ChatsOrm(Base):
 
     response_id: Mapped[int] = mapped_column(ForeignKey('responses.id', ondelete='CASCADE'))
 
-    messages: Mapped['MessagesOrm'] = relationship(
+    messages: Mapped[list['MessagesOrm']] = relationship(
         'MessagesOrm',
         back_populates='chat',
-        lazy='selectin'
+        lazy='noload'
     )
