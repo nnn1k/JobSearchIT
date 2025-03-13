@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.api.chats.queries import create_chat_queries
 from backend.api.responses.queries import (
     delete_response_queries,
     get_responses_queries,
@@ -50,6 +51,7 @@ async def send_invite_views(
         resume_id=resume_id,
         session=session
     )
+    await create_chat_queries(response_id=invite.id, session=session)
     return {
         'status': 'ok',
         'invite': invite,

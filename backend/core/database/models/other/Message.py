@@ -1,5 +1,5 @@
-from backend.core.database.settings.database import Base
-from sqlalchemy import ForeignKey, UniqueConstraint
+from backend.core.database.database import Base
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 class MessagesOrm(Base):

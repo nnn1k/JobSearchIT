@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import contains_eager
 
 from backend.core.database.models.employer import CompaniesOrm, EmployersOrm
-from backend.core.database.settings.database import session_factory
+from backend.core.database.database import session_factory
 from backend.core.schemas import EmployerResponseSchema
 from backend.core.schemas.models.employer.company_schema import CompanySchema
 from backend.core.database.models.employer import VacanciesOrm

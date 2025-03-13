@@ -9,6 +9,7 @@ from backend.core.schemas.global_schema import GlobalSchema
 class ChatSchema(GlobalSchema):
     response_id: int
     messages: Optional[list['MessageSchema']]
+    response: 'ResponseSchema'
 
 class MessageSchema(GlobalSchema):
     chat_id: int

@@ -1,6 +1,6 @@
 import asyncio
 
-from backend.core.database.settings.database import engine, Base, session_factory
+from backend.core.database.database import engine, Base, session_factory
 from backend.core.database.models.other.Skill import SkillsOrm
 from backend.core.database.models.other.Profession import ProfessionsOrm
 

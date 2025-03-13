@@ -55,7 +55,7 @@ async def send_response_queries(
         session: AsyncSession,
         resume_id: int,
         vacancy_id: int,
-):
+) -> ResponseSchema:
     resume, vacancy = await get_vacancy_and_resume(session=session, resume_id=resume_id, vacancy_id=vacancy_id)
     await check_response_is_exist(session=session, resume_id=resume_id, vacancy_id=vacancy_id)
 

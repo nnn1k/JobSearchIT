@@ -3,7 +3,7 @@ from typing import List, Dict, Optional, Literal
 from sqlalchemy import insert, select
 from sqlalchemy.orm import joinedload, selectinload
 
-from backend.core.database.settings.database import session_factory
+from backend.core.database.database import session_factory
 from datetime import datetime, timedelta
 from backend.utils.other.type_utils import BaseVar
 

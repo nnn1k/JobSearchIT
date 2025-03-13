@@ -9,7 +9,7 @@ from backend.core.schemas import SkillSchema
 from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.core.database.models.other.Skill import SkillsOrm
 from backend.core.database.models.other.ResumeSkills import ResumesSkillsOrm
-from backend.core.database.settings.database import session_factory
+from backend.core.database.database import session_factory
 from backend.core.utils.exc import resume_not_found_exc, user_is_not_owner_exc, vacancy_not_found_exc
 
 

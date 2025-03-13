@@ -1,3 +1,4 @@
+from backend.core.schemas.models.other.chat_schema import ChatSchema
 from backend.core.schemas.models.worker.worker_schema import WorkerResponseSchema
 from backend.core.schemas.models.worker.resume_schema import ResumeSchema
 from backend.core.schemas.models.employer.company_schema import CompanySchema
@@ -14,3 +15,4 @@ EmployerResponseSchema.model_rebuild()
 CompanySchema.model_rebuild()
 VacancySchema.model_rebuild()
 ResponseSchema.model_rebuild()
+ChatSchema.model_rebuild()

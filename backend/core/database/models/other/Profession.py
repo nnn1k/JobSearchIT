@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.core.database.settings.database import Base
+from backend.core.database.database import Base
 
 class ProfessionsOrm(Base):
     __tablename__ = 'professions'

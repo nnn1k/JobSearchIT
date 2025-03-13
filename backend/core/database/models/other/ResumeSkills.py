@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
-from backend.core.database.settings.database import Base
+from backend.core.database.database import Base
 
 class ResumesSkillsOrm(Base):
     __tablename__ = 'resumes_skills'

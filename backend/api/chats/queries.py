@@ -18,6 +18,8 @@ def get_all_chats_on_user_stmt(user):
         select(ChatsOrm)
         .join(ResponsesOrm)
         .options(selectinload(ChatsOrm.messages))
+        .options(joinedload(ChatsOrm.response).joinedload(ResponsesOrm.resume))
+        .options(joinedload(ChatsOrm.response).joinedload(ResponsesOrm.vacancy))
     )
     if user.type == WORKER_USER_TYPE:
         stmt = stmt.join(ResumesOrm)
@@ -61,6 +63,7 @@ async def get_all_chats_on_user(
     stmt = get_all_chats_on_user_stmt(user)
     result = await session.execute(stmt)
     chats = result.scalars().all()
+    print(chats[0].response)
     return [ChatSchema.model_validate(chat, from_attributes=True) for chat in chats]
 
 

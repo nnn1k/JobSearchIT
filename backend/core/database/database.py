@@ -19,8 +19,7 @@ engine = create_async_engine(
 
 
 def log_queries(conn, cursor, statement, parameters, context, executemany):
-    ...
-    #logger.log('DATABASE', f"Executing: {statement} | Params: {parameters}\n")
+    logger.log('DATABASE', f"Executing: {statement} | Params: {parameters}\n")
 
 
 event.listen(engine.sync_engine, 'before_cursor_execute', log_queries)
