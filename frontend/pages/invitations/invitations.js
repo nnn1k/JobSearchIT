@@ -3,6 +3,7 @@ import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {showNotification} from "/frontend/js/showNotification.js";
 import {createInvitationCard} from "./createInvitationsForWorker.js";
+import {createInviteForEmployer} from "./createInvitationsForEmployer.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     const first_button = document.getElementById('switch_all')
@@ -47,6 +48,12 @@ async function getInvitations() {
         renderInvitationsForWorker(getResponse.accepted, 'invites_form')
         renderInvitationsForWorker(getResponse.rejected, 'discard_form')
     }
+    if (userType === 'employer') {
+        renderInvitationsForEmployer(getResponse.all, 'all_form')
+        renderInvitationsForEmployer(getResponse.waiting, 'unread_form')
+        renderInvitationsForEmployer(getResponse.accepted, 'invites_form')
+        renderInvitationsForEmployer(getResponse.rejected, 'discard_form')
+    }
 
     console.log(getResponse)
     hideLoadingIndicator(loadingIndicator)
@@ -66,6 +73,22 @@ function renderInvitationsForWorker(invitations, nameForm){
         const card = createInvitationCard(invate.vacancy.company.name, invate.vacancy.profession.title,
             formatDateTime(invate.created_at), invate.resume.profession.title, invate.is_employer_accepted, invate.is_worker_accepted,
             invate.id)
+        invitations_form.appendChild(card)
+    })
+}
+
+function renderInvitationsForEmployer(invitations, nameForm){
+    const invitations_form = document.getElementById(nameForm)
+    invitations_form.innerHTML = '';
+    if (invitations.length === 0) {
+        const countInvitations = document.createElement('h2');
+        countInvitations.textContent = `Тут пока пусто :(`
+        invitations_form.appendChild(countInvitations);
+        return
+    }
+
+    invitations.forEach(invate => {
+        const card = createInviteForEmployer(invate)
         invitations_form.appendChild(card)
     })
 }
