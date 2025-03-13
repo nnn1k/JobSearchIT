@@ -20,6 +20,8 @@ from backend.core.database.models.other.Response import ResponsesOrm
 from backend.core.database.models.other.Skill import SkillsOrm
 from backend.core.database.models.other.ResumeSkills import ResumesSkillsOrm
 from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
+from backend.core.database.models.other.Chat import ChatsOrm
+from backend.core.database.models.other.Message import MessagesOrm
 
 config = context.config
 

@@ -6,10 +6,7 @@ from backend.core.database.models.worker import ResumesOrm, WorkersOrm
 from backend.core.schemas import WorkerResponseSchema
 from backend.core.utils.exc import worker_not_found_exc
 
-from backend.core.utils.other.time_utils import time_it_async
 
-
-@time_it_async
 async def get_worker_by_id_queries(worker_id: int, session: AsyncSession) -> WorkerResponseSchema:
     stmt = await session.execute(
         select(WorkersOrm)

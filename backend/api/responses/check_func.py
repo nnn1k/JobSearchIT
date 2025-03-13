@@ -56,3 +56,4 @@ def check_user_is_not_owner(user, resume, vacancy):
     elif user.type == EMPLOYER_USER_TYPE:
         if vacancy.company_id != user.company_id:
             raise user_is_not_owner_exc
+

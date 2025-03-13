@@ -13,3 +13,9 @@ def feedbacks_all(request: Request):
         return RedirectResponse(url="/login")
     return templates.TemplateResponse("/pages/feedbacks/feedbacks.html", {"request": request, 'user_type': user_type})
 
+@router.get('/chats')
+def feedbacks_chats(request: Request):
+    user_type = request.cookies.get("user_type")
+    if not user_type:
+        return RedirectResponse(url="/login")
+    return templates.TemplateResponse("/pages/chats/test_chat.html", {"request": request, 'user_type': user_type})

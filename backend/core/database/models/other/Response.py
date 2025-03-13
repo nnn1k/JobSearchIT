@@ -16,12 +16,15 @@ class ResponsesOrm(Base):
     _table_args__ = (
         UniqueConstraint('vacancy_id', 'resume_id', name='uq_responses_vacancies'),
     )
+
     vacancy: Mapped['VacanciesOrm'] = relationship(
         'VacanciesOrm',
         back_populates='responses',
+        lazy='joined'
     )
     resume: Mapped['ResumesOrm'] = relationship(
         'ResumesOrm',
         back_populates='responses',
+        lazy='joined'
     )
 

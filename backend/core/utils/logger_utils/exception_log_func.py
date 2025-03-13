@@ -1,3 +1,5 @@
+import time
+
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
@@ -11,9 +13,10 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 async def log_requests(request: Request, call_next):
+    start_time = time.time()
     response = await call_next(request)
-
+    duration = time.time() - start_time
     if request.url.path.startswith("/api"):
-        logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
+        logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code} - Время обработки: {duration:.4f} секунд")
 
     return response

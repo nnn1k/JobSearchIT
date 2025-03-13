@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.core.database.settings.database import Base
@@ -15,6 +15,10 @@ class ResumesOrm(Base):
     is_hidden: Mapped[bool] = mapped_column(default=False)
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
 
+    _table_args__ = (
+        UniqueConstraint('profession_id', 'worker_id', name='uq_profession_worker')
+    )
+
     worker: Mapped['WorkersOrm'] = relationship(
         'WorkersOrm',
         back_populates='resumes',
@@ -25,12 +29,12 @@ class ResumesOrm(Base):
         secondary='resumes_skills',
         back_populates='resumes',
         overlaps='resumes_skills',
-        lazy='noload'
+        lazy='selectin'
     )
     profession: Mapped['ProfessionsOrm'] = relationship(
         'ProfessionsOrm',
         back_populates='resumes',
-        lazy='noload'
+        lazy='joined'
     )
     responses: Mapped[list['ResponsesOrm']] = relationship(
         'ResponsesOrm',

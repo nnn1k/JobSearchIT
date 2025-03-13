@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
@@ -14,6 +14,10 @@ class VacanciesOrm(Base):
     city: Mapped[str] = mapped_column(nullable=True, index=True)
     company_id: Mapped[int] = mapped_column(ForeignKey('companies.id', ondelete='CASCADE'))
 
+    _table_args__ = (
+        UniqueConstraint('profession_id', 'company_id', name='uq_profession_company')
+    )
+
     company: Mapped['CompaniesOrm'] = relationship(
         'CompaniesOrm',
         back_populates='vacancies',
@@ -24,12 +28,12 @@ class VacanciesOrm(Base):
         secondary='vacancies_skills',
         back_populates='vacancies',
         overlaps='vacancies_skills',
-        lazy='noload'
+        lazy='selectin'
     )
     profession: Mapped['ProfessionsOrm'] = relationship(
         'ProfessionsOrm',
         back_populates='vacancies',
-        lazy='noload'
+        lazy='joined'
     )
     responses: Mapped[list['ResponsesOrm']] = relationship(
         'ResponsesOrm',

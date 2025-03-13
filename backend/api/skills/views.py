@@ -12,13 +12,11 @@ from backend.core.utils.auth_utils.user_login_dependencies import (
     get_employer_by_token,
     get_worker_by_token
 )
-from backend.core.utils.other.time_utils import time_it_async
 
 router = APIRouter(prefix="/skills", tags=["skills"])
 
 
 @router.get('/', summary='Получить все скиллы')
-@time_it_async
 async def get_all_skills_views():
     skills = await get_all_skills_queries()
     return {
@@ -28,7 +26,6 @@ async def get_all_skills_views():
 
 
 @router.get('/resumes/{resume_id}', summary='Вытащить все навыки, которые привязаны к резюме')
-@time_it_async
 async def get_worker_skills_views(
         resume_id: int,
 ):
@@ -42,7 +39,6 @@ async def get_worker_skills_views(
 
 
 @router.put('/resumes/{resume_id}', summary='Обновить навыки резюме')
-@time_it_async
 async def update_worker_skills_views(
         resume_id: int,
         skills: SkillListSchema,
@@ -56,7 +52,6 @@ async def update_worker_skills_views(
 
 
 @router.get('/vacancies/{vacancy_id}', summary='Вытащить все навыки, которые привязаны к вакансии')
-@time_it_async
 async def get_vacancy_skills_views(
         vacancy_id: int,
 ):
@@ -69,7 +64,6 @@ async def get_vacancy_skills_views(
 
 
 @router.put('/vacancies/{vacancy_id}', summary='Обновить навыки вакансии')
-@time_it_async
 async def update_vacancy_skills_views(
         vacancy_id: int,
         skills: SkillListSchema,

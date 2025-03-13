@@ -7,7 +7,6 @@ from backend.core.utils.auth_utils.user_login_dependencies import (
     get_user_by_token,
     get_worker_by_token
 )
-from backend.core.utils.other.time_utils import time_it_async
 from backend.core.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, Response, HTTPException, status
 
@@ -25,7 +24,6 @@ type_router = APIRouter(prefix="/{user_type_path}")
 
 
 @type_router.post('/login', summary='Вход пользователя')
-@time_it_async
 async def login_user_views(
         response: Response,
         user_type_path: UserType,
@@ -43,7 +41,6 @@ async def login_user_views(
 
 
 @type_router.post('/register', summary='Регистрация пользователя')
-@time_it_async
 async def register_user_views(
         response: Response,
         user_type_path: UserType,
@@ -67,7 +64,6 @@ async def register_user_views(
 
 
 @type_router.get('/code', summary='Отправка кода')
-@time_it_async
 async def get_code(
         user_type_path: UserType,
         response: Response,
@@ -103,7 +99,6 @@ async def get_code(
 
 
 @type_router.post('/code', summary='Проверка кода')
-@time_it_async
 async def send_code(
         user_type_path: UserType,
         code: CodeSchema,

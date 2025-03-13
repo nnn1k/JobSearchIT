@@ -3,7 +3,6 @@ from typing import Dict
 
 import redis
 
-from backend.core.utils.other.time_utils import time_it_async
 from backend.core.utils.other.type_utils import BaseVar
 from backend.core.config.settings import settings
 
@@ -20,7 +19,6 @@ async def clear_redis():
     await redis_client.flushdb()
 
 
-@time_it_async
 async def check_redis_connection():
     redis_client = await create_async_redis_client()
     await redis_client.ping()
