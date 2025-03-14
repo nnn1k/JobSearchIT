@@ -18,7 +18,7 @@ from datetime import datetime
 
 from backend.core.utils.other.time_utils import current_time
 
-router = APIRouter(prefix='/chats')
+router = APIRouter(prefix='/chats', tags=['chats'])
 
 active_connections = {}
 
