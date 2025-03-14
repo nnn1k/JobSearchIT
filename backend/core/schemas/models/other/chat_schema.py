@@ -42,3 +42,4 @@ class ChatMessageSchema(BaseModel):
     sender_type: str
     created_at: datetime.datetime
     updated_at: datetime.datetime
+    type: str = 'message'

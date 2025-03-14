@@ -56,7 +56,8 @@ async def chats_websocket(
                     active_connections[chat_id].append(ws)
                     messages = await get_all_messages_on_chat(user=user, chat_id=chat_id, session=session)
                     response = {
-                        'messages': [message.model_dump_json() for message in messages]
+                        'messages': [message.model_dump_json() for message in messages],
+                        'type': 'join'
                     }
                     await ws.send_json(json.dumps(response))
 
