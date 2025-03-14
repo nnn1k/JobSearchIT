@@ -18,7 +18,7 @@ def get_all_chats_on_user_stmt(user):
         select(ChatsOrm)
         .join(ResponsesOrm)
         .options(selectinload(ChatsOrm.messages))
-        .options(joinedload(ChatsOrm.response).joinedload(ResponsesOrm.resume))
+        .options(joinedload(ChatsOrm.response).joinedload(ResponsesOrm.resume).joinedload(ResumesOrm.worker))
         .options(joinedload(ChatsOrm.response).joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.company))
     )
     if user.type == WORKER_USER_TYPE:
