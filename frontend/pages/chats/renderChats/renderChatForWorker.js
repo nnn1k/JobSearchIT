@@ -53,7 +53,7 @@ function openChat(chatId, chats) {
             }
             messageElement.innerHTML = `
                     <div class="message-text">${jsonMessages.message}</div>   
-                    <div class="message-time">${jsonMessages.created_at}</div>  
+                    <div class="message-time">${formatDateTime(jsonMessages.created_at).replace("2025 года", "")}</div>  
                `;
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -95,7 +95,7 @@ function openChat(chatId, chats) {
                 }
                 messageElement.innerHTML = `
                     <div class="message-text">${jsonMessage.message}</div>   
-                    <div class="message-time">${jsonMessage.created_at}</div>  
+                    <div class="message-time">${formatDateTime(jsonMessage.created_at).replace("2025 года", "")}</div>  
                `;
                 chatMessages.appendChild(messageElement);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -145,8 +145,7 @@ function openChat(chatId, chats) {
                 type: 'sent'
             };
 
-            // Добавляем сообщение в массив
-            selectedChat.messages.push(newMessage);
+
 
             // Обновляем последнее сообщение в списке чатов
             const chatItem = document.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
