@@ -26,6 +26,11 @@
             <a id="link_my_feedbacks" href="{{ url_for('feedbacks_all') }}">Отклики</a>
         </div>
         <div class="right_side_header">
+            <div class="link-for-chats">
+                <a class="link-for-chat" id="link-for-chat" target="_blank" href={{ url_for('chats_all') }}>
+                    <img class="logo-for-chat" src="/frontend/pictures/chat-icon.png"/>
+                </a>
+            </div>
             <div>
                 <button class="white_button" onclick="logout()">Выйти</button>
             </div>
