@@ -42,6 +42,7 @@ async def create_chat_queries(
         response_id: int,
         session: AsyncSession
 ):
+    print('test')
     response = await session.get(ResponsesOrm, response_id)
     if not response:
         raise response_not_found_exc
@@ -49,6 +50,7 @@ async def create_chat_queries(
         insert(ChatsOrm)
         .values(response_id=response_id)
         .returning(ChatsOrm)
+        .options(joinedload(ChatsOrm.response))
     )
     chat = result.scalars().one_or_none()
     schema = ChatSchema.model_validate(chat, from_attributes=True)

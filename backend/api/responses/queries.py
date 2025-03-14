@@ -26,6 +26,7 @@ async def get_responses_queries(
         .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.profession))
         .options(joinedload(ResponsesOrm.vacancy).joinedload(VacanciesOrm.company))
         .options(joinedload(ResponsesOrm.vacancy).selectinload(VacanciesOrm.skills))
+        .options(joinedload(ResponsesOrm.chat))
     )
 
     conditions = []

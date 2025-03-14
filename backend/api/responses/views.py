@@ -51,7 +51,6 @@ async def send_invite_views(
         resume_id=resume_id,
         session=session
     )
-    await create_chat_queries(response_id=invite.id, session=session)
     return {
         'status': 'ok',
         'invite': invite,
@@ -93,6 +92,7 @@ async def accept_invite_views(
         session: AsyncSession = Depends(get_db),
 ):
     response = await send_reaction_to_response(user=user, session=session, response_id=response_id, reaction=True)
+    await create_chat_queries(response_id=response_id, session=session)
     return {
         'status': 'ok',
         'response': response,
