@@ -17,7 +17,7 @@ async def get_responses_queries(
         user: UserResponseSchema,
         session: AsyncSession,
         response: bool = True
-) -> List[ResponsesOrm]:
+) -> List[ResponseSchema]:
     stmt = (
         select(ResponsesOrm)
         .options(joinedload(ResponsesOrm.resume).joinedload(ResumesOrm.profession))

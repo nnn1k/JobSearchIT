@@ -8,6 +8,9 @@ class ResponseSchema(GlobalSchema):
     resume_id: int
     is_worker_accepted: Optional[bool] = None
     is_employer_accepted: Optional[bool] = None
+    first: str
+
     vacancy: 'VacancySchema'
     resume: 'ResumeSchema'
-    first: str
+    chat: Optional['ChatSchema'] = None
+

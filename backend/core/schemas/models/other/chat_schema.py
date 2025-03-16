@@ -11,7 +11,7 @@ class ChatSchema(GlobalSchema):
     response_id: int
     messages: Optional[list['MessageSchema']]
     last_message: Optional['MessageSchema'] = None
-    response: 'ResponseSchema'
+    response: Optional['ResponseSchema'] = None
 
     @field_validator('messages', mode='after')
     def validate_messages(cls, messages: Optional[List['MessageSchema']]) -> Optional[List['MessageSchema']]:
@@ -33,7 +33,7 @@ class MessageSchema(GlobalSchema):
     sender_id: int
     sender_type: str
 
-    chat: Optional['ChatSchema']
+    chat: Optional['ChatSchema'] = None
 
 class ChatMessageSchema(BaseModel):
     chat_id: int
@@ -43,3 +43,4 @@ class ChatMessageSchema(BaseModel):
     created_at: datetime.datetime
     updated_at: datetime.datetime
     type: str = 'message'
+
