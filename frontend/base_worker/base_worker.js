@@ -11,12 +11,12 @@ async function clickAddResume() {
     }
 }
 
-async function logout(){
+async function logout() {
     const logoutResponse = await makeRequest({
         method: 'POST',
         url: '/api/auth/logout/'
     })
-    if (logoutResponse){
+    if (logoutResponse) {
         location.reload(true)
     }
 }
@@ -33,6 +33,13 @@ window.onload = function () {
     const token = getCookie(jwtTokenName);
     if (!token) {
         document.getElementById('choose_role').style.display = 'flex';
+        const loginBtn = document.getElementById('login-btn')
+        loginBtn.style.display = 'block'
+        loginBtn.addEventListener('click', function () {
+            window.location.href = apiUrl + '/login';
+        })
+    } else {
+        document.getElementById('account-btn').style.display = 'block'
     }
 }
 
@@ -46,6 +53,29 @@ async function clickProfile() {
         window.location.href = apiUrl + '/login';
     }
 }
+
+const profileBtn = document.getElementById('pic_profile');
+const dropdownMenu = document.getElementById('dropdownMenu');
+
+profileBtn.addEventListener('click', function () {
+    event.stopPropagation(); // Предотвращаем всплытие события
+    dropdownMenu.style.display = dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '' ? 'block' : 'none';
+
+});
+
+window.onclick = function (event) {
+    if (!event.target.matches('#pic_profile')) {
+        const dropdown = document.getElementById("dropdownMenu");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        }
+    }
+}
+
+dropdownMenu.addEventListener('click', function (event) {
+    event.stopPropagation(); // Предотвращаем скрытие меню при клике внутри
+});
+
 
 window.clickAddResume = clickAddResume
 window.clickProfile = clickProfile

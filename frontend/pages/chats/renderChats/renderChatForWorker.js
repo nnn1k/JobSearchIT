@@ -1,27 +1,6 @@
 import {formatDateTime} from "/frontend/js/timefunc.js";
-
-export function populateChatList(chats) {
-    const chatListElement = document.getElementById('chatList');
-    console.log('312')
-
-    chats.forEach(chat => {
-        const chatItem = document.createElement('div');
-        chatItem.className = 'chat-item';
-        chatItem.dataset.chatId = chat.id;
-
-        chatItem.innerHTML = `
-                    <div class="job-title">${chat.response.vacancy.profession.title}</div>
-                    <div class="company-name">${chat.response.vacancy.company.name}</div>
-                    <div class="last-message">${chat.last_message.message}</div>
-<!--                    ${chat.lastMessage}-->
-                `;
-
-        chatItem.addEventListener('click', () => openChat(chat.id, chats));
-        console.log(chat.id)
-
-        chatListElement.appendChild(chatItem);
-    });
-}
+import {showLoadingIndicator, hideLoadingIndicator} from "/frontend/js/functions_for_loading.js";
+import {apiUrl} from "../../../js/utils.js";
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -29,19 +8,61 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+export function populateChatList(chats) {
+    const chatListElement = document.getElementById('chatList');
 
-function openChat(chatId, chats) {
+    chats.forEach(chat => {
+        const chatItem = document.createElement('div');
+        chatItem.className = 'chat-item';
+        chatItem.dataset.chatId = chat.id;
+        const userType = getCookie('user_type')
+        var lastMessage
+        if (chat.last_message === null){
+            lastMessage = ''
+        }
+        else {
+            lastMessage = chat.last_message.message
+        }
+        if (userType === 'worker') {
+            chatItem.innerHTML = `
+                    <div class="job-title">${chat.response.vacancy.profession.title}</div>
+                    <div class="company-name">${chat.response.vacancy.company.name}</div>
+                    <div class="last-message">${lastMessage}</div>
+                `;
+
+            chatItem.addEventListener('click', () => openChat(chat.id, chats));
+            chatListElement.appendChild(chatItem);
+        }
+        if (userType === 'employer') {
+            chatItem.innerHTML = `
+                    <div class="job-title">${chat.response.resume.worker.name} ${chat.response.resume.worker.surname}</div>
+                    <div class="company-name">${chat.response.resume.profession.title}</div>
+                    <div class="last-message">${lastMessage}</div>
+                `;
+
+            chatItem.addEventListener('click', () => openChat(chat.id, chats));
+            chatListElement.appendChild(chatItem);
+        }
+    })
+}
+
+export function openChat(chatId, chats) {
+    const loadingIndicator = showLoadingIndicator();
     const chatWindow = document.getElementById('chatWindow');
+    const url = new URL(window.location);
+    url.searchParams.set('chatId', chatId); // Устанавливаем новый параметр
+
+    // Обновляем адресную строку без перезагрузки страницы
+    window.history.pushState({}, '', url);
     const ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws/${chatId}`);
     ws.onopen = function () {
         ws.send(JSON.stringify({'message': '', 'type': 'join', 'chat_id': chatId}))
     }
     ws.onmessage = function (event) {
-        console.log(JSON.parse(event.data))
+
         const message = JSON.parse(event.data)
         const jsonMessages = JSON.parse(message)
         const messageElement = document.createElement('div');
-        console.log(jsonMessages.type)
         if (jsonMessages.type === 'message') {
 
             const userType = getCookie('user_type')
@@ -59,16 +80,14 @@ function openChat(chatId, chats) {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
         if (jsonMessages.type === 'join') {
-            chatWindow.innerHTML = `
+            hideLoadingIndicator(loadingIndicator)
+            const userType = getCookie('user_type')
+
+            if (userType === 'worker'){
+                chatWindow.innerHTML = `
                 <div class="chat-header">
                     <div class="job-title">${selectedChat.response.vacancy.profession.title}</div>
                     <div class="company-name">${selectedChat.response.vacancy.company.name}</div>
-                </div>
-                <div class="vacancy-link-container">
-                    <a href="${selectedChat.vacancyUrl}" class="vacancy-link" target="_blank">
-                        <span class="vacancy-link-icon">&#128279;</span>
-                        Вакансия ${selectedChat.response.vacancy.profession.title}
-                    </a>
                 </div>
                 <div class="chat-messages" id="chatMessages"></div>
                 <div class="message-input-container">
@@ -76,6 +95,23 @@ function openChat(chatId, chats) {
                     <button class="send-button" id="sendButton">➤</button>
                 </div>
             `;
+            }
+            if (userType === 'employer'){
+                chatWindow.innerHTML = `
+                <div class="chat-header">
+                    <div class="job-title">${selectedChat.response.resume.worker.name} ${selectedChat.response.resume.worker.surname}</div>
+                    <div class="company-name">${selectedChat.response.resume.profession.title}</div>
+                </div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="message-input-container">
+                    <input type="text" class="message-input" id="messageInput" placeholder="Введите сообщение...">
+                    <button class="send-button" id="sendButton">➤</button>
+                </div>
+            `;
+            }
+
+
+
             const chatMessages = document.getElementById('chatMessages');
             sendButton.addEventListener('click', sendMessage);
             messageInput.addEventListener('keypress', (e) => {
@@ -102,27 +138,17 @@ function openChat(chatId, chats) {
             });
         }
     }
-    // Удаляем активный класс со всех элементов чата
+
     document.querySelectorAll('.chat-item').forEach(item => {
         item.classList.remove('active');
     });
 
-    // Добавляем активный класс выбранному элементу чата
+    //
     document.querySelector(`.chat-item[data-chat-id="${chatId}"]`).classList.add('active');
 
     // Находим выбранный чат
     const selectedChat = chats.find(chat => chat.id === chatId);
 
-    // Обновляем окно чата
-
-
-    // Заполняем сообщения
-
-
-    // Сортируем сообщения от старых к новым (снизу вверх)
-
-
-    // Прокручиваем к последнему сообщению
 
     function sendMessage() {
         // Добавляем функциональность отправки сообщений

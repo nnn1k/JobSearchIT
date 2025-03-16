@@ -12,6 +12,17 @@ export function showLoadingIndicator() {
     loadingIndicator.style.textAlign = 'center';
     loadingIndicator.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.5)';
 
+    // Добавляем полупрозрачный фон
+    const backgroundOverlay = document.createElement('div');
+    backgroundOverlay.style.position = 'fixed';
+    backgroundOverlay.style.top = '0';
+    backgroundOverlay.style.left = '0';
+    backgroundOverlay.style.width = '100%';
+    backgroundOverlay.style.height = '100%';
+    backgroundOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.001)'; // Полупрозрачный фон
+    backgroundOverlay.style.zIndex = '999'; // Убедитесь, что он ниже индикатора загрузки
+    backgroundOverlay.style.pointerEvents = 'auto'; // Блокируем клики
+
     // Добавляем анимацию
     loadingIndicator.style.animation = 'fadeIn 0.5s';
     loadingIndicator.innerHTML = `
@@ -24,8 +35,9 @@ export function showLoadingIndicator() {
             }
         </style>`;
 
-    document.body.appendChild(loadingIndicator);
-    return loadingIndicator;
+    backgroundOverlay.appendChild(loadingIndicator)
+    document.body.appendChild(backgroundOverlay);
+    return backgroundOverlay;
 }
 
 export function hideLoadingIndicator(loadingIndicator) {

@@ -1,6 +1,6 @@
-import {populateChatList} from "/frontend/pages/chats/renderChats/renderChatForWorker.js";
+import {populateChatList, openChat} from "/frontend/pages/chats/renderChats/renderChatForWorker.js";
 import {hideLoadingIndicator, showLoadingIndicator} from "../../js/functions_for_loading.js";
-import {makeRequest} from "../../js/utils.js";
+import {apiUrl, makeRequest} from "../../js/utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     getChats()
@@ -20,13 +20,18 @@ async function getChats() {
         url: `/api/chats`
     })
     console.log(getResponse)
-    const userType = getCookie('user_type')
-    if (userType === 'worker') {
-        populateChatList(getResponse.chats)
+    const currentUrl = window.location.href;
+    console.log(currentUrl)
+    const url = new URL(currentUrl);
+    const chatId = url.searchParams.get("chatId");
+    populateChatList(getResponse.chats)
+    if (chatId){
+        const intChatID = Number(chatId)
+        openChat(intChatID, getResponse.chats)
+        hideLoadingIndicator(loadingIndicator)
+        return
     }
-    if (userType === 'employer') {
-        populateChatList(getResponse.chats)
-    }
+
     hideLoadingIndicator(loadingIndicator)
 
 

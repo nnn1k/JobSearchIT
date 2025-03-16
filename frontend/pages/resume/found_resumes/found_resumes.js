@@ -22,8 +22,8 @@ async function getMyVacancies() {
         method: 'GET',
         url: '/api/employers/me/'
     })
+
     vacancies = getResponse.user.company.vacancies
-    console.log(getResponse.user.company.vacancies)
 }
 
 function getCookie(name) {

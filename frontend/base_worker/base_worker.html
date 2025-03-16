@@ -35,15 +35,20 @@
                 </a>
             </div>
             <div>
-                <button class="white_button" onclick="logout()">Выйти</button>
-            </div>
-            <div>
                 <button class="white_button" onclick="clickAddResume()">Создать резюме</button>
             </div>
-            <div class="account-button">
-                <a id="pic_profile" onclick="clickProfile()">
+            <div class="login-button" id="login-btn" style="display: none">
+                <button class="white_button" href={{ url_for('login_page') }}>Войти </button>
+            </div>
+            <div class="account-button" id="account-btn" style="display: none">
+                <a id="pic_profile" type="button">
                     <img class="logo_profile" src="/frontend/pictures/profile.png"/>
                 </a>
+            </div>
+            <div class="dropdown_profile" id="dropdownMenu">
+                <button onclick="clickProfile()">Профиль</button>
+                <hr style="width: 85%">
+                <button onclick="logout()" style="color: crimson">Выйти</button>
             </div>
         </div>
     </div>

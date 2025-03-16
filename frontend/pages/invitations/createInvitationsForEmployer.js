@@ -1,7 +1,7 @@
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {showNotification} from "../../js/showNotification.js";
 import {hideLoadingIndicator, showLoadingIndicator} from "../../js/functions_for_loading.js";
-import {makeRequest} from "../../js/utils.js";
+import {apiUrl, makeRequest} from "../../js/utils.js";
 
 export function createInviteForEmployer(invite) {
     // Create the main card element
@@ -36,6 +36,7 @@ export function createInviteForEmployer(invite) {
           </svg>
           Перейти в чат
         `;
+        linkForChat.href = apiUrl + `/chats/?chatId=${invite.chat.id}`
         cardHeader.appendChild(cardTitle);
         cardHeader.appendChild(linkForChat);
     }

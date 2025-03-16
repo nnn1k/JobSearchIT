@@ -1,8 +1,8 @@
 import {hideLoadingIndicator, showLoadingIndicator} from "../../js/functions_for_loading.js";
 import {showNotification} from "../../js/showNotification.js";
-import {makeRequest} from "../../js/utils.js";
+import {apiUrl, makeRequest} from "../../js/utils.js";
 
-export function createInvitationCard(company, position, date, resume, is_employer_accepted, is_worker_accepted, id) {
+export function createInvitationCard(company, position, date, resume, is_employer_accepted, is_worker_accepted, id, chatId) {
 
   // Create main card container
   const card = document.createElement('div');
@@ -48,6 +48,7 @@ export function createInvitationCard(company, position, date, resume, is_employe
           </svg>
           Перейти в чат
         `;
+    linkForChat.href = apiUrl + `/chats/?chatId=${chatId}`
     cardHeader.appendChild(cardTitle);
     cardHeader.appendChild(badge);
     cardFooter.appendChild(linkForChat);

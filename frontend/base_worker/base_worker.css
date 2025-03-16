@@ -44,6 +44,10 @@ header {
     width: 50px;
 }
 
+.login-button{
+    margin-right: 30px;
+}
+
 .content {
     min-height: 100vh;
 }
@@ -201,6 +205,32 @@ header {
 .logo-for-chat {
     width: 37px; /* Новая ширина */
     height: 37px; /* Новая высота */
+}
+
+.dropdown_profile {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 225px;
+    margin-top: 145px;
+    z-index: 1;
+}
+
+.dropdown_profile button {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    background: none;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.dropdown_profile button:hover {
+    background-color: #f1f1f1;
 }
 
 
