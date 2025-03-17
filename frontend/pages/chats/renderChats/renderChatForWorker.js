@@ -17,17 +17,16 @@ export function populateChatList(chats) {
         chatItem.dataset.chatId = chat.id;
         const userType = getCookie('user_type')
         var lastMessage
-        if (chat.last_message === null){
+        if (chat.last_message === null) {
             lastMessage = ''
-        }
-        else {
+        } else {
             lastMessage = chat.last_message.message
         }
         if (userType === 'worker') {
             chatItem.innerHTML = `
                     <div class="job-title">${chat.response.vacancy.profession.title}</div>
                     <div class="company-name">${chat.response.vacancy.company.name}</div>
-                    <div class="last-message">${lastMessage}</div>
+                    <div class="last-message" id=last-message-for-chat-${chat.id}>${lastMessage}</div>
                 `;
 
             chatItem.addEventListener('click', () => openChat(chat.id, chats));
@@ -37,7 +36,7 @@ export function populateChatList(chats) {
             chatItem.innerHTML = `
                     <div class="job-title">${chat.response.resume.worker.name} ${chat.response.resume.worker.surname}</div>
                     <div class="company-name">${chat.response.resume.profession.title}</div>
-                    <div class="last-message">${lastMessage}</div>
+                    <div class="last-message" id=last-message-for-chat-${chat.id}>${lastMessage}</div>
                 `;
 
             chatItem.addEventListener('click', () => openChat(chat.id, chats));
@@ -54,19 +53,33 @@ export function openChat(chatId, chats) {
 
     // Обновляем адресную строку без перезагрузки страницы
     window.history.pushState({}, '', url);
-    const ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws/${chatId}`);
+    let ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws/${chatId}`);
+    let reconnectInterval = 1000; // Интервал для переподключения (1 секунда)
+    ws.addEventListener('close', (event) => {
+        console.log('Все пизда сокету')
+        const reconnect = () => {
+            console.log('Пытаемся переподключиться к сокету...');
+            setTimeout(() => {
+                openChat(chatId, chats); // Вызываем вашу функцию для открытия чата
+            }, reconnectInterval);
+        };
+        reconnect();
+    });
+
+    ws.addEventListener('open', (event) => {
+        console.log('Сокет заработал заебок')
+    });
     ws.onopen = function () {
         ws.send(JSON.stringify({'message': '', 'type': 'join', 'chat_id': chatId}))
     }
     ws.onmessage = function (event) {
-
         const message = JSON.parse(event.data)
         const jsonMessages = JSON.parse(message)
         const messageElement = document.createElement('div');
         if (jsonMessages.type === 'message') {
 
             const userType = getCookie('user_type')
-
+            const lastMessage = document.getElementById(`last-message-for-chat-${chatId}`)
             if (jsonMessages.sender_type === userType) {
                 messageElement.className = `message sent`;
             } else {
@@ -76,6 +89,7 @@ export function openChat(chatId, chats) {
                     <div class="message-text">${jsonMessages.message}</div>   
                     <div class="message-time">${formatDateTime(jsonMessages.created_at).replace("2025 года", "")}</div>  
                `;
+            lastMessage.textContent = jsonMessages.message
             chatMessages.appendChild(messageElement);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -83,7 +97,7 @@ export function openChat(chatId, chats) {
             hideLoadingIndicator(loadingIndicator)
             const userType = getCookie('user_type')
 
-            if (userType === 'worker'){
+            if (userType === 'worker') {
                 chatWindow.innerHTML = `
                 <div class="chat-header">
                     <div class="job-title">${selectedChat.response.vacancy.profession.title}</div>
@@ -96,7 +110,7 @@ export function openChat(chatId, chats) {
                 </div>
             `;
             }
-            if (userType === 'employer'){
+            if (userType === 'employer') {
                 chatWindow.innerHTML = `
                 <div class="chat-header">
                     <div class="job-title">${selectedChat.response.resume.worker.name} ${selectedChat.response.resume.worker.surname}</div>
@@ -109,7 +123,6 @@ export function openChat(chatId, chats) {
                 </div>
             `;
             }
-
 
 
             const chatMessages = document.getElementById('chatMessages');
@@ -155,7 +168,6 @@ export function openChat(chatId, chats) {
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
 
-        console.log(chatId)
         const messageText = messageInput.value.trim();
         if (messageText) {
             const data = {
@@ -172,7 +184,6 @@ export function openChat(chatId, chats) {
             };
 
 
-
             // Обновляем последнее сообщение в списке чатов
             const chatItem = document.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
             chatItem.querySelector('.last-message').textContent = messageText;
@@ -186,8 +197,6 @@ export function openChat(chatId, chats) {
         }
     }
 }
-
-
 
 
 // Функция для получения текущего времени
