@@ -1,16 +1,10 @@
-import {populateChatList, openChat} from "/frontend/pages/chats/renderChats/renderChatForWorker.js";
-import {hideLoadingIndicator, showLoadingIndicator} from "../../js/functions_for_loading.js";
-import {apiUrl, makeRequest} from "../../js/utils.js";
+import {populateChatList, openChat} from "/frontend/pages/chats/renderChats/renderChat.js";
+import {hideLoadingIndicator, showLoadingIndicator} from "/frontend/js/functions_for_loading.js";
+import {apiUrl, makeRequest, getCookie} from "/frontend/js/utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     getChats()
 })
-
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
 
 
 async function getChats() {

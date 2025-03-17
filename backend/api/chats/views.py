@@ -73,7 +73,8 @@ async def chats_websocket(
 
                     await send_message_queries(user=user, chat_id=chat_id, message=message, session=session)
                     for connection in active_connections[chat_id]:
-                        await connection.send_json(response.model_dump_json())
+                        if connection.application_state == WebSocketState.CONNECTED:
+                            await connection.send_json(response.model_dump_json())
 
                 case 'leave':
                     del active_connections[chat_id][ws]
@@ -89,5 +90,4 @@ async def chats_websocket(
         logger.info('disconnected')
 
     finally:
-        if ws.client_state != WebSocketState.DISCONNECTED:
-            await ws.close()
+        await ws.close()
