@@ -51,9 +51,22 @@ async def chats_websocket(
             message = data.get('message')
             match message_type:
                 case 'join':
+                    # Проверяем, есть ли уже подключение для этого пользователя
+                    if chat_id in active_connections:
+                        for connection in active_connections[chat_id]:
+                            if connection['user_id'] == user.id:
+                                # Закрываем предыдущее подключение
+                                await connection['ws'].close()
+                                # Удаляем старое подключение из active_connections
+                                active_connections[chat_id].remove(connection)
+                                logger.info(f"Closed previous connection for user {user.id}")
+
+                    # Добавляем новое подключение
                     if not active_connections.get(chat_id):
                         active_connections[chat_id] = []
-                    active_connections[chat_id].append(ws)
+                    active_connections[chat_id].append({'ws': ws, 'user_id': user.id, 'user_type': user.type})
+
+                    # Отправляем историю сообщений
                     messages = await get_all_messages_on_chat(user=user, chat_id=chat_id, session=session)
                     response = {
                         'messages': [message.model_dump_json() for message in messages],
@@ -73,11 +86,12 @@ async def chats_websocket(
 
                     await send_message_queries(user=user, chat_id=chat_id, message=message, session=session)
                     for connection in active_connections[chat_id]:
-                        if connection.application_state == WebSocketState.CONNECTED:
-                            await connection.send_json(response.model_dump_json())
+                        if connection['ws'].application_state == WebSocketState.CONNECTED:
+                            await connection['ws'].send_json(response.model_dump_json())
 
                 case 'leave':
-                    del active_connections[chat_id][ws]
+                    # Удаляем подключение пользователя
+                    active_connections[chat_id] = [conn for conn in active_connections[chat_id] if conn['ws'] != ws]
 
     except HTTPException as e:
         # Отправляем клиенту сообщение об ошибке
@@ -90,4 +104,8 @@ async def chats_websocket(
         logger.info('disconnected')
 
     finally:
+        # Удаляем подключение пользователя при закрытии соединения
+        if chat_id in active_connections:
+            active_connections[chat_id] = [conn for conn in active_connections[chat_id] if conn['ws'] != ws]
         await ws.close()
+

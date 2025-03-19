@@ -40,14 +40,11 @@ export function openChat(chatId, chats) {
 
     // Обновляем адресную строку без перезагрузки страницы
     window.history.pushState({}, '', url);
-    console.log('eqqeqe', chatId)
     let ws = createChatSocket(chatId)
     ws.onmessage = function (event) {
         const response = JSON.parse(JSON.parse(event.data))
         if (response.type === 'message') {
             showMessage(response)
-            const lastMessage = document.getElementById(`last-message-for-chat-${chatId}`)
-            lastMessage.textContent = response.message
         }
         if (response.type === 'join') {
             hideLoadingIndicator(loadingIndicator)
@@ -64,7 +61,11 @@ export function openChat(chatId, chats) {
 
 }
 
-function createChatSocket(chatId) {
+function createChatSocket() {
+    const url = new URL(window.location.href)
+    const searchParams = url.searchParams
+    const chatId = searchParams.get('chatId')
+
     let ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws/${chatId}`);
 
     ws.onopen = () => {
@@ -74,7 +75,7 @@ function createChatSocket(chatId) {
 
     ws.onclose = () => {
         console.log('Сокет упал, пытаемся переподключиться к сокету...');
-        setTimeout(createChatSocket, 5000);
+        setTimeout(createChatSocket, 3000);
     }
 
     return ws
@@ -96,72 +97,76 @@ function showMessage(message) {
                `;
     chatMessages.appendChild(messageElement);
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    const lastMessage = document.getElementById(`last-message-for-chat-${message.chat_id}`)
+    lastMessage.textContent = message.message
 }
 
-function createChatWindow(response, ws, chats, chatId){
+function createChatWindow(response, ws, chats, chatId) {
     const chatWindow = document.getElementById('chatWindow');
     const selectedChat = chats.find(chat => chat.id === chatId);
     const userType = getCookie('user_type')
-            // шапка (для ролей)
-            if (userType === 'worker') {
-                chatWindow.innerHTML = `
+    // шапка (для ролей)
+    if (userType === 'worker') {
+        chatWindow.innerHTML = `
                 <div class="chat-header">
                     <div class="job-title">${selectedChat.response.vacancy.profession.title}</div>
                     <div class="company-name">${selectedChat.response.vacancy.company.name}</div>
                 </div>
             `;
-            }
-            if (userType === 'employer') {
-                chatWindow.innerHTML = `
+    }
+    if (userType === 'employer') {
+        chatWindow.innerHTML = `
                 <div class="chat-header">
                     <div class="job-title">${selectedChat.response.resume.worker.name} ${selectedChat.response.resume.worker.surname}</div>
                     <div class="company-name">${selectedChat.response.resume.profession.title}</div>
                 </div>
             `;
-            }
-            // сообщения
-            chatWindow.innerHTML += `<div class="chat-messages" id="chatMessages"></div>
+    }
+    // сообщения
+    chatWindow.innerHTML += `<div class="chat-messages" id="chatMessages"></div>
                 <div class="message-input-container">
                     <input type="text" class="message-input" id="messageInput" placeholder="Введите сообщение...">
                     <button class="send-button" id="sendButton">➤</button>
                 </div>`
 
-            const sendButton = document.getElementById('sendButton');
-            const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const messageInput = document.getElementById('messageInput');
 
-            sendButton.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    sendMessage(ws, chatId);
-                }
-            });
-            response.messages.forEach(message => {
-                const jsonMessage = JSON.parse(message)
-                showMessage(jsonMessage)
-            });
+    sendButton.addEventListener('click', () => {
+        sendMessage(ws, chatId);
+    });
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage(ws, chatId);
+        }
+    });
+    response.messages.forEach(message => {
+        const jsonMessage = JSON.parse(message)
+        showMessage(jsonMessage)
+    });
 }
 
 function sendMessage(ws, chatId) {
-        // Добавляем функциональность отправки сообщений
-        const messageInput = document.getElementById('messageInput');
+    // Добавляем функциональность отправки сообщений
+    const messageInput = document.getElementById('messageInput');
 
 
-        const messageText = messageInput.value.trim();
-        if (messageText) {
-            const data = {
-                "message": messageText,
-                'type': 'message',
-                'chat_id': chatId,
-            }
-            ws.send(JSON.stringify(data))
-
-            // Очищаем поле ввода
-            messageInput.value = '';
-
-            // Прокручиваем к новому сообщению
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+    const messageText = messageInput.value.trim();
+    if (messageText) {
+        const data = {
+            "message": messageText,
+            'type': 'message',
+            'chat_id': chatId,
         }
+        ws.send(JSON.stringify(data))
+
+        // Очищаем поле ввода
+        messageInput.value = '';
+
+        // Прокручиваем к новому сообщению
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+}
 
 // Инициализация интерфейса чата
 window.populateChatList = populateChatList
