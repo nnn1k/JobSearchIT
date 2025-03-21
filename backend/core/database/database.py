@@ -11,10 +11,6 @@ from backend.core.utils.logger_utils.logger_func import logger
 engine = create_async_engine(
     url=settings.db.url,
     echo=False,
-    pool_size=10,
-    max_overflow=30,
-    pool_timeout=30,
-    pool_recycle=3600,
 )
 
 

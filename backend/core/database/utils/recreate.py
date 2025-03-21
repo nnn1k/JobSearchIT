@@ -18,6 +18,14 @@ from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.core.database.models.other.Chat import ChatsOrm
 from backend.core.database.models.other.Message import MessagesOrm
 
+import asyncio
+import sys
+from asyncio import WindowsSelectorEventLoopPolicy
+
+# Установка политики цикла событий
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
+
 
 async def recreate():
     async with engine.begin() as conn:

@@ -12,8 +12,7 @@ class HostConfig(BaseModel):
 
 
 class DBConfig(BaseModel):
-    old_url: str = 'postgresql+asyncpg://postgres:HXjGMYSHgliDTHdJyjPWuXYunubKtacO@monorail.proxy.rlwy.net:52369/railway'
-    url: str = 'postgresql+asyncpg://uetsmlt6w7urp4vkpyl6:OSstQLpWMTmpj7x9CS5RgjElMUezgs@bexamlk0jsmsiil98ui5-postgresql.services.clever-cloud.com:50013/bexamlk0jsmsiil98ui5'
+    url: str = "postgresql+psycopg://postgres.ljkbzaekkpckwgabcekt:jobsearchit@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
     local_url: str = 'postgresql+asyncpg://postgres:postgres@localhost:5432/postgres'
 
 
