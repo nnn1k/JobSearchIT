@@ -5,7 +5,7 @@ export function showLoadingIndicator() {
     loadingIndicator.style.left = '50%';
     loadingIndicator.style.transform = 'translate(-50%, -50%)';
     loadingIndicator.style.zIndex = '1000';
-    loadingIndicator.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+    loadingIndicator.style.backgroundColor = '#f8f8f8';
     loadingIndicator.style.color = '#333';
     loadingIndicator.style.padding = '20px';
     loadingIndicator.style.borderRadius = '10px';
@@ -26,7 +26,7 @@ export function showLoadingIndicator() {
     // Добавляем анимацию
     loadingIndicator.style.animation = 'fadeIn 0.5s';
     loadingIndicator.innerHTML = `
-        <img src="https://i.gifer.com/VAyR.gif" alt="Загрузка..." style="width: 50px;">
+        <img src="/frontend/pictures/loading.gif" alt="Загрузка..." style="width: 80px;">
         <p>Загрузка...</p>
         <style>
             @keyframes fadeIn {
@@ -34,7 +34,6 @@ export function showLoadingIndicator() {
                 to { opacity: 1; }
             }
         </style>`;
-
     backgroundOverlay.appendChild(loadingIndicator)
     document.body.appendChild(backgroundOverlay);
     return backgroundOverlay;

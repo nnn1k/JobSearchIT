@@ -1,7 +1,7 @@
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {showLoadingIndicator, hideLoadingIndicator} from "/frontend/js/functions_for_loading.js";
 import {getCookie} from "/frontend/js/utils.js";
-import {getCurrentTime} from '/frontend/js/timefunc.js'
+
 
 export function populateChatList(chats) {
     const chatListElement = document.getElementById('chatList');
@@ -38,7 +38,7 @@ export function openChat(chatId, chats) {
     const url = new URL(window.location);
     url.searchParams.set('chatId', chatId); // Устанавливаем новый параметр
 
-    // Обновляем адресную строку без перезагрузки страницы
+
     window.history.pushState({}, '', url);
     let ws = createChatSocket(chatId)
     ws.onmessage = function (event) {

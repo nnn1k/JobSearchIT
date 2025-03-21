@@ -15,15 +15,12 @@ async function getChats() {
     })
     console.log(getResponse)
     const currentUrl = window.location.href;
-    console.log(currentUrl)
     const url = new URL(currentUrl);
     const chatId = url.searchParams.get("chatId");
     populateChatList(getResponse.chats)
     if (chatId){
         const intChatID = Number(chatId)
         openChat(intChatID, getResponse.chats)
-        hideLoadingIndicator(loadingIndicator)
-        return
     }
 
     hideLoadingIndicator(loadingIndicator)

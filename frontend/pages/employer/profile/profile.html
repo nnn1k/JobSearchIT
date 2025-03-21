@@ -33,7 +33,6 @@
             <input id="put_btn" class="red_button" type="button" value="Сохранить" onclick="patch_field('name')">
             <input id="cancel_btn" class="white_button" type="button" name="cancel_btn" value="Отменить">
         </div>
-        <hr>
     </div>
 
     <div class="field" id="row_by_surname">
@@ -57,7 +56,6 @@
             <input id="put_btn" class="red_button" type="button" value="Сохранить" onclick="patch_field('surname')">
             <input id="cancel_btn_for_surname" class="white_button" name="cancel_btn" type="button" value="Отменить">
         </div>
-        <hr>
     </div>
 
     <div class="field" id="row_by_patronymic">
@@ -81,7 +79,6 @@
             <input id="put_btn" class="red_button" type="button" value="Сохранить" onclick="patch_field('patronymic')">
             <input id="cancel_btn_for_patronymic" class="white_button" name="cancel_btn" type="button" value="Отменить">
         </div>
-        <hr>
     </div>
 
     <div class="field">
@@ -110,32 +107,13 @@
             <input id="put_btn" class="red_button" type="button" value="Сохранить" onclick="patch_field('phone')">
             <input id="cancel_btn_for_phone" class="white_button" name="cancel_btn" type="button" value="Отменить">
         </div>
-        <hr>
     </div>
 
     <div class="field" id="row_by_company">
         <label class="field_name" for="name">Компания:</label>
-        <label class="field_data" id="data_company">Просто поле</label>
-        <a class="link_for_edit" id="link_for_edit_company" href="">Изменить</a>
+        <label class="field_data" id="data_company"></label>
     </div>
     <hr>
-    <div class="hide_field" id="row_by_edit_company" style="display: none;">
-        <div class="field">
-            <label class="field_name" for="name">Компания:</label>
-            <label class="field_data" id="data_company_2">Просто поле</label>
-        </div>
-
-        <div class="field">
-            <label class="field_name" for="name">Новая компания:</label>
-            <input type="date" id="new_company" class="field_data" required>
-        </div>
-
-        <div class="bnts">
-            <input id="put_btn" class="btn" type="button" value="Сохранить">
-            <input id="cancel_btn_for_сompany" class="btn" name="cancel_btn" type="button" value="Отменить">
-        </div>
-        <hr>
-    </div>
      <a href="{{ url_for('add_company')}}">добавить компанию</a>
 </div>
     <script type="module" src="/frontend/pages/employer/profile/profile.js"></script>
