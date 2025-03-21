@@ -17,6 +17,7 @@ from backend.core.utils.redis_utils.redis_obj_utils import check_redis_connectio
 
 router = APIRouter(prefix="/api")
 
+
 router.include_router(users_router)
 router.include_router(company_router)
 router.include_router(vacancies_router)
@@ -28,6 +29,7 @@ router.include_router(chats_router)
 
 
 test_router = APIRouter(prefix='/test', tags=['test'])
+
 
 @test_router.get('/test_redis_connect')
 async def test_redis_connect():

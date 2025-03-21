@@ -19,14 +19,11 @@ class GlobalSchemaNoDate(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class GlobalSchema(GlobalSchemaNoDate):
     created_at: Optional[datetime.datetime] = Field(default=None, strict=False)
     updated_at: Optional[datetime.datetime] = Field(default=None, strict=False)
 
-    model_config = ConfigDict(
-        extra='ignore',
-        strict=False,
-    )
 
 class DynamicSchema(BaseModel):
     class Config:

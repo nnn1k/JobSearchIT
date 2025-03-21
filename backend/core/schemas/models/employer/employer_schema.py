@@ -13,6 +13,5 @@ class EmployerResponseSchema(UserResponseSchema):
 
     company: Optional['CompanySchema'] = None
 
-    model_config = ConfigDict(from_attributes=True)
 
 

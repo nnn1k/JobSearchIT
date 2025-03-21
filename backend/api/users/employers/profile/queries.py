@@ -18,7 +18,6 @@ async def get_employer_by_id_queries(employer_id: int, session: AsyncSession) ->
     employer = result.scalars().one_or_none()
     if not employer:
         raise employer_not_found_exc
-
     schema = EmployerResponseSchema.model_validate(employer, from_attributes=True)
     return schema
 
@@ -29,12 +28,10 @@ async def update_employer_by_id_queries(employer_id: int, session: AsyncSession,
         .filter_by(id=int(employer_id))
         .values(**kwargs)
         .returning(EmployersOrm)
-        .options(joinedload(EmployersOrm.company).selectinload(CompaniesOrm.vacancies))
     )
     employer = result.scalars().one_or_none()
     if not employer:
         raise employer_not_found_exc
-
     schema = EmployerResponseSchema.model_validate(employer, from_attributes=True)
     await session.commit()
     return schema
