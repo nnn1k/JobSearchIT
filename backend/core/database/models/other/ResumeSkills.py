@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.core.database.database import Base
 
+
 class ResumesSkillsOrm(Base):
     __tablename__ = 'resumes_skills'
 
@@ -12,4 +13,3 @@ class ResumesSkillsOrm(Base):
     __table_args__ = (
         UniqueConstraint('skill_id', 'resume_id', name='uq_skills_resumes'),
     )
-

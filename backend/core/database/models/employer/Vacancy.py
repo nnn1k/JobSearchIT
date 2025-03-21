@@ -4,6 +4,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.core.database.database import Base
 
+
 class VacanciesOrm(Base):
     __tablename__ = 'vacancies'
 
@@ -14,8 +15,8 @@ class VacanciesOrm(Base):
     city: Mapped[str] = mapped_column(nullable=True, index=True)
     company_id: Mapped[int] = mapped_column(ForeignKey('companies.id', ondelete='CASCADE'))
 
-    _table_args__ = (
-        UniqueConstraint('profession_id', 'company_id', name='uq_profession_company')
+    __table_args__ = (
+        UniqueConstraint('profession_id', 'company_id', name='uq_profession_company'),
     )
 
     company: Mapped['CompaniesOrm'] = relationship(

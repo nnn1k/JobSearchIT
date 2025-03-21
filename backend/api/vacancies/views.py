@@ -41,6 +41,7 @@ async def create_new_vacancy(
         'vacancy': vacancy,
     }
 
+
 @router.get('', summary='Поиск по вакансиям')
 async def get_vacancies(
         user=Depends(get_user_by_token),

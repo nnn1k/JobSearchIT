@@ -1,5 +1,8 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from sqlalchemy import and_, desc, insert, select, update, delete
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
@@ -7,7 +10,7 @@ from backend.core.database.models.employer import VacanciesOrm
 from backend.core.database.models.other import ProfessionsOrm
 from backend.core.schemas import EmployerResponseSchema, VacancySchema
 from backend.core.utils.const import EMPLOYER_USER_TYPE
-from backend.core.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc
+from backend.core.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc, user_have_this_profession_exc
 from backend.core.utils.other.type_utils import UserVar
 
 
@@ -19,9 +22,9 @@ async def get_all_vacancies_query(user: UserVar, session: AsyncSession, **kwargs
         .options(selectinload(VacanciesOrm.profession))
     )
 
-    min_salary: int = kwargs.get('min_salary', None)
-    profession: str = kwargs.get('profession', None)
-    city: str = kwargs.get('city', None)
+    min_salary: Optional[int] = kwargs.get('min_salary', None)
+    profession: Optional[str] = kwargs.get('profession', None)
+    city: Optional[str] = kwargs.get('city', None)
     if isinstance(city, str):
         city = city.strip()
     if isinstance(profession, str):
@@ -48,26 +51,29 @@ async def get_all_vacancies_query(user: UserVar, session: AsyncSession, **kwargs
 
 
 async def create_vacancy_queries(company_id, user, session: AsyncSession, **kwargs):
-    if not user.company_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail='user dont have company'
-        )
+    try:
+        if not user.company_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail='user dont have company'
+            )
 
-    stmt = await session.execute(
-        insert(VacanciesOrm)
-        .values(company_id=company_id, **kwargs)
-        .returning(VacanciesOrm)
-        .options(selectinload(VacanciesOrm.company))
-        .options(selectinload(VacanciesOrm.skills))
-        .options(selectinload(VacanciesOrm.profession))
-    )
-    vacancy = stmt.scalars().one_or_none()
-    if not vacancy:
-        return None
-    schema = VacancySchema.model_validate(vacancy, from_attributes=True)
-    await session.commit()
-    return schema
+        stmt = await session.execute(
+            insert(VacanciesOrm)
+            .values(company_id=company_id, **kwargs)
+            .returning(VacanciesOrm)
+            .options(selectinload(VacanciesOrm.company))
+            .options(selectinload(VacanciesOrm.skills))
+            .options(selectinload(VacanciesOrm.profession))
+        )
+        vacancy = stmt.scalars().one_or_none()
+        if not vacancy:
+            raise vacancy_not_found_exc
+        schema = VacancySchema.model_validate(vacancy, from_attributes=True)
+        await session.commit()
+        return schema
+    except IntegrityError:
+        raise user_have_this_profession_exc
 
 
 async def get_vacancy_by_id_queries(vacancy_id: int, session: AsyncSession):

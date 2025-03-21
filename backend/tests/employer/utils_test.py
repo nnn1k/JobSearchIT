@@ -2,7 +2,7 @@ from httpx import AsyncClient
 
 from backend.api.users.auth.classes.AuthJWT import Token
 
-from backend.utils.redis_utils import cache_object, get_cached_object
+from backend.core.utils.redis_utils.redis_obj_utils import cache_object, get_cached_object
 from backend.core.schemas import CompanySchema, EmployerResponseSchema, VacancySchema
 from backend.tests.utils import base_url
 

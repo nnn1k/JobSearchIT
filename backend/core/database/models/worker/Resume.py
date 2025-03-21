@@ -15,8 +15,8 @@ class ResumesOrm(Base):
     is_hidden: Mapped[bool] = mapped_column(default=False)
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
 
-    _table_args__ = (
-        UniqueConstraint('profession_id', 'worker_id', name='uq_profession_worker')
+    __table_args__ = (
+        UniqueConstraint('profession_id', 'worker_id', name='uq_profession_worker'),
     )
 
     worker: Mapped['WorkersOrm'] = relationship(

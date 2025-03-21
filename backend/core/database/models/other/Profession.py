@@ -2,6 +2,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.core.database.database import Base
 
+
 class ProfessionsOrm(Base):
     __tablename__ = 'professions'
 
@@ -16,6 +17,3 @@ class ProfessionsOrm(Base):
         back_populates='profession',
         lazy='noload'
     )
-
-
-

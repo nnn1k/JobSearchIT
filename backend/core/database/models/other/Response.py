@@ -13,7 +13,7 @@ class ResponsesOrm(Base):
     is_employer_accepted: Mapped[bool] = mapped_column(nullable=True, default=None)
     first: Mapped[str] = mapped_column(nullable=True, default=None)
 
-    _table_args__ = (
+    __table_args__ = tuple(
         UniqueConstraint('vacancy_id', 'resume_id', name='uq_responses_vacancies'),
     )
 

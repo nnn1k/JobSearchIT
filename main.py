@@ -3,6 +3,7 @@ import os
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from backend.core.config.cors import setup_cors
+from backend.core.config.help_func import check_platform
 from backend.core.utils.logger_utils.exception_log_func import global_exception_handler, log_requests
 
 from backend.api import router as backend_router
@@ -17,6 +18,8 @@ frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
 app.mount("/frontend", StaticFiles(directory=frontend_dir), name="static")
 
 setup_cors(app)
+
+check_platform()
 
 app.exception_handler(Exception)(global_exception_handler)
 app.middleware("http")(log_requests)

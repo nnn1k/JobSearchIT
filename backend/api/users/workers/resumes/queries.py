@@ -1,28 +1,32 @@
 from sqlalchemy import delete, insert, select, update
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from backend.core.database.models.worker import ResumesOrm
 from backend.core.schemas import WorkerResponseSchema
 from backend.core.schemas import ResumeSchema
-from backend.core.utils.exc import resume_not_found_exc, user_is_not_owner_exc
+from backend.core.utils.exc import resume_not_found_exc, user_is_not_owner_exc, user_have_this_profession_exc
 
 
 async def create_resume_queries(session: AsyncSession, **kwargs):
-    stmt = await session.execute(
-        insert(ResumesOrm)
-        .values(**kwargs)
-        .returning(ResumesOrm)
-        .options(selectinload(ResumesOrm.worker))
-        .options(selectinload(ResumesOrm.skills))
-        .options(selectinload(ResumesOrm.profession))
-    )
-    resume = stmt.scalars().one_or_none()
-    if not resume:
-        raise resume_not_found_exc
-    schema = ResumeSchema.model_validate(resume, from_attributes=True)
-    await session.commit()
-    return schema
+    try:
+        stmt = await session.execute(
+            insert(ResumesOrm)
+            .values(**kwargs)
+            .returning(ResumesOrm)
+            .options(selectinload(ResumesOrm.worker))
+            .options(selectinload(ResumesOrm.skills))
+            .options(selectinload(ResumesOrm.profession))
+        )
+        resume = stmt.scalars().one_or_none()
+        if not resume:
+            raise resume_not_found_exc
+        schema = ResumeSchema.model_validate(resume, from_attributes=True)
+        await session.commit()
+        return schema
+    except IntegrityError:
+        raise user_have_this_profession_exc
 
 
 async def get_one_resume_by_id_queries(resume_id: int, session: AsyncSession):

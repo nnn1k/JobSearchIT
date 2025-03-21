@@ -2,6 +2,7 @@ from backend.core.database.database import Base
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+
 class ChatsOrm(Base):
     __tablename__ = 'chats'
 

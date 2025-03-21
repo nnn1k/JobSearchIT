@@ -59,3 +59,7 @@ chat_not_found_exc = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND,
     detail='chat not found'
 )
+user_have_this_profession_exc = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='user have object with this profession'
+)
