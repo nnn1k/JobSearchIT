@@ -293,7 +293,7 @@ function renderFeedbacksForEmployer(allFeedbacks, nameForm) {
             </svg>
             Перейти в чат
           `;
-            linkForChat.href = '#'
+            linkForChat.href = apiUrl + `/chats/?chatId=${feedback.chat.id}`
             linkForChat.style.marginLeft = '85%'
             linkForChat.className = 'chat-link'
             cardContent.appendChild(jobTitleHeader);

@@ -2,7 +2,7 @@ import {hideLoadingIndicator, showLoadingIndicator} from "../../js/functions_for
 import {showNotification} from "../../js/showNotification.js";
 import {apiUrl, makeRequest} from "../../js/utils.js";
 
-export function createInvitationCard(company, position, date, resume, is_employer_accepted, is_worker_accepted, id, chatId) {
+export function createInvitationCard(company, position, date, resume, is_employer_accepted, is_worker_accepted, id, chat) {
 
   // Create main card container
   const card = document.createElement('div');
@@ -48,7 +48,7 @@ export function createInvitationCard(company, position, date, resume, is_employe
           </svg>
           Перейти в чат
         `;
-    linkForChat.href = apiUrl + `/chats/?chatId=${chatId}`
+    linkForChat.href = apiUrl + `/chats/?chatId=${chat.id}`
     cardHeader.appendChild(cardTitle);
     cardHeader.appendChild(badge);
     cardFooter.appendChild(linkForChat);

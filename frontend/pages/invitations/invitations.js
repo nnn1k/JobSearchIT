@@ -72,7 +72,7 @@ function renderInvitationsForWorker(invitations, nameForm){
     invitations.forEach(invate => {
         const card = createInvitationCard(invate.vacancy.company.name, invate.vacancy.profession.title,
             formatDateTime(invate.created_at), invate.resume.profession.title, invate.is_employer_accepted, invate.is_worker_accepted,
-            invate.id, invate.chat.id)
+            invate.id, invate.chat)
         invitations_form.appendChild(card)
     })
 }

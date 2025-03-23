@@ -16,15 +16,18 @@ export function populateChatList(chats) {
             lastMessage = chat.last_message.message
         }
         let titleData
+        let underTitleData
         if (userType === 'worker') {
             titleData = `${chat.response.vacancy.profession.title}`
+            underTitleData = `${chat.response.vacancy.company.name}`
         }
         if (userType === 'employer') {
             titleData = `${chat.response.resume.worker.name} ${chat.response.resume.worker.surname}`
+            underTitleData = `${chat.response.resume.profession.title}`
         }
         chatItem.innerHTML = `
                     <div class="job-title">${titleData}</div>
-                    <div class="company-name">${chat.response.resume.profession.title}</div>
+                    <div class="company-name">${underTitleData}</div>
                     <div class="last-message" id=last-message-for-chat-${chat.id}>${lastMessage}</div>
                 `;
         chatItem.addEventListener('click', () => openChat(chat.id, chats));

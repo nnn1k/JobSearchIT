@@ -78,7 +78,7 @@ async function getMe() {
     document.getElementById('data_email').innerHTML = user.email
     document.getElementById('data_phone').innerHTML = user.phone
     document.getElementById('data_phone_2').innerHTML = user.phone
-    // document.getElementById('data_company').innerHTML = user.company.name
+    document.getElementById('data_company').innerHTML = user.company.name
     hideLoadingIndicator(loadingIndicator);
 }
 
