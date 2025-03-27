@@ -2,11 +2,27 @@ import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
+import {createModal} from "/frontend/js/modal_window.js";
+
+var resumes
 
 document.addEventListener('DOMContentLoaded', function () {
     getVacancies()
     getProfessions()
+    getMyResumes()
 })
+
+async function getMyResumes() {
+    const userType = getCookie('user_type')
+    if (!userType || userType === 'employer') {
+        return
+    }
+    const getMyResumes = await makeRequest({
+        method: 'GET',
+        url: '/api/workers/me/'
+    })
+    resumes = getMyResumes.user.resumes
+}
 
 async function getProfessions() {
     const getResponse = await makeRequest({
@@ -68,32 +84,31 @@ async function getProfessions() {
 }
 
 
-async function getVacancies(){
+async function getVacancies() {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
-    const { page } = getUrlParams()
+    const {page} = getUrlParams()
 
     const profession = url.searchParams.get("profession");
-    const city =  url.searchParams.get("city")
-    const min_salary =  url.searchParams.get("min_salary")
+    const city = url.searchParams.get("city")
+    const min_salary = url.searchParams.get("min_salary")
 
 
     const searchParams = new URLSearchParams();
     searchParams.append('page', page);
-    if (profession){
+    if (profession) {
         searchParams.append('profession', profession);
         document.getElementById('job-search').value = profession
     }
-    if (city){
+    if (city) {
         searchParams.append('city', city);
         document.getElementById('city').value = city
 
     }
-    if (min_salary){
+    if (min_salary) {
         searchParams.append('min_salary', min_salary);
         document.getElementById('salary').value = min_salary
     }
-
 
 
     const loadingIndicator = showLoadingIndicator();
@@ -102,15 +117,14 @@ async function getVacancies(){
         url: `/api/vacancy/?${searchParams.toString()}`
     })
     console.log(getResponse)
-    if (getResponse.vacancies.length === 0){
+    if (getResponse.vacancies.length === 0) {
         const container = document.getElementById('vacancies-container');
         container.innerHTML = '';
         const countVacancyElement = document.createElement('h2');
         const secondMessage = document.createElement('h3')
         if (profession) {
-             countVacancyElement.textContent = `По запросу "${profession}" ничего не найдено`
-        }
-        else {
+            countVacancyElement.textContent = `По запросу "${profession}" ничего не найдено`
+        } else {
             countVacancyElement.textContent = `По вашему запросу ничего не найдено`
         }
         secondMessage.textContent = ('Попробуйте другие варианты поискового запроса или уберите фильтры')
@@ -119,7 +133,7 @@ async function getVacancies(){
         hideLoadingIndicator(loadingIndicator)
         return
     }
-    renderVacancies(getResponse.vacancies, getResponse.can_update, profession ,getResponse.count)
+    renderVacancies(getResponse.vacancies, getResponse.can_update, profession, getResponse.count)
     const totalPages = Math.ceil(getResponse.count / 10) // Предполагаем, что на странице 10 вакансий
     createPagination(page, totalPages)
     hideLoadingIndicator(loadingIndicator)
@@ -138,11 +152,10 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
 
     const countVacancyElement = document.createElement('h2');
 
-    if (name_vacancy){
+    if (name_vacancy) {
         countVacancyElement.textContent = `${count_vacancy} вакансий "${name_vacancy}"`
         container.appendChild(countVacancyElement);
-    }
-    else{
+    } else {
         countVacancyElement.textContent = ` Найдено ${count_vacancy} вакансий`
         container.appendChild(countVacancyElement);
     }
@@ -172,10 +185,10 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
         linkCompany.innerHTML = vacancy.company.name
         linkCompany.href = apiUrl + `/companies/${vacancy.company.id}`
         linkCompany.style.color = '#666'
-        linkCompany.addEventListener('mouseover', function() {
+        linkCompany.addEventListener('mouseover', function () {
             linkCompany.style.color = 'deepskyblue'; // Цвет текста ссылки при наведении
         });
-        linkCompany.addEventListener('mouseout', function() {
+        linkCompany.addEventListener('mouseout', function () {
             linkCompany.style.color = '#666'; // Цвет текста ссылки при наведении
         });
 
@@ -200,67 +213,75 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
             feedBack.classList.add('red_button');
             feedBack.style.width = '30%';
             feedBack.textContent = "Откликнуться";
+
+            // Здесь вы должны передать массив резюме для открытия модального окна
+            feedBack.onclick = function () {
+                event.preventDefault(); // Остановить переход по ссылке
+                if (!userType) {
+                    window.location.href = apiUrl + '/login';
+                    return
+                }
+                createModal('Выберите резюме для отклика', resumes, vacancy.id);
+            };
             vacancyElement.appendChild(feedBack);
-            container.appendChild(linkElement);
-            return;
         }
         container.appendChild(linkElement);
     });
 }
 
 function createPagination(currentPage, totalPages) {
-  const paginationElement = document.getElementById("pagination")
-  paginationElement.innerHTML = ""
+    const paginationElement = document.getElementById("pagination")
+    paginationElement.innerHTML = ""
 
-  const maxVisiblePages = 5
-  let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1)
-  const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages)
+    const maxVisiblePages = 5
+    let startPage = Math.max(currentPage - Math.floor(maxVisiblePages / 2), 1)
+    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages)
 
-  if (endPage - startPage + 1 < maxVisiblePages) {
-    startPage = Math.max(endPage - maxVisiblePages + 1, 1)
-  }
-
-  // Кнопка "Предыдущая"
-  const prevButton = document.createElement("button")
-  prevButton.textContent = "«"
-  prevButton.disabled = currentPage === 1
-  prevButton.addEventListener("click", () => changePage(currentPage - 1))
-  paginationElement.appendChild(prevButton)
-
-  // Номера страниц
-  for (let i = startPage; i <= endPage; i++) {
-    const pageLink = document.createElement("button")
-    pageLink.href = "#"
-    pageLink.textContent = i
-    if (i === currentPage) {
-      pageLink.classList.add("active")
+    if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(endPage - maxVisiblePages + 1, 1)
     }
-    pageLink.addEventListener("click", (e) => {
-      e.preventDefault()
-      changePage(i)
-    })
-    paginationElement.appendChild(pageLink)
-  }
 
-  // Кнопка "Следующая"
-  const nextButton = document.createElement("button")
-  nextButton.textContent = "»"
-  nextButton.disabled = currentPage === totalPages
-  nextButton.addEventListener("click", () => changePage(currentPage + 1))
-  paginationElement.appendChild(nextButton)
+    // Кнопка "Предыдущая"
+    const prevButton = document.createElement("button")
+    prevButton.textContent = "«"
+    prevButton.disabled = currentPage === 1
+    prevButton.addEventListener("click", () => changePage(currentPage - 1))
+    paginationElement.appendChild(prevButton)
 
-  // Информация о страницах
-  const pageInfo = document.createElement("span")
-  pageInfo.className = "pagination-info"
-  pageInfo.textContent = `${currentPage} из ${totalPages}`
-  paginationElement.appendChild(pageInfo)
+    // Номера страниц
+    for (let i = startPage; i <= endPage; i++) {
+        const pageLink = document.createElement("button")
+        pageLink.href = "#"
+        pageLink.textContent = i
+        if (i === currentPage) {
+            pageLink.classList.add("active")
+        }
+        pageLink.addEventListener("click", (e) => {
+            e.preventDefault()
+            changePage(i)
+        })
+        paginationElement.appendChild(pageLink)
+    }
+
+    // Кнопка "Следующая"
+    const nextButton = document.createElement("button")
+    nextButton.textContent = "»"
+    nextButton.disabled = currentPage === totalPages
+    nextButton.addEventListener("click", () => changePage(currentPage + 1))
+    paginationElement.appendChild(nextButton)
+
+    // Информация о страницах
+    const pageInfo = document.createElement("span")
+    pageInfo.className = "pagination-info"
+    pageInfo.textContent = `${currentPage} из ${totalPages}`
+    paginationElement.appendChild(pageInfo)
 }
 
 // Функция для изменения страницы
 function changePage(newPage) {
-  updateUrlParams({ page: newPage })
-  getVacancies()
-  scrollToTop()
+    updateUrlParams({page: newPage})
+    getVacancies()
+    scrollToTop()
 }
 
 function getUrlParams() {
@@ -288,7 +309,7 @@ function scrollToTop() {
 }
 
 
-async function searchVacancy(){
+async function searchVacancy() {
 
     const profession = document.getElementById('job-search').value;
     const city = document.getElementById('city').value
@@ -296,13 +317,13 @@ async function searchVacancy(){
 
     const searchParams = new URLSearchParams();
     searchParams.append('page', 1);
-    if (profession){
+    if (profession) {
         searchParams.append('profession', profession);
     }
-    if (city){
+    if (city) {
         searchParams.append('city', city);
     }
-    if (min_salary){
+    if (min_salary) {
         searchParams.append('min_salary', min_salary);
     }
     const searchUrl = apiUrl + `/vacancies/?${searchParams.toString()}`;

@@ -1,13 +1,14 @@
 import asyncio
 import pytest
 
+from backend.api.companies.queries import delete_company_queries
 from backend.api.users.auth.queries import delete_user
-from backend.database.models.employer import EmployersOrm
-from backend.database.models.worker import WorkersOrm
-from backend.modules.redis.redis_utils import delete_object
-from backend.schemas import EmployerResponseSchema, WorkerResponseSchema
+from backend.core.database.models.employer import EmployersOrm
+from backend.core.database.models.worker import WorkersOrm
+from backend.core.utils.redis_utils.redis_obj_utils import delete_object
+from backend.core.schemas import EmployerResponseSchema, WorkerResponseSchema
 from backend.tests.worker.utils_test import get_worker
-from backend.tests.employer.utils_test import get_employer
+from backend.tests.employer.utils_test import get_company, get_employer
 
 
 async def delete_employer(employer):
@@ -34,9 +35,10 @@ async def clear_users():
     worker = await get_worker()
     if worker:
         await delete_worker(worker)
-
     employer = await get_employer()
+    company = await get_company()
     if employer:
+        await delete_company_queries(company_id=company.id, owner=employer)
         await delete_employer(employer)
 
 

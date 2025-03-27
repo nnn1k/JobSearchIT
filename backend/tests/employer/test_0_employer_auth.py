@@ -1,9 +1,9 @@
 import pytest
 
-from backend.modules.redis.redis_code_utils import get_code_from_redis
+from backend.utils.redis_utils import get_code_from_redis
 from backend.tests.utils import async_client, check_token, check_user, test_user
 from backend.tests.employer.utils_test import cache_employer, employer_client, get_employer
-from backend.utils.const import EMPLOYER_USER_TYPE
+from backend.core.utils.const import EMPLOYER_USER_TYPE
 from backend.utils.other.logger_utils import logger
 
 

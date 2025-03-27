@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-from backend.schemas.global_schema import DynamicSchema
+from backend.core.schemas import DynamicSchema
 from backend.utils.other.type_utils import UserVar
 
 

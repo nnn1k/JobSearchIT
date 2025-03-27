@@ -1,6 +1,6 @@
 import pytest
 
-from backend.schemas import VacancySchema
+from backend.core.schemas import VacancySchema
 from backend.tests.employer.utils_test import cache_vacancy, employer_client, get_vacancy
 
 

@@ -7,16 +7,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.api.skills.queries import update_vacancy_skills
 from backend.api.vacancies.queries import (
     create_vacancy_queries,
-    delete_vacancy_by_id_queries, get_all_vacancies_query, get_vacancy_by_id_queries,
+    delete_vacancy_by_id_queries,
+    get_all_vacancies_query,
+    get_vacancy_by_id_queries,
     update_vacancy_by_id_queries
 )
 from backend.api.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
-from backend.database.utils.dependencies import get_db
-from backend.schemas import EmployerResponseSchema
-from backend.schemas.models.other.skill_schema import SkillSchema
-from backend.utils.auth_utils.check_func import check_employer_can_update
-from backend.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
-from backend.utils.other.time_utils import time_it_async
+from backend.core.database.utils.dependencies import get_db
+from backend.core.schemas import EmployerResponseSchema
+from backend.core.schemas import SkillSchema
+from backend.core.utils.auth_utils.check_func import check_employer_can_update
+from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
 
 router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
@@ -39,6 +40,7 @@ async def create_new_vacancy(
         'status': 'ok',
         'vacancy': vacancy,
     }
+
 
 @router.get('', summary='Поиск по вакансиям')
 async def get_vacancies(
@@ -108,3 +110,4 @@ async def delete_info_on_vacancy(
     return {
         'status': 'ok',
     }
+

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         statusbar: false,
         display: "flex",
         selector: '#description',
-        width: 500,
+        width: 560,
         height: 400,
         fontsize: 50,
         whiteSpace: "pre-wrap"

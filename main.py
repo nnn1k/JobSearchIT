@@ -1,64 +1,26 @@
 import os
-from contextlib import asynccontextmanager
 
-import uvicorn
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-
-from backend.database.settings.database import engine
-from backend.utils.other.logger_utils import logger
-from fastapi.responses import JSONResponse
+from backend.core.config.cors import setup_cors
+from backend.core.config.help_func import check_platform
+from backend.core.utils.logger_utils.exception_log_func import global_exception_handler, log_requests
 
 from backend.api import router as backend_router
-from backend.utils.settings import settings
 from frontend.routers import router as frontend_router
 
-frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
+app = FastAPI()
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    logger.log('DATABASE', 'ПОДКЛЮЧЕНИЕ К БД')
-    app.state.db = await engine.connect()
-    yield
-    logger.log('DATABASE', 'ОТКЛЮЧЕНИЕ ОТ БД')
-    await app.state.db.close()
-
-
-app = FastAPI(lifespan=lifespan)
-
-app.mount("/frontend", StaticFiles(directory=frontend_dir), name="static")
 app.include_router(backend_router)
 app.include_router(frontend_router)
 
-# noinspection PyTypeChecker
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+frontend_dir = os.path.join(os.path.dirname(__file__), "frontend")
+app.mount("/frontend", StaticFiles(directory=frontend_dir), name="static")
 
+setup_cors(app)
 
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    logger.error(f"Необработанное исключение: {exc}")
-    return JSONResponse(
-        status_code=500,
-        content={"message": "Произошла ошибка на сервере."}
-    )
+check_platform()
 
-
-@app.middleware("http")
-async def log_requests(request: Request, call_next):
-    response = await call_next(request)
-
-    if request.url.path.startswith("/api"):
-        logger.info(f"{request.method} {request.url.path} - Статус: {response.status_code}")
-
-    return response
-
-
+app.exception_handler(Exception)(global_exception_handler)
+app.middleware("http")(log_requests)
 

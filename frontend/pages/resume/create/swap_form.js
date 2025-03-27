@@ -3,6 +3,7 @@ function nextStep(step) {
     document.getElementById(`step${step}`).classList.remove('active');
     // Показываем следующий этап
     document.getElementById(`step${step + 1}`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function prevStep(step) {
@@ -10,6 +11,7 @@ function prevStep(step) {
     document.getElementById(`step${step}`).classList.remove('active');
     // Показываем предыдущий этап
     document.getElementById(`step${step - 1}`).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function addExperience() {

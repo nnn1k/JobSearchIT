@@ -3,12 +3,12 @@ body {
     font-family: Arial, sans-serif;
 }
 
-header{
+header {
     display: flex;
     flex-direction: column;
 }
 
-.choose{
+.choose {
     display: flex;
     flex-direction: row;
     padding-left: 100px;
@@ -30,44 +30,45 @@ header{
 
 }
 
-.right_side_header{
+.right_side_header {
     display: flex;
     gap: 30px;
     flex-direction: row;
     align-items: center;
 }
 
-.logo_profile{
+.logo_profile {
     display: flex;
     margin-right: 30px;
     height: 50px;
     width: 50px;
 }
 
+.login-button{
+    margin-right: 30px;
+}
 
 .content {
     min-height: 100vh;
 }
 
-
-
-#link_my_resumes{
+#link_my_resumes {
     font-size: 18px;
     color: #333333;
 }
 
-#link_my_resumes:hover{
-   color: #f2f2f2;
+#link_my_resumes:hover {
+    color: #f2f2f2;
 }
 
 
-.disabled_link{
+.disabled_link {
     cursor: not-allowed;
     pointer-events: none;
     color: gray;
 }
 
-.disabled_link:visited{
+.disabled_link:visited {
     color: gray;
 }
 
@@ -80,100 +81,157 @@ header{
 }
 
 .footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .footer-section {
-  flex: 1;
-  min-width: 200px;
-  margin-bottom: 20px;
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
 }
 
 .footer-section h3 {
-  color: #333333;
-  margin-bottom: 15px;
-  font-size: 18px;
+    color: #333333;
+    margin-bottom: 15px;
+    font-size: 18px;
 }
 
 .footer-section p,
 .footer-section ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 .footer-section ul li {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 .footer-section a {
-  color: #333;
-  text-decoration: none;
-  transition: color 0.3s ease;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .footer-section a:hover {
-  color: orange;
+    color: orange;
 }
 
 .social-links {
-  display: flex;
-  gap: 15px;
+    display: flex;
+    gap: 15px;
 }
 
-#social-link{
+#social-link {
     color: #f2f2f2;
 }
 
 .social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #333333;
-  color: white;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333333;
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .social-link:hover {
-  background-color: #333333;
-  transform: translateY(-3px);
+    background-color: #333333;
+    transform: translateY(-3px);
 }
 
 .social-link svg {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 }
 
 .footer-bottom {
-  text-align: center;
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #ddd;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
 }
 
 @media (max-width: 768px) {
-  .footer-content {
-    flex-direction: column;
-  }
+    .footer-content {
+        flex-direction: column;
+    }
 
-  .footer-section {
-    margin-bottom: 30px;
-  }
+    .footer-section {
+        margin-bottom: 30px;
+    }
 }
 
-.div_link_my_resumes{
+.div_link_my_resumes {
+    display: flex;
+    flex-direction: row;
     margin-right: auto;
+    gap: 20px;
 }
 
 
+#link_my_feedbacks {
+    font-size: 18px;
+    color: #333333;
+}
+
+
+#link_my_feedbacks:hover {
+    color: #f2f2f2;
+}
+
+#link_my_invites {
+    font-size: 18px;
+    color: #333333;
+}
+
+
+#link_my_invites:hover {
+    color: #f2f2f2;
+}
+
+#link-for-chat:hover {
+    color: #f2f2f2;
+}
+
+.logo-for-chat {
+    width: 37px; /* Новая ширина */
+    height: 37px; /* Новая высота */
+}
+
+.dropdown_profile {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-left: 225px;
+    margin-top: 145px;
+    z-index: 1;
+}
+
+.dropdown_profile button {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    background: none;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.dropdown_profile button:hover {
+    background-color: #f1f1f1;
+}
 
 
 

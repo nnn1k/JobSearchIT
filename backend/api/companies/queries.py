@@ -2,16 +2,18 @@ from sqlalchemy import insert, select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import contains_eager
 
-from backend.database.models.employer import CompaniesOrm, EmployersOrm
-from backend.database.settings.database import session_factory
-from backend.schemas import EmployerResponseSchema
-from backend.schemas.models.employer.company_schema import CompanySchema
-from backend.database.models.employer import VacanciesOrm
+from backend.core.database.models.employer import CompaniesOrm, EmployersOrm
+from backend.core.database.database import session_factory
+from backend.core.schemas import EmployerResponseSchema
+from backend.core.schemas.models.employer.company_schema import CompanySchema
+from backend.core.database.models.employer import VacanciesOrm
 
-from fastapi import HTTPException, status
-
-from backend.utils.exc import company_not_found_exc, employer_not_found_exc, user_have_company_exc, \
+from backend.core.utils.exc import (
+    company_not_found_exc,
+    employer_not_found_exc,
+    user_have_company_exc,
     user_is_not_owner_exc
+)
 
 
 async def create_company_queries(employer: EmployerResponseSchema, session: AsyncSession, **kwargs):
@@ -77,7 +79,9 @@ async def update_company_queries(company_id, owner: EmployerResponseSchema, sess
     return await get_company_by_id_queries(company_id, session)
 
 
-async def delete_company_queries(company_id: int, owner: EmployerResponseSchema, session: AsyncSession):
+async def delete_company_queries(company_id: int, owner: EmployerResponseSchema, session: AsyncSession = None):
+    if not session:
+        session = session_factory()
     if not (company_id == owner.company_id and owner.is_owner):
         raise user_is_not_owner_exc
 

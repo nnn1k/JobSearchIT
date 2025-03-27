@@ -49,12 +49,12 @@ $(document).ready(function () {
     cancel_btn('row_by_phone', 'row_by_edit_phone', 'cancel_btn_for_phone')
 });
 
-document.getElementById('link_for_edit_company').addEventListener('click', function (event) {
-    event.preventDefault();
-    $(document).ready(function () {
-        hide_field('row_by_сompany', 'row_by_edit_сompany')
-    });
-});
+// document.getElementById('link_for_edit_company').addEventListener('click', function (event) {
+//     event.preventDefault();
+//     $(document).ready(function () {
+//         hide_field('row_by_сompany', 'row_by_edit_сompany')
+//     });
+// });
 
 $(document).ready(function () {
     cancel_btn('row_by_сompany', 'row_by_edit_сompany', 'cancel_btn_for_сompany')
@@ -67,6 +67,7 @@ async function getMe() {
             url: '/api/employers/me',
         }
     )
+    console.log(getResponse)
     const user = getResponse.user
     document.getElementById('data_name').innerHTML = user.name
     document.getElementById('data_name_2').innerHTML = user.name
@@ -77,6 +78,7 @@ async function getMe() {
     document.getElementById('data_email').innerHTML = user.email
     document.getElementById('data_phone').innerHTML = user.phone
     document.getElementById('data_phone_2').innerHTML = user.phone
+    document.getElementById('data_company').innerHTML = user.company.name
     hideLoadingIndicator(loadingIndicator);
 }
 

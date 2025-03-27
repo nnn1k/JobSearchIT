@@ -3,7 +3,7 @@ from collections import Counter
 from fastapi import APIRouter, Depends, Query
 
 from backend.api.resumes.queries import get_all_resumes_query
-from backend.utils.auth_utils.user_login_dependencies import get_user_by_token
+from backend.core.utils.auth_utils.user_login_dependencies import get_user_by_token
 
 router = APIRouter(
     prefix="/resumes",

@@ -9,7 +9,7 @@
     border-radius: 15px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.7s ease; /* Плавный переход цвета */
+    transition: background-color 0.5s ease;
 
 }
 
@@ -17,6 +17,7 @@
     background-color: crimson;
     color: white;
     border: 2px solid white;
+    transition: background-color 0.5s ease; /* Плавный переход цвета */
 }
 
 
@@ -48,6 +49,7 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: white;
     color: crimson;
     border: 2px solid crimson;
+    transition: background-color 0.5s ease; /* Плавный переход цвета */
 }
 
 a{
@@ -122,3 +124,31 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
+
+h1, h2, h3, p{
+    color: gray;
+}
+
+
+#notification-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1000; /* Убедитесь, что уведомления поверх других элементов */
+}
+
+.notification {
+    background-color: seagreen; /* Зеленый цвет для успешных уведомлений */
+    color: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    transform: translateY(-20px); /* Начальное положение для анимации */
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0); /* Конечное положение для анимации */
+}

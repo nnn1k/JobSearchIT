@@ -2,7 +2,9 @@ import {apiUrl, makeRequest} from "/frontend/js/utils.js";
 import {print_salary} from "/frontend/js/print_salary.js";
 import {formatDateTime} from "/frontend/js/timefunc.js";
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
+import {createModal} from "/frontend/js/modal_window.js";
 
+var resumes
 
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -10,7 +12,20 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
+async function getMyResumes() {
+    const userType = getCookie('user_type')
+    if (!userType || userType === 'employer') {
+        return
+    }
+    const getMyResumes = await makeRequest({
+        method: 'GET',
+        url: '/api/workers/me/'
+    })
+    resumes = getMyResumes.user.resumes
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+    getMyResumes()
     get_company()
     const first_button = document.getElementById('switch_description')
     showForm('desc_form', first_button)
@@ -34,7 +49,7 @@ async function get_company() {
         statusbar: false,
         display: "flex",
         selector: '#company_description_update',
-        width: 1000,
+        width: 700,
         height: 600,
         fontsize: 50,
         whiteSpace: "pre-wrap"
@@ -42,6 +57,7 @@ async function get_company() {
     hideLoadingIndicator(loadingIndicator);
     tinymce.get('company_description_update').setContent(getResponse.company.description)
     document.getElementById('company_description_update').value = getResponse.company.description;
+    console.log(getResponse.company.vacancies)
     renderVacancies(getResponse.company.vacancies, getResponse.can_update)
 
 }
@@ -81,6 +97,13 @@ function showForm(formId, button) {
 function renderVacancies(vacancies, can_update) {
     const container = document.getElementById('vacancies-container');
     container.innerHTML = '';
+
+    if (vacancies.length === 0) {
+        const countVacancies = document.createElement('h2');
+        countVacancies.textContent = `У компании пока нет вакансий :(`
+        container.appendChild(countVacancies);
+        return
+    }
 
     vacancies.forEach(vacancy => {
         const vacancyElement = document.createElement('div');
@@ -123,6 +146,14 @@ function renderVacancies(vacancies, can_update) {
             feedbackButton.classList.add('red_button');
             feedbackButton.style.width = '30%';
             feedbackButton.textContent = "Откликнуться";
+            feedbackButton.onclick = function () {
+                event.preventDefault(); // Остановить переход по ссылке
+                if (!userType) {
+                    window.location.href = apiUrl + '/login';
+                    return
+                }
+                createModal('Выберите резюме для отклика', resumes, vacancy.id);
+            };
             vacancyElement.appendChild(feedbackButton);
             linkElement.appendChild(vacancyElement);
             container.appendChild(linkElement);
@@ -142,6 +173,7 @@ function renderVacancies(vacancies, can_update) {
             container.appendChild(linkElement);
             return;
         }
+        linkElement.appendChild(vacancyElement)
         container.appendChild(linkElement);
     });
 }

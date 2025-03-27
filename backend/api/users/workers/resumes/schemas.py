@@ -2,8 +2,8 @@ from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
-from backend.schemas import SkillSchema
-from backend.schemas.global_schema import ValidateSalarySchema
+from backend.core.schemas.models.other.skill_schema import SkillSchema
+from backend.core.schemas.global_schema import ValidateSalarySchema
 
 
 class ResumeAddSchema(ValidateSalarySchema):

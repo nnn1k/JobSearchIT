@@ -4,6 +4,7 @@ import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions
 import {createTrashBtnResumes} from "/frontend/js/create_trash_can.js";
 
 
+
 document.addEventListener('DOMContentLoaded', function (){
     get_resume()
 })

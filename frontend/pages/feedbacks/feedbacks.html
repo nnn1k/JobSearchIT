@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/frontend/pages/feedbacks/feedbacks.css">
+    <title>Отклики</title>
+</head>
+{% if user_type == 'worker' %}
+    {% extends 'base_worker/base_worker.html' %}
+{% elif user_type == 'employer' %}
+    {% extends 'base_employer/base_employer.html' %}
+{% else %}
+    {% extends 'base_worker/base_worker.html' %}
+{% endif %}
+{% block content %}
+    <body>
+    <div class="container_all">
+        <div class="title_company_container">
+            <div class="company_name">
+                <h2>Отлики и приглашения</h2>
+                <h1 id="company_name"></h1>
+            </div>
+            <div class="container_buttons">
+                <input type="button" value="Все" class="btn" id="switch_all"
+                       onclick="showForm('all_form', this)">
+                <input type="button" value="Ожидания" class="btn" id="switch_unread"
+                       onclick="showForm('unread_form', this)">
+                <input type="button" value="Приглашения" class="btn" id="switch_invites"
+                       onclick="showForm('invites_form', this)">
+                <input type="button" value="Отказы" class="btn" id="switch_discard"
+                       onclick="showForm('discard_form', this)">
+            </div>
+        </div>
+        <div class="content_feedbacks">
+            <div class="form_container" id="all_form">
+            </div>
+            <div class="form_container" id="unread_form">
+
+            </div>
+            <div class="form_container" id="invites_form">
+
+            </div>
+            <div class="form_container" id="discard_form">
+
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/frontend/pages/feedbacks/feedbacks.js"></script>
+    </body>
+{% endblock %}
+</html>

@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr
 from enum import Enum
 
-from backend.schemas.user_schema import UserSchema
+from backend.core.schemas.user_schema import UserSchema
 
 
 class UserType(str, Enum):

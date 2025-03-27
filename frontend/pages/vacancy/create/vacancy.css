@@ -59,6 +59,7 @@
     flex-direction: row;
     gap: -10px;
     box-sizing: border-box;
+    margin-left: 4%;
 }
 
 .input_for_first_salary {
