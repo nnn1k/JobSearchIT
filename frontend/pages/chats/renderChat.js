@@ -1,7 +1,30 @@
 import {formatDateTime} from "/frontend/js/timefunc.js";
-import {showLoadingIndicator, hideLoadingIndicator} from "/frontend/js/functions_for_loading.js";
 import {getCookie} from "/frontend/js/utils.js";
 
+document.addEventListener('DOMContentLoaded', function () {
+    createChats()
+})
+
+let chats;
+let ws;
+
+function createChats(){
+    ws = createChatSocket()
+    ws.onmessage = function (event) {
+        const response = JSON.parse(JSON.parse(event.data))
+        if (response.type === 'message') {
+            showMessage(response)
+        }
+        if (response.type === 'join') {
+            createChatWindow(response.messages)
+        }
+        if (response.type === 'open'){
+            chats = response.chats.map(chat => JSON.parse(chat))
+            console.log(chats)
+            populateChatList(chats)
+        }
+    }
+}
 
 export function populateChatList(chats) {
     const chatListElement = document.getElementById('chatList');
@@ -35,53 +58,34 @@ export function populateChatList(chats) {
     })
 }
 
-export function openChat(chatId, chats) {
-    const loadingIndicator = showLoadingIndicator();
-
+export function openChat(chatId) {
     const url = new URL(window.location);
     url.searchParams.set('chatId', chatId); // Устанавливаем новый параметр
-
-
     window.history.pushState({}, '', url);
-    let ws = createChatSocket(chatId)
-    ws.onmessage = function (event) {
-        const response = JSON.parse(JSON.parse(event.data))
-        if (response.type === 'message') {
-            showMessage(response)
-        }
-        if (response.type === 'join') {
-            hideLoadingIndicator(loadingIndicator)
-            createChatWindow(response, ws, chats, chatId)
-        }
-    }
-
 
     document.querySelectorAll('.chat-item').forEach(item => {
         item.classList.remove('active');
     });
 
     document.querySelector(`.chat-item[data-chat-id="${chatId}"]`).classList.add('active');
-
+    ws.send(JSON.stringify({'type': 'join', 'chat_id': chatId}))
 }
 
 function createChatSocket() {
-    const url = new URL(window.location.href)
-    const searchParams = url.searchParams
-    const chatId = searchParams.get('chatId')
 
-    let ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws/${chatId}`);
+    let new_ws = new WebSocket(`ws://127.0.0.1:8000/api/chats/ws`);
 
-    ws.onopen = () => {
-        ws.send(JSON.stringify({'message': '', 'type': 'join', 'chat_id': chatId}))
+    new_ws.onopen = () => {
+        new_ws.send(JSON.stringify({'message': '', 'type': 'open', 'chat_id': ''}))
         console.log('Сокет заработал')
     }
 
-    ws.onclose = () => {
+    new_ws.onclose = () => {
         console.log('Сокет упал, пытаемся переподключиться к сокету...');
-        setTimeout(createChatSocket, 3000);
+        setTimeout(createChatSocket, 20000);
     }
 
-    return ws
+    return new_ws
 }
 
 function showMessage(message) {
@@ -104,10 +108,13 @@ function showMessage(message) {
     lastMessage.textContent = message.message
 }
 
-function createChatWindow(response, ws, chats, chatId) {
+function createChatWindow(messages) {
     const chatWindow = document.getElementById('chatWindow');
-    const selectedChat = chats.find(chat => chat.id === chatId);
     const userType = getCookie('user_type')
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const chatId = url.searchParams.get("chatId");
+    const selectedChat = chats.find(chat => chat.id === Number(chatId));
     // шапка (для ролей)
     if (userType === 'worker') {
         chatWindow.innerHTML = `
@@ -136,23 +143,24 @@ function createChatWindow(response, ws, chats, chatId) {
     const messageInput = document.getElementById('messageInput');
 
     sendButton.addEventListener('click', () => {
-        sendMessage(ws, chatId);
+        sendMessage(chatId);
     });
     messageInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            sendMessage(ws, chatId);
+            sendMessage(chatId);
         }
     });
-    response.messages.forEach(message => {
+    messages.forEach(message => {
         const jsonMessage = JSON.parse(message)
         showMessage(jsonMessage)
     });
 }
 
-function sendMessage(ws, chatId) {
+function sendMessage(chatId) {
+    console.log('work')
     // Добавляем функциональность отправки сообщений
     const messageInput = document.getElementById('messageInput');
-
+    const chatMessages = document.getElementById('chatMessages')
 
     const messageText = messageInput.value.trim();
     if (messageText) {

@@ -3,6 +3,7 @@ from starlette import status
 
 from backend.core.utils.redis_utils.redis_obj_utils import create_async_redis_client
 
+
 async def get_code_from_redis(user_type, user_id):
     redis_client = await create_async_redis_client()
     try:

@@ -11,6 +11,7 @@ from backend.core.utils.auth_utils.token_dependencies import check_user_role
 from backend.core.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
 from backend.core.utils.exc import incorrect_token_exc, incorrect_user_type_exc
 
+
 async def get_employer_by_token(
         response: Response,
         access_token=Cookie(None, include_in_schema=False),
@@ -62,6 +63,7 @@ async def get_user_by_token(
         return await get_employer_by_id_queries(user_jwt_schema.id, session)
     else:
         raise incorrect_user_type_exc
+
 
 async def get_auth_user_by_token(
         response: Response,

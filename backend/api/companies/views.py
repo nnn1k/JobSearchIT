@@ -9,7 +9,6 @@ from backend.core.utils.auth_utils.user_login_dependencies import get_employer_b
 from backend.core.schemas import EmployerResponseSchema
 from backend.core.utils.auth_utils.check_func import check_employer_can_update
 
-
 router = APIRouter(prefix='/companies', tags=['companies'])
 
 
@@ -48,11 +47,13 @@ async def update_company(
         user: EmployerResponseSchema = Depends(get_employer_by_token),
         session: AsyncSession = Depends(get_db),
 ):
-    company = await update_company_queries(company_id=company_id, owner=user, session=session, **new_company.model_dump())
+    company = await update_company_queries(company_id=company_id, owner=user, session=session,
+                                           **new_company.model_dump())
     return {
         'status': 'ok',
         'company': company,
     }
+
 
 @router.delete('/{company_id}', summary='Удалить компанию')
 async def delete_company(

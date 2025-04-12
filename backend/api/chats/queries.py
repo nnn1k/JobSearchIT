@@ -1,4 +1,4 @@
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
@@ -29,6 +29,7 @@ def get_all_chats_on_user_stmt(user):
         stmt = stmt.where(VacanciesOrm.company_id == user.company_id)
     return stmt
 
+
 async def check_user_is_owner_on_chat(user, chat_id, session):
     stmt = get_all_chats_on_user_stmt(user)
     stmt = stmt.where(ChatsOrm.id == chat_id)
@@ -42,7 +43,6 @@ async def create_chat_queries(
         response_id: int,
         session: AsyncSession
 ):
-    print('test')
     response = await session.get(ResponsesOrm, response_id)
     if not response:
         raise response_not_found_exc
@@ -81,7 +81,7 @@ async def get_all_messages_on_chat(
 
     result = await session.execute(
         select(MessagesOrm)
-        .where(MessagesOrm.chat_id == chat_id)
+        .where(and_(MessagesOrm.chat_id == chat_id))
     )
     messages = result.scalars().all()
 
@@ -94,6 +94,7 @@ async def send_message_queries(
         message: str,
         session: AsyncSession
 ) -> None:
+
     await check_user_is_owner_on_chat(user, chat_id, session)
     await session.execute(
         insert(MessagesOrm)

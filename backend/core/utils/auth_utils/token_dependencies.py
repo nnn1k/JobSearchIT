@@ -4,6 +4,7 @@ from backend.api.users.auth.classes.AuthJWT import jwt_token
 from backend.core.schemas.user_schema import UserTypeSchema
 from backend.core.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 
+
 async def check_user_role(access_token, refresh_token, response) -> UserTypeSchema | None:
     if access_token is None:
         return check_refresh_token(refresh_token, response)
@@ -33,5 +34,3 @@ def check_refresh_token(refresh_token, response):
         return UserTypeSchema(id=user_id, type=user_type)
     except Exception:
         return None
-
-

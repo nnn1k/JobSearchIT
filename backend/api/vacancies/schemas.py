@@ -1,7 +1,5 @@
 from typing import Optional, List
 
-from pydantic import BaseModel
-
 from backend.core.schemas import SkillSchema
 from backend.core.schemas.global_schema import ValidateSalarySchema
 

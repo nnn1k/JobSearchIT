@@ -1,5 +1,6 @@
 import bcrypt
 
+
 class HashPwd:
 
     @staticmethod

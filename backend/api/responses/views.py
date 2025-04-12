@@ -38,6 +38,7 @@ async def send_response_views(
         'response': response,
     }
 
+
 @router.post('/invite', summary='Отправить приглашение')
 async def send_invite_views(
         vacancy_id: int,
@@ -55,6 +56,7 @@ async def send_invite_views(
         'status': 'ok',
         'invite': invite,
     }
+
 
 @router.get('/response', summary='Посмотреть все отклики')
 async def get_responses_worker_views(
@@ -85,6 +87,7 @@ async def get_invite_views(
         'waiting': [response for response in responses if response.is_worker_accepted is None],
     }
 
+
 @router.post('/{response_id}/accept', summary='Подтвердить отклик/приглашение')
 async def accept_invite_views(
         response_id: int,
@@ -98,6 +101,7 @@ async def accept_invite_views(
         'response': response,
     }
 
+
 @router.post('/{response_id}/reject', summary='Отклонить отклик/приглашение')
 async def accept_invite_views(
         response_id: int,
@@ -109,6 +113,7 @@ async def accept_invite_views(
         'status': 'ok',
         'response': response,
     }
+
 
 @router.delete('/{response_id}', summary='Удалить отклик/приглашение')
 async def delete_response_views(

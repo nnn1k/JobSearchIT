@@ -22,8 +22,8 @@ def get_login_db_model(user_type: UserType):
 
 
 def create_token(response: Response, user) -> Dict[str, Any]:
-    access_token = jwt_token.create_access_token(id=user.id, user_type=user.type)
-    refresh_token = jwt_token.create_refresh_token(id=user.id, user_type=user.type)
+    access_token = jwt_token.create_access_token(user_id=user.id, user_type=user.type)
+    refresh_token = jwt_token.create_refresh_token(user_id=user.id, user_type=user.type)
 
     response.set_cookie(ACCESS_TOKEN, access_token, max_age=60*60*24*365)
     response.set_cookie(REFRESH_TOKEN, refresh_token, max_age=60*60*24*365)

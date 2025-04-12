@@ -21,6 +21,8 @@ from backend.core.utils.other.time_utils import current_time
 router = APIRouter(prefix='/chats', tags=['chats'])
 
 active_connections = {}
+active_users = dict()
+
 
 @router.get('', summary='Получить все чаты')
 async def get_all_chats(
@@ -51,7 +53,7 @@ async def chats_websocket(
             message = data.get('message')
             match message_type:
                 case 'join':
-                    # Проверяем, есть ли уже подключение для этого пользователя
+                    print(active_connections)
                     if chat_id in active_connections:
                         for connection in active_connections[chat_id]:
                             if connection['user_id'] == user.id:
@@ -100,12 +102,83 @@ async def chats_websocket(
             "status_code": e.status_code,
             "detail": e.detail
         }))
+
     except WebSocketDisconnect:
         logger.info('disconnected')
+        if chat_id in active_connections:
+            active_connections[chat_id] = [conn for conn in active_connections[chat_id] if conn['ws'] != ws]
+        if ws.client_state != WebSocketState.DISCONNECTED:
+            await ws.close()
 
     finally:
         # Удаляем подключение пользователя при закрытии соединения
         if chat_id in active_connections:
             active_connections[chat_id] = [conn for conn in active_connections[chat_id] if conn['ws'] != ws]
-        await ws.close()
+        if ws.client_state != WebSocketState.DISCONNECTED:
+            await ws.close()
 
+
+@router.websocket('/ws')
+async def chat_system_websocket(
+        ws: WebSocket,
+        user: UserResponseSchema = Depends(get_auth_user_by_token),
+        session: AsyncSession = Depends(get_db)
+):
+    await ws.accept()
+    try:
+        while True:
+            data = await ws.receive_json()
+            logger.info(f"Received data: {data}")
+            message = data.get('message')
+            message_type = data.get('type')
+            chat_id = data.get('chat_id')
+            if chat_id:
+                chat_id = int(chat_id)
+            match message_type:
+                case 'open':
+                    chats = await get_all_chats_on_user(user=user, session=session)
+                    response = {
+                        'chats': [chat.model_dump_json() for chat in chats],
+                        'type': 'open'
+                    }
+                    await ws.send_json(json.dumps(response))
+                case 'join':
+                    active_users[f'{user.id}:{user.type}'] = {'ws': ws, 'chat_id': chat_id, 'user': user}
+                    messages = await get_all_messages_on_chat(user=user, chat_id=chat_id, session=session)
+                    response = {
+                        'messages': [message.model_dump_json() for message in messages],
+                        'type': 'join'
+                    }
+                    await ws.send_json(json.dumps(response))
+                case 'message':
+                    response = ChatMessageSchema(
+                        chat_id=chat_id,
+                        message=message,
+                        sender_id=user.id,
+                        sender_type=user.type,
+                        created_at=current_time(),
+                        updated_at=current_time()
+                    )
+                    # сохранение бд
+
+                    await send_message_queries(user=user, chat_id=chat_id, message=message, session=session)
+                    # отправка пользователям
+                    for key in active_users:
+                        if active_users[key].get('chat_id') == chat_id:
+                            await active_users[key].get('ws').send_json(response.model_dump_json())
+
+    except HTTPException as e:
+        await ws.send_text(json.dumps({
+            "type": "error",
+            "status_code": e.status_code,
+            "detail": e.detail
+        }))
+
+    except WebSocketDisconnect:
+        if ws.client_state != WebSocketState.DISCONNECTED:
+            await ws.close()
+            logger.info('disconnected')
+
+    finally:
+        if ws.client_state != WebSocketState.DISCONNECTED:
+            await ws.close()

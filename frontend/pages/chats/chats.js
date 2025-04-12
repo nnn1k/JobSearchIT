@@ -1,4 +1,4 @@
-import {populateChatList, openChat} from "/frontend/pages/chats/renderChats/renderChat.js";
+import {populateChatList, openChat} from "/frontend/pages/chats/renderChat.js";
 import {hideLoadingIndicator, showLoadingIndicator} from "/frontend/js/functions_for_loading.js";
 import {apiUrl, makeRequest, getCookie} from "/frontend/js/utils.js";
 
@@ -18,13 +18,12 @@ async function getChats() {
     const url = new URL(currentUrl);
     const chatId = url.searchParams.get("chatId");
     populateChatList(getResponse.chats)
-    if (chatId){
+    if (chatId) {
         const intChatID = Number(chatId)
         openChat(intChatID, getResponse.chats)
     }
 
     hideLoadingIndicator(loadingIndicator)
-
 
 
 }

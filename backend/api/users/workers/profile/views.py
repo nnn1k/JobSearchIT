@@ -28,7 +28,11 @@ async def update_my_profile(
         worker: WorkerResponseSchema = Depends(get_worker_by_token),
         session: AsyncSession = Depends(get_db),
 ):
-    worker = await update_worker_by_id_queries(worker_id=worker.id, session=session, **new_worker.model_dump())
+    worker = await update_worker_by_id_queries(
+        worker_id=worker.id,
+        session=session,
+        **new_worker.model_dump()
+    )
     return {
         'user': worker,
         'status': 'ok'

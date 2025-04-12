@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import and_, desc, select
 from sqlalchemy.orm import selectinload
 
@@ -15,9 +17,9 @@ async def get_all_resumes_query(user, **kwargs):
             .join(ProfessionsOrm)
             .options(selectinload(ResumesOrm.profession))
         )
-        max_salary: int = kwargs.get("max_salary", None)
-        profession: str = kwargs.get("profession", None)
-        city: str = kwargs.get("city", None)
+        max_salary: Optional[int] = kwargs.get("max_salary", None)
+        profession: Optional[str] = kwargs.get("profession", None)
+        city: Optional[str] = kwargs.get("city", None)
         if isinstance(city, str):
             city = city.strip()
         if isinstance(profession, str):
@@ -32,7 +34,7 @@ async def get_all_resumes_query(user, **kwargs):
         if user:
             if user.type == WORKER_USER_TYPE:
                 ...
-                #conditions.append(ResumesOrm.worker_id != user.id)
+                # conditions.append(ResumesOrm.worker_id != user.id)
         if conditions:
             stmt = stmt.where(and_(*conditions))
         stmt = stmt.order_by(desc(ResumesOrm.updated_at))

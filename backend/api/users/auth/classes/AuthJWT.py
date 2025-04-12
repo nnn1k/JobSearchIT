@@ -60,9 +60,9 @@ class AuthJWT:
             expire_timedelta=expire_timedelta
         )
 
-    def create_access_token(self, id: int, user_type: str) -> str:
+    def create_access_token(self, user_id: int, user_type: str) -> str:
         jwt_payload = {
-            'sub': str(id),
+            'sub': str(user_id),
             'type': user_type
         }
         return self.create_jwt(
@@ -70,9 +70,9 @@ class AuthJWT:
             token_data=jwt_payload
         )
 
-    def create_refresh_token(self, id: int, user_type: str) -> str:
+    def create_refresh_token(self, user_id: int, user_type: str) -> str:
         jwt_payload = {
-            'sub': str(id),
+            'sub': str(user_id),
             'type': user_type
         }
         return self.create_jwt(
@@ -86,8 +86,8 @@ class AuthJWT:
             decoded_refresh_token = self.decode_jwt(refresh_token)
             id = decoded_refresh_token.get("sub")
             user_type = decoded_refresh_token.get("type")
-            access_token = self.create_access_token(id=id, user_type=user_type)
-            refresh_token = self.create_refresh_token(id=id, user_type=user_type)
+            access_token = self.create_access_token(user_id=id, user_type=user_type)
+            refresh_token = self.create_refresh_token(user_id=id, user_type=user_type)
             return access_token, refresh_token
         except Exception as e:
             print(f'error:{e}')

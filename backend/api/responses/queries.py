@@ -94,7 +94,7 @@ async def send_reaction_to_response(
 
     stmt = (
         update(ResponsesOrm)
-        .where(ResponsesOrm.id == response_id)
+        .where(and_(ResponsesOrm.id == response_id))
         .returning(ResponsesOrm)
         .options(joinedload(ResponsesOrm.resume))
         .options(joinedload(ResponsesOrm.vacancy))
@@ -126,6 +126,6 @@ async def delete_response_queries(
     check_user_is_not_owner(user=user, resume=resume, vacancy=vacancy)
     await session.execute(
         delete(ResponsesOrm)
-        .where(ResponsesOrm.id == response_id)
+        .where(and_(ResponsesOrm.id == response_id))
     )
     await session.commit()

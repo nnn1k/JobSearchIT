@@ -41,7 +41,6 @@ class Base(DeclarativeBase):
             datetime.datetime,
             mapped_column(
                 server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
-                index=True,
             )
         ]
     ]
@@ -52,7 +51,6 @@ class Base(DeclarativeBase):
             mapped_column(
                 server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
                 onupdate=lambda: datetime.datetime.utcnow() + datetime.timedelta(hours=3),
-                index=True,
             )
         ]
     ]

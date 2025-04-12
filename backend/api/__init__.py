@@ -14,9 +14,7 @@ from backend.core.database.utils.dependencies import get_db
 from backend.core.database.utils.queries import check_connection_db
 from backend.core.utils.redis_utils.redis_obj_utils import check_redis_connection, clear_redis
 
-
 router = APIRouter(prefix="/api")
-
 
 router.include_router(users_router)
 router.include_router(company_router)
@@ -26,7 +24,6 @@ router.include_router(professions_router)
 router.include_router(resumes_router)
 router.include_router(responses_router)
 router.include_router(chats_router)
-
 
 test_router = APIRouter(prefix='/test', tags=['test'])
 
@@ -42,11 +39,13 @@ async def redis_clear():
     await clear_redis()
     return {'status': 'ok'}
 
+
 @test_router.get('/db_connect')
 async def db_connect(
         session: AsyncSession = Depends(get_db)
 ):
     await check_connection_db(session)
     return {'status': 'ok'}
+
 
 router.include_router(test_router)

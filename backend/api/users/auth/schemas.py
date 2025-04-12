@@ -11,18 +11,22 @@ class UserType(str, Enum):
     worker: str = "workers"
     employer: str = "employers"
 
+
 class LoginSchema(BaseModel):
     email: EmailStr
     password: str
+
 
 class RegisterSchema(BaseModel):
     email: EmailStr
     password: str
     confirm_password: str
 
+
 class WorkerSchema(UserSchema):
     birthday: Optional[date] = None
     city: Optional[str] = None
+
 
 class EmployerSchema(UserSchema):
     company_id: Optional[int] = None
