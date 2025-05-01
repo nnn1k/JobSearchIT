@@ -1,6 +1,8 @@
 from backend.core.utils.classes.AuthJWT import jwt_token
 from backend.core.utils.classes.HashPwd import HashPwd
-from backend.api.v1.users.auth.schemas import LoginSchema, WorkerSchema, EmployerSchema, RegisterSchema
+from backend.api.v1.users.auth.schemas import LoginSchema, RegisterSchema
+from backend.core.schemas.models.employer.employer_schema import EmployerSchema
+from backend.core.schemas import WorkerSchema
 from backend.core.services.users.repository import UserRepository
 from fastapi import Response
 
@@ -26,7 +28,7 @@ class AuthService:
         ):
             raise incorrect_login_or_password_exc
         schema = WorkerSchema.model_validate(worker)
-        self._create_token(response=response, user=schema)
+        self.create_token(response=response, user=schema)
         return schema
 
     async def login_employer(self, login_schema: LoginSchema, response: Response) -> EmployerSchema:
@@ -39,7 +41,7 @@ class AuthService:
         ):
             raise incorrect_login_or_password_exc
         schema = EmployerSchema.model_validate(employer)
-        self._create_token(response=response, user=schema)
+        self.create_token(response=response, user=schema)
         return schema
 
     async def register_worker(self, reg_schema: RegisterSchema, response: Response) -> WorkerSchema:
@@ -53,7 +55,7 @@ class AuthService:
             password=HashPwd.hash_password(reg_schema.password)
         )
         schema = WorkerSchema.model_validate(worker)
-        self._create_token(response=response, user=schema)
+        self.create_token(response=response, user=schema)
         return schema
 
     async def register_employer(self, reg_schema: RegisterSchema, response: Response) -> EmployerSchema:
@@ -67,7 +69,7 @@ class AuthService:
             password=HashPwd.hash_password(reg_schema.password)
         )
         schema = EmployerSchema.model_validate(employer)
-        self._create_token(response=response, user=schema)
+        self.create_token(response=response, user=schema)
         return schema
 
     async def confirm_worker(self, code: str, user: WorkerSchema) -> WorkerSchema:
@@ -86,9 +88,8 @@ class AuthService:
         schema = EmployerSchema.model_validate(new_user)
         return schema
 
-
     @staticmethod
-    def _create_token(response: Response, user: UserVar) -> None:
+    def create_token(response: Response, user: UserVar) -> None:
         access_token = jwt_token.create_access_token(user_id=user.id, user_type=user.type)
         refresh_token = jwt_token.create_refresh_token(user_id=user.id, user_type=user.type)
 

@@ -1,20 +1,19 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.v1.users.auth.schemas import WorkerSchema
 from backend.api.v1.users.workers.profile.schemas import WorkerProfileSchema
 from backend.core.schemas.global_schema import DynamicSchema
 from backend.core.services.users.dependencies import get_user_serv
 from backend.core.services.users.service import UserService
 from backend.core.utils.auth_utils.user_login_dependencies import get_worker_by_token
 
-from backend.core.schemas import WorkerResponseSchema
+from backend.core.schemas import WorkerSchemaRel, WorkerSchema
 
 router = APIRouter(prefix='/me', tags=['workers'])
 
 
 @router.get('', summary='Узнать информацию о себе')
 async def get_my_profile(
-        worker: WorkerResponseSchema = Depends(get_worker_by_token),
+        worker: WorkerSchemaRel = Depends(get_worker_by_token),
         user_serv: UserService = Depends(get_user_serv)
 ):
     new_worker = await user_serv.get_worker_rel(id=worker.id)
@@ -29,7 +28,7 @@ async def update_my_profile(
         worker: WorkerSchema = Depends(get_worker_by_token),
         user_serv: UserService = Depends(get_user_serv)
 ):
-    new_worker = await user_serv.update_worker(worker=worker, **new_worker.model_dump())
+    new_worker = await user_serv.update_worker(worker_id=worker.id, **new_worker.model_dump())
     return {
         'user': new_worker,
     }

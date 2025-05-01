@@ -6,7 +6,7 @@ from backend.core.schemas.global_schema import ValidateSalarySchema
 
 class VacancyAddSchema(ValidateSalarySchema):
     description: str
-    city: Optional[str]
+    city: Optional[str] = None
     skills: List[SkillSchema]
 
 

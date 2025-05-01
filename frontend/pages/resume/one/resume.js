@@ -16,7 +16,7 @@ async function get_resume(){
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: `/api/workers/resumes/${resume_id}`
+        url: `/api/resumes/${resume_id}`
     })
     console.log(getResponse)
     const resume= getResponse.resume

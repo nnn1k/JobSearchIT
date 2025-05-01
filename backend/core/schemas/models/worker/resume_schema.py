@@ -1,9 +1,8 @@
 from typing import List, Optional
 
-from pydantic import ConfigDict
-
 from backend.core.schemas.global_schema import GlobalSchema
 from backend.core.utils.const import RESUME_TYPE
+
 
 class ResumeSchema(GlobalSchema):
     description: str
@@ -15,9 +14,8 @@ class ResumeSchema(GlobalSchema):
     worker_id: int
     type: str = RESUME_TYPE
 
-    worker: Optional['WorkerResponseSchema'] = None
+
+class ResumeSchemaRel(ResumeSchema):
+    worker: Optional['WorkerSchema'] = None
     skills: Optional[List['SkillSchema']] = None
     profession: Optional['ProfessionSchema'] = None
-
-    model_config = ConfigDict(from_attributes=True)
-

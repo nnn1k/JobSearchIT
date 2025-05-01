@@ -4,12 +4,11 @@ from backend.api.v1.users.auth.views import router as auth_router
 from backend.api.v1.users.employers.profile.views import router as employer_router
 
 from backend.api.v1.users.workers.profile.views import router as profile_router
-from backend.api.v1.users.workers.resumes.views import router as resumes_router
+
 
 worker_router = APIRouter(prefix="/workers")
 
 worker_router.include_router(profile_router)
-worker_router.include_router(resumes_router)
 
 
 router = APIRouter()

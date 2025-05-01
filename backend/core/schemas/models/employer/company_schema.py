@@ -11,9 +11,9 @@ class CompanySchema(GlobalSchema):
     description: Optional[str] = ''
     type: str = COMPANY_TYPE
 
-    vacancies: Optional[List['VacancySchema']]
 
-    model_config = ConfigDict(from_attributes=True)
+class CompanySchemaRel(CompanySchema):
+    vacancies: Optional[List['VacancySchema']]
 
 
 

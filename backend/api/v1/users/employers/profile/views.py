@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.v1.users.auth.schemas import EmployerSchema
+from backend.core.schemas.models.employer.employer_schema import EmployerSchema
 from backend.core.services.users.dependencies import get_user_serv
 from backend.core.services.users.service import UserService
 from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token
@@ -27,7 +27,7 @@ async def update_my_profile(
         employer: EmployerSchema = Depends(get_employer_by_token),
         user_serv: UserService = Depends(get_user_serv)
 ):
-    new_employer = await user_serv.update_employer(employer=employer, **new_employer.model_dump())
+    new_employer = await user_serv.update_employer(employer_id=employer.id, **new_employer.model_dump())
     return {
         'user': new_employer,
     }
@@ -39,7 +39,7 @@ async def update_my_other(
         employer: EmployerSchema = Depends(get_employer_by_token),
         user_serv: UserService = Depends(get_user_serv),
 ):
-    new_employer = await user_serv.update_employer(employer=employer, **new_employer.model_dump())
+    new_employer = await user_serv.update_employer(employer_id=employer.id, **new_employer.model_dump())
     return {
         'user': new_employer,
     }

@@ -1,21 +1,19 @@
 from collections import Counter
 from typing import List
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.v1.skills.queries import update_vacancy_skills
 from backend.api.v1.vacancies.queries import (
-    create_vacancy_queries,
-    delete_vacancy_by_id_queries,
     get_all_vacancies_query,
-    get_vacancy_by_id_queries,
-    update_vacancy_by_id_queries
 )
 from backend.api.v1.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
 from backend.core.database.utils.dependencies import get_db
-from backend.core.schemas import EmployerResponseSchema
-from backend.core.schemas import SkillSchema
+from backend.core.schemas import EmployerSchema, SkillSchema
+
+from backend.core.services.vacancies.dependencies import get_vacancy_serv
+from backend.core.services.vacancies.service import VacancyService
 from backend.core.utils.auth_utils.check_func import check_employer_can_update
 from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token
 
@@ -24,20 +22,18 @@ router = APIRouter(prefix="/vacancy", tags=["vacancy"])
 
 @router.post('', summary='Создать вакансию')
 async def create_new_vacancy(
-        add_vacancy: VacancyAddSchema,
-        user: EmployerResponseSchema = Depends(get_employer_by_token),
-        session: AsyncSession = Depends(get_db),
+        new_vacancy: VacancyAddSchema,
+        bg: BackgroundTasks,
+        employer: EmployerSchema = Depends(get_employer_by_token),
+        vacancy_serv: VacancyService = Depends(get_vacancy_serv),
 ):
-    skills: List[SkillSchema] = add_vacancy.skills
-    vacancy = await create_vacancy_queries(
-        company_id=user.company_id,
-        user=user,
-        session=session,
-        **add_vacancy.model_dump(exclude={'skills'})
+    skills: List[SkillSchema] = new_vacancy.skills
+
+    vacancy = await vacancy_serv.create_vacancy(
+        company_id=employer.company_id, employer=employer, new_vacancy=new_vacancy
     )
-    await update_vacancy_skills(skills, vacancy.id, user)
+    bg.add_task(update_vacancy_skills, skills_list=skills, vacancy_id=vacancy.id, owner=employer)
     return {
-        'status': 'ok',
         'vacancy': vacancy,
     }
 
@@ -66,7 +62,6 @@ async def get_vacancies(
         'count': len(vacancies),
         'user_type': user_type,
         'cities': cities,
-        'status': 'ok',
         'vacancies': vacancies[(page - 1) * size:page * size],
     }
 
@@ -75,12 +70,11 @@ async def get_vacancies(
 async def get_info_on_vacancy(
         vacancy_id: int,
         user=Depends(get_user_by_token),
-        session: AsyncSession = Depends(get_db),
+        vacancy_serv: VacancyService = Depends(get_vacancy_serv),
 ):
-    vacancy = await get_vacancy_by_id_queries(vacancy_id, session)
+    vacancy = await vacancy_serv.get_vacancy_rel(vacancy_id)
     can_update = check_employer_can_update(user, vacancy)
     return {
-        'status': 'ok',
         'vacancy': vacancy,
         'can_update': can_update,
     }
@@ -90,24 +84,26 @@ async def get_info_on_vacancy(
 async def update_info_on_company(
         vacancy_id: int,
         new_vacancy: VacancyUpdateSchema,
-        user: EmployerResponseSchema = Depends(get_employer_by_token),
-        session: AsyncSession = Depends(get_db),
+        employer: EmployerSchema = Depends(get_employer_by_token),
+        vacancy_serv: VacancyService = Depends(get_vacancy_serv),
 ):
-    vacancy = await update_vacancy_by_id_queries(vacancy_id, user, session, **new_vacancy.model_dump())
+    vacancy = await vacancy_serv.update_vacancy(
+        vacancy_id=vacancy_id,
+        employer=employer,
+        **new_vacancy.model_dump()
+    )
     return {
         'vacancy': vacancy,
-        'status': 'ok',
     }
 
 
 @router.delete('/{vacancy_id}', summary='Удалить вакансию')
 async def delete_info_on_vacancy(
         vacancy_id: int,
-        user: EmployerResponseSchema = Depends(get_employer_by_token),
-        session: AsyncSession = Depends(get_db),
+        employer: EmployerSchema = Depends(get_employer_by_token),
+        vacancy_serv: VacancyService = Depends(get_vacancy_serv),
 ):
-    await delete_vacancy_by_id_queries(vacancy_id, user, session)
+    await vacancy_serv.delete_vacancy(vacancy_id=vacancy_id, employer=employer)
     return {
         'status': 'ok',
     }
-

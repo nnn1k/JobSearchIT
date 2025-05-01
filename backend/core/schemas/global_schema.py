@@ -32,8 +32,8 @@ class DynamicSchema(BaseModel):
 
 class ValidateSalarySchema(BaseModel):
     profession_id: int
-    salary_first: Optional[int] = None
-    salary_second: Optional[int] = None
+    salary_first: Optional[int] = 0
+    salary_second: Optional[int] = 0
 
     @field_validator('salary_second')
     def check_second_salary(cls, salary_second: float | None, values: dict) -> float | None:

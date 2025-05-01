@@ -20,19 +20,6 @@ router = APIRouter(prefix='/chats', tags=['chats'])
 
 active_users = dict()
 
-
-@router.get('', summary='Получить все чаты')
-async def get_all_chats(
-        user: UserResponseSchema = Depends(get_auth_user_by_token),
-        session: AsyncSession = Depends(get_db),
-):
-    chats = await get_all_chats_on_user(user=user, session=session)
-    return {
-        'status': 'ok',
-        'chats': chats
-    }
-
-
 @router.websocket('/ws')
 async def chat_system_websocket(
         ws: WebSocket,

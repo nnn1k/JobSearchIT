@@ -29,6 +29,10 @@ user_have_company_exc = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail='user have company'
 )
+user_dont_have_company_exc = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail='user dont have company'
+)
 
 user_is_not_owner_exc = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,

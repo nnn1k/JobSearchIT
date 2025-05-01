@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from backend.core.database.models.employer import VacanciesOrm
 from backend.core.database.models.worker import ResumesOrm
-from backend.core.schemas import WorkerResponseSchema
+from backend.core.schemas import WorkerSchemaRel, WorkerSchema
 from backend.core.schemas import SkillSchema
 from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.core.database.models.other.Skill import SkillsOrm
@@ -24,7 +24,7 @@ async def get_all_skills_queries(**kwargs):
         return skills
 
 
-async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, worker: WorkerResponseSchema):
+async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, worker: WorkerSchema):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
         stmt = await session.execute(
@@ -62,11 +62,12 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, w
 async def update_vacancy_skills(skills_list, vacancy_id, owner):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
+
         stmt = await session.execute(
             select(VacanciesOrm)
             .filter_by(id=vacancy_id)
         )
-        vacancy = stmt.scalars().one_or_none()
+        vacancy = stmt.scalars().first()
         if not vacancy:
             raise vacancy_not_found_exc
         if owner.company_id != vacancy.company_id:

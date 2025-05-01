@@ -7,7 +7,7 @@ from backend.core.schemas.user_schema import UserResponseSchema
 from backend.core.utils.const import WORKER_USER_TYPE
 
 
-class WorkerResponseSchema(UserResponseSchema):
+class WorkerSchemaRel(UserResponseSchema):
     birthday: Optional[date] = None
     city: Optional[str] = None
     type: str = WORKER_USER_TYPE
@@ -16,3 +16,10 @@ class WorkerResponseSchema(UserResponseSchema):
     educations: Optional[Any] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class WorkerSchema(UserResponseSchema):
+    birthday: Optional[date] = None
+    city: Optional[str] = None
+
+    type: str = WORKER_USER_TYPE

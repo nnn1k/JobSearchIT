@@ -85,7 +85,7 @@ async function get_resume(){
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: `/api/workers/resumes/${resume_id}`
+        url: `/api/resumes/${resume_id}`
     })
     hideLoadingIndicator(loadingIndicator);
     profession_id = getResponse.resume.profession_id
@@ -136,7 +136,7 @@ async function put_resume(){
     const salary_second = document.getElementById('input_for_second_salary').value
     const putResponse = await makeRequest({
         method: 'PUT',
-        url: `/api/workers/resumes/${resume_id}`,
+        url: `/api/resumes/${resume_id}`,
         data: {
             profession_id,
             description,
