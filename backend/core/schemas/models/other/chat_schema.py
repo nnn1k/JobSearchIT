@@ -1,8 +1,7 @@
 import datetime
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, field_validator, model_validator
-from pydantic_core.core_schema import ValidationInfo
 
 from backend.core.schemas.global_schema import GlobalSchema
 
@@ -27,6 +26,7 @@ class ChatSchema(GlobalSchema):
             values.last_message = None
         return values
 
+
 class MessageSchema(GlobalSchema):
     chat_id: int
     message: str
@@ -34,6 +34,7 @@ class MessageSchema(GlobalSchema):
     sender_type: str
 
     chat: Optional['ChatSchema'] = None
+
 
 class ChatMessageSchema(BaseModel):
     chat_id: int

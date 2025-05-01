@@ -1,17 +1,13 @@
 from typing import Optional
 
-from fastapi import HTTPException, status
-from sqlalchemy import and_, desc, insert, select, update, delete
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy import and_, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.orm import  selectinload
 
 from backend.core.database.models.employer import VacanciesOrm
 from backend.core.database.models.other import ProfessionsOrm
-from backend.core.schemas import EmployerSchemaRel, VacancySchema
+from backend.core.schemas import  VacancySchemaRel
 from backend.core.utils.const import EMPLOYER_USER_TYPE
-from backend.core.utils.exc import vacancy_not_found_exc, user_is_not_owner_exc, user_have_this_profession_exc, \
-    user_dont_have_company_exc
 from backend.core.utils.other.type_utils import UserVar
 
 
@@ -47,7 +43,7 @@ async def get_all_vacancies_query(user: UserVar, session: AsyncSession, **kwargs
     vacancies = result.scalars().all()
     if not vacancies:
         return list(), kwargs
-    schemas = [VacancySchema.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
+    schemas = [VacancySchemaRel.model_validate(vacancy, from_attributes=True) for vacancy in vacancies]
     return schemas, kwargs
 
 

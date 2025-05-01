@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 from backend.core.database.models.other import ProfessionsOrm
 from backend.core.database.models.worker import ResumesOrm
 from backend.core.database.database import session_factory
-from backend.core.schemas import ResumeSchema
+from backend.core.schemas import ResumeSchema, ResumeSchemaRel
 from backend.core.utils.const import WORKER_USER_TYPE
 
 
@@ -43,5 +43,5 @@ async def get_all_resumes_query(user, **kwargs):
         if not resumes:
             return list(), kwargs
 
-        schemas = [ResumeSchema.model_validate(resume, from_attributes=True) for resume in resumes]
+        schemas = [ResumeSchemaRel.model_validate(resume, from_attributes=True) for resume in resumes]
         return schemas, kwargs
