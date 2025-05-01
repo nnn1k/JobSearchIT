@@ -4,12 +4,8 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr
 from enum import Enum
 
-from backend.core.schemas.user_schema import UserSchema
-
-
-class UserType(str, Enum):
-    worker: str = "workers"
-    employer: str = "employers"
+from backend.core.schemas.user_schema import UserResponseSchema
+from backend.core.utils.const import WORKER_USER_TYPE, EMPLOYER_USER_TYPE
 
 
 class LoginSchema(BaseModel):
@@ -23,15 +19,17 @@ class RegisterSchema(BaseModel):
     confirm_password: str
 
 
-class WorkerSchema(UserSchema):
+class WorkerSchema(UserResponseSchema):
     birthday: Optional[date] = None
     city: Optional[str] = None
 
+    type: str = WORKER_USER_TYPE
 
-class EmployerSchema(UserSchema):
+
+class EmployerSchema(UserResponseSchema):
     company_id: Optional[int] = None
     is_owner: bool = False
 
+    type: str = EMPLOYER_USER_TYPE
 
-class CodeSchema(BaseModel):
-    code: str
+

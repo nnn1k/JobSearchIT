@@ -1,128 +1,89 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from backend.api.v1.users.auth.queries import login_user_queries, register_user_queries, update_code_queries
-from backend.core.database.utils.dependencies import get_db
+from fastapi import APIRouter, Response, Depends, BackgroundTasks
+from backend.api.v1.users.auth.schemas import LoginSchema, RegisterSchema
 from backend.core.services.auth.dependencies import get_auth_serv
 from backend.core.services.auth.service import AuthService
 from backend.core.utils.auth_utils.user_login_dependencies import (
-    get_employer_by_token,
-    get_user_by_token,
-    get_worker_by_token
+    get_auth_user_by_token,
+    get_worker_by_token,
+    get_employer_by_token
 )
 from backend.core.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
-from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, Response, HTTPException, status
-
-from backend.api.v1.users.auth.schemas import CodeSchema, LoginSchema, RegisterSchema, UserType
-from backend.api.v1.users.auth.dependencies import (
-    create_token,
-    get_login_db_model,
-)
 
 from backend.core.utils.other.email_utils import SendEmail
-from backend.core.utils.redis_utils.redis_code_utils import get_code_from_redis
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-type_router = APIRouter(prefix="/{user_type_path}")
 
 
-@type_router.post('/login', summary='Вход пользователя')
-async def login_user_views(
+@router.post('/workers/login', summary='Вход соискателя')
+async def login_worker(
         response: Response,
-        user_type_path: UserType,
-        schema: LoginSchema,
-        session: AsyncSession = Depends(get_db),
+        login_schema: LoginSchema,
         auth_serv: AuthService = Depends(get_auth_serv)
 ):
-    print(user_type_path)
-    db_model, response_schema = get_login_db_model(user_type_path)
-    user = await login_user_queries(user=schema, user_table=db_model, response_schema=response_schema, session=session)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect login or password",
-        )
-    return create_token(response, user)
+    worker = await auth_serv.login_worker(login_schema=login_schema, response=response)
+    return {'user': worker}
 
 
-@type_router.post('/register', summary='Регистрация пользователя')
-async def register_user_views(
+@router.post('/employers/login', summary='Вход работодателя')
+async def login_employer(
         response: Response,
-        user_type_path: UserType,
-        schema: RegisterSchema,
-        session: AsyncSession = Depends(get_db),
+        login_schema: LoginSchema,
+        auth_serv: AuthService = Depends(get_auth_serv)
 ):
-    db_model, response_schema = get_login_db_model(user_type_path)
-    if schema.password != schema.confirm_password:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="password mismatch",
-        )
-    new_user = await register_user_queries(user=schema, user_table=db_model, response_schema=response_schema,
-                                           session=session)
-    if new_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="user is exist",
-        )
-    return create_token(response, new_user)
+    employer = await auth_serv.login_employer(login_schema=login_schema, response=response)
+    return {'user': employer}
 
 
-@type_router.get('/code', summary='Отправка кода')
+@router.post('/workers/register', summary='Регистрация соискателя')
+async def register_worker(
+        response: Response,
+        register_schema: RegisterSchema,
+        auth_serv: AuthService = Depends(get_auth_serv)
+):
+    worker = await auth_serv.register_worker(reg_schema=register_schema, response=response)
+    return {'user': worker}
+
+
+@router.post('/employers/register', summary='Регистрация работодателя')
+async def register_employer(
+        response: Response,
+        register_schema: RegisterSchema,
+        auth_serv: AuthService = Depends(get_auth_serv)
+):
+    employer = await auth_serv.register_employer(reg_schema=register_schema, response=response)
+    return {'user': employer}
+
+
+@router.get('/code', summary='Получить код')
 async def get_code(
-        user_type_path: UserType,
-        response: Response,
         bg: BackgroundTasks,
-        access_token=Cookie(None),
-        refresh_token=Cookie(None),
-        session: AsyncSession = Depends(get_db)
+        user=Depends(get_auth_user_by_token)
 ):
-    match user_type_path:
-        case UserType.employer:
-            user = await get_employer_by_token(
-                access_token=access_token,
-                refresh_token=refresh_token,
-                response=response,
-                session=session,
-            )
-        case UserType.worker:
-            user = await get_worker_by_token(
-                access_token=access_token,
-                refresh_token=refresh_token,
-                response=response,
-                session=session,
-            )
-        case _:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     bg.add_task(SendEmail.send_code_to_email, user)
-
     return {
-        'message': 'Код отправлен на почту:',
+        'msg': 'Код отправлен на почту:',
         'email': user.email,
-        'status': 'ok'
     }
 
 
-@type_router.post('/code', summary='Проверка кода')
-async def send_code(
-        user_type_path: UserType,
-        code: CodeSchema,
-        user=Depends(get_user_by_token),
-        session: AsyncSession = Depends(get_db),
+@router.post('/workers/code', summary='Отправить код за соискателя')
+async def send_code_worker(
+        code: str,
+        worker=Depends(get_worker_by_token),
+        auth_serv: AuthService = Depends(get_auth_serv)
 ):
-    db_model, response_schema = get_login_db_model(user_type_path)
+    new_worker = await auth_serv.confirm_worker(code=code, user=worker)
+    return {'user': new_worker}
 
-    new_code = await get_code_from_redis(user.type, user.id)
-    if code.code != new_code:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect code",
-        )
-    user = await update_code_queries(user.id, db_model, response_schema, session)
 
-    return {
-        'user': user,
-        'status': 'ok',
-    }
+@router.post('/employers/code', summary='Отправить код за работодателя')
+async def send_code_employer(
+        code: str,
+        employer=Depends(get_employer_by_token),
+        auth_serv: AuthService = Depends(get_auth_serv)
+):
+    new_employer = await auth_serv.confirm_employer(code=code, user=employer)
+    return {'user': new_employer}
 
 
 @router.post('/logout', summary='Выход с аккаунта')
@@ -134,6 +95,3 @@ def logout_user(response: Response):
         'status': 'ok',
         'message': 'user logged out'
     }
-
-
-router.include_router(type_router)

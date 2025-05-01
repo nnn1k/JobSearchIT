@@ -50,7 +50,7 @@ response_is_exist_exc = HTTPException(
     detail='response already exist'
 )
 
-incorrect_token_exc = HTTPException(
+invalid_token_exc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="invalid token",
 )
@@ -67,4 +67,19 @@ user_have_this_profession_exc = HTTPException(
 incorrect_login_or_password_exc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Incorrect login or password",
+)
+
+user_is_exist_exc = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="user is exist",
+)
+
+password_mismatch_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="password mismatch",
+)
+
+incorrect_code_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Incorrect code",
 )

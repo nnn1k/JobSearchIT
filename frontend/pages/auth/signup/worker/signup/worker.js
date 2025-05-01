@@ -2,7 +2,7 @@ import {apiUrl, makeRequest} from '/frontend/js/utils.js';
 import {hideLoadingIndicator, showLoadingIndicator} from '/frontend/js/functions_for_loading.js'
 
 
-async function regisration() {
+async function registration() {
     const email = document.getElementById("login").value
     const password = document.getElementById("password").value
     const  confirm_password = document.getElementById("confirm_password").value
@@ -21,7 +21,7 @@ async function regisration() {
     if (postResponse) {
         const getResponse = await makeRequest({
             method: 'GET',
-            url: '/api/auth/workers/code',
+            url: '/api/auth/code',
             }
         )
         hideLoadingIndicator(loadingIndicator);
@@ -49,10 +49,7 @@ async function check_code(){
     const loadingIndicator = showLoadingIndicator();
     const postResponse = await makeRequest({
         method: 'POST',
-        url: '/api/auth/workers/code',
-        data: {
-           code
-        }
+        url: `/api/auth/workers/code?code=${code}`,
     })
     if (postResponse){
         hideLoadingIndicator(loadingIndicator);
@@ -63,5 +60,5 @@ async function check_code(){
     checkBtn.disabled = false
 }
 window.check_code = check_code;
-window.regisration = regisration;
+window.regisration = registration;
 

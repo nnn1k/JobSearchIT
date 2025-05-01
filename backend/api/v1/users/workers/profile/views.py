@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.api.v1.users.workers.profile.queries import update_worker_by_id_queries
+from backend.api.v1.users.auth.schemas import WorkerSchema
 from backend.api.v1.users.workers.profile.schemas import WorkerProfileSchema
-from backend.core.database.utils.dependencies import get_db
 from backend.core.schemas.global_schema import DynamicSchema
+from backend.core.services.users.dependencies import get_user_serv
+from backend.core.services.users.service import UserService
 from backend.core.utils.auth_utils.user_login_dependencies import get_worker_by_token
 
 from backend.core.schemas import WorkerResponseSchema
@@ -14,39 +14,34 @@ router = APIRouter(prefix='/me', tags=['workers'])
 
 @router.get('', summary='Узнать информацию о себе')
 async def get_my_profile(
-        worker: WorkerResponseSchema = Depends(get_worker_by_token)
+        worker: WorkerResponseSchema = Depends(get_worker_by_token),
+        user_serv: UserService = Depends(get_user_serv)
 ):
+    new_worker = await user_serv.get_worker_rel(id=worker.id)
     return {
-        'user': worker,
-        'status': 'ok'
+        'user': new_worker,
     }
 
 
 @router.put('', summary='Редактировать информацию о себе')
 async def update_my_profile(
         new_worker: WorkerProfileSchema,
-        worker: WorkerResponseSchema = Depends(get_worker_by_token),
-        session: AsyncSession = Depends(get_db),
+        worker: WorkerSchema = Depends(get_worker_by_token),
+        user_serv: UserService = Depends(get_user_serv)
 ):
-    worker = await update_worker_by_id_queries(
-        worker_id=worker.id,
-        session=session,
-        **new_worker.model_dump()
-    )
+    new_worker = await user_serv.update_worker(worker=worker, **new_worker.model_dump())
     return {
-        'user': worker,
-        'status': 'ok'
+        'user': new_worker,
     }
 
 
 @router.patch('', summary='Редактировать информацию о себе по одному атрибуту')
 async def update_my_other(
         new_worker: DynamicSchema,
-        worker: WorkerResponseSchema = Depends(get_worker_by_token),
-        session: AsyncSession = Depends(get_db),
+        worker: WorkerSchema = Depends(get_worker_by_token),
+        user_serv: UserService = Depends(get_user_serv)
 ):
-    worker = await update_worker_by_id_queries(worker_id=worker.id, session=session, **new_worker.model_dump())
+    new_worker = await user_serv.update_worker(worker=worker, **new_worker.model_dump())
     return {
-        'user': worker,
-        'status': 'ok'
+        'user': new_worker,
     }

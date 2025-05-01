@@ -6,7 +6,7 @@ from backend.core.config.cors import setup_cors
 from backend.core.config.help_func import check_platform
 from backend.core.utils.logger_utils.exception_log_func import global_exception_handler, log_requests
 
-from backend.api.backend_routers import router as backend_router
+from backend.api.backend_routers import api_router as backend_router
 from frontend.routers import router as frontend_router
 
 app = FastAPI()
