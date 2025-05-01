@@ -1,5 +1,5 @@
 from httpx import AsyncClient
-from backend.api.users.auth.classes.AuthJWT import Token
+from backend.api.v1.users.auth.classes.AuthJWT import Token
 from backend.core.schemas.user_schema import UserResponseSchema
 
 base_url = 'http://127.0.0.1:8000/api/'

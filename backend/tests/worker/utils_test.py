@@ -1,6 +1,6 @@
 from httpx import AsyncClient
 
-from backend.api.users.auth.classes.AuthJWT import Token
+from backend.api.v1.users.auth.classes.AuthJWT import Token
 
 from backend.core.utils.redis_utils.redis_obj_utils import cache_object, get_cached_object
 from backend.core.schemas import ResumeSchema, WorkerResponseSchema

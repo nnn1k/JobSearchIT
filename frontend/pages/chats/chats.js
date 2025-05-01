@@ -2,14 +2,19 @@ import {formatDateTime} from "/frontend/js/timefunc.js";
 import {getCookie} from "/frontend/js/utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
-    createChats()
+    createChatSystem()
 })
 
 let chats;
 let ws;
 
-function createChats(){
+function getUrlChatId() {
+    return new URL(window.location.href).searchParams.get("chatId");
+}
+
+function createChatSystem() {
     ws = createChatSocket()
+
     ws.onmessage = function (event) {
         const response = JSON.parse(JSON.parse(event.data))
         if (response.type === 'message') {
@@ -18,10 +23,14 @@ function createChats(){
         if (response.type === 'join') {
             createChatWindow(response.messages)
         }
-        if (response.type === 'open'){
+        if (response.type === 'open') {
             chats = response.chats.map(chat => JSON.parse(chat))
             console.log(chats)
             populateChatList(chats)
+            const chatId = getUrlChatId()
+            if (chatId) {
+                openChat(chatId)
+            }
         }
     }
 }
@@ -111,9 +120,7 @@ function showMessage(message) {
 function createChatWindow(messages) {
     const chatWindow = document.getElementById('chatWindow');
     const userType = getCookie('user_type')
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const chatId = url.searchParams.get("chatId");
+    const chatId = getUrlChatId()
     const selectedChat = chats.find(chat => chat.id === Number(chatId));
     // шапка (для ролей)
     if (userType === 'worker') {
@@ -143,11 +150,11 @@ function createChatWindow(messages) {
     const messageInput = document.getElementById('messageInput');
 
     sendButton.addEventListener('click', () => {
-        sendMessage(chatId);
+        sendMessage();
     });
     messageInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            sendMessage(chatId);
+            sendMessage();
         }
     });
     messages.forEach(message => {
@@ -156,10 +163,11 @@ function createChatWindow(messages) {
     });
 }
 
-function sendMessage(chatId) {
+function sendMessage() {
     // Добавляем функциональность отправки сообщений
     const messageInput = document.getElementById('messageInput');
     const chatMessages = document.getElementById('chatMessages')
+    const chatId = getUrlChatId()
 
     const messageText = messageInput.value.trim();
     if (messageText) {

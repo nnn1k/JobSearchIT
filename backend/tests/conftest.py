@@ -1,8 +1,8 @@
 import asyncio
 import pytest
 
-from backend.api.companies.queries import delete_company_queries
-from backend.api.users.auth.queries import delete_user
+from backend.api.v1.companies.queries import delete_company_queries
+from backend.api.v1.users.auth.queries import delete_user
 from backend.core.database.models.employer import EmployersOrm
 from backend.core.database.models.worker import WorkersOrm
 from backend.core.utils.redis_utils.redis_obj_utils import delete_object

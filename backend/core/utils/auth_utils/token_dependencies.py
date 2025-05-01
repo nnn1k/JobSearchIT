@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status
 
-from backend.api.users.auth.classes.AuthJWT import jwt_token
+from backend.api.v1.users.auth.classes.AuthJWT import jwt_token
 from backend.core.schemas.user_schema import UserTypeSchema
 from backend.core.utils.const import ACCESS_TOKEN, REFRESH_TOKEN
 

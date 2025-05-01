@@ -63,3 +63,8 @@ user_have_this_profession_exc = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail='user have object with this profession'
 )
+
+incorrect_login_or_password_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Incorrect login or password",
+)

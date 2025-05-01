@@ -3,8 +3,8 @@ from typing import Optional
 from fastapi import Cookie, Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.api.users.employers.profile.queries import get_employer_by_id_queries
-from backend.api.users.workers.profile.queries import get_worker_by_id_queries
+from backend.api.v1.users.employers.profile.queries import get_employer_by_id_queries
+from backend.api.v1.users.workers.profile.queries import get_worker_by_id_queries
 from backend.core.database.utils.dependencies import get_db
 from backend.core.schemas import EmployerResponseSchema, WorkerResponseSchema
 from backend.core.utils.auth_utils.token_dependencies import check_user_role
