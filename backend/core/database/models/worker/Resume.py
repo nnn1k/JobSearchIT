@@ -1,12 +1,13 @@
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.core.database.database import Base
+from backend.core.database.database import Base, intpk, created_at, updated_at
 
 
 class ResumesOrm(Base):
     __tablename__ = 'resumes'
 
+    id: Mapped[intpk]
     profession_id: Mapped[int] = mapped_column(ForeignKey('professions.id'))
     description: Mapped[str]
     salary_first: Mapped[int] = mapped_column(nullable=True)
@@ -14,6 +15,8 @@ class ResumesOrm(Base):
     city: Mapped[str] = mapped_column(nullable=True)
     is_hidden: Mapped[bool] = mapped_column(default=False)
     worker_id: Mapped[int] = mapped_column(ForeignKey('workers.id', ondelete='CASCADE'))
+    created_at: Mapped[created_at]
+    updated_at: Mapped[updated_at]
 
     __table_args__ = (
         UniqueConstraint('profession_id', 'worker_id', name='uq_profession_worker'),

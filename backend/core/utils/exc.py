@@ -25,6 +25,11 @@ resume_not_found_exc = HTTPException(
     detail='resume not found'
 )
 
+review_not_found_exc = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail='review not found'
+)
+
 user_have_company_exc = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail='user have company'

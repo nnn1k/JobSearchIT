@@ -14,6 +14,7 @@ class CompanySchema(GlobalSchema):
 
 class CompanySchemaRel(CompanySchema):
     vacancies: Optional[List['VacancySchemaRel']]
+    reviews: Optional[List['ReviewSchema']]
 
 
 class CompanyAddSchema(BaseModel):

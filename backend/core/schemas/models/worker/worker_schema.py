@@ -13,7 +13,6 @@ class WorkerSchemaRel(UserResponseSchema):
     type: str = WORKER_USER_TYPE
 
     resumes: Optional[List['ResumeSchema']] = None
-    educations: Optional[Any] = None
 
     model_config = ConfigDict(from_attributes=True)
 

@@ -6,7 +6,7 @@ from fastapi import HTTPException, status
 
 
 class GlobalSchemaNoDate(BaseModel):
-    id: Optional[int] = None
+    id: int
 
     @field_validator('id')
     def check_id(cls, id: int) -> int:

@@ -1,8 +1,13 @@
+from typing import Sequence
+
 from backend.core.schemas.models.employer.employer_schema import EmployerSchema
 from backend.core.schemas.models.employer.company_schema import CompanySchemaRel, CompanySchema, CompanyAddSchema
+from backend.core.schemas.models.other.review_schema import ReviewCreate, ReviewSchema
+from backend.core.schemas.models.worker.worker_schema import WorkerSchema
 from backend.core.services.companies.repository import CompanyRepository
 from backend.core.services.users.service import UserService
-from backend.core.utils.exc import company_not_found_exc, user_is_not_owner_exc, user_have_company_exc
+from backend.core.utils.exc import company_not_found_exc, user_is_not_owner_exc, user_have_company_exc, \
+    review_not_found_exc
 
 
 class CompanyService:
@@ -48,3 +53,56 @@ class CompanyService:
         company = await self.company_repo.delete_company(id=company_id)
         if not company:
             raise company_not_found_exc
+
+    async def add_review(self, worker: WorkerSchema, company_id: int, new_review: ReviewCreate) -> ReviewSchema:
+        company = await self.get_company(company_id=company_id)
+        if not company:
+            raise company_not_found_exc
+        new_review = await self.company_repo.add_review(
+            worker_id=worker.id, company_id=company_id, score=new_review.score, message=new_review.message
+        )
+        schema = ReviewSchema.model_validate(new_review)
+        return schema
+
+    async def get_review(self, review_id: int, company_id: int) -> ReviewSchema:
+        company = await self.get_company(company_id=company_id)
+        if not company:
+            raise company_not_found_exc
+        review = await self.company_repo.get_review(review_id=review_id)
+        if not review:
+            raise review_not_found_exc
+        schema = ReviewSchema.model_validate(review)
+        return schema
+
+    async def get_reviews(self, company_id: int) -> Sequence[ReviewSchema]:
+        company = await self.get_company(company_id=company_id)
+        if not company:
+            raise company_not_found_exc
+        reviews = await self.company_repo.get_reviews(company_id=company_id)
+        return [ReviewSchema.model_validate(rev) for rev in reviews]
+
+    async def update_review(
+            self, worker: WorkerSchema, review_id: int, company_id: int, new_review: ReviewCreate
+    ) -> ReviewSchema:
+        company = await self.get_company(company_id=company_id)
+        if not company:
+            raise company_not_found_exc
+        new_review = await self.company_repo.update_review(
+            review_id=review_id, score=new_review.score, message=new_review.message
+        )
+        if not new_review:
+            raise review_not_found_exc
+        schema = ReviewSchema.model_validate(new_review)
+        if schema.worker_id != worker.id:
+            raise user_is_not_owner_exc
+        return schema
+
+    async def delete_review(self, worker: WorkerSchema, company_id: int, review_id: int) -> ReviewSchema:
+        company = await self.get_company(company_id=company_id)
+        if not company:
+            raise company_not_found_exc
+        review = await self.company_repo.delete_review(review_id=review_id)
+        schema = ReviewSchema.model_validate(review)
+        if schema.worker_id != worker.id:
+            raise user_is_not_owner_exc
+        return schema
