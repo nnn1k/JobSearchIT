@@ -39,5 +39,4 @@ class VacanciesOrm(Base):
     responses: Mapped[list['ResponsesOrm']] = relationship(
         'ResponsesOrm',
         back_populates='vacancy',
-        lazy='noload'
     )

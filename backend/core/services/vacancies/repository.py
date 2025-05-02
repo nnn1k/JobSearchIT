@@ -54,6 +54,7 @@ class VacancyRepository:
             .options(joinedload(VacanciesOrm.company))
             .options(selectinload(VacanciesOrm.skills))
             .options(selectinload(VacanciesOrm.profession))
+            .options(selectinload(VacanciesOrm.responses))
         )
         result = await self.session.execute(stmt)
         return result.scalars().first()
@@ -83,6 +84,7 @@ class VacancyRepository:
             .join(ProfessionsOrm)
             .options(selectinload(VacanciesOrm.company))
             .options(selectinload(VacanciesOrm.profession))
+            .options(selectinload(VacanciesOrm.responses))
             .order_by(desc(VacanciesOrm.updated_at))
         )
 
