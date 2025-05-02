@@ -1,5 +1,5 @@
 from fastapi import Depends, APIRouter
-from backend.api.v1.companies.schemas import CompanyAddSchema, CompanyUpdateSchema
+from backend.core.schemas.models.employer.company_schema import CompanyAddSchema, CompanyUpdateSchema
 from backend.core.services.companies.dependencies import get_company_serv
 from backend.core.services.companies.service import CompanyService
 from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token, get_user_by_token

@@ -19,9 +19,9 @@ async function getMyResumes() {
     }
     const getMyResumes = await makeRequest({
         method: 'GET',
-        url: '/api/workers/me/'
+        url: '/api/resumes/me/'
     })
-    resumes = getMyResumes.user.resumes
+    resumes = getMyResumes.resumes
 }
 
 document.addEventListener('DOMContentLoaded', function () {

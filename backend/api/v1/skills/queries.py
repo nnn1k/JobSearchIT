@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from backend.core.database.models.employer import VacanciesOrm
 from backend.core.database.models.worker import ResumesOrm
-from backend.core.schemas import WorkerSchemaRel, WorkerSchema
+from backend.core.schemas import WorkerSchema
 from backend.core.schemas import SkillSchema
 from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.core.database.models.other.Skill import SkillsOrm
@@ -17,7 +17,7 @@ async def get_all_skills_queries(**kwargs):
     async with session_factory() as session:
         stmt = await session.execute(
             select(SkillsOrm)
-            .where(**kwargs)
+            .filter_by(**kwargs)
         )
 
         skills = [SkillSchema.model_validate(skill, from_attributes=True) for skill in stmt.scalars().all()]

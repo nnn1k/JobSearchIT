@@ -1,6 +1,8 @@
+from typing import Sequence
+
 from sqlalchemy.exc import IntegrityError
 
-from backend.api.v1.resumes.schemas import ResumeAddSchema, ResumeUpdateSchema
+from backend.core.schemas.models.worker.resume_schema import ResumeAddSchema, ResumeUpdateSchema
 from backend.core.schemas import WorkerSchema, ResumeSchema, ResumeSchemaRel
 from backend.core.services.resumes.repository import ResumeRepository
 from backend.core.utils.exc import user_have_this_profession_exc, resume_not_found_exc, user_is_not_owner_exc
@@ -40,6 +42,10 @@ class ResumeService:
         schema = ResumeSchemaRel.model_validate(resume)
         return schema
 
+    async def get_resumes_rel(self, **kwargs) -> Sequence[ResumeSchemaRel]:
+        resumes = await self.resume_repo.get_resumes_rel(**kwargs)
+        return [ResumeSchemaRel.model_validate(resume) for resume in resumes]
+
     async def update_resume(self, resume_id: int, worker: WorkerSchema, new_resume: ResumeUpdateSchema) -> ResumeSchema:
         try:
             resume = await self.resume_repo.update_resume(
@@ -66,3 +72,6 @@ class ResumeService:
         if not (worker.id == resume.worker_id):
             raise user_is_not_owner_exc
 
+    async def search_resume(self, **kwargs) -> Sequence[ResumeSchema]:
+        resumes = await self.resume_repo.search_resume(**kwargs)
+        return [ResumeSchemaRel.model_validate(resume, from_attributes=True) for resume in resumes]

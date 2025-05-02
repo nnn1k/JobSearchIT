@@ -1,6 +1,5 @@
-from backend.api.v1.companies.schemas import CompanyAddSchema
 from backend.core.schemas.models.employer.employer_schema import EmployerSchema
-from backend.core.schemas.models.employer.company_schema import CompanySchemaRel, CompanySchema
+from backend.core.schemas.models.employer.company_schema import CompanySchemaRel, CompanySchema, CompanyAddSchema
 from backend.core.services.companies.repository import CompanyRepository
 from backend.core.services.users.service import UserService
 from backend.core.utils.exc import company_not_found_exc, user_is_not_owner_exc, user_have_company_exc

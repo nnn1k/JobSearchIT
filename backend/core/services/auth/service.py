@@ -1,6 +1,6 @@
 from backend.core.utils.classes.AuthJWT import jwt_token
 from backend.core.utils.classes.HashPwd import HashPwd
-from backend.api.v1.users.auth.schemas import LoginSchema, RegisterSchema
+from backend.core.schemas.user_schema import LoginSchema, RegisterSchema
 from backend.core.schemas.models.employer.employer_schema import EmployerSchema
 from backend.core.schemas import WorkerSchema
 from backend.core.services.users.repository import UserRepository

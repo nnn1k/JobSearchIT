@@ -181,7 +181,7 @@ async function postResume() {
     const city = document.getElementById('city').value
     const postResponse = await makeRequest({
         method: 'POST',
-        url: '/api/workers/resumes/',
+        url: '/api/resumes',
         data: {
             profession_id,
             description,
@@ -191,7 +191,7 @@ async function postResume() {
             skills
         }
     })
-    if (postResponse.status) {
+    if (postResponse.resume) {
         alert('Резюме добавлено')
         window.location.href = apiUrl + '/worker/profile'
     }

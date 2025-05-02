@@ -1,15 +1,16 @@
 import json
 
 
-from fastapi import APIRouter, Depends, HTTPException, Path, Query
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.websockets import WebSocket
 from fastapi.websockets import WebSocketDisconnect, WebSocketState
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.api.v1.chats.queries import get_all_chats_on_user, get_all_messages_on_chat, send_message_queries
 from backend.core.database.utils.dependencies import get_db
 from backend.core.schemas.models.other.chat_schema import ChatMessageSchema
 from backend.core.schemas.user_schema import UserResponseSchema
+from backend.core.services.chats.dependencies import get_chat_serv
+from backend.core.services.chats.service import ChatService
 from backend.core.utils.auth_utils.user_login_dependencies import get_auth_user_by_token
 
 from backend.core.utils.logger_utils.logger_func import logger
@@ -24,7 +25,7 @@ active_users = dict()
 async def chat_system_websocket(
         ws: WebSocket,
         user: UserResponseSchema = Depends(get_auth_user_by_token),
-        session: AsyncSession = Depends(get_db)
+        chat_serv: ChatService = Depends(get_chat_serv)
 ):
     await ws.accept()
     try:
@@ -38,7 +39,7 @@ async def chat_system_websocket(
                 chat_id = int(chat_id)
             match message_type:
                 case 'open':
-                    chats = await get_all_chats_on_user(user=user, session=session)
+                    chats = await chat_serv.get_all_chats(user=user)
                     response = {
                         'chats': [chat.model_dump_json() for chat in chats],
                         'type': 'open'
@@ -46,7 +47,7 @@ async def chat_system_websocket(
                     await ws.send_json(json.dumps(response))
                 case 'join':
                     active_users[f'{user.id}:{user.type}'] = {'ws': ws, 'chat_id': chat_id, 'user': user}
-                    messages = await get_all_messages_on_chat(user=user, chat_id=chat_id, session=session)
+                    messages = await chat_serv.get_all_messages(user=user, chat_id=chat_id)
                     response = {
                         'messages': [message.model_dump_json() for message in messages],
                         'type': 'join'
@@ -63,7 +64,7 @@ async def chat_system_websocket(
                     )
                     # сохранение бд
 
-                    await send_message_queries(user=user, chat_id=chat_id, message=message, session=session)
+                    await chat_serv.send_message(chat_id=chat_id, message=message, user=user)
                     # отправка пользователям
                     for key in active_users:
                         if active_users[key].get('chat_id') == chat_id:

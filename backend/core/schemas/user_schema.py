@@ -17,3 +17,14 @@ class UserResponseSchema(GlobalSchema):
     email: EmailStr
     phone: Optional[str] = None
     is_confirmed: Optional[bool] = False
+
+
+class LoginSchema(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class RegisterSchema(BaseModel):
+    email: EmailStr
+    password: str
+    confirm_password: str

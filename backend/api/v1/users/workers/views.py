@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from backend.api.v1.users.workers.profile.schemas import WorkerProfileSchema
+from backend.core.schemas.models.worker.worker_schema import WorkerProfileSchema
 from backend.core.schemas.global_schema import DynamicSchema
 from backend.core.services.users.dependencies import get_user_serv
 from backend.core.services.users.service import UserService

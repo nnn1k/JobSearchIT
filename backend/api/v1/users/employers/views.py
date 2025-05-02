@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 
-from backend.core.schemas.models.employer.employer_schema import EmployerSchema
+from backend.core.schemas.models.employer.employer_schema import EmployerSchema, EmployerProfileSchema
 from backend.core.services.users.dependencies import get_user_serv
 from backend.core.services.users.service import UserService
 from backend.core.utils.auth_utils.user_login_dependencies import get_employer_by_token
-from backend.api.v1.users.employers.profile.schemas import EmployerProfileSchema
 from backend.core.schemas.global_schema import DynamicSchema
 
 router = APIRouter(prefix='/employers/me', tags=['employers'])

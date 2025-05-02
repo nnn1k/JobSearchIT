@@ -10,7 +10,7 @@ class ChatSchema(GlobalSchema):
     response_id: int
     messages: Optional[list['MessageSchema']]
     last_message: Optional['MessageSchema'] = None
-    response: Optional['ResponseSchema'] = None
+    response: Optional['ResponseSchemaRel'] = None
 
     @field_validator('messages', mode='after')
     def validate_messages(cls, messages: Optional[List['MessageSchema']]) -> Optional[List['MessageSchema']]:

@@ -1,10 +1,13 @@
 from typing import Optional
 
-from sqlalchemy import select, update, insert, delete
+from sqlalchemy import select, update, insert, delete, desc, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
 from backend.core.database.models.employer import VacanciesOrm
+from backend.core.database.models.other import ProfessionsOrm
+from backend.core.utils.const import EMPLOYER_USER_TYPE
+from backend.core.utils.other.type_utils import UserVar
 
 
 class VacancyRepository:
@@ -73,3 +76,33 @@ class VacancyRepository:
         )
         result = await self.session.execute(stmt)
         return result.scalars().first()
+
+    async def search_vacancy(self, company_id: Optional[int], **kwargs):
+        stmt = (
+            select(VacanciesOrm)
+            .join(ProfessionsOrm)
+            .options(selectinload(VacanciesOrm.company))
+            .options(selectinload(VacanciesOrm.profession))
+            .order_by(desc(VacanciesOrm.updated_at))
+        )
+
+        min_salary: Optional[int] = kwargs.get('min_salary', None)
+        profession: Optional[str] = kwargs.get('profession', None)
+        city: Optional[str] = kwargs.get('city', None)
+        if isinstance(city, str):
+            city = city.strip()
+        if isinstance(profession, str):
+            profession = profession.strip()
+        conditions = []
+        if city:
+            conditions.append(VacanciesOrm.city == city)
+        if min_salary:
+            conditions.append(VacanciesOrm.salary_first >= min_salary)
+        if profession:
+            conditions.append(ProfessionsOrm.title.ilike(f'%{profession}%'))
+        if company_id:
+            conditions.append(VacanciesOrm.company_id != company_id)
+        if conditions:
+            stmt = stmt.where(and_(*conditions))
+        result = await self.session.execute(stmt)
+        return result.scalars().all()

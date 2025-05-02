@@ -11,13 +11,13 @@ async function get_resumes() {
     const loadingIndicator = showLoadingIndicator();
     const getResponse = await makeRequest({
         method: 'GET',
-        url: '/api/workers/me/'
+        url: '/api/resumes/me/'
     })
     console.log(getResponse)
     if (!getResponse) {
         hideLoadingIndicator(loadingIndicator)
     }
-    const resumes = getResponse.user.resumes;
+    const resumes = getResponse.resumes;
     const container = document.getElementById('resume-container');
 
     if (resumes.length === 0) {

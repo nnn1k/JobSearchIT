@@ -2,14 +2,10 @@ from collections import Counter
 from typing import List
 
 from fastapi import APIRouter, Depends, Query, BackgroundTasks
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api.v1.skills.queries import update_vacancy_skills
-from backend.api.v1.vacancies.queries import (
-    get_all_vacancies_query,
-)
-from backend.api.v1.vacancies.schemas import VacancyAddSchema, VacancyUpdateSchema
-from backend.core.database.utils.dependencies import get_db
+
+from backend.core.schemas.models.employer.vacancy_schema import VacancyAddSchema, VacancyUpdateSchema
 from backend.core.schemas import EmployerSchema, SkillSchema
 
 from backend.core.services.vacancies.dependencies import get_vacancy_serv
@@ -46,22 +42,23 @@ async def get_vacancies(
         city: str = None,
         page: int = Query(1, gt=0),
         size: int = Query(10, ge=0),
-        session: AsyncSession = Depends(get_db),
+        vacancy_serv: VacancyService = Depends(get_vacancy_serv),
 ):
-    vacancies, params = await get_all_vacancies_query(
+    vacancies = await vacancy_serv.search_vacancy(
         user=user,
-        session=session,
         min_salary=min_salary,
         profession=profession,
         city=city,
     )
-    cities = Counter(vacancy.city for vacancy in vacancies)
-    user_type = user.type if user else None
     return {
-        'params': params,
+        'params': {
+            min_salary: min_salary,
+            profession: profession,
+            city: city,
+        },
         'count': len(vacancies),
-        'user_type': user_type,
-        'cities': cities,
+        'user_type': user.type if user else None,
+        'cities': Counter(vacancy.city for vacancy in vacancies),
         'vacancies': vacancies[(page - 1) * size:page * size],
     }
 
