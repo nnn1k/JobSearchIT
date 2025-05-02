@@ -12,7 +12,7 @@ export function showLoadingIndicator() {
     loadingIndicator.style.textAlign = 'center';
     loadingIndicator.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.5)';
 
-    // Добавляем полупрозрачный фон
+
     const backgroundOverlay = document.createElement('div');
     backgroundOverlay.style.position = 'fixed';
     backgroundOverlay.style.top = '0';
@@ -23,7 +23,7 @@ export function showLoadingIndicator() {
     backgroundOverlay.style.zIndex = '999'; // Убедитесь, что он ниже индикатора загрузки
     backgroundOverlay.style.pointerEvents = 'auto'; // Блокируем клики
 
-    // Добавляем анимацию
+
     loadingIndicator.style.animation = 'fadeIn 0.5s';
     loadingIndicator.innerHTML = `
         <img src="/frontend/pictures/loading.gif" alt="Загрузка..." style="width: 80px;">

@@ -196,7 +196,7 @@ function renderVacancies(vacancies, can_update, name_vacancy, count_vacancy) {
         statsLabel.textContent = 'Статистика:'
         const stastElement = document.createElement('div');
         stastElement.classList.add('stats');
-        stastElement.textContent = `0 откликов`
+        stastElement.textContent = `${vacancy.response_count} откликов`
 
         vacancyElement.appendChild(titleElement);
         vacancyElement.appendChild(updatedAtElement);

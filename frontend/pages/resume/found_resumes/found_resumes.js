@@ -191,7 +191,7 @@ function renderResumes(resumes, name_vacancy, count_vacancy) {
         statsLabel.textContent = 'Статистика:'
         const stastElement = document.createElement('div');
         stastElement.classList.add('stats');
-        stastElement.textContent = `0 приглашений`
+        stastElement.textContent = `${vacancy.invite_count} приглашений`
 
         vacancyElement.appendChild(titleElement);
         vacancyElement.appendChild(updatedAtElement);
