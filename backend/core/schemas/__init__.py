@@ -1,6 +1,6 @@
 from backend.core.schemas.models.other.chat_schema import ChatSchema
 from backend.core.schemas.models.worker.worker_schema import WorkerSchemaRel, WorkerSchema
-from backend.core.schemas.models.worker.resume_schema import ResumeSchema, ResumeSchemaRel
+from backend.core.schemas.models.worker.resume_schema import ResumeSchema, ResumeSchemaRel, ResumeAddSchema
 from backend.core.schemas.models.employer.company_schema import CompanySchema, CompanySchemaRel
 from backend.core.schemas.models.employer.employer_schema import EmployerSchemaRel, EmployerSchema
 from backend.core.schemas.models.employer.vacancy_schema import VacancySchema, VacancySchemaRel
@@ -12,6 +12,7 @@ from backend.core.schemas.models.other.profession_schema import ProfessionSchema
 WorkerSchemaRel.model_rebuild()
 ResumeSchema.model_rebuild()
 ResumeSchemaRel.model_rebuild()
+ResumeAddSchema.model_rebuild()
 EmployerSchemaRel.model_rebuild()
 CompanySchema.model_rebuild()
 VacancySchema.model_rebuild()

@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 
 from backend.api.v1.users.auth.views import router as auth_router
-from backend.api.v1.users.employers.profile.views import router as employer_router
+from backend.api.v1.users.employers.views import router as employer_router
 
-from backend.api.v1.users.workers.profile.views import router as profile_router
+from backend.api.v1.users.workers.views import router as profile_router
 
 
 worker_router = APIRouter(prefix="/workers")
