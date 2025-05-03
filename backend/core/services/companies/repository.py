@@ -2,7 +2,7 @@ from typing import Sequence
 
 from sqlalchemy import select, update, and_, insert, delete
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import selectinload, joinedload
 
 from backend.core.database.models.employer import CompaniesOrm, VacanciesOrm
 from backend.core.database.models.other.Review import ReviewsOrm
@@ -82,18 +82,20 @@ class CompanyRepository:
         result = await self.session.execute(stmt)
         return result.scalars().first()
 
-    async def get_reviews(self, company_id: int) -> Sequence[ReviewsOrm]:
+    async def get_reviews(self, **kwargs) -> Sequence[ReviewsOrm]:
         stmt = (
             select(ReviewsOrm)
-            .filter_by(company_id=company_id)
+            .filter_by(**kwargs)
+            .options(joinedload(ReviewsOrm.worker))
         )
         result = await self.session.execute(stmt)
         return result.scalars().all()
 
-    async def get_review(self, review_id: int) -> ReviewsOrm:
+    async def get_review(self, **kwargs) -> ReviewsOrm:
         stmt = (
             select(ReviewsOrm)
-            .filter_by(id=review_id)
+            .filter_by(**kwargs)
+            .options(joinedload(ReviewsOrm.worker))
         )
         result = await self.session.execute(stmt)
         return result.scalars().first()
@@ -106,3 +108,5 @@ class CompanyRepository:
         )
         result = await self.session.execute(stmt)
         return result.scalars().first()
+
+

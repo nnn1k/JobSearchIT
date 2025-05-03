@@ -25,7 +25,7 @@ class ChatService:
         return [ChatSchema.model_validate(chat) for chat in chats]
 
     async def get_all_messages(self, user: UserVar, chat_id: int) -> Sequence[MessageSchema]:
-        chat = self.chat_repo.get_chat(chat_id=chat_id)
+        chat = await self.chat_repo.get_chat(chat_id=chat_id)
         if not chat:
             raise chat_not_found_exc
         if not self.check_user_is_owner(user=user, chat_id=chat_id):

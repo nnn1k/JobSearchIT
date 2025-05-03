@@ -26,3 +26,8 @@ class WorkersOrm(Base):
         back_populates='worker',
         lazy='noload',
     )
+    reviews: Mapped[list['ReviewsOrm']] = relationship(
+        'ReviewsOrm',
+        back_populates='worker',
+        lazy='noload',
+    )

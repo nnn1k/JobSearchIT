@@ -94,6 +94,7 @@ async def get_review(
         'can_update': can_update,
     }
 
+
 @router.get('/{company_id}/reviews', summary='Посмотреть все отзывы у компании')
 async def get_reviews(
         company_id: int,
@@ -104,6 +105,7 @@ async def get_reviews(
     return {
         'reviews': reviews,
     }
+
 
 @router.post('/{company_id}/reviews/{review_id}', summary='Изменить отзыв')
 async def update_review(

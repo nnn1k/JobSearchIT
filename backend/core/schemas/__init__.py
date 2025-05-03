@@ -7,7 +7,7 @@ from backend.core.schemas.models.employer.vacancy_schema import VacancySchema, V
 from backend.core.schemas.models.other.response_schema import ResponseSchema, ResponseSchemaRel
 from backend.core.schemas.models.other.skill_schema import SkillSchema
 from backend.core.schemas.models.other.profession_schema import ProfessionSchema
-from backend.core.schemas.models.other.review_schema import ReviewSchema
+from backend.core.schemas.models.other.review_schema import ReviewSchema, ReviewSchemaRel
 
 
 WorkerSchemaRel.model_rebuild()
@@ -23,3 +23,4 @@ ResponseSchemaRel.model_rebuild()
 ChatSchema.model_rebuild()
 CompanySchemaRel.model_rebuild()
 ReviewSchema.model_rebuild()
+ReviewSchemaRel.model_rebuild()

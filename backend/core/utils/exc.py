@@ -30,6 +30,11 @@ review_not_found_exc = HTTPException(
     detail='review not found'
 )
 
+user_have_review_exc = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='user have review'
+)
+
 user_have_company_exc = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail='user have company'

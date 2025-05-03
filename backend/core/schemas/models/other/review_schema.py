@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from pydantic import BaseModel, field_validator
 
@@ -9,6 +11,10 @@ class ReviewSchema(GlobalSchema):
     company_id: int
     score: int
     message: str
+
+    
+class ReviewSchemaRel(ReviewSchema):
+    worker: 'WorkerSchema'
 
 
 class ReviewCreate(BaseModel):
