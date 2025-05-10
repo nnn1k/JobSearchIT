@@ -2,21 +2,21 @@ import asyncio
 
 from backend.core.database.database import engine, Base, session_factory
 
-from backend.core.database.models.worker.Worker import WorkersOrm
-from backend.core.database.models.worker.Resume import ResumesOrm
-from backend.core.database.models.worker.Education import EducationsOrm
+from backend.core.database.models.worker.Worker import WorkersOrm # noqa
+from backend.core.database.models.worker.Resume import ResumesOrm # noqa
 
-from backend.core.database.models.employer.Employer import EmployersOrm
-from backend.core.database.models.employer.Company import CompaniesOrm
-from backend.core.database.models.employer.Vacancy import VacanciesOrm
+from backend.core.database.models.employer.Employer import EmployersOrm # noqa
+from backend.core.database.models.employer.Company import CompaniesOrm # noqa
+from backend.core.database.models.employer.Vacancy import VacanciesOrm # noqa
 
-from backend.core.database.models.other.Response import ResponsesOrm
-from backend.core.database.models.other.Skill import SkillsOrm
-from backend.core.database.models.other.Profession import ProfessionsOrm
-from backend.core.database.models.other.ResumeSkills import ResumesSkillsOrm
-from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
-from backend.core.database.models.other.Chat import ChatsOrm
-from backend.core.database.models.other.Message import MessagesOrm
+from backend.core.database.models.other.Response import ResponsesOrm # noqa
+from backend.core.database.models.other.Skill import SkillsOrm # noqa
+from backend.core.database.models.other.Profession import ProfessionsOrm # noqa
+from backend.core.database.models.other.ResumeSkills import ResumesSkillsOrm # noqa
+from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm # noqa
+from backend.core.database.models.other.Chat import ChatsOrm # noqa
+from backend.core.database.models.other.Message import MessagesOrm # noqa
+from backend.core.database.models.other.Review import ReviewsOrm # noqa
 
 
 async def recreate():

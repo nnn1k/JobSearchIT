@@ -10,7 +10,7 @@ class UserTypeSchema(BaseModel):
     type: str
 
 
-class UserAbstractSchema(GlobalSchema):
+class UserResponseSchema(GlobalSchema):
     name: Optional[str] = None
     surname: Optional[str] = None
     patronymic: Optional[str] = None
@@ -19,9 +19,12 @@ class UserAbstractSchema(GlobalSchema):
     is_confirmed: Optional[bool] = False
 
 
-class UserSchema(UserAbstractSchema):
-    password: bytes
+class LoginSchema(BaseModel):
+    email: EmailStr
+    password: str
 
 
-class UserResponseSchema(UserAbstractSchema):
-    type: Literal['worker', 'employer']
+class RegisterSchema(BaseModel):
+    email: EmailStr
+    password: str
+    confirm_password: str

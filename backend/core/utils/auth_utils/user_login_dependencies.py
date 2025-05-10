@@ -1,28 +1,35 @@
 from typing import Optional
 
 from fastapi import Cookie, Depends, Query, Response
-from sqlalchemy.ext.asyncio import AsyncSession
+from jwt import ExpiredSignatureError
 
-from backend.api.users.employers.profile.queries import get_employer_by_id_queries
-from backend.api.users.workers.profile.queries import get_worker_by_id_queries
-from backend.core.database.utils.dependencies import get_db
-from backend.core.schemas import EmployerResponseSchema, WorkerResponseSchema
-from backend.core.utils.auth_utils.token_dependencies import check_user_role
-from backend.core.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE
-from backend.core.utils.exc import incorrect_token_exc, incorrect_user_type_exc
+from backend.core.schemas.models.employer.employer_schema import EmployerSchema
+from backend.core.schemas import EmployerSchemaRel, WorkerSchemaRel, WorkerSchema
+from backend.core.services.auth.dependencies import get_auth_serv
+from backend.core.services.auth.service import AuthService
+from backend.core.services.users.dependencies import get_user_serv
+from backend.core.services.users.service import UserService
+from backend.core.utils.classes.AuthJWT import jwt_token
+from backend.core.utils.const import EMPLOYER_USER_TYPE, WORKER_USER_TYPE, ACCESS_TOKEN, REFRESH_TOKEN
+from backend.core.utils.exc import invalid_token_exc, incorrect_user_type_exc
+from backend.core.utils.logger_utils.logger_func import logger
+from backend.core.utils.other.type_utils import UserVar
+
 
 async def get_employer_by_token(
         response: Response,
         access_token=Cookie(None, include_in_schema=False),
         refresh_token=Cookie(None, include_in_schema=False),
-        session: AsyncSession = Depends(get_db),
-) -> EmployerResponseSchema:
+        user_serv: UserService = Depends(get_user_serv),
+        auth_serv: AuthService = Depends(get_auth_serv),
+) -> EmployerSchema:
     return await get_user_by_token(
         access_token=access_token,
         refresh_token=refresh_token,
         response=response,
-        user_type=EMPLOYER_USER_TYPE,
-        session=session,
+        correct_user_type=EMPLOYER_USER_TYPE,
+        user_serv=user_serv,
+        auth_serv=auth_serv,
     )
 
 
@@ -30,51 +37,76 @@ async def get_worker_by_token(
         response: Response,
         access_token=Cookie(None, include_in_schema=False),
         refresh_token=Cookie(None, include_in_schema=False),
-        session: AsyncSession = Depends(get_db),
-) -> WorkerResponseSchema:
+        user_serv: UserService = Depends(get_user_serv),
+        auth_serv: AuthService = Depends(get_auth_serv),
+) -> WorkerSchema:
     return await get_user_by_token(
         access_token=access_token,
         refresh_token=refresh_token,
         response=response,
-        user_type=WORKER_USER_TYPE,
-        session=session,
+        correct_user_type=WORKER_USER_TYPE,
+        user_serv=user_serv,
+        auth_serv=auth_serv,
     )
 
 
 async def get_user_by_token(
-        access_token=Cookie(None, include_in_schema=False),
-        refresh_token=Cookie(None, include_in_schema=False),
-        response: Response = None,
-        user_type: Optional[str] = Query(None, include_in_schema=False),
-        session: AsyncSession = Depends(get_db),
-) -> None | WorkerResponseSchema | EmployerResponseSchema:
-    user_jwt_schema = await check_user_role(access_token, refresh_token, response)
-    if not user_jwt_schema:
-        if user_type is not None:
-            raise incorrect_token_exc
+        response: Response,
+        access_token: Optional[str] = Cookie(None, include_in_schema=False),
+        refresh_token: Optional[str] = Cookie(None, include_in_schema=False),
+        correct_user_type: Optional[str] = Query(None, include_in_schema=False),
+        user_serv: UserService = Depends(get_user_serv),
+        auth_serv: AuthService = Depends(get_auth_serv),
+) -> Optional[UserVar]:
+    """
+    ЕСЛИ correct_user_type = None ТО пользователь может быть worker|employer|guest(no type)
+    ЕСЛИ correct_user_type указать(worker|employer), ТО пользователь может быть только тот тип, иначе incorrect_user_type_exc
+    """
+    user_id: int | None = None
+    user_type: str | None = None
+    if access_token:
+        try:
+            user_id = jwt_token.decode_jwt(token=access_token).get("sub")
+            user_type = jwt_token.decode_jwt(token=access_token).get("type")
+        except ExpiredSignatureError:
+            logger.info('access token expired')
+    if not user_id and refresh_token:
+        try:
+            user_id = jwt_token.decode_jwt(token=refresh_token).get("sub")
+            user_type = jwt_token.decode_jwt(token=refresh_token).get("type")
+        except ExpiredSignatureError:
+            raise invalid_token_exc
+    if correct_user_type is not None and correct_user_type != user_type:
+        raise incorrect_user_type_exc
+    if correct_user_type is None and user_type is None:
         return None
-    if user_type:
-        if user_jwt_schema.type != user_type:
-            raise incorrect_user_type_exc
-    if user_jwt_schema.type == WORKER_USER_TYPE:
-        return await get_worker_by_id_queries(user_jwt_schema.id, session)
-    elif user_jwt_schema.type == EMPLOYER_USER_TYPE:
-        return await get_employer_by_id_queries(user_jwt_schema.id, session)
+    if user_type == WORKER_USER_TYPE:
+        user = await user_serv.get_worker_by_id(id=int(user_id))
+        auth_serv.create_token(response=response, user=user)
+        return user
+    elif user_type == EMPLOYER_USER_TYPE:
+        user = await user_serv.get_employer_by_id(id=int(user_id))
+        auth_serv.create_token(response=response, user=user)
+        return user
     else:
         raise incorrect_user_type_exc
+
 
 async def get_auth_user_by_token(
         response: Response,
         access_token=Cookie(None, include_in_schema=False),
         refresh_token=Cookie(None, include_in_schema=False),
-        session: AsyncSession = Depends(get_db),
-):
-    user_jwt_schema = await check_user_role(access_token, refresh_token, response)
-    if not user_jwt_schema:
-        raise incorrect_user_type_exc
-    if user_jwt_schema.type == WORKER_USER_TYPE:
-        return await get_worker_by_id_queries(user_jwt_schema.id, session)
-    elif user_jwt_schema.type == EMPLOYER_USER_TYPE:
-        return await get_employer_by_id_queries(user_jwt_schema.id, session)
-    else:
-        raise incorrect_user_type_exc
+        user_serv: UserService = Depends(get_user_serv),
+        auth_serv: AuthService = Depends(get_auth_serv),
+) -> UserVar:
+    user = await get_user_by_token(
+        access_token=access_token,
+        refresh_token=refresh_token,
+        response=response,
+        correct_user_type=None,
+        user_serv=user_serv,
+        auth_serv=auth_serv,
+    )
+    if user is None:
+        raise invalid_token_exc
+    return user

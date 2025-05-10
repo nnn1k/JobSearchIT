@@ -10,7 +10,8 @@ class ResponseSchema(GlobalSchema):
     is_employer_accepted: Optional[bool] = None
     first: str
 
-    vacancy: 'VacancySchema'
-    resume: 'ResumeSchema'
-    chat: Optional['ChatSchema'] = None
 
+class ResponseSchemaRel(ResponseSchema):
+    vacancy: 'VacancySchemaRel'
+    resume: 'ResumeSchemaRel'
+    chat: Optional['ChatSchema'] = None

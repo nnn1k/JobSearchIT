@@ -24,38 +24,30 @@ def log_queries(conn, cursor, statement, parameters, context, executemany):
 event.listen(engine.sync_engine, 'before_cursor_execute', log_queries)
 session_factory = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
+intpk = Annotated[
+    int,
+    mapped_column(primary_key=True)
+]
+
+created_at = Annotated[
+    datetime.datetime,
+    mapped_column(
+        server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
+    )
+]
+
+updated_at = Annotated[
+    datetime.datetime,
+    mapped_column(
+        server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
+        onupdate=lambda: datetime.datetime.utcnow() + datetime.timedelta(hours=3),
+    )
+]
+
 
 class Base(DeclarativeBase):
     repr_cols_num = 10
     repr_cols = tuple()
-
-    id: Mapped[
-        Annotated[
-            int,
-            mapped_column(primary_key=True)
-        ]
-    ]
-
-    created_at: Mapped[
-        Annotated[
-            datetime.datetime,
-            mapped_column(
-                server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
-                index=True,
-            )
-        ]
-    ]
-
-    updated_at: Mapped[
-        Annotated[
-            datetime.datetime,
-            mapped_column(
-                server_default=text("CURRENT_TIMESTAMP + interval '3 hours'"),
-                onupdate=lambda: datetime.datetime.utcnow() + datetime.timedelta(hours=3),
-                index=True,
-            )
-        ]
-    ]
 
     def __repr__(self):
         cols = []

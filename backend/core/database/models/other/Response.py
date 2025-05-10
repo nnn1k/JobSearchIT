@@ -1,17 +1,20 @@
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.core.database.database import Base
+from backend.core.database.database import Base, intpk, created_at, updated_at
 
 
 class ResponsesOrm(Base):
     __tablename__ = 'responses'
 
+    id: Mapped[intpk]
     vacancy_id: Mapped[int] = mapped_column(ForeignKey('vacancies.id', ondelete='CASCADE'))
     resume_id: Mapped[int] = mapped_column(ForeignKey('resumes.id', ondelete='CASCADE'))
     is_worker_accepted: Mapped[bool] = mapped_column(nullable=True, default=None)
     is_employer_accepted: Mapped[bool] = mapped_column(nullable=True, default=None)
     first: Mapped[str] = mapped_column(nullable=True, default=None)
+    created_at: Mapped[created_at]
+    updated_at: Mapped[updated_at]
 
     __table_args__ = tuple(
         UniqueConstraint('vacancy_id', 'resume_id', name='uq_responses_vacancies'),

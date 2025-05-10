@@ -12,7 +12,7 @@ class HostConfig(BaseModel):
 
 
 class DBConfig(BaseModel):
-    url: str = "postgresql+psycopg://postgres.ljkbzaekkpckwgabcekt:jobsearchit@aws-0-eu-central-1.pooler.supabase.com:6543/postgres"
+    url: str = "postgresql+psycopg://postgres.ljkbzaekkpckwgabcekt:jobsearchit@aws-0-eu-central-1.pooler.supabase.com:5432/postgres"
     local_url: str = 'postgresql+asyncpg://postgres:postgres@localhost:5432/postgres'
 
 

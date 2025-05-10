@@ -20,7 +20,7 @@ async function signup_employer() {
     if (postResponse) {
         const getResponse = await makeRequest({
                 method: 'GET',
-                url: '/api/auth/employers/code',
+                url: '/api/auth/code',
             }
         )
         hideLoadingIndicator(loadingIndicator);
@@ -48,10 +48,7 @@ async function check_code() {
     const loadingIndicator = showLoadingIndicator();
     const postResponse = await makeRequest({
         method: 'POST',
-        url: '/api/auth/employers/code',
-        data: {
-            code
-        }
+        url: `/api/auth/employers/code?code=${code}`,
     })
     if (postResponse) {
         hideLoadingIndicator(loadingIndicator);

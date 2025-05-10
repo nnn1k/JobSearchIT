@@ -30,7 +30,7 @@ async function deleteResume(resume) {
     const loadingIndicator = showLoadingIndicator();
     const deleteResponse = await makeRequest({
         method: 'DELETE',
-        url: `/api/workers/resumes/${resume.id}`
+        url: `/api/resumes/${resume.id}`
     })
     hideLoadingIndicator(loadingIndicator)
     window.location.href = apiUrl + `/worker/resumes`

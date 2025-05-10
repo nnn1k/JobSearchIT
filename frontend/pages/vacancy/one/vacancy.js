@@ -20,9 +20,9 @@ async function getMyResumes() {
     }
     const getMyResumes = await makeRequest({
         method: 'GET',
-        url: '/api/workers/me/'
+        url: '/api/resumes/me'
     })
-    resumes = getMyResumes.user.resumes
+    resumes = getMyResumes.resumes
 }
 
 
@@ -88,6 +88,7 @@ async function getVacancy() {
                     window.location.href = apiUrl + '/login';
                     return
                 }
+
                 createModal('Выберите резюме для отклика', resumes, vacancy.id);
             };
         }

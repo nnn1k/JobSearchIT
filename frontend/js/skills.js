@@ -30,28 +30,28 @@ export function getSelectedSkills() {
 }
 
 export function selectSkill(button) {
-    const skillName = button.innerText; // Получаем название навыка
+    const skillName = button.innerText;
     const selectedSkillsContainer = document.getElementById('selectedSkills');
 
-    // Проверяем, есть ли уже этот навык в выбранных
+
     if (![...selectedSkillsContainer.children].some(skill => skill.innerText === skillName)) {
         const skillButton = document.createElement('button');
-        skillButton.classList.add('selected-skill-button'); // Добавляем класс для стиля
+        skillButton.classList.add('selected-skill-button');
         skillButton.innerText = skillName;
-        skillButton.setAttribute('data-id', button.getAttribute('data-id')); // Сохраняем id
+        skillButton.setAttribute('data-id', button.getAttribute('data-id'));
 
-        // Добавляем обработчик события для удаления навыка
+
         skillButton.onclick = function () {
             selectedSkillsContainer.removeChild(skillButton);
-            button.classList.remove('selected'); // Убираем выделение с кнопки
-            button.style.display = 'inline-block'; // Показываем кнопку навыка снова
+            button.classList.remove('selected');
+            button.style.display = 'inline-block';
         };
 
         selectedSkillsContainer.appendChild(skillButton);
 
-        // Выделяем кнопку и скрываем ее из доступных навыков
+
         button.classList.add('selected');
-        button.style.display = 'none'; // Скрываем кнопку навыка
+        button.style.display = 'none';
     }
 
 }

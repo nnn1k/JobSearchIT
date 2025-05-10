@@ -25,9 +25,23 @@ resume_not_found_exc = HTTPException(
     detail='resume not found'
 )
 
+review_not_found_exc = HTTPException(
+    status_code=status.HTTP_404_NOT_FOUND,
+    detail='review not found'
+)
+
+user_have_review_exc = HTTPException(
+    status_code=status.HTTP_400_BAD_REQUEST,
+    detail='user have review'
+)
+
 user_have_company_exc = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail='user have company'
+)
+user_dont_have_company_exc = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail='user dont have company'
 )
 
 user_is_not_owner_exc = HTTPException(
@@ -50,7 +64,7 @@ response_is_exist_exc = HTTPException(
     detail='response already exist'
 )
 
-incorrect_token_exc = HTTPException(
+invalid_token_exc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="invalid token",
 )
@@ -62,4 +76,24 @@ chat_not_found_exc = HTTPException(
 user_have_this_profession_exc = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
     detail='user have object with this profession'
+)
+
+incorrect_login_or_password_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Incorrect login or password",
+)
+
+user_is_exist_exc = HTTPException(
+    status_code=status.HTTP_403_FORBIDDEN,
+    detail="user is exist",
+)
+
+password_mismatch_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="password mismatch",
+)
+
+incorrect_code_exc = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Incorrect code",
 )
