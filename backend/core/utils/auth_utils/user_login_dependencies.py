@@ -58,10 +58,6 @@ async def get_user_by_token(
         user_serv: UserService = Depends(get_user_serv),
         auth_serv: AuthService = Depends(get_auth_serv),
 ) -> Optional[UserVar]:
-    """
-    ЕСЛИ correct_user_type = None ТО пользователь может быть worker|employer|guest(no type)
-    ЕСЛИ correct_user_type указать(worker|employer), ТО пользователь может быть только тот тип, иначе incorrect_user_type_exc
-    """
     user_id: int | None = None
     user_type: str | None = None
     if access_token:
