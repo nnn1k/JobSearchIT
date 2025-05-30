@@ -25,28 +25,5 @@ setup_cors(app)
 check_platform()
 
 app.exception_handler(Exception)(global_exception_handler)
-#app.middleware("http")(log_requests)
+app.middleware("http")(log_requests)
 
-
-@app.middleware("http")
-async def force_https_urls(request: Request, call_next):
-    response = await call_next(request)
-
-    if isinstance(response, JSONResponse):
-        import json
-        data = json.loads(response.body.decode())
-
-        # Рекурсивно заменяем http:// на https:// во всём JSON
-        def fix_urls(obj):
-            if isinstance(obj, str):
-                return obj.replace("http://", "https://")
-            elif isinstance(obj, dict):
-                return {k: fix_urls(v) for k, v in obj.items()}
-            elif isinstance(obj, list):
-                return [fix_urls(item) for item in obj]
-            return obj
-
-        fixed_data = fix_urls(data)
-        response.body = json.dumps(fixed_data).encode()
-
-    return response
