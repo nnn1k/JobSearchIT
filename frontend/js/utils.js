@@ -1,7 +1,7 @@
 export const apiUrl = 'https://' + window.location.host;
 
 export async function makeRequest(request) {
-    console.log(request.url)
+    console.log(apiUrl + request.url)
     const response = await fetch(
         apiUrl + request.url,
         {
