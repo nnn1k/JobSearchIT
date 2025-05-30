@@ -2,7 +2,8 @@ import os
 
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
+
+from fastapi.responses import JSONResponse
 
 from backend.core.config.cors import setup_cors
 from backend.core.config.help_func import check_platform
@@ -28,13 +29,24 @@ app.exception_handler(Exception)(global_exception_handler)
 
 
 @app.middleware("http")
-async def force_https(request: Request, call_next):
+async def force_https_urls(request: Request, call_next):
     response = await call_next(request)
 
-    # Проверяем заголовок от прокси (Render.com передаёт его)
-    if request.headers.get('x-forwarded-proto') == 'http':
-        url = str(request.url).replace('http://', 'https://', 1)
-        from starlette.responses import RedirectResponse
-        return RedirectResponse(url, status_code=301)
+    if isinstance(response, JSONResponse):
+        import json
+        data = json.loads(response.body.decode())
+
+        # Рекурсивно заменяем http:// на https:// во всём JSON
+        def fix_urls(obj):
+            if isinstance(obj, str):
+                return obj.replace("http://", "https://")
+            elif isinstance(obj, dict):
+                return {k: fix_urls(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [fix_urls(item) for item in obj]
+            return obj
+
+        fixed_data = fix_urls(data)
+        response.body = json.dumps(fixed_data).encode()
 
     return response
