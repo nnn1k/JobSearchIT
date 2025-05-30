@@ -25,5 +25,5 @@ check_platform()
 
 app.exception_handler(Exception)(global_exception_handler)
 app.middleware("http")(log_requests)
-app.add_middleware(HTTPSRedirectMiddleware)
+
 
