@@ -81,17 +81,5 @@ class AuthJWT:
             expire_timedelta=timedelta(days=self.refresh_token_expire_days)
         )
 
-    def token_refresh(self, refresh_token: str) -> tuple[str, str] | tuple[None, None]:
-        try:
-            decoded_refresh_token = self.decode_jwt(refresh_token)
-            id = decoded_refresh_token.get("sub")
-            user_type = decoded_refresh_token.get("type")
-            access_token = self.create_access_token(user_id=id, user_type=user_type)
-            refresh_token = self.create_refresh_token(user_id=id, user_type=user_type)
-            return access_token, refresh_token
-        except Exception as e:
-            print(f'error:{e}')
-            return None, None
-
 
 jwt_token = AuthJWT()

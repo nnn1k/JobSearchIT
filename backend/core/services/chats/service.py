@@ -28,7 +28,7 @@ class ChatService:
         chat = await self.chat_repo.get_chat(chat_id=chat_id)
         if not chat:
             raise chat_not_found_exc
-        if not self.check_user_is_owner(user=user, chat_id=chat_id):
+        if not await self.check_user_is_owner(user=user, chat_id=chat_id):
             raise user_is_not_owner_exc
         messages = await self.chat_repo.get_all_messages(chat_id=chat_id)
         return [MessageSchema.model_validate(message) for message in messages]

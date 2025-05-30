@@ -88,7 +88,7 @@ class ResponseService:
         return [ResponseSchemaRel.model_validate(resp) for resp in responses]
 
     async def send_reaction(self, user: UserVar, reaction: bool, response_id: int) -> ResponseSchema:
-        response = await self.resp_repo.get_response(response_id=response_id)
+        response = await self.resp_repo.get_response(id=response_id)
         if not await self.check_user_is_not_owner(
                 resume_id=response.resume_id, vacancy_id=response.vacancy_id, user=user
         ):

@@ -10,6 +10,7 @@ from backend.core.database.models.other.VacancySkills import VacanciesSkillsOrm
 from backend.core.database.models.other.Skill import SkillsOrm
 from backend.core.database.models.other.ResumeSkills import ResumesSkillsOrm
 from backend.core.database.database import session_factory
+from backend.core.schemas.models.employer.employer_schema import EmployerSchema
 from backend.core.utils.exc import resume_not_found_exc, user_is_not_owner_exc, vacancy_not_found_exc
 
 
@@ -59,7 +60,7 @@ async def update_resume_skills(skills_list: List[SkillSchema], resume_id: int, w
         await session.commit()
 
 
-async def update_vacancy_skills(skills_list, vacancy_id, owner):
+async def update_vacancy_skills(skills_list, vacancy_id, owner: EmployerSchema):
     skills_list = [skill.id for skill in skills_list]
     async with session_factory() as session:
 
