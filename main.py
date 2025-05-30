@@ -27,3 +27,16 @@ check_platform()
 app.exception_handler(Exception)(global_exception_handler)
 app.middleware("http")(log_requests)
 
+
+@app.middleware("http")
+async def fix_proxy_redirects(request: Request, call_next):
+    response = await call_next(request)
+
+    # Исправляем Location в заголовках, если прокси передал HTTP
+    if response.status_code == 307 and "location" in response.headers:
+        location = response.headers["location"]
+        if location.startswith("http://"):
+            response.headers["location"] = location.replace("http://", "https://")
+
+    return response
+
