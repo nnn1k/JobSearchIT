@@ -39,6 +39,7 @@ async function get_resumes() {
     resumes.forEach(resume => {
         const linkElement = document.createElement('a')
         linkElement.href = apiUrl + `/resumes/${resume.id}`
+        console.log(linkElement.href)
         linkElement.style.color = '#555'
 
         const resumeElement = document.createElement('div');

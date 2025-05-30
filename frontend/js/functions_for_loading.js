@@ -19,9 +19,9 @@ export function showLoadingIndicator() {
     backgroundOverlay.style.left = '0';
     backgroundOverlay.style.width = '100%';
     backgroundOverlay.style.height = '100%';
-    backgroundOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.001)'; // Полупрозрачный фон
-    backgroundOverlay.style.zIndex = '999'; // Убедитесь, что он ниже индикатора загрузки
-    backgroundOverlay.style.pointerEvents = 'auto'; // Блокируем клики
+    backgroundOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.001)';
+    backgroundOverlay.style.zIndex = '999';
+    backgroundOverlay.style.pointerEvents = 'auto';
 
 
     loadingIndicator.style.animation = 'fadeIn 0.5s';
