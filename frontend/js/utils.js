@@ -1,5 +1,5 @@
-export const apiUrl = window.location.protocol + '//' + window.location.host;
-
+export const apiUrl = window.location.host;
+console.log(apiUrl)
 
 export async function makeRequest(request) {
     const response = await fetch(
