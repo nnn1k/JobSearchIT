@@ -1,13 +1,6 @@
-export function getApiBaseUrl() {
-  // Если страница загружена по HTTPS, принудительно используем HTTPS для API
-  if (window.location.protocol === 'https:') {
-    return 'https://' + window.location.host;
-  }
-  // Иначе используем текущий протокол (HTTP для локальной разработки)
-  return window.location.protocol + '//' + window.location.host;
-}
 
-export const apiUrl = getApiBaseUrl();
+
+export const apiUrl = 'https://' + window.location.host;
 
 export async function makeRequest(request) {
     const response = await fetch(
