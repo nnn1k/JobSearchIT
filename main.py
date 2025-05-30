@@ -2,6 +2,8 @@ import os
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
+
 from backend.core.config.cors import setup_cors
 from backend.core.config.help_func import check_platform
 from backend.core.utils.logger_utils.exception_log_func import global_exception_handler, log_requests
@@ -23,4 +25,5 @@ check_platform()
 
 app.exception_handler(Exception)(global_exception_handler)
 app.middleware("http")(log_requests)
+app.add_middleware(HTTPSRedirectMiddleware)
 
