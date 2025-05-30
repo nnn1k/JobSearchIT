@@ -1,6 +1,6 @@
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 
@@ -24,6 +24,17 @@ setup_cors(app)
 check_platform()
 
 app.exception_handler(Exception)(global_exception_handler)
-app.middleware("http")(log_requests)
+#app.middleware("http")(log_requests)
 
 
+@app.middleware("http")
+async def force_https(request: Request, call_next):
+    response = await call_next(request)
+
+    # Проверяем заголовок от прокси (Render.com передаёт его)
+    if request.headers.get('x-forwarded-proto') == 'http':
+        url = str(request.url).replace('http://', 'https://', 1)
+        from starlette.responses import RedirectResponse
+        return RedirectResponse(url, status_code=301)
+
+    return response
