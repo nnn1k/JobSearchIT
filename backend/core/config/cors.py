@@ -7,6 +7,7 @@ def setup_cors(app):
         CORSMiddleware,
         allow_origins=["*"],
         allow_credentials=True,
+        allow_websockets=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )

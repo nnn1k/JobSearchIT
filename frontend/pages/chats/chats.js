@@ -82,7 +82,7 @@ export function openChat(chatId) {
 
 function createChatSocket() {
 
-    let new_ws = new WebSocket(`ws://jobsearchit.onrender.com/api/chats/ws`);
+    let new_ws = new WebSocket(`wss://jobsearchit.onrender.com/api/chats/ws`);
 
     new_ws.onopen = () => {
         new_ws.send(JSON.stringify({'message': '', 'type': 'open', 'chat_id': ''}))
