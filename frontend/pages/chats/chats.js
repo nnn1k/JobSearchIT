@@ -1,5 +1,5 @@
 import {formatDateTime} from "/frontend/js/timefunc.js";
-import {apiUrl, getCookie} from "/frontend/js/utils.js";
+import {getCookie} from "/frontend/js/utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
     createChatSystem()
@@ -82,7 +82,7 @@ export function openChat(chatId) {
 
 function createChatSocket() {
 
-    let new_ws = new WebSocket(`ws://${apiUrl}/api/chats/ws`);
+    let new_ws = new WebSocket(`ws://jobsearchit.onrender.com/api/chats/ws`);
 
     new_ws.onopen = () => {
         new_ws.send(JSON.stringify({'message': '', 'type': 'open', 'chat_id': ''}))
