@@ -25,7 +25,6 @@ class RedisConfig(BaseModel):
     url: str = 'redis://default:UWNrSrlaQaMQNzMMPJhPmSrrVEysaLUX@switchyard.proxy.rlwy.net:39467'
 
 
-
 class JWTConfig(BaseModel):
     private_key: str = BASE_DIR / 'certs' / 'jwt-private.pem'
     public_key: str = BASE_DIR / 'certs' / 'jwt-public.pem'

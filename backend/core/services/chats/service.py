@@ -12,7 +12,7 @@ class ChatService:
         self.chat_repo = chat_repo
 
     async def create_chat(self, response_id: int) -> ChatSchema:
-        chat = self.chat_repo.create_chat(response_id=response_id)
+        chat = await self.chat_repo.create_chat(response_id=response_id)
         schema = ChatSchema.model_validate(chat)
         return schema
 
