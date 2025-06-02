@@ -11,10 +11,8 @@ class ChatService:
     def __init__(self, chat_repo: ChatRepository):
         self.chat_repo = chat_repo
 
-    async def create_chat(self, response_id: int) -> ChatSchema:
-        chat = await self.chat_repo.create_chat(response_id=response_id)
-        schema = ChatSchema.model_validate(chat)
-        return schema
+    async def create_chat(self, response_id: int) -> None:
+        await self.chat_repo.create_chat(response_id=response_id)
 
     async def check_user_is_owner(self, user: UserVar, chat_id: int) -> bool:
         chat = await self.chat_repo.check_user_is_owner(user=user, chat_id=chat_id)

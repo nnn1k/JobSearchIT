@@ -82,7 +82,7 @@ async def accept_invite_views(
         chat_serv: ChatService = Depends(get_chat_serv)
 ):
     response = await resp_serv.send_reaction(user=user, response_id=response_id, reaction=True)
-    chat = await chat_serv.create_chat(response_id=response_id)
+    await chat_serv.create_chat(response_id=response_id)
     return {
         'status': 'ok',
         'response': response,
