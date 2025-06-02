@@ -22,7 +22,8 @@ class EmailConfig(BaseModel):
 
 
 class RedisConfig(BaseModel):
-    url: str = 'redis://default:MXnVzZUbxetVwLWVzvWSTLMIacVdknim@monorail.proxy.rlwy.net:44060'
+    url: str = 'redis://default:UWNrSrlaQaMQNzMMPJhPmSrrVEysaLUX@switchyard.proxy.rlwy.net:39467'
+
 
 
 class JWTConfig(BaseModel):
