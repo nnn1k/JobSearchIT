@@ -40,7 +40,7 @@ async def update_my_other(
         worker: WorkerSchema = Depends(get_worker_by_token),
         user_serv: UserService = Depends(get_user_serv)
 ):
-    new_worker = await user_serv.update_worker(worker=worker, **new_worker.model_dump())
+    new_worker = await user_serv.update_worker(worker_id=worker.id, **new_worker.model_dump())
     return {
         'user': new_worker,
     }
