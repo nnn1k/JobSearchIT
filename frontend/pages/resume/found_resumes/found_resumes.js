@@ -216,6 +216,7 @@ function renderResumes(resumes, name_vacancy, count_vacancy) {
                     window.location.href = apiUrl + '/login';
                     return
                 }
+                console.log(vacancies)
                 createModal('Выберите вакансию для приглашения', vacancies, vacancy.id);
             };
             return;
