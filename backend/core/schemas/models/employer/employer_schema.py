@@ -11,7 +11,7 @@ class EmployerSchemaRel(UserResponseSchema):
     is_owner: bool = False
     type: str = EMPLOYER_USER_TYPE
 
-    company: Optional['CompanySchema'] = None
+    company: Optional['CompanySchemaRel'] = None
 
 
 class EmployerSchema(UserResponseSchema):
