@@ -56,10 +56,9 @@ async def register_employer(
 
 @router.get('/code', summary='Получить код')
 async def get_code(
-        bg: BackgroundTasks,
         user=Depends(get_auth_user_by_token)
 ):
-    bg.add_task(SendEmail.send_code_to_email, user)
+    await SendEmail.send_code_to_email(user)
     return {
         'msg': 'Код отправлен на почту:',
         'email': user.email,

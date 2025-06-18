@@ -18,7 +18,7 @@ class DBConfig(BaseModel):
 
 class EmailConfig(BaseModel):
     login: str = 'testemailsendnnn1k@gmail.com'
-    password: str = 'znwt bffc blls fpqp'
+    password: str = 'tfuu xkwb ccix gnna'
 
 
 class RedisConfig(BaseModel):
