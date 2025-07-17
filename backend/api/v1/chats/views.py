@@ -46,19 +46,16 @@ async def chat_system_websocket(
                     await join_user(user=user, chat_id=chat_id, ws=ws, chat_serv=chat_serv)
                 case 'message':
                     await send_message(chat_id=chat_id, message=message, user=user, chat_serv=chat_serv)
-
     except HTTPException as e:
         await ws.send_text(json.dumps({
             "type": "error",
             "status_code": e.status_code,
             "detail": e.detail
         }))
-
     except WebSocketDisconnect:
         if ws.client_state != WebSocketState.DISCONNECTED:
             await ws.close()
             logger.info('disconnected')
-
     finally:
         if ws.client_state != WebSocketState.DISCONNECTED:
             await ws.close()

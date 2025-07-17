@@ -185,5 +185,5 @@ async def add_professions():
 
 if __name__ == '__main__':
     asyncio.run(recreate())
-    #asyncio.run(add_skills())
-    #asyncio.run(add_professions())
+    asyncio.run(add_skills())
+    asyncio.run(add_professions())
